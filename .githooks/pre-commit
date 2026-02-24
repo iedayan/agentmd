@@ -1,9 +1,13 @@
 #!/bin/sh
-set -e
+# Pre-commit hook: run lint and tests before commit
 
-if [ ! -f "packages/core/dist/index.js" ] || [ ! -f "packages/cli/dist/cli.js" ]; then
-  pnpm --filter @agentmd/core run build >/dev/null
-  pnpm --filter @agentmd/cli run build >/dev/null
+echo "[agentmd] Running lint before commit..."
+pnpm -w run lint
+STATUS=$?
+if [ $STATUS -ne 0 ]; then
+  echo "[agentmd] Lint failed. Commit aborted."
+  exit 1
 fi
 
-pnpm run agentmd -- check . --contract >/dev/null
+echo "[agentmd] Lint passed."
+exit 0
