@@ -1,0 +1,100 @@
+import { NextResponse } from "next/server";
+import { readFileSync, existsSync } from "fs";
+import { join } from "path";
+
+const COMPOSE_CONTENT = `# AgentMD Self-Hosted Stack
+# Bring-your-own-database: PostgreSQL + Redis
+# Usage: docker compose -f deploy/docker-compose.yml up -d
+
+version: "3.8"
+
+services:
+  agentmd-dashboard:
+    image: agentmd/dashboard:latest
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile.dashboard
+    ports:
+      - "3001:3000"
+    environment:
+      - DATABASE_URL=postgresql://agentmd:agentmd@postgres:5432/agentmd
+      - REDIS_URL=redis://redis:6379
+      - NEXTAUTH_SECRET=\${NEXTAUTH_SECRET}
+      - NEXTAUTH_URL=\${NEXTAUTH_URL:-http://localhost:3001}
+      - AGENTMD_LICENSE_KEY=\${AGENTMD_LICENSE_KEY}
+      - SAML_ENTITY_ID=\${SAML_ENTITY_ID}
+      - SAML_SSO_URL=\${SAML_SSO_URL}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+
+  agentmd-worker:
+    image: agentmd/worker:latest
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile.worker
+    environment:
+      - DATABASE_URL=postgresql://agentmd:agentmd@postgres:5432/agentmd
+      - REDIS_URL=redis://redis:6379
+      - AGENTMD_LICENSE_KEY=\${AGENTMD_LICENSE_KEY}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: agentmd
+      POSTGRES_PASSWORD: agentmd
+      POSTGRES_DB: agentmd
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U agentmd"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
+  redis_data:
+`;
+
+export async function GET() {
+  try {
+    const composePath = join(process.cwd(), "..", "..", "deploy", "docker-compose.yml");
+    const content = existsSync(composePath)
+      ? readFileSync(composePath, "utf-8")
+      : COMPOSE_CONTENT;
+
+    return new NextResponse(content, {
+      headers: {
+        "Content-Type": "text/yaml",
+        "Content-Disposition": 'attachment; filename="docker-compose.yml"',
+      },
+    });
+  } catch {
+    return new NextResponse(COMPOSE_CONTENT, {
+      headers: {
+        "Content-Type": "text/yaml",
+        "Content-Disposition": 'attachment; filename="docker-compose.yml"',
+      },
+    });
+  }
+}

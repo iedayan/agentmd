@@ -1,0 +1,26 @@
+<svg width="180" height="180" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="180" y2="180" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#7c3aed"/>
+      <stop offset="0.5" stop-color="#0d9488"/>
+      <stop offset="1" stop-color="#059669"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="1" gradientUnits="objectBoundingBox">
+      <stop stop-color="#a78bfa"/>
+      <stop offset="1" stop-color="#34d399"/>
+    </linearGradient>
+  </defs>
+  <rect width="180" height="180" rx="40" fill="url(#bg)"/>
+  <!-- Document body -->
+  <path d="M40 30h64l42 34v76a8 8 0 0 1-8 8H40a8 8 0 0 1-8-8V38a8 8 0 0 1 8-8z"
+    fill="white" fill-opacity="0.1" stroke="white" stroke-opacity="0.25" stroke-width="4"/>
+  <!-- Corner fold -->
+  <path d="M104 30l42 34h-24a18 18 0 0 1-18-18V30z"
+    fill="white" fill-opacity="0.18"/>
+  <!-- ">" chevron -->
+  <path d="M52 85l20 14-20 14"
+    stroke="url(#accent)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Command line -->
+  <line x1="78" y1="107" x2="128" y2="107"
+    stroke="url(#accent)" stroke-width="8" stroke-linecap="round"/>
+</svg>

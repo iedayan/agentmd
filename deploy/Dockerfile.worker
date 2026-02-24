@@ -1,0 +1,13 @@
+# AgentMD Worker - Execution Engine
+FROM node:20-alpine
+
+WORKDIR /app
+ENV NODE_ENV=production
+
+COPY package.json package-lock.json* ./
+COPY apps/dashboard/package.json ./apps/dashboard/
+RUN npm ci --workspace=@agentmd/dashboard 2>/dev/null || npm install
+
+COPY deploy/worker ./deploy/worker
+
+CMD ["node", "deploy/worker/worker.mjs"]

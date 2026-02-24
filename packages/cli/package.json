@@ -1,0 +1,23 @@
+{
+  "name": "@agentmd/cli",
+  "version": "0.1.0",
+  "type": "module",
+  "bin": {
+    "agentmd": "./dist/cli.js"
+  },
+  "scripts": {
+    "build": "tsup src/cli.ts --format esm",
+    "dev": "tsup src/cli.ts --format esm --watch",
+    "test": "pnpm run build && vitest run",
+    "lint": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@agentmd/core": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "tsup": "^8.3.5",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.6"
+  }
+}

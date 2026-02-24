@@ -1,0 +1,136 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { Menu, X } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Logo } from "@/components/brand/logo";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
+import { cn } from "@/lib/core/utils";
+
+const navLinks = [
+  { href: "/features", label: "Features" },
+  { href: "/pricing", label: "Pricing" },
+  { href: "/docs", label: "Docs" },
+  { href: "/marketplace", label: "Marketplace" },
+  { href: "/ops", label: "Ops" },
+];
+
+export function Nav() {
+  const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const pathname = usePathname();
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  return (
+    <header
+      className={cn(
+        "sticky top-0 z-50 border-b bg-background/95 backdrop-blur-md transition-all duration-200",
+        scrolled
+          ? "border-border/60 shadow-sm shadow-black/5"
+          : "border-transparent"
+      )}
+    >
+      <div className="container mx-auto flex h-16 items-center justify-between px-4 lg:px-8">
+        <Link href="/" className="flex items-center gap-2.5 group">
+            <Logo size="sm" />
+            <span className="text-base font-bold tracking-tight">AgentMD</span>
+          </Link>
+
+        <nav className="hidden md:flex items-center gap-1">
+          {navLinks.map((link) => {
+            const isActive =
+              pathname === link.href ||
+              (link.href !== "/" && pathname.startsWith(link.href));
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={cn(
+                  "px-3 py-1.5 text-sm font-medium rounded-lg transition-colors",
+                  isActive
+                    ? "text-foreground bg-muted"
+                    : "text-muted-foreground hover:text-foreground hover:bg-muted/60"
+                )}
+              >
+                {link.label}
+              </Link>
+            );
+          })}
+          <div className="w-px h-4 bg-border/60 mx-2" aria-hidden />
+          <ThemeToggle />
+          <Link href="/dashboard">
+            <Button variant="ghost" size="sm" className="font-medium text-sm rounded-lg">
+              Dashboard
+            </Button>
+          </Link>
+            <Link href="/register">
+              <Button size="sm" className="font-semibold text-sm rounded-lg shadow-sm shadow-primary/20 ml-1">
+                Get Started
+              </Button>
+            </Link>
+        </nav>
+
+        <div className="flex md:hidden items-center gap-1">
+          <ThemeToggle />
+          <button
+            type="button"
+            className="p-2 -m-1 rounded-lg hover:bg-muted transition-colors"
+            onClick={() => setOpen(!open)}
+            aria-label={open ? "Close menu" : "Open menu"}
+          >
+            {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
+        </div>
+      </div>
+
+      <div
+        className={cn(
+          "md:hidden overflow-hidden transition-[max-height] duration-200 ease-out border-t border-border/50",
+          open ? "max-h-96" : "max-h-0 border-transparent"
+        )}
+      >
+        <div className="bg-background px-4 py-4">
+          <ul className="space-y-1">
+            {navLinks.map((link) => {
+              const isActive =
+                pathname === link.href ||
+                (link.href !== "/" && pathname.startsWith(link.href));
+              return (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className={cn(
+                      "block py-2.5 px-3 text-sm font-medium rounded-lg transition-colors",
+                      isActive
+                        ? "text-foreground bg-muted"
+                        : "text-muted-foreground hover:text-foreground hover:bg-muted/60"
+                    )}
+                    onClick={() => setOpen(false)}
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              );
+            })}
+            <li className="pt-3 mt-3 border-t border-border/50 flex gap-2">
+              <Link href="/dashboard" onClick={() => setOpen(false)} className="flex-1">
+                <Button variant="outline" className="w-full text-sm rounded-lg">Dashboard</Button>
+              </Link>
+                <Link href="/register" onClick={() => setOpen(false)} className="flex-1">
+                  <Button className="w-full text-sm rounded-lg">Get Started</Button>
+                </Link>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </header>
+  );
+}

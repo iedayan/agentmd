@@ -1,0 +1,24 @@
+# Example: Add AgentMD validation to your CI
+# Copy to .github/workflows/agentmd.yml and customize
+#
+# This runs on every push and PR to validate your AGENTS.md
+name: AgentMD
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: AgentMD check contract
+        uses: ./.github/actions/agentmd
+        with:
+          command: check
+          path: .
+          contract: "true"

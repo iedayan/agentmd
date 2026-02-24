@@ -1,0 +1,253 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 220 14% 96%;
+    --foreground: 222 47% 11%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+    --primary: 199 89% 48%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222 47% 11%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 47%;
+    --accent: 210 40% 96%;
+    --accent-foreground: 222 47% 11%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 199 89% 48%;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 222 47% 6%;
+    --foreground: 210 40% 98%;
+    --card: 222 47% 8%;
+    --card-foreground: 210 40% 98%;
+    --primary: 199 89% 55%;
+    --primary-foreground: 222 47% 6%;
+    --secondary: 217 33% 17%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217 33% 17%;
+    --muted-foreground: 215 20% 65%;
+    --accent: 217 33% 17%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62% 50%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 217 33% 17%;
+    --input: 217 33% 17%;
+    --ring: 199 89% 55%;
+    --radius: 0.5rem;
+  }
+
+  .theme-focus {
+    --primary: 199 89% 42%;
+  }
+  .dark.theme-focus {
+    --primary: 199 89% 55%;
+  }
+
+  .theme-evening {
+    --primary: 25 80% 52%;
+  }
+  .dark.theme-evening {
+    --primary: 38 85% 55%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+/* ── Marquee ─────────────────────────────────────────────────────── */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.marquee-track {
+  animation: marquee 28s linear infinite;
+  width: max-content;
+}
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+/* ── Dot grid hero background ────────────────────────────────────── */
+.hero-dot-grid {
+  background-image: radial-gradient(circle, hsl(var(--foreground)/0.08) 1px, transparent 1px);
+  background-size: 32px 32px;
+  animation: bg-shift 30s linear infinite;
+}
+
+@keyframes bg-shift {
+  0% { background-position: 0 0; }
+  100% { background-position: 32px 32px; }
+}
+
+/* ── Scrollbar hide ──────────────────────────────────────────────── */
+.scrollbar-hide {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* ── Fade-up entrance ────────────────────────────────────────────── */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-up {
+  animation: fade-up 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.animation-delay-100 { animation-delay: 0.10s; }
+.animation-delay-200 { animation-delay: 0.20s; }
+.animation-delay-300 { animation-delay: 0.30s; }
+.animation-delay-500 { animation-delay: 0.50s; }
+
+/* Tactile button hover */
+.btn-tactile {
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.btn-tactile:hover {
+  transform: translateY(-1px);
+}
+.btn-tactile:active {
+  transform: translateY(0);
+}
+
+/* Typing cursor */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+.cursor-blink {
+  animation: blink 1s step-end infinite;
+}
+
+/* ── Landing: DevTools-style cards ─────────────────────────────────── */
+.bento-card {
+  @apply relative overflow-hidden rounded-2xl border border-white/10 dark:border-white/5;
+  background: linear-gradient(145deg, hsl(var(--card)/0.9), hsl(var(--card)/0.4));
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 4px 32px -4px hsl(var(--foreground) / 0.05), inset 0 1px 0 0 rgba(255,255,255,0.1);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.dark .bento-card {
+  box-shadow: 0 4px 32px -4px hsl(0 0% 0% / 0.5), inset 0 1px 0 0 rgba(255,255,255,0.05);
+}
+.bento-card:hover {
+  @apply border-primary/40;
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px -8px hsl(var(--primary) / 0.15), inset 0 1px 0 0 rgba(255,255,255,0.15);
+}
+
+.bento-icon-wrap {
+  @apply flex h-10 w-10 items-center justify-center rounded-xl text-primary shadow-sm;
+  background: linear-gradient(135deg, hsl(var(--primary)/0.15), hsl(var(--primary)/0.05));
+  border: 1px solid hsl(var(--primary)/0.2);
+}
+
+/* ── Glassmorphism (AI-style cards) ──────────────────────────────── */
+.glass-card {
+  @apply rounded-3xl border border-white/10 dark:border-white/5;
+  background: linear-gradient(180deg, hsl(var(--card)/0.8) 0%, hsl(var(--card)/0.4) 100%);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 8px 32px -8px hsl(var(--foreground) / 0.08), inset 0 1px 0 0 rgba(255,255,255,0.1);
+}
+.dark .glass-card {
+  box-shadow: 0 8px 32px -8px hsl(0 0% 0% / 0.6), inset 0 1px 0 0 rgba(255,255,255,0.05);
+}
+
+.glow-hover {
+  transition: all 0.3s ease;
+}
+.glow-hover:hover {
+  box-shadow: 0 0 20px 2px hsl(var(--primary)/0.4);
+  opacity: 1;
+}
+
+/* ── Breathing pulse (for loading / active states) ────────────────── */
+@keyframes breathe {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+.animate-breathe {
+  animation: breathe 2.5s ease-in-out infinite;
+}
+
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Focus visible */
+:focus-visible {
+  @apply outline-2 outline-offset-2 outline-ring;
+}
+
+/* Docs prose */
+.docs-prose {
+  @apply text-foreground;
+}
+.docs-prose h1 {
+  @apply text-3xl font-bold tracking-tight mt-0 mb-4 scroll-mt-24;
+}
+.docs-prose h2 {
+  @apply text-xl font-semibold mt-12 mb-4 pb-2 border-b border-border scroll-mt-24;
+}
+.docs-prose h3 {
+  @apply text-lg font-semibold mt-8 mb-3 scroll-mt-24;
+}
+.docs-prose p {
+  @apply leading-7 text-muted-foreground mb-4;
+}
+.docs-prose p.lead {
+  @apply text-lg text-foreground/90;
+}
+.docs-prose ul, .docs-prose ol {
+  @apply my-4 pl-6 text-muted-foreground;
+}
+.docs-prose li {
+  @apply mb-2;
+}
+.docs-prose a {
+  @apply text-primary hover:underline;
+}
+.docs-prose code {
+  @apply px-1.5 py-0.5 rounded bg-muted text-sm font-mono;
+}
+.docs-prose pre {
+  @apply my-6;
+}
+.docs-prose table {
+  @apply w-full text-sm my-6;
+}
+.docs-prose th, .docs-prose td {
+  @apply px-4 py-3 border-b border-border text-left;
+}
+.docs-prose th {
+  @apply font-medium text-foreground bg-muted/30;
+}

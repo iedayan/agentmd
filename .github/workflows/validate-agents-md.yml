@@ -1,0 +1,81 @@
+# Validate AGENTS.md - AgentMD GitHub Integration
+# Runs on every push and PR to validate AGENTS.md and optionally execute commands.
+name: Validate AGENTS.md
+
+on:
+  push:
+    branches: [main, master]
+    paths:
+      - "AGENTS.md"
+      - "**/AGENTS.md"
+      - "**/*.agents.md"
+      - "**/agents-md/**"
+  pull_request:
+    branches: [main, master]
+    paths:
+      - "AGENTS.md"
+      - "**/AGENTS.md"
+      - "**/*.agents.md"
+      - "**/agents-md/**"
+
+jobs:
+  validate:
+    name: Validate AGENTS.md
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "pnpm"
+
+      - name: Install AgentMD
+        run: pnpm install --frozen-lockfile
+
+      - name: Build
+        run: pnpm run build -w @agentmd/core && pnpm run build -w @agentmd/cli
+
+      - name: Validate AGENTS.md contract
+        run: pnpm run agentmd -- check . --contract
+        continue-on-error: false
+
+      - name: Agent-readiness score
+        run: npm run agentmd -- score
+        continue-on-error: true
+
+  run-tests:
+    name: Run AGENTS.md tests
+    runs-on: ubuntu-latest
+    needs: validate
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "pnpm"
+
+      - name: Install AgentMD
+        run: pnpm install --frozen-lockfile
+
+      - name: Build
+        run: pnpm run build -w @agentmd/core && pnpm run build -w @agentmd/cli
+
+      - name: Run AGENTS.md test commands
+        run: pnpm run agentmd -- run . test
+        continue-on-error: true

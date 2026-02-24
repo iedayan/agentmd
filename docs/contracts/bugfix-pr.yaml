@@ -1,0 +1,20 @@
+output_contract:
+  format: json
+  schema:
+    summary: string
+    root_cause: string
+    files_changed: array
+    test_updates: array
+    risk_notes: array
+  quality_gates:
+    - tests_pass
+    - lint_pass
+    - no_unsafe_commands
+  artifacts:
+    - patches
+    - pr_description
+    - test_report
+  exit_criteria:
+    - bug_reproduced_and_fixed
+    - regression_tests_added
+    - ready_for_review

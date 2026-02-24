@@ -1,0 +1,9 @@
+#!/bin/sh
+set -e
+
+if [ ! -f "packages/core/dist/index.js" ] || [ ! -f "packages/cli/dist/cli.js" ]; then
+  pnpm --filter @agentmd/core run build >/dev/null
+  pnpm --filter @agentmd/cli run build >/dev/null
+fi
+
+pnpm run agentmd -- check . --contract >/dev/null

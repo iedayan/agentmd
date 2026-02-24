@@ -1,0 +1,55 @@
+# AgentMD Helm Chart - Default Values
+# Supports air-gapped: set imagePullPolicy: Never, use pre-pulled images
+
+replicaCount: 1
+
+dashboard:
+  enabled: true
+  replicaCount: 1
+  image:
+    repository: agentmd/dashboard
+    tag: latest
+    pullPolicy: IfNotPresent
+  service:
+    type: ClusterIP
+    port: 3000
+  ingress:
+    enabled: false
+    className: nginx
+  resources:
+    requests:
+      memory: "256Mi"
+      cpu: "100m"
+    limits:
+      memory: "512Mi"
+      cpu: "500m"
+
+worker:
+  enabled: true
+  replicaCount: 2
+  image:
+    repository: agentmd/worker
+    tag: latest
+    pullPolicy: IfNotPresent
+  resources:
+    requests:
+      memory: "256Mi"
+      cpu: "100m"
+    limits:
+      memory: "512Mi"
+      cpu: "500m"
+
+# Bring-your-own-database: set enabled: false and provide external URLs
+postgresql:
+  enabled: true
+  auth:
+    username: agentmd
+    password: changeme
+    database: agentmd
+
+redis:
+  enabled: true
+
+# Enterprise license activation
+license:
+  secretName: ""  # Kubernetes secret containing AGENTMD_LICENSE_KEY

@@ -1,0 +1,35 @@
+# Smoke Tests - Post-Deployment
+# Runs after deploy-staging and deploy-production
+name: Smoke Tests
+
+on:
+  workflow_run:
+    workflows: [Deploy Staging, Deploy Production]
+    types: [completed]
+    branches: [main, master]
+
+jobs:
+  smoke:
+    name: Smoke Tests
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    environment: production
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Smoke Test - Homepage
+        env:
+          DEPLOY_URL: ${{ secrets.NEXT_PUBLIC_APP_URL }}
+        run: |
+          URL="${DEPLOY_URL%/}"
+          echo "Testing $URL"
+          curl -fsS -o /dev/null -w "%{http_code}" "$URL" | grep -q 200
+
+      - name: Smoke Test - Health API
+        env:
+          DEPLOY_URL: ${{ secrets.NEXT_PUBLIC_APP_URL }}
+        run: |
+          URL="${DEPLOY_URL%/}"
+          curl -fsS "$URL/api/health"
+          curl -fsS "$URL/api/health/ready"

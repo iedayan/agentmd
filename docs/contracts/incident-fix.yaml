@@ -1,0 +1,20 @@
+output_contract:
+  format: json
+  schema:
+    summary: string
+    incident_id: string
+    mitigation: string
+    permanent_fix: string
+    files_changed: array
+  quality_gates:
+    - tests_pass
+    - runbook_updated
+    - monitoring_validated
+  artifacts:
+    - patches
+    - incident_timeline
+    - postmortem_draft
+  exit_criteria:
+    - service_restored
+    - guardrail_added
+    - follow_up_items_created

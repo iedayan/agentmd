@@ -1,0 +1,26 @@
+# Canary Deployment - Risk Reduction
+# Deploy to a small percentage of traffic before full rollout
+# Requires Vercel Edge Config or similar for traffic splitting
+name: Canary Deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      percentage:
+        description: "Traffic percentage for canary (1-50)"
+        required: true
+        default: "10"
+
+jobs:
+  canary:
+    name: Canary Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Deploy Canary
+        run: |
+          echo "Canary deployment: ${{ github.event.inputs.percentage }}% traffic"
+          echo "Configure Vercel Edge Config or Cloudflare Workers for traffic split"
+          echo "Or use Vercel's Preview deployments with custom domain for canary"

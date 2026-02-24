@@ -1,0 +1,9 @@
+{
+  "projectId": "55cd868b-9139-415f-a3e5-eb8455003186",
+  "createdAt": 1771877591137,
+  "version": "1.0",
+  "startupCommands": [
+    "pnpm install && pnpm --filter @agentmd/core run build && pnpm --filter @agentmd/dashboard exec next dev -p 3002"
+  ],
+  "templateId": "any"
+}

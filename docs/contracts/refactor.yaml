@@ -1,0 +1,20 @@
+output_contract:
+  format: json
+  schema:
+    summary: string
+    refactor_scope: array
+    files_changed: array
+    behavior_changes: array
+    follow_ups: array
+  quality_gates:
+    - tests_pass
+    - lint_pass
+    - public_api_unchanged
+  artifacts:
+    - patches
+    - architecture_note
+    - benchmark_report
+  exit_criteria:
+    - no_behavioral_regressions
+    - complexity_reduced
+    - ready_for_review

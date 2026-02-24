@@ -1,0 +1,20 @@
+output_contract:
+  format: json
+  schema:
+    summary: string
+    migration_steps: array
+    rollback_plan: string
+    data_impact: array
+    files_changed: array
+  quality_gates:
+    - tests_pass
+    - migration_dry_run_pass
+    - backward_compatibility_verified
+  artifacts:
+    - migration_sql
+    - runbook_update
+    - verification_log
+  exit_criteria:
+    - migration_validated
+    - rollback_tested
+    - ready_for_deploy

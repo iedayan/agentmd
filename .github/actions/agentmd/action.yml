@@ -1,0 +1,93 @@
+# AgentMD GitHub Action
+# CI/CD control plane for AI agents — validate and execute AGENTS.md in your pipeline
+#
+# Usage:
+#   - uses: agentmd/agentmd/.github/actions/agentmd@main
+#     with:
+#       command: check   # or: run
+#       path: .
+#       contract: true
+#       dry-run: false      # for run: skip actual execution
+name: AgentMD
+description: Validate or execute AGENTS.md in CI
+branding:
+  icon: file-code
+  color: violet
+
+inputs:
+  command:
+    description: "Command to run: check, validate, run, or score"
+    required: true
+    default: check
+  path:
+    description: "Path to repo root (containing AGENTS.md)"
+    required: false
+    default: .
+  contract:
+    description: "For check/validate: require frontmatter.output_contract"
+    required: false
+    default: "false"
+  output:
+    description: "For check/validate: output file path to validate against contract"
+    required: false
+    default: ""
+  dry-run:
+    description: "For run: preview only, no execution (default true in CI)"
+    required: false
+    default: "true"
+  use-shell:
+    description: "For run: allow shell operators (|, &&, etc.)"
+    required: false
+    default: "false"
+
+runs:
+  using: composite
+  steps:
+    - name: Checkout AgentMD
+      uses: actions/checkout@v4
+      with:
+        repository: agentmd/agentmd
+        path: .agentmd-src
+
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v4
+      with:
+        version: 9
+
+    - name: Setup Node
+      uses: actions/setup-node@v4
+      with:
+        node-version: "20"
+        cache: "pnpm"
+        cache-dependency-path: .agentmd-src/pnpm-lock.yaml
+
+    - name: Install and build AgentMD
+      run: |
+        cd .agentmd-src
+        pnpm install --frozen-lockfile
+        pnpm run build:core
+        pnpm run build:cli
+
+    - name: Run AgentMD ${{ inputs.command }}
+      id: agentmd
+      run: |
+        cd "${{ github.workspace }}"
+        CLI=".agentmd-src/packages/cli/dist/cli.js"
+        if [ "${{ inputs.command }}" = "validate" ] || [ "${{ inputs.command }}" = "check" ]; then
+          EXTRA=""
+          [ "${{ inputs.contract }}" = "true" ] && EXTRA="$EXTRA --contract"
+          if [ -n "${{ inputs.output }}" ]; then
+            node "$CLI" check "${{ inputs.path }}" --output "${{ inputs.output }}" $EXTRA
+          else
+            node "$CLI" check "${{ inputs.path }}" $EXTRA
+          fi
+        elif [ "${{ inputs.command }}" = "score" ]; then
+          SCORE=$(node "$CLI" score "${{ inputs.path }}" --json 2>/dev/null | node -e "try{const d=require('fs').readFileSync(0,'utf8');console.log(JSON.parse(d).score)}catch(e){console.log(0)}" 2>/dev/null || echo "0")
+          echo "score=$SCORE" >> "$GITHUB_OUTPUT"
+          node "$CLI" score "${{ inputs.path }}"
+        else
+          EXTRA=""
+          [ "${{ inputs.dry-run }}" = "true" ] && EXTRA="$EXTRA --dry-run"
+          [ "${{ inputs.use-shell }}" = "true" ] && EXTRA="$EXTRA --use-shell"
+          node "$CLI" run "${{ inputs.path }}" $EXTRA
+        fi
