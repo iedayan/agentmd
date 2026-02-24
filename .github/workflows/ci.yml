@@ -6,18 +6,25 @@ on:
   pull_request:
 
 jobs:
-  build-test-lint:
+  ci:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v3
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v3
         with:
           version: 9
       - name: Install
         run: pnpm install
       - name: Build
-        run: pnpm -r run build
+        run: pnpm -w run build
       - name: Lint
-        run: pnpm -r run lint
+        run: pnpm -w run lint
       - name: Test
-        run: pnpm -r run test
+        run: pnpm -w run test

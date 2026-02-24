@@ -1,0 +1,21 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["apps/dashboard/src/*"]
+    }
+  },
+  "references": [
+    { "path": "./packages/core" },
+    { "path": "./packages/cli" },
+    { "path": "./packages/sdk" },
+    { "path": "./apps/dashboard" }
+  ],
+  "include": [
+    "packages/**/*.{ts,tsx}",
+    "apps/**/*.{ts,tsx}",
+    "**/*.{ts,tsx}"
+  ],
+  "exclude": ["node_modules", "dist", ".next", "build", "pnpm-store"]
+}

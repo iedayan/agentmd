@@ -14,6 +14,9 @@
     "dev": "pnpm -r run dev",
     "test": "pnpm -r run test",
     "lint": "eslint --ext .ts,.tsx .",
+    "check": "pnpm -w lint && pnpm -w test && pnpm -w build",
+    "lint:fix": "eslint --ext .ts,.tsx . --fix",
+    "format": "prettier --write \"**/*.{ts,tsx,js,json,md}\"",
     "agentmd": "node packages/cli/dist/cli.js",
     "migrate": "node deploy/scripts/migrate.js",
     "migrate:rollback": "node deploy/scripts/migrate-rollback.js",
@@ -41,6 +44,7 @@
   "devDependencies": {
     "eslint": "^9.39.3",
     "@typescript-eslint/parser": "^5.60.0",
-    "@typescript-eslint/eslint-plugin": "^5.60.0"
+    "@typescript-eslint/eslint-plugin": "^5.60.0",
+    "prettier": "^3.0.0"
   }
 }
