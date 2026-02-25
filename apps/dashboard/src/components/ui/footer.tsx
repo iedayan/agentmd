@@ -38,7 +38,7 @@ export function Footer() {
                         <FooterCol
                             heading="Developers"
                             links={[
-                                ["GitHub Action", "https://github.com/agentmd/agentmd/tree/main/.github/actions/agentmd"],
+                                ["GitHub Action", "https://github.com/iedayan/agentmd/tree/main/.github/actions/agentmd"],
                                 ["AGENTS.md spec", "https://agents.md"],
                             ]}
                         />

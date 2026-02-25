@@ -31,7 +31,7 @@ export default function GitHubAppSetupPage() {
             <CardTitle className="text-base">Manual setup</CardTitle>
             <CardDescription>
               Prefer step-by-step instructions? See{" "}
-              <Link href="https://github.com/agentmd/agentmd/blob/main/deploy/provision/GITHUB.md" className="underline">
+              <Link href="https://github.com/iedayan/agentmd/blob/main/deploy/provision/GITHUB.md" className="underline">
                 deploy/provision/GITHUB.md
               </Link>{" "}
               in the repo.

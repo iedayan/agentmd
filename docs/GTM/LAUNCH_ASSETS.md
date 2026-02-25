@@ -31,23 +31,24 @@ Try it: agentmd.io
 
 ## Show HN
 
-**Title**:
+**Title** (use exactly; HN truncates long titles):
 ```
 Show HN: AgentMD – CI/CD for AI agents, makes AGENTS.md executable
 ```
 
-**Post**:
+**Post** (professional, concise; paste into HN "text" field):
 ```
-AgentMD is a platform that parses, validates, and executes AGENTS.md files—the README format for AI agents used by 60k+ repositories.
+AgentMD parses, validates, and executes AGENTS.md files—the standard used by 60k+ repos for AI coding tools (Cursor, Codex, etc.). Instead of just reading the spec for context, we run the build, test, and lint commands it describes—with guardrails and governance built in.
 
-Instead of just reading AGENTS.md for context, we actually run the build, test, and lint commands it describes. With guardrails, permission boundaries, and governance built in.
+What we do:
+• Parse & validate AGENTS.md (YAML frontmatter, sections, commands)
+• Execute with sandboxing (blocks dangerous patterns by default)
+• Dashboard: execution history, success rates, ROI metrics
+• GitHub App, Slack approvals, human-in-the-loop for sensitive ops
 
-- Parse & validate AGENTS.md (YAML frontmatter, sections, commands)
-- Execute with sandboxing (blocks dangerous patterns)
-- Dashboard with execution history, success rates, ROI metrics
-- GitHub integration, Slack approvals, human-in-the-loop
+Try it live: https://agentmd.io — paste your AGENTS.md, get your score. CLI and GitHub Action available from source.
 
-Open source core, cloud dashboard for teams. Would love feedback from anyone using agentic coding tools.
+Open source core (MIT), cloud dashboard for teams. Would love feedback from anyone using agentic coding tools.
 ```
 
 ## Press Kit

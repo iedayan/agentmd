@@ -7,7 +7,7 @@ export const metadata = {
 };
 
 const FEATURED_REPOS = [
-  { owner: "agentmd", repo: "agentmd", score: 92, language: "TypeScript" },
+  { owner: "iedayan", repo: "agentmd", score: 92, language: "TypeScript" },
   { owner: "vercel", repo: "next.js", score: 88, language: "TypeScript" },
   { owner: "facebook", repo: "react", score: 85, language: "JavaScript" },
   { owner: "microsoft", repo: "TypeScript", score: 84, language: "TypeScript" },

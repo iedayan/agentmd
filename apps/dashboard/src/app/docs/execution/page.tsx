@@ -99,7 +99,7 @@ agentmd run . build lint`}</CodeBlock>
       </ul>
       <p>
         The execution detail page shows a badge: <strong>Real execution</strong> or <strong>Mock execution</strong>. See{" "}
-        <Link href="https://github.com/agentmd/agentmd/blob/main/deploy/worker/README.md" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+        <Link href="https://github.com/iedayan/agentmd/blob/main/deploy/worker/README.md" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
           deploy/worker/README.md
         </Link>
         {" "}for worker setup.

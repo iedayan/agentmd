@@ -6,7 +6,7 @@ export function SocialProof() {
             <div className="container mx-auto px-4 lg:px-8">
                 <div className="flex flex-wrap items-center justify-center gap-8 sm:gap-12">
                     <a
-                        href="https://github.com/agentmd/agentmd"
+                        href="https://github.com/iedayan/agentmd"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="group inline-flex items-center gap-2.5 rounded-lg border border-border/50 bg-background px-4 py-2.5 text-sm font-medium text-muted-foreground transition-all hover:border-primary/30 hover:text-foreground hover:shadow-sm"
