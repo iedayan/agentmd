@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Outfit, JetBrains_Mono } from "next/font/google";
+import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { SessionProvider } from "@/components/auth/session-provider";
@@ -72,6 +73,7 @@ export default function RootLayout({
             themes={["light", "dark", "theme-focus", "theme-evening"]}
           >
             {children}
+            <Analytics />
           </ThemeProvider>
         </SessionProvider>
       </body>
