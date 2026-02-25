@@ -22,25 +22,29 @@ export async function rateLimit(
   if (hasDatabase()) {
     const pool = getPool();
     if (pool) {
-      const windowStartMs = Math.floor(now / windowMs) * windowMs;
-      const windowStart = new Date(windowStartMs).toISOString();
-      const dbKey = key.slice(0, 200);
+      try {
+        const windowStartMs = Math.floor(now / windowMs) * windowMs;
+        const windowStart = new Date(windowStartMs).toISOString();
+        const dbKey = key.slice(0, 200);
 
-      const res = await pool.query(
-        `INSERT INTO rate_limits (scope, client_key, window_start, count, updated_at)
-         VALUES ($1, $2, $3, 1, NOW())
-         ON CONFLICT (scope, client_key, window_start)
-         DO UPDATE SET count = rate_limits.count + 1, updated_at = NOW()
-         RETURNING count`,
-        [scope, dbKey, windowStart]
-      );
+        const res = await pool.query(
+          `INSERT INTO rate_limits (scope, client_key, window_start, count, updated_at)
+           VALUES ($1, $2, $3, 1, NOW())
+           ON CONFLICT (scope, client_key, window_start)
+           DO UPDATE SET count = rate_limits.count + 1, updated_at = NOW()
+           RETURNING count`,
+          [scope, dbKey, windowStart]
+        );
 
-      const count = Number(res.rows[0]?.count ?? 1);
-      const remaining = Math.max(0, maxRequests - count);
-      return {
-        allowed: count <= maxRequests,
-        remaining,
-      };
+        const count = Number(res.rows[0]?.count ?? 1);
+        const remaining = Math.max(0, maxRequests - count);
+        return {
+          allowed: count <= maxRequests,
+          remaining,
+        };
+      } catch {
+        // Fall back to in-memory if DB unavailable (e.g. migrations not run)
+      }
     }
   }
 

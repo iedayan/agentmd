@@ -68,6 +68,10 @@ export async function POST(req: NextRequest) {
         rawUrl = url
           .replace("github.com", "raw.githubusercontent.com")
           .replace(/\/blob\/([^/]+)\//, "/$1/");
+      } else if (url.includes("gitlab.com") && url.includes("/-/blob/")) {
+        rawUrl = url.replace(/\/-\/blob\//, "/-/raw/");
+      } else if (url.includes("bitbucket.org") && url.includes("/src/")) {
+        rawUrl = url.replace(/\/src\//, "/raw/");
       }
       const res = await fetch(rawUrl, {
         headers: { "User-Agent": "AgentMD-Sandbox/1.0" },

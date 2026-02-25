@@ -7,6 +7,7 @@ import { convertToAgentsMd } from "@/lib/agents/migrate-to-agents-md";
 import { rateLimit } from "@/lib/core/rate-limit";
 import { getClientKey } from "@/lib/core/request-context";
 import { apiError, apiOk, getRequestId } from "@/lib/core/api-response";
+import { parseAndValidate, demoParseBodySchema } from "@/lib/core/validate";
 
 /**
  * Demo-only endpoint for interactive product UX.
@@ -30,33 +31,19 @@ export async function POST(request: Request) {
   }
 
   try {
-    const body = await request.json();
-    let content = typeof body.content === "string" ? body.content : "";
-    const sourceType = typeof body.sourceType === "string" ? body.sourceType : "agentsmd";
+    const validated = await parseAndValidate(request, demoParseBodySchema, {
+      requestId,
+      rateLimitRemaining: String(remaining),
+    });
+    if (!validated.ok) return validated.response;
+    const { content, sourceType } = validated.data;
 
-    if (!content.trim()) {
-      return apiError("Content is required", {
-        status: 400,
-        requestId,
-        headers: { "X-RateLimit-Remaining": String(remaining) },
-      });
-    }
-
-    // Limit input size to prevent abuse
-    if (content.length > 50_000) {
-      return apiError("Content too long (max 50,000 characters)", {
-        status: 400,
-        requestId,
-        headers: { "X-RateLimit-Remaining": String(remaining) },
-      });
-    }
-
-    // Convert README to AGENTS.md if requested
+    let parseContent = content;
     if (sourceType === "readme") {
-      content = convertToAgentsMd(content, "generic") || content;
+      parseContent = convertToAgentsMd(content, "generic") || content;
     }
 
-    const parsed = parseAgentsMd(content);
+    const parsed = parseAgentsMd(parseContent);
     const validation = await validateAgentsMd(parsed);
     const score = await computeAgentReadinessScore(parsed);
 

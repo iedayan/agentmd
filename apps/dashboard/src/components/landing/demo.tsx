@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { FileSearch, Play, Share2, Check, Copy } from "lucide-react";
 
 const SAMPLE_AGENTS_MD = `---
-# Agent instructions for AI coding tools
+name: my-agent
+description: Agent instructions for AI coding tools
 ---
 
 ## Build
@@ -73,7 +74,7 @@ export function LandingDemo() {
   const [shareCopied, setShareCopied] = useState(false);
   const [badgeCopied, setBadgeCopied] = useState(false);
 
-  const run = async () => {
+  const run = useCallback(async () => {
     setLoading(true);
     setError(null);
     setResult(null);
@@ -103,7 +104,18 @@ export function LandingDemo() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [content, sourceType]);
+
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
+        e.preventDefault();
+        run();
+      }
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [run]);
 
   return (
     <section className="py-24 md:py-32 border-b border-border/50">
@@ -147,6 +159,7 @@ export function LandingDemo() {
                 <Button size="sm" onClick={run} disabled={loading} className="h-7 text-xs">
                   {loading ? "Parsing…" : "Parse & validate"}
                 </Button>
+                <span className="text-[10px] text-muted-foreground/70 hidden sm:inline" title="Ctrl+Enter">⌘↵</span>
               </div>
               <textarea
                 id="demo-agents-md"
@@ -313,7 +326,7 @@ function EmptyState() {
       </p>
       <div className="mt-4 flex items-center gap-2 text-xs text-muted-foreground">
         <Play className="h-3.5 w-3.5" aria-hidden />
-        <span>Paste your AGENTS.md or use the sample</span>
+        <span>Paste your AGENTS.md or press Ctrl+Enter to run</span>
       </div>
     </div>
   );

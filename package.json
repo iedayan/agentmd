@@ -23,6 +23,7 @@
     "agentmd": "node packages/cli/dist/cli.js",
     "migrate": "node deploy/scripts/migrate.js",
     "migrate:rollback": "node deploy/scripts/migrate-rollback.js",
+    "migrate:verify": "node deploy/scripts/verify-migrations.js",
     "hooks:install": "git config core.hooksPath .githooks",
     "launch:mvp:check": "node deploy/scripts/mvp-launch-check.mjs --target=production",
     "github:protect:branch": "node deploy/scripts/github-branch-protection.mjs",

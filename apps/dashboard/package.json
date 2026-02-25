@@ -37,7 +37,8 @@
     "tailwind-merge": "^2.5.4",
     "@neondatabase/serverless": "^1.0.0",
     "pg": "npm:@neondatabase/serverless@^1.0.0",
-    "ws": "^8.18.0"
+    "ws": "^8.18.0",
+    "zod": "^3.24.0"
   },
   "devDependencies": {
     "@types/node": "^22.10.0",
