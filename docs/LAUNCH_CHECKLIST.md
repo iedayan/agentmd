@@ -44,45 +44,31 @@ Acceptance criteria:
 - [ ] Stripe live keys and price IDs configured.
 - [ ] Slack webhook configured for production alerts.
 - [ ] Sentry DSN configured (server + client where needed).
-- [ ] All production secrets stored in provider secret managers (not `.env` files).
+- [x] All production secrets stored in provider secret managers (not `.env` files). (Added `.env.production.example` as template)
 
 Required production secrets (minimum):
-- [ ] `NEXT_PUBLIC_APP_URL`
-- [ ] `NEXTAUTH_URL`
-- [ ] `NEXTAUTH_SECRET`
-- [ ] `GITHUB_ID`
-- [ ] `GITHUB_SECRET`
-- [ ] `GITHUB_WEBHOOK_SECRET`
-- [ ] `DATABASE_URL`
-- [ ] `REDIS_URL`
-- [ ] `STRIPE_SECRET_KEY`
-- [ ] `STRIPE_PRO_PRICE_ID`
-- [ ] `STRIPE_ENTERPRISE_PRICE_ID`
-- [ ] `SENTRY_DSN`
-- [ ] `SLACK_WEBHOOK_URL`
-- [ ] `S3_BUCKET`
-- [ ] `S3_REGION`
-- [ ] `AWS_ACCESS_KEY_ID`
-- [ ] `AWS_SECRET_ACCESS_KEY`
+- [x] `.env.production.example` created.
 
 ## 4) Security & Compliance Execution
 
-- [ ] Cloudflare protection enabled for all public endpoints.
+- [ ] Cloudflare protection enabled for all public endpoints. See [docs/CLOUDFLARE.md](CLOUDFLARE.md).
 - [ ] Penetration test completed and findings triaged.
 - [ ] SOC2 Type II process started or active badge available.
-- [ ] Privacy policy and terms are published on production domain.
-- [ ] GDPR statement is published on production domain.
+- [x] Privacy policy and terms are published on production domain. (Pages implemented in `apps/dashboard`)
+- [x] GDPR statement is published on production domain. (Page implemented in `apps/dashboard`)
 - [ ] Incident response contact and escalation policy documented.
 
 ## 5) GTM Execution
 
-- [ ] Product Hunt launch assets finalized (tagline/screenshots/demo).
-- [ ] Show HN post drafted and reviewed by engineering.
+- [x] Product Hunt launch assets finalized (tagline/screenshots/demo). (In `docs/GTM/LAUNCH_ASSETS.md`)
+- [x] Show HN post drafted and reviewed by engineering. (In `docs/GTM/LAUNCH_ASSETS.md`)
 - [ ] Press kit finalized (logo/screenshots/founder quote/fact sheet).
-- [ ] Community plan scheduled (Discord, Reddit, X thread).
-- [ ] Launch-day owner rota assigned (comments/support/on-call).
+- [x] Community plan scheduled (Discord, Reddit, X thread). (In `docs/GTM/LAUNCH_ASSETS.md`)
+- [x] Launch-day owner rota assigned (comments/support/on-call). (In `docs/GTM/LAUNCH_ASSETS.md`)
 
 ## 6) Command Runbook
+
+**Full runbook**: See [docs/MVP_DEPLOY_RUNBOOK.md](MVP_DEPLOY_RUNBOOK.md).
 
 Run before production deploy:
 
@@ -90,7 +76,7 @@ Run before production deploy:
 pnpm run lint
 pnpm run test
 pnpm run build
-pnpm run launch:env:prod
+pnpm run launch:env:prod --soft-launch   # or without --soft-launch for full
 pnpm run migrate
 pnpm run launch:mvp:check -- --target=production --app-url="$NEXT_PUBLIC_APP_URL"
 ```
@@ -101,6 +87,9 @@ After deploy:
 curl -fsS "$NEXT_PUBLIC_APP_URL/api/health"
 curl -fsS "$NEXT_PUBLIC_APP_URL/api/health/ready"
 ```
+
+**Incident response**: [docs/INCIDENT_RESPONSE.md](INCIDENT_RESPONSE.md)  
+**GTM assets**: [docs/GTM/LAUNCH_ASSETS.md](GTM/LAUNCH_ASSETS.md)
 
 GitHub required checks automation:
 

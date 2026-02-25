@@ -37,17 +37,24 @@ AgentMD is the runtime environment for agent instructions:
 **From source** (clone and build):
 
 ```bash
+git clone https://github.com/agentmd/agentmd.git
+cd agentmd
 pnpm install
 pnpm run build:core
 pnpm run build:cli
 # Or: pnpm run build
 ```
 
+**Quick try** (no global install):
+
+```bash
+pnpm run agentmd -- check . --contract
+pnpm run agentmd -- init .
+```
+
 **In CI** — Use the [GitHub Action](.github/actions/agentmd/README.md); no manual install.
 
-**When published** — `npx @agentmd/cli` or `npm install -g @agentmd/cli`
-
-Full install options and CLI reference: [docs/INSTALL.md](docs/INSTALL.md)
+**npm** — `@agentmd/cli` is not yet published. Use from source until first release. See [docs/INSTALL.md](docs/INSTALL.md) for full options.
 
 ## Quick Start
 
@@ -143,8 +150,16 @@ agentsmd/
 │   └── sdk/            # Programmatic API for integrations
 ├── apps/
 │   └── dashboard/      # Next.js 14 dashboard (repos, executions, billing)
+├── deploy/
+│   └── worker/         # Background execution worker (Railway, Render)
 └── docs/               # Specification extensions
 ```
+
+## Deployment
+
+- **Dashboard** — Deploy to Vercel; see [deploy/provision/PROVISION.md](deploy/provision/PROVISION.md).
+- **Worker** — Run `node deploy/worker/worker.mjs` with `DATABASE_URL`. Set `AGENTMD_REAL_EXECUTION=1` to run real commands from AGENTS.md (clones repo, executes); otherwise uses mock execution. See [deploy/worker/README.md](deploy/worker/README.md).
+- **GitHub setup** — Use the setup wizard at `https://your-domain.com/setup/github-app` or run `pnpm run github:config https://your-domain.com` to generate OAuth and GitHub App URLs and env vars.
 
 ## Marketplace
 
@@ -160,10 +175,13 @@ Discover, purchase, and execute agents through AGENTS.md:
 
 - **Free**: Basic parsing + validation, 3 repos, 100 min/mo
 - **Pro ($40/mo)**: Unlimited repos, 1000 min, team features
-- **Enterprise ($199/mo)**: Self-hosted, SSO, RBAC, audit logs, 99.9% SLA
+- **Enterprise ($199/mo)**: Self-hosted, SSO, RBAC, audit logs. See [docs/ENTERPRISE.md](docs/ENTERPRISE.md)
 
 ## Open Source Readiness
 
+- **Philosophy & Strategy**: [docs/STRATEGY.md](docs/STRATEGY.md)
+- **How it works** (plain language): [docs/HOW_IT_WORKS.md](docs/HOW_IT_WORKS.md)
+- **Design system**: [docs/DESIGN_SYSTEM.md](docs/DESIGN_SYSTEM.md) — live reference at `/design-system.html` when dashboard runs
 - **Installation & CLI reference**: [docs/INSTALL.md](docs/INSTALL.md)
 - Security policy and disclosure: [SECURITY.md](SECURITY.md)
 - Contribution guide and required test matrix: [CONTRIBUTING.md](CONTRIBUTING.md)

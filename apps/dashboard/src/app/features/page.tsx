@@ -60,7 +60,16 @@ export default function FeaturesPage() {
           </table>
         </div>
 
-        <div className="mt-16 text-center">
+        <p className="mt-12 text-center text-sm text-muted-foreground max-w-xl mx-auto">
+          <Link href="/docs/why-execute" className="text-primary hover:underline">
+            Why execute vs. read-only?
+          </Link>
+          {" · "}
+          <Link href="/docs/why-agentmd" className="text-primary hover:underline">
+            Why AgentMD vs. local execution
+          </Link>
+        </p>
+        <div className="mt-8 text-center">
           <Link href="/dashboard">
             <Button size="lg" className="btn-tactile">Try AgentMD Free</Button>
           </Link>

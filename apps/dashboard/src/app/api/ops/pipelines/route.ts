@@ -2,7 +2,7 @@ import { apiOk, getRequestId } from "@/lib/core/api-response";
 import { listExecutionSteps, listExecutions } from "@/lib/data/dashboard-data-facade";
 import { requireSessionUserId } from "@/lib/auth/session";
 import type { ExecutionStep } from "@/types";
-import type { Pipeline, PipelineStatus } from "@/app/ops/mock-data";
+import type { Pipeline, PipelineStatus } from "@/lib/ops/mock-data";
 
 export const dynamic = "force-dynamic";
 

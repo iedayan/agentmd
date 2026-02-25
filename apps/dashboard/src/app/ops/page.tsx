@@ -9,7 +9,7 @@ import { AgentsMdPreview } from "@/components/ops/AgentsMdPreview";
 import { PolicyValidation } from "@/components/ops/PolicyValidation";
 import { ApprovalGate } from "@/components/ops/ApprovalGate";
 import { ExecutionLog } from "@/components/ops/ExecutionLog";
-import { useOpsData } from "@/hooks/use-ops-data";
+import { useOpsData } from "@/lib/ops/use-ops-data";
 
 const PoliciesTab = dynamic(
   () => import("@/components/ops/PoliciesTab").then((mod) => mod.PoliciesTab),
@@ -48,7 +48,7 @@ export default function OpsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[var(--ops-bg)] overflow-x-auto">
+    <div className="min-h-screen bg-background overflow-x-auto">
       <OpsNav activeTab={activeTab} onTabChange={setActiveTab} />
       {error && (
         <div className="mx-6 mt-4 rounded border border-amber-500/50 bg-amber-500/10 px-4 py-2 font-mono text-sm text-amber-700 dark:text-amber-400">
@@ -63,36 +63,48 @@ export default function OpsPage() {
             selectedId={selectedPipelineId}
             onSelect={setSelectedPipelineId}
           />
-          <main className="flex-1 overflow-auto">
+          <main className="flex-1 overflow-auto p-8">
             {selectedPipeline ? (
-              <div className="rounded-lg border border-[var(--ops-border)] bg-[var(--ops-panel)] m-6 p-6 shadow-sm">
-                <h1 className="font-display text-2xl italic text-[var(--ops-primary)]">
-                  {selectedPipeline.name}
-                </h1>
-                <div className="mt-2 font-mono text-xs text-[var(--ops-primary)]/60">
-                  {selectedPipeline.sourceRef} · {selectedPipeline.trigger} ·{" "}
-                  {selectedPipeline.timestamp}
+              <div className="space-y-6 animate-fade-up">
+                <div className="bento-card border-luminescent bg-card p-8">
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <h1 className="text-3xl font-bold tracking-tight text-foreground">
+                        {selectedPipeline.name}
+                      </h1>
+                      <div className="mt-2 flex items-center gap-3 font-mono text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+                        <span className="flex items-center gap-1.5">
+                          <span className="h-1.5 w-1.5 rounded-full bg-primary shadow-[0_0_4px_hsl(var(--primary)/0.5)]" />
+                          {selectedPipeline.sourceRef}
+                        </span>
+                        <span>·</span>
+                        <span>{selectedPipeline.trigger}</span>
+                        <span>·</span>
+                        <span>{selectedPipeline.timestamp}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="mt-8">
+                    <PipelineDiagram
+                      stages={selectedPipeline.stages}
+                      onStageClick={handleStageClick}
+                    />
+                  </div>
                 </div>
 
-                <div className="mt-6">
-                  <PipelineDiagram
-                    stages={selectedPipeline.stages}
-                    onStageClick={handleStageClick}
-                  />
-                </div>
-
-                <div className="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                   <AgentsMdPreview content={selectedPipeline.agentsMdContent} />
                   <PolicyValidation results={selectedPipeline.policyResults} />
                 </div>
 
                 {selectedPipeline.approvalGate && (
-                  <div className="mt-6">
+                  <div className="bento-card border-luminescent bg-card">
                     <ApprovalGate gate={selectedPipeline.approvalGate} />
                   </div>
                 )}
 
-                <div ref={logRef} className="mt-8">
+                <div ref={logRef} className="bento-card border-luminescent bg-card">
                   <ExecutionLog
                     lines={selectedPipeline.logLines}
                     isStreaming={isStreaming}
@@ -100,15 +112,15 @@ export default function OpsPage() {
                 </div>
               </div>
             ) : loading ? (
-              <div className="m-6 flex items-center justify-center rounded-lg border border-[var(--ops-border)] bg-[var(--ops-panel)] p-24">
-                <p className="font-mono text-sm text-[var(--ops-primary)]/60">
-                  Loading pipelines…
+              <div className="flex h-[400px] items-center justify-center bento-card border-border bg-card/50">
+                <p className="font-mono text-sm font-bold tracking-widest text-muted-foreground animate-pulse">
+                  SYNCING PIPELINES...
                 </p>
               </div>
             ) : (
-              <div className="m-6 flex items-center justify-center rounded-lg border border-[var(--ops-border)] bg-[var(--ops-panel)] p-24">
-                <p className="font-mono text-sm text-[var(--ops-primary)]/60">
-                  Select a pipeline from the sidebar
+              <div className="flex h-[400px] items-center justify-center bento-card border-border bg-card/50">
+                <p className="font-mono text-sm font-bold tracking-widest text-muted-foreground">
+                  SELECT A PIPELINE
                 </p>
               </div>
             )}
@@ -122,61 +134,61 @@ export default function OpsPage() {
 
       {activeTab === "settings" && (
         <div className="p-6">
-          <div className="rounded-lg border border-[var(--ops-border)] bg-[var(--ops-panel)] p-8">
-            <h2 className="font-display text-xl italic text-[var(--ops-primary)]">
+          <div className="rounded-[var(--radius-md)] border border-border bg-card p-8">
+            <h2 className="text-xl font-bold tracking-tight text-[var(--ops-primary)]">
               Settings
             </h2>
-            <p className="mt-2 font-mono text-sm text-[var(--ops-primary)]/60 mb-8">
+            <p className="mt-2 font-mono text-sm text-muted-foreground mb-8">
               Configure API keys, webhooks, and notifications.
             </p>
             <div className="space-y-6 max-w-xl">
               <div>
-                <label className="font-mono text-xs text-[var(--ops-primary)]/70 block mb-2">
+                <label className="font-mono text-xs text-muted-foreground block mb-2">
                   API Key
                 </label>
                 <input
                   type="password"
                   placeholder="agentmd_••••••••••••••••"
                   readOnly
-                  className="w-full rounded border border-[var(--ops-border)] bg-[var(--ops-bg)] px-3 py-2 font-mono text-sm text-[var(--ops-primary)]/80"
+                  className="w-full rounded-[var(--radius-sm)] border border-input bg-muted px-3 py-2 font-mono text-sm text-foreground/80"
                 />
-                <p className="mt-1 font-mono text-xs text-[var(--ops-primary)]/50">
+                <p className="mt-1 font-mono text-xs text-muted-foreground/80">
                   Regenerate in Dashboard → Settings
                 </p>
               </div>
               <div>
-                <label className="font-mono text-xs text-[var(--ops-primary)]/70 block mb-2">
+                <label className="font-mono text-xs text-muted-foreground block mb-2">
                   Webhook URL
                 </label>
                 <input
                   type="url"
                   placeholder="https://your-server.com/webhook"
-                  className="w-full rounded border border-[var(--ops-border)] bg-[var(--ops-bg)] px-3 py-2 font-mono text-sm text-[var(--ops-primary)]/80 placeholder:text-[var(--ops-primary)]/40"
+                  className="w-full rounded-[var(--radius-sm)] border border-input bg-background px-3 py-2 font-mono text-sm text-foreground placeholder:text-muted-foreground"
                 />
-                <p className="mt-1 font-mono text-xs text-[var(--ops-primary)]/50">
+                <p className="mt-1 font-mono text-xs text-muted-foreground/80">
                   Receive execution completion events
                 </p>
               </div>
               <div>
-                <label className="font-mono text-xs text-[var(--ops-primary)]/70 block mb-2">
+                <label className="font-mono text-xs text-muted-foreground block mb-2">
                   Notifications
                 </label>
                 <div className="space-y-2">
-                  <label className="flex items-center gap-2 font-mono text-sm text-[var(--ops-primary)]/80">
-                    <input type="checkbox" defaultChecked className="rounded" />
+                  <label className="flex items-center gap-2 font-mono text-sm text-foreground/80">
+                    <input type="checkbox" defaultChecked className="rounded-[var(--radius-sm)]" />
                     Pipeline failures
                   </label>
-                  <label className="flex items-center gap-2 font-mono text-sm text-[var(--ops-primary)]/80">
-                    <input type="checkbox" defaultChecked className="rounded" />
+                  <label className="flex items-center gap-2 font-mono text-sm text-foreground/80">
+                    <input type="checkbox" defaultChecked className="rounded-[var(--radius-sm)]" />
                     Approval requests
                   </label>
-                  <label className="flex items-center gap-2 font-mono text-sm text-[var(--ops-primary)]/80">
-                    <input type="checkbox" className="rounded" />
+                  <label className="flex items-center gap-2 font-mono text-sm text-foreground/80">
+                    <input type="checkbox" className="rounded-[var(--radius-sm)]" />
                     Policy violations
                   </label>
                 </div>
               </div>
-              <button className="mt-4 h-9 bg-[var(--ops-primary)] px-4 font-mono text-sm font-medium text-white rounded">
+              <button className="mt-4 h-9 bg-primary px-4 font-mono text-sm font-medium text-primary-foreground rounded-[var(--radius-sm)] hover:bg-primary/90 transition-colors">
                 Save
               </button>
             </div>

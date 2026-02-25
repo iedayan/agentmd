@@ -62,13 +62,16 @@ export default function CaseStudiesPage() {
         {/* Header Section with Animation */}
         <div className="mb-16 text-center animate-fade-up">
           <div className="inline-flex items-center rounded-full border border-primary/20 bg-primary/5 px-3 py-1 text-xs font-medium text-primary mb-4">
-            Customer Success
+            Use Case Scenarios
           </div>
           <h1 className="text-4xl md:text-5xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-b from-foreground to-foreground/70">
             Case Studies
           </h1>
           <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
-            Real-world impact and ROI from engineering teams scaling with governed agentic workflows.
+            Illustrative scenarios showing how teams use AgentMD for governed agent execution. Outcomes are based on typical adoption patterns.
+          </p>
+          <p className="mt-2 text-sm text-muted-foreground/80 max-w-xl mx-auto">
+            Real customer case studies with named organizations will be added as we grow. Contact us if you&apos;d like to share your story.
           </p>
         </div>
 

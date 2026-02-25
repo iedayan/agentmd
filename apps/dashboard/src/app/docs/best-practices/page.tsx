@@ -8,6 +8,71 @@ export default function BestPracticesPage() {
         AgentMD aligns with IBM&apos;s 2026 guidance for agentic AI: observable, adaptive, and accountable systems.
       </p>
 
+      <h2>Agent Lifecycle: Where AgentMD Fits</h2>
+      <p>
+        IBM describes AgentOps across five phases. AgentMD maps to each:
+      </p>
+      <table className="w-full text-sm border-collapse my-4">
+        <thead>
+          <tr className="border-b">
+            <th className="text-left py-2">Phase</th>
+            <th className="text-left py-2">AgentMD Support</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr className="border-b">
+            <td className="py-2"><strong>Development</strong></td>
+            <td className="py-2">AGENTS.md defines objectives and constraints. CLI <code>init</code>, <code>doctor</code>, <code>improve</code> help author and refine the spec.</td>
+          </tr>
+          <tr className="border-b">
+            <td className="py-2"><strong>Testing</strong></td>
+            <td className="py-2"><code>agentmd run . --dry-run</code> previews execution. Sandbox mode runs in isolation. Contract validation ensures output quality.</td>
+          </tr>
+          <tr className="border-b">
+            <td className="py-2"><strong>Deploy</strong></td>
+            <td className="py-2">Human-in-the-loop for deploy steps. Permission boundaries block unauthorized commands. Kill switch cancels running executions.</td>
+          </tr>
+          <tr className="border-b">
+            <td className="py-2"><strong>Monitoring</strong></td>
+            <td className="py-2">Execution history, success rates, command-level pass/fail. OTEL export for Langfuse, Datadog, etc.</td>
+          </tr>
+          <tr className="border-b">
+            <td className="py-2"><strong>Feedback</strong></td>
+            <td className="py-2">Use failure data to refine <code>permissions.shell</code> and guardrails. ROI metrics quantify value.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>Concrete Scenarios</h2>
+
+      <h3>Scenario 1: Agent skips a test step</h3>
+      <p>
+        <strong>Problem:</strong> An AI coding assistant reads AGENTS.md and runs <code>pnpm build</code> and <code>pnpm lint</code>, but skips <code>pnpm test</code> to save time. A broken test slips into the PR.
+      </p>
+      <p>
+        <strong>Solution:</strong> AgentMD executes the full spec. Every run includes build, test, and lint in a defined order. No step is optional. Execution history shows exactly what ran and whether it passed.
+      </p>
+
+      <h3>Scenario 2: Deploy without approval</h3>
+      <p>
+        <strong>Problem:</strong> An agent is instructed to deploy after tests pass. It does so autonomously—no human review. A misconfiguration reaches production.
+      </p>
+      <p>
+        <strong>Solution:</strong> Use policy rules with <code>approval: always</code> for deploy commands. AgentMD blocks execution until a human approves (e.g., via Slack). Audit logs record who approved and when.
+      </p>
+
+      <h3>Scenario 3: Dangerous command in a prompt</h3>
+      <p>
+        <strong>Problem:</strong> A user (or compromised prompt) asks the agent to run <code>rm -rf /</code> or <code>curl ... | sh</code>. Without guardrails, the agent might comply.
+      </p>
+      <p>
+        <strong>Solution:</strong> AgentMD&apos;s <code>isCommandSafe()</code> blocks dangerous patterns. <code>permissions.shell.default: deny</code> with an explicit allowlist ensures only approved commands run. See{" "}
+        <Link href="/docs/execution" className="text-primary hover:underline">
+          Execution &amp; Safety
+        </Link>
+        {" "}for the full blocked-pattern list.
+      </p>
+
       <h2>Core Principles</h2>
 
       <h3>1. Observable</h3>
@@ -72,34 +137,55 @@ export default function BestPracticesPage() {
         <li>Integrate with OTEL-compatible observability when available</li>
       </ul>
 
-      <h2>References</h2>
+      <h2>Further Reading</h2>
+      <p>
+        Deepen your understanding of agentic AI governance and AgentOps:
+      </p>
       <ul>
         <li>
           <a href="https://www.ibm.com/think/topics/agentops" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-            IBM AgentOps
+            IBM: What is AgentOps?
           </a>
           {" "}
-          — Lifecycle management for AI agents
+          — Lifecycle management, observability, and the three focus areas (OTEL, analytics, AI-powered insights)
         </li>
         <li>
           <a href="https://www.ibm.com/think/insights/ai-agent-governance" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-            IBM AI agent governance
+            IBM: AI agent governance
           </a>
           {" "}
-          — Autonomy, transparency, compliance
+          — Autonomy, opacity, bias, security, and navigating uncharted waters
         </li>
         <li>
           <a href="https://www.ibm.com/think/topics/ai-agent-security" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-            IBM AI agent security
+            IBM: AI agent security
           </a>
           {" "}
-          — Threat landscape and countermeasures
+          — Threat landscape, adversarial attacks, and countermeasures
+        </li>
+        <li>
+          <a href="https://www.ibm.com/think/topics/agentic-ai" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+            IBM: Agentic AI explained
+          </a>
+          {" "}
+          — Techsplainers podcast and key concepts
+        </li>
+        <li>
+          <a href="https://research.ibm.com/blog/ibm-agentops-ai-agents-observability" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+            IBM Research: AgentOps for AI agents
+          </a>
+          {" "}
+          — OTEL-based observability and analytics platform
         </li>
       </ul>
 
       <p className="mt-8">
+        <Link href="/docs/agentic-ai" className="text-primary hover:underline">
+          ← What is Agentic AI?
+        </Link>
+        {" · "}
         <Link href="/docs/execution" className="text-primary hover:underline">
-          ← Execution &amp; Safety
+          Execution &amp; Safety
         </Link>
       </p>
     </div>

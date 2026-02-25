@@ -2,9 +2,17 @@
 
 Installation options and full CLI reference for AgentMD.
 
+## Installation status
+
+| Method | Status | Notes |
+|--------|--------|-------|
+| From source | ✅ Available | Clone, build, run via `pnpm run agentmd --` |
+| GitHub Action | ✅ Available | No install in CI; action builds and runs |
+| npx / npm | 🔜 Not yet published | `@agentmd/cli` will be published at first release |
+
 ## Installation
 
-### Option 1: From source (development)
+### Option 1: From source (recommended)
 
 Clone the repo and build:
 
@@ -17,44 +25,15 @@ pnpm run build:cli
 # Or build everything: pnpm run build
 ```
 
-Run via the workspace script:
+Run via the workspace script (use `--` before path/options):
 
 ```bash
-pnpm run agentmd <command> [path] [options]
+pnpm run agentmd -- check . --contract
+pnpm run agentmd -- init .
+pnpm run agentmd -- improve . --apply
 ```
 
-Use `--` before path/options when passing through pnpm:
-
-```bash
-pnpm run agentmd -- validate .
-pnpm run agentmd -- init --template python
-```
-
-### Option 2: npx (when published)
-
-Once `@agentmd/cli` is published to npm:
-
-```bash
-npx @agentmd/cli validate .
-npx @agentmd/cli init .
-```
-
-### Option 3: Global install (when published)
-
-```bash
-npm install -g @agentmd/cli
-# or
-pnpm add -g @agentmd/cli
-```
-
-Then run directly:
-
-```bash
-agentmd check . --contract
-agentmd init .
-```
-
-### Option 4: GitHub Action (CI)
+### Option 2: GitHub Action (CI)
 
 Use the composite action in your workflow — no manual install required:
 
@@ -67,6 +46,25 @@ Use the composite action in your workflow — no manual install required:
 ```
 
 The action checks out AgentMD, runs `pnpm install`, builds core + CLI, then executes your command. See [.github/actions/agentmd/README.md](../.github/actions/agentmd/README.md) for details.
+
+### Option 3: npx (when published)
+
+Once `@agentmd/cli` is published to npm:
+
+```bash
+npx @agentmd/cli validate .
+npx @agentmd/cli init .
+```
+
+### Option 4: Global install (when published)
+
+```bash
+npm install -g @agentmd/cli
+# or
+pnpm add -g @agentmd/cli
+```
+
+Then run directly: `agentmd check . --contract`
 
 ---
 

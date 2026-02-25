@@ -57,8 +57,8 @@ export async function POST(request: Request) {
     }
 
     const parsed = parseAgentsMd(content);
-    const validation = validateAgentsMd(parsed);
-    const score = computeAgentReadinessScore(parsed);
+    const validation = await validateAgentsMd(parsed);
+    const score = await computeAgentReadinessScore(parsed);
 
     return apiOk(
       {

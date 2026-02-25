@@ -4,7 +4,10 @@
   "private": true,
   "description": "CI/CD for AI Agents - makes AGENTS.md executable",
   "type": "module",
-  "workspaces": ["packages/*", "apps/*"],
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
   "scripts": {
     "build": "pnpm -r run build",
     "build:core": "pnpm --filter @agentmd/core run build",
@@ -13,7 +16,7 @@
     "dev:dashboard": "pnpm --filter @agentmd/dashboard run dev",
     "dev": "pnpm -r run dev",
     "test": "pnpm -r run test",
-    "lint": "eslint --ext .ts,.tsx .",
+    "lint": "eslint .",
     "check": "pnpm -w lint && pnpm -w test && pnpm -w build",
     "lint:fix": "eslint --ext .ts,.tsx . --fix",
     "format": "prettier --write \"**/*.{ts,tsx,js,json,md}\"",
@@ -24,6 +27,7 @@
     "launch:mvp:check": "node deploy/scripts/mvp-launch-check.mjs --target=production",
     "github:protect:branch": "node deploy/scripts/github-branch-protection.mjs",
     "launch:env:staging": "node deploy/scripts/validate-launch-env.mjs --target=staging",
+    "github:config": "node deploy/scripts/github-config.mjs",
     "launch:env:prod": "node deploy/scripts/validate-launch-env.mjs --target=production",
     "terraform:apply": "cd deploy/terraform && terraform apply",
     "terraform:plan": "cd deploy/terraform && terraform plan",
@@ -42,7 +46,7 @@
   },
   "packageManager": "pnpm@9.14.2",
   "devDependencies": {
-    "eslint": "^9.39.3",
+    "eslint": "8.57.1",
     "@typescript-eslint/parser": "^5.60.0",
     "@typescript-eslint/eslint-plugin": "^5.60.0",
     "prettier": "^3.0.0"

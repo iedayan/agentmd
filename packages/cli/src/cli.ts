@@ -108,7 +108,7 @@ function parseImproveArgs(cmdArgs: string[]): { target: string; apply: boolean; 
   return { target, apply, json };
 }
 
-/** Parse run args: path, types, --dry-run, --use-shell, --json */
+/** Parse run args: path, types, --dry-run, --use-shell, --include-output, --json */
 function parseRunArgs(cmdArgs: string[]): { target: string; json: boolean; extra: string[] } {
   let target = ".";
   let json = false;
@@ -126,16 +126,16 @@ function parseRunArgs(cmdArgs: string[]): { target: string; json: boolean; extra
   return { target, json, extra };
 }
 
-function main() {
+async function main() {
   switch (command) {
     case "init":
       cmdInit(target, initParsed?.template);
       break;
     case "validate":
-      cmdCheck(parseCheckArgs(args.slice(1)));
+      await cmdCheck(parseCheckArgs(args.slice(1)));
       break;
     case "check":
-      cmdCheck(parseCheckArgs(args.slice(1)));
+      await cmdCheck(parseCheckArgs(args.slice(1)));
       break;
     case "discover":
       cmdDiscover(target);
@@ -147,19 +147,19 @@ function main() {
       cmdCompose(target);
       break;
     case "run":
-      cmdRun(parseRunArgs(args.slice(2)));
+      await cmdRun(parseRunArgs(args.slice(2)));
       break;
     case "doctor":
-      cmdDoctor(target);
+      await cmdDoctor(target);
       break;
     case "score":
-      cmdScore(parsePathAndJson(args.slice(1)));
+      await cmdScore(parsePathAndJson(args.slice(1)));
       break;
     case "improve":
-      cmdImprove(parseImproveArgs(args.slice(1)));
+      await cmdImprove(parseImproveArgs(args.slice(1)));
       break;
     case "export":
-      cmdExport(target);
+      await cmdExport(target);
       break;
     case "help":
     case "--help":
@@ -400,7 +400,7 @@ function cmdInit(target: string, templateOverride?: string) {
   }
 }
 
-function cmdCheck(opts: { target: string; json: boolean; contract: boolean; output?: string }) {
+async function cmdCheck(opts: { target: string; json: boolean; contract: boolean; output?: string }) {
   const path = resolve(opts.target);
   const filePath = path.endsWith("AGENTS.md") ? path : resolve(path, "AGENTS.md");
 
@@ -416,7 +416,7 @@ function cmdCheck(opts: { target: string; json: boolean; contract: boolean; outp
 
   const content = readFileSync(filePath, "utf-8");
   const parsed = parseAgentsMd(content, filePath);
-  const result = validateAgentsMd(parsed, { requireOutputContract: opts.contract });
+  const result = await validateAgentsMd(parsed, { requireOutputContract: opts.contract });
   const outputPath = opts.output ? resolve(opts.output) : undefined;
   const hasOutputPath = typeof outputPath === "string";
   const outputValidation =
@@ -569,8 +569,12 @@ function cmdCompose(target: string) {
 }
 
 async function cmdRun(opts: { target: string; json: boolean; extra: string[] }) {
+  const includeOutput = opts.extra.includes("--include-output");
+
   // Validate types early so we fail with "Unknown command type" before file checks
-  const typeArgs = opts.extra.filter((a) => a !== "--dry-run" && a !== "--use-shell");
+  const typeArgs = opts.extra.filter(
+    (a) => a !== "--dry-run" && a !== "--use-shell" && a !== "--include-output"
+  );
   const types = parseRequestedTypes(typeArgs);
 
   const path = resolve(opts.target);
@@ -603,7 +607,7 @@ async function cmdRun(opts: { target: string; json: boolean; extra: string[] }) 
     ? parsed.commands.filter((c) => types.includes(c.type))
     : parsed.commands;
 
-  const plan = planCommandExecutions(toRun, {
+  const plan = await planCommandExecutions(toRun, {
     useShell,
     permissions: parsed.frontmatter?.permissions as NonNullable<
       Parameters<typeof executeCommands>[1]
@@ -628,11 +632,26 @@ async function cmdRun(opts: { target: string; json: boolean; extra: string[] }) 
 
   if (runnableCommands.length === 0) {
     if (opts.json) {
-      console.log(JSON.stringify({
-        ok: false,
-        error: "No runnable commands after preflight",
-        blocked: plan.items.filter((i) => !i.runnable).map((i) => ({ command: i.command, reasons: i.reasons })),
-      }));
+      console.log(
+        JSON.stringify({
+          ok: false,
+          error: "No runnable commands after preflight",
+          blockedCount: plan.blockedCount,
+          plan,
+          blocked: plan.items
+            .filter((i) => !i.runnable)
+            .map((i) => ({
+              command: i.command,
+              type: i.type,
+              section: i.section,
+              line: i.line,
+              reasons: i.reasons,
+              reasonDetails: (i as any).reasonDetails,
+              requiresShell: i.requiresShell,
+              requiresApproval: i.requiresApproval,
+            })),
+        })
+      );
     } else {
       console.log("No runnable commands after preflight.");
       if (!useShell && plan.items.some((item) => item.requiresShell)) {
@@ -661,18 +680,44 @@ async function cmdRun(opts: { target: string; json: boolean; extra: string[] }) 
   }
 
   if (opts.json) {
+    const MAX_OUTPUT_CHARS = 20_000;
+    const truncate = (value: string) =>
+      value.length > MAX_OUTPUT_CHARS
+        ? value.slice(0, MAX_OUTPUT_CHARS) + `\n…(truncated, ${value.length} chars total)`
+        : value;
+
     const output = {
       ok: failed === 0 && plan.blockedCount === 0,
       dryRun,
-      results: results.map((r) => ({
-        command: r.command,
-        type: r.type,
-        success: r.success,
-        exitCode: r.exitCode,
-        durationMs: r.durationMs,
-        error: r.error,
-      })),
+      plan,
       blockedCount: plan.blockedCount,
+      blocked: plan.items
+        .filter((i) => !i.runnable)
+        .map((i) => ({
+          command: i.command,
+          type: i.type,
+          section: i.section,
+          line: i.line,
+          reasons: i.reasons,
+          reasonDetails: (i as any).reasonDetails,
+          requiresShell: i.requiresShell,
+          requiresApproval: i.requiresApproval,
+        })),
+      results: results.map((r) => {
+        const base: Record<string, unknown> = {
+          command: r.command,
+          type: r.type,
+          success: r.success,
+          exitCode: r.exitCode,
+          durationMs: r.durationMs,
+          error: r.error,
+        };
+        if (includeOutput) {
+          base.stdout = truncate(r.stdout ?? "");
+          base.stderr = truncate(r.stderr ?? "");
+        }
+        return base;
+      }),
     };
     console.log(JSON.stringify(output));
   } else {
@@ -705,7 +750,7 @@ async function cmdRun(opts: { target: string; json: boolean; extra: string[] }) 
   if (failed > 0) process.exit(1);
 }
 
-function cmdDoctor(target: string) {
+async function cmdDoctor(target: string) {
   const path = resolve(target);
   const filePath = path.endsWith("AGENTS.md") ? path : resolve(path, "AGENTS.md");
 
@@ -717,9 +762,9 @@ function cmdDoctor(target: string) {
 
   const content = readFileSync(filePath, "utf-8");
   const parsed = parseAgentsMd(content, filePath);
-  const validation = validateAgentsMd(parsed);
-  const score = computeAgentReadinessScore(parsed);
-  const plan = planCommandExecutions(parsed.commands, {
+  const validation = await validateAgentsMd(parsed);
+  const score = await computeAgentReadinessScore(parsed);
+  const plan = await planCommandExecutions(parsed.commands, {
     permissions: parsed.frontmatter?.permissions as NonNullable<
       Parameters<typeof executeCommands>[1]
     >["permissions"],
@@ -773,7 +818,7 @@ function cmdDoctor(target: string) {
   }
 }
 
-function cmdImprove(opts: { target: string; apply: boolean; json: boolean }) {
+async function cmdImprove(opts: { target: string; apply: boolean; json: boolean }) {
   const path = resolve(opts.target);
   const filePath = path.endsWith("AGENTS.md") ? path : resolve(path, "AGENTS.md");
   const dir = path.endsWith("AGENTS.md") ? resolve(path, "..") : path;
@@ -790,8 +835,8 @@ function cmdImprove(opts: { target: string; apply: boolean; json: boolean }) {
 
   const content = readFileSync(filePath, "utf-8");
   const parsed = parseAgentsMd(content, filePath);
-  const validation = validateAgentsMd(parsed);
-  const scoreBefore = computeAgentReadinessScore(parsed);
+  const validation = await validateAgentsMd(parsed);
+  const scoreBefore = await computeAgentReadinessScore(parsed);
 
   const { frontmatter, body, hasFrontmatter } = parseFrontmatter(content);
   const sectionTitles = parsed.sections.map((s) => s.title.toLowerCase());
@@ -914,7 +959,7 @@ function parseRequestedTypes(typeArgs: string[]): CommandType[] | undefined {
   return typeArgs as CommandType[];
 }
 
-function cmdScore(opts: { target: string; json: boolean }) {
+async function cmdScore(opts: { target: string; json: boolean }) {
   const path = resolve(opts.target);
   const filePath = path.endsWith("AGENTS.md") ? path : resolve(path, "AGENTS.md");
 
@@ -930,7 +975,7 @@ function cmdScore(opts: { target: string; json: boolean }) {
 
   const content = readFileSync(filePath, "utf-8");
   const parsed = parseAgentsMd(content, filePath);
-  const score = computeAgentReadinessScore(parsed);
+  const score = await computeAgentReadinessScore(parsed);
 
   if (opts.json) {
     console.log(JSON.stringify({ ok: true, score }));
@@ -943,7 +988,7 @@ function cmdScore(opts: { target: string; json: boolean }) {
   else console.log("  → AGENTS.md is well-structured for agent use.");
 }
 
-function cmdExport(target: string) {
+async function cmdExport(target: string) {
   const path = resolve(target);
   const filePath = path.endsWith("AGENTS.md") ? path : resolve(path, "AGENTS.md");
 
@@ -955,7 +1000,7 @@ function cmdExport(target: string) {
 
   const content = readFileSync(filePath, "utf-8");
   const parsed = parseAgentsMd(content, filePath);
-  const yaml = exportToGitHubActions(parsed);
+  const yaml = await exportToGitHubActions(parsed);
   console.log(yaml);
 }
 
@@ -974,7 +1019,7 @@ Commands:
   discover [path]  Find all AGENTS.md in repo
   parse [path]      Parse and show structure
   compose [path]    Build AGENTS.md from fragments
-  run [path] [types]  Execute commands (flags: --dry-run, --use-shell, --json)
+  run [path] [types]  Execute commands (flags: --dry-run, --use-shell, --include-output, --json)
   score [path]      Agent-readiness score (0-100)
   export [path]     Generate GitHub Actions workflow YAML
   help              Show this help
@@ -991,4 +1036,7 @@ See https://agents.md for the AGENTS.md standard.
 `);
 }
 
-main();
+main().catch((err) => {
+  console.error(`Error: ${err instanceof Error ? err.message : err}`);
+  process.exit(1);
+});

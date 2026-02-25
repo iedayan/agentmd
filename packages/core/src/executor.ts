@@ -4,13 +4,62 @@
  */
 
 import { spawn } from "child_process";
+import { request } from "https";
 import { mkdtempSync, rmSync } from "fs";
 import { tmpdir } from "os";
 import { join } from "path";
+import { Readable } from "stream";
 import type { ExtractedCommand, CommandType } from "./types.js";
 import type { AgentPermissions } from "./schema.js";
 import type { PolicyConfig } from "./enterprise/policy.js";
 import { getApprovalRequirement } from "./enterprise/policy.js";
+import { checkCommandIntent } from "./guardrails.js";
+
+/**
+ * Handle for a running process, allowing for stream monitoring and control.
+ */
+export interface ExecutionProcess {
+  stdout?: Readable;
+  stderr?: Readable;
+  kill(signal?: string): void;
+  on(event: "close", listener: (code: number | null, signal: string | null) => void): void;
+  on(event: "error", listener: (err: Error) => void): void;
+}
+
+/**
+ * Abstract provider for executing commands.
+ * Allows switching between Local, Container (Docker), or Remote execution.
+ */
+export interface ExecutionProvider {
+  name: string;
+  spawn(
+    bin: string,
+    args: string[],
+    options: {
+      cwd: string;
+      env?: Record<string, string>;
+      shell?: boolean;
+    }
+  ): Promise<ExecutionProcess>;
+}
+
+/**
+ * Default provider using local child_process.spawn.
+ */
+export class LocalExecutionProvider implements ExecutionProvider {
+  name = "local";
+  async spawn(
+    bin: string,
+    args: string[],
+    options: { cwd: string; env?: Record<string, string>; shell?: boolean }
+  ): Promise<ExecutionProcess> {
+    return spawn(bin, args, {
+      cwd: options.cwd,
+      shell: options.shell,
+      env: { ...process.env, ...options.env },
+    }) as unknown as ExecutionProcess;
+  }
+}
 
 /** Dangerous patterns that should never be executed */
 const DANGEROUS_PATTERNS = [
@@ -98,6 +147,23 @@ export interface ExecutorOptions {
   sandbox?: boolean;
   /** If true, execute through shell (less safe, required for shell operators/pipelines) */
   useShell?: boolean;
+  /** Execution provider (local, docker, etc.) */
+  provider?: ExecutionProvider;
+  /** Webhook URL for failure notifications */
+  webhookUrl?: string;
+  /** Secret for webhook signing (optional) */
+  webhookSecret?: string;
+}
+
+export type CommandBlockReasonCode =
+  | "UNSAFE"
+  | "PERMISSION_DENIED"
+  | "APPROVAL_REQUIRED"
+  | "REQUIRES_SHELL";
+
+export interface CommandBlockReason {
+  code: CommandBlockReasonCode;
+  message: string;
 }
 
 export interface CommandExecutionPlanItem {
@@ -106,7 +172,10 @@ export interface CommandExecutionPlanItem {
   section: string;
   line: number;
   runnable: boolean;
+  /** Human readable reasons (kept for backwards compatibility). */
   reasons: string[];
+  /** Structured reasons suitable for UI rendering. */
+  reasonDetails?: CommandBlockReason[];
   requiresApproval: boolean;
   requiresShell: boolean;
 }
@@ -118,14 +187,25 @@ export interface CommandExecutionPlan {
 }
 
 /**
- * Check if a command is safe to execute based on dangerous patterns.
+ * Check if a command is safe to execute based on dangerous patterns and intent.
  */
-export function isCommandSafe(command: string): { safe: boolean; reason?: string } {
+export async function isCommandSafe(command: string): Promise<{ safe: boolean; reason?: string }> {
+  // 1. Static pattern check (fast)
   for (const pattern of DANGEROUS_PATTERNS) {
     if (pattern.test(command)) {
       return { safe: false, reason: `Command matches dangerous pattern: ${pattern}` };
     }
   }
+
+  // 2. Intent-based guardrails (semantic)
+  const intentCheck = await checkCommandIntent(command);
+  if (!intentCheck.safe) {
+    return {
+      safe: false,
+      reason: `Guardrail violation (confidence ${Math.round(intentCheck.confidence * 100)}%): ${intentCheck.reason}`
+    };
+  }
+
   return { safe: true };
 }
 
@@ -172,53 +252,67 @@ export function requiresShellFeatures(command: string): boolean {
  * Preflight plan for commands without executing them.
  * Useful for UX: explain what will run and why anything is blocked.
  */
-export function planCommandExecutions(
+export async function planCommandExecutions(
   commands: ExtractedCommand[],
   options: ExecutorOptions = {}
-): CommandExecutionPlan {
+): Promise<CommandExecutionPlan> {
   const { permissions, useShell = false, policyConfig, approvedForExecution } = options;
-  const items: CommandExecutionPlanItem[] = commands.map((cmd) => {
-    const reasons: string[] = [];
-    const safe = isCommandSafe(cmd.command);
-    if (!safe.safe) reasons.push(safe.reason ?? "Blocked by safety policy");
+  const items: CommandExecutionPlanItem[] = await Promise.all(
+    commands.map(async (cmd) => {
+      const reasons: string[] = [];
+      const reasonDetails: CommandBlockReason[] = [];
+      const addReason = (code: CommandBlockReasonCode, message: string) => {
+        reasons.push(message);
+        reasonDetails.push({ code, message });
+      };
 
-    const allowed = isCommandAllowed(cmd.command, permissions);
-    if (!allowed.allowed) reasons.push(allowed.reason ?? "Blocked by permission policy");
-
-    let requiresApproval = false;
-    if (policyConfig) {
-      const { requirement, rule } = getApprovalRequirement(cmd.command, policyConfig);
-      const isApproved =
-        approvedForExecution &&
-        (approvedForExecution instanceof Set
-          ? approvedForExecution.has(cmd.command)
-          : approvedForExecution.includes(cmd.command));
-      if (requirement === "always" && !isApproved) {
-        requiresApproval = true;
-        reasons.push(
-          rule
-            ? `Approval required by policy rule "${rule.name}"`
-            : "Approval required by policy"
-        );
+      const safe = await isCommandSafe(cmd.command);
+      if (!safe.safe) {
+        addReason("UNSAFE", safe.reason ?? "Blocked by safety policy");
       }
-    }
 
-    const requiresShell = requiresShellFeatures(cmd.command);
-    if (requiresShell && !useShell) {
-      reasons.push("Requires shell features (pipes/redirection/operators)");
-    }
+      const allowed = isCommandAllowed(cmd.command, permissions);
+      if (!allowed.allowed) {
+        addReason("PERMISSION_DENIED", allowed.reason ?? "Blocked by permission policy");
+      }
 
-    return {
-      command: cmd.command,
-      type: cmd.type,
-      section: cmd.section,
-      line: cmd.line,
-      runnable: reasons.length === 0,
-      reasons,
-      requiresApproval,
-      requiresShell,
-    };
-  });
+      let requiresApproval = false;
+      if (policyConfig) {
+        const { requirement, rule } = getApprovalRequirement(cmd.command, policyConfig);
+        const isApproved =
+          approvedForExecution &&
+          (approvedForExecution instanceof Set
+            ? approvedForExecution.has(cmd.command)
+            : approvedForExecution.includes(cmd.command));
+        if (requirement === "always" && !isApproved) {
+          requiresApproval = true;
+          addReason(
+            "APPROVAL_REQUIRED",
+            rule
+              ? `Approval required by policy rule "${rule.name}"`
+              : "Approval required by policy"
+          );
+        }
+      }
+
+      const requiresShell = requiresShellFeatures(cmd.command);
+      if (requiresShell && !useShell) {
+        addReason("REQUIRES_SHELL", "Requires shell features (pipes/redirection/operators)");
+      }
+
+      return {
+        command: cmd.command,
+        type: cmd.type,
+        section: cmd.section,
+        line: cmd.line,
+        runnable: reasons.length === 0,
+        reasons,
+        reasonDetails: reasonDetails.length > 0 ? reasonDetails : undefined,
+        requiresApproval,
+        requiresShell,
+      };
+    })
+  );
 
   const runnableCount = items.filter((item) => item.runnable).length;
   return {
@@ -235,7 +329,7 @@ export function executeCommand(
   cmd: ExtractedCommand,
   options: ExecutorOptions = {}
 ): Promise<ExecutionResult> {
-  return new Promise((resolve) => {
+  return new Promise(async (resolve) => {
     const start = Date.now();
     const { permissions, dryRun = false, sandbox = false, useShell = false } = options;
     const timeout = options.timeout ?? (sandbox ? 30000 : 60000);
@@ -261,7 +355,7 @@ export function executeCommand(
       }
     }
 
-    const safe = isCommandSafe(cmd.command);
+    const safe = await isCommandSafe(cmd.command);
     if (!safe.safe) {
       resolve({
         command: cmd.command,
@@ -361,42 +455,56 @@ export function executeCommand(
       return;
     }
 
-    const proc = spawn(parsed.bin, parsed.args, {
+    const provider = options.provider ?? new LocalExecutionProvider();
+
+    provider.spawn(parsed.bin, parsed.args, {
       cwd,
       shell: useShell,
-      env: { ...process.env, ...options.env },
-    }) as import("child_process").ChildProcess;
+      env: options.env,
+    }).then((proc) => {
+      let stdout = "";
+      let stderr = "";
 
-    let stdout = "";
-    let stderr = "";
-
-    proc.stdout?.on("data", (d: Buffer | string) => {
-      stdout += d.toString();
-    });
-    proc.stderr?.on("data", (d: Buffer | string) => {
-      stderr += d.toString();
-    });
-
-    const killTimer = timeout > 0 ? setTimeout(() => proc.kill("SIGTERM"), timeout) : null;
-
-    proc.on("close", (code: number | null, signal: NodeJS.Signals | null) => {
-      if (killTimer) clearTimeout(killTimer);
-      if (tempDir) try { rmSync(tempDir, { recursive: true }); } catch { /* ignore */ }
-      const durationMs = Date.now() - start;
-      resolve({
-        command: cmd.command,
-        type: cmd.type,
-        success: code === 0,
-        exitCode: code,
-        durationMs,
-        stdout: stdout.trim(),
-        stderr: stderr.trim(),
-        error: code !== 0 ? `Exit ${code}${signal ? ` (${signal})` : ""}` : undefined,
+      proc.stdout?.on("data", (d: Buffer | string) => {
+        stdout += d.toString();
       });
-    });
+      proc.stderr?.on("data", (d: Buffer | string) => {
+        stderr += d.toString();
+      });
 
-    proc.on("error", (err: Error) => {
-      if (killTimer) clearTimeout(killTimer);
+      const killTimer = timeout > 0 ? setTimeout(() => proc.kill("SIGTERM"), timeout) : null;
+
+      proc.on("close", (code: number | null, signal: string | null) => {
+        if (killTimer) clearTimeout(killTimer);
+        if (tempDir) try { rmSync(tempDir, { recursive: true }); } catch { /* ignore */ }
+        const durationMs = Date.now() - start;
+        resolve({
+          command: cmd.command,
+          type: cmd.type,
+          success: code === 0,
+          exitCode: code,
+          durationMs,
+          stdout: stdout.trim(),
+          stderr: stderr.trim(),
+          error: code !== 0 ? `Exit ${code}${signal ? ` (${signal})` : ""}` : undefined,
+        });
+      });
+
+      proc.on("error", (err: Error) => {
+        if (killTimer) clearTimeout(killTimer);
+        if (tempDir) try { rmSync(tempDir, { recursive: true }); } catch { /* ignore */ }
+        resolve({
+          command: cmd.command,
+          type: cmd.type,
+          success: false,
+          exitCode: null,
+          durationMs: Date.now() - start,
+          stdout: "",
+          stderr: err.message,
+          error: err.message,
+        });
+      });
+    }).catch((err) => {
       if (tempDir) try { rmSync(tempDir, { recursive: true }); } catch { /* ignore */ }
       resolve({
         command: cmd.command,
@@ -406,7 +514,7 @@ export function executeCommand(
         durationMs: Date.now() - start,
         stdout: "",
         stderr: err.message,
-        error: err.message,
+        error: "Provider failed to spawn process",
       });
     });
   });
@@ -520,6 +628,16 @@ export async function executeCommands(
   for (const cmd of toRun) {
     const result = await executeCommand(cmd, execOpts);
     results.push(result);
+    if (!result.success && execOpts.webhookUrl) {
+      await notifyWebhook(execOpts.webhookUrl, {
+        event: "execution_failed",
+        command: cmd.command,
+        type: cmd.type,
+        exitCode: result.exitCode,
+        stdout: result.stdout,
+        stderr: result.stderr,
+      }, execOpts.webhookSecret);
+    }
   }
   return results;
 }
@@ -537,6 +655,48 @@ export async function executeCommandsParallel(
     ? commands.filter((c) => types.includes(c.type))
     : commands;
 
-  const promises = toRun.map((cmd) => executeCommand(cmd, execOpts));
+  const promises = toRun.map(async (cmd) => {
+    const result = await executeCommand(cmd, execOpts);
+    if (!result.success && execOpts.webhookUrl) {
+      await notifyWebhook(execOpts.webhookUrl, {
+        event: "execution_failed",
+        command: cmd.command,
+        type: cmd.type,
+        exitCode: result.exitCode,
+        stdout: result.stdout,
+        stderr: result.stderr,
+      }, execOpts.webhookSecret);
+    }
+    return result;
+  });
   return Promise.all(promises);
+}
+
+/**
+ * Send a notification to a webhook.
+ */
+async function notifyWebhook(url: string, payload: any, secret?: string): Promise<void> {
+  return new Promise((resolve, reject) => {
+    const data = JSON.stringify(payload);
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Content-Length": data.length,
+        ...(secret ? { "X-AgentMD-Secret": secret } : {}),
+      },
+    };
+
+    const req = request(url, options, (res) => {
+      if (res.statusCode && res.statusCode >= 200 && res.statusCode < 300) {
+        resolve();
+      } else {
+        reject(new Error(`Webhook failed with status ${res.statusCode}`));
+      }
+    });
+
+    req.on("error", (e) => reject(e));
+    req.write(data);
+    req.end();
+  });
 }

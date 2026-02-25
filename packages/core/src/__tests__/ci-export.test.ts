@@ -3,7 +3,7 @@ import { parseAgentsMd } from "../parser.js";
 import { exportToGitHubActions } from "../ci-export.js";
 
 describe("exportToGitHubActions", () => {
-  it("generates valid workflow YAML", () => {
+  it("generates valid workflow YAML", async () => {
     const content = `## Build
 \`pnpm run build\`
 
@@ -11,7 +11,7 @@ describe("exportToGitHubActions", () => {
 \`pnpm test\`
 `;
     const parsed = parseAgentsMd(content);
-    const yaml = exportToGitHubActions(parsed);
+    const yaml = await exportToGitHubActions(parsed);
     expect(yaml).toContain("name: AgentMD");
     expect(yaml).toContain("on:");
     expect(yaml).toContain("push");
@@ -20,28 +20,28 @@ describe("exportToGitHubActions", () => {
     expect(yaml).toContain("pnpm test");
   });
 
-  it("includes working-directory when context present", () => {
+  it("includes working-directory when context present", async () => {
     const content = `## Build
 In packages/core run \`pnpm run build\`
 `;
     const parsed = parseAgentsMd(content);
-    const yaml = exportToGitHubActions(parsed);
+    const yaml = await exportToGitHubActions(parsed);
     expect(yaml).toContain("working-directory");
     expect(yaml).toContain("packages/core");
   });
 
-  it("excludes unsafe commands by default", () => {
+  it("excludes unsafe commands by default", async () => {
     const content = "## Bad\n`rm -rf /`\n## Good\n`pnpm test`";
     const parsed = parseAgentsMd(content);
-    const yaml = exportToGitHubActions(parsed);
+    const yaml = await exportToGitHubActions(parsed);
     expect(yaml).not.toContain("rm -rf");
     expect(yaml).toContain("pnpm test");
   });
 
-  it("respects ExportOptions", () => {
+  it("respects ExportOptions", async () => {
     const content = "## Test\n`pnpm test`";
     const parsed = parseAgentsMd(content);
-    const yaml = exportToGitHubActions(parsed, {
+    const yaml = await exportToGitHubActions(parsed, {
       name: "Custom Workflow",
       jobName: "agentmd-test",
       runsOn: "ubuntu-22.04",
@@ -51,10 +51,10 @@ In packages/core run \`pnpm run build\`
     expect(yaml).toContain("ubuntu-22.04");
   });
 
-  it("includes unsafe commands when safeOnly=false", () => {
+  it("includes unsafe commands when safeOnly=false", async () => {
     const content = "## Bad\n`rm -rf /`\n## Good\n`pnpm test`";
     const parsed = parseAgentsMd(content);
-    const yaml = exportToGitHubActions(parsed, { safeOnly: false });
+    const yaml = await exportToGitHubActions(parsed, { safeOnly: false });
     expect(yaml).toContain("rm -rf");
     expect(yaml).toContain("pnpm test");
   });

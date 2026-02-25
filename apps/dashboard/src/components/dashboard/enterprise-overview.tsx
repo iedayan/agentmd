@@ -41,7 +41,7 @@ export function EnterpriseOverview() {
             Enterprise Plan
           </CardTitle>
           <CardDescription>
-            $199/month — Self-hosted, unlimited seats, 99.9% SLA, dedicated support
+            $249/month — Self-hosted, unlimited seats, 99.9% SLA, dedicated support
           </CardDescription>
         </CardHeader>
         <CardContent>

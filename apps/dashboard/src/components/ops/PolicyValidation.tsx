@@ -1,40 +1,27 @@
 "use client";
 
-import type { PolicyResult } from "@/app/ops/mock-data";
+import type { PolicyResult } from "@/lib/ops/mock-data";
 
 export function PolicyValidation({ results }: { results: PolicyResult[] }) {
   return (
-    <div className="border border-[var(--ops-border)] bg-[var(--ops-panel)]">
-      <div className="border-b border-[var(--ops-border)] px-4 py-2 font-mono text-xs font-medium text-[var(--ops-primary)]/70">
-        Policy Validation
+    <div className="bento-card border-luminescent bg-card">
+      <div className="border-b border-border px-4 py-3 font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">
+        Policy Compliance
       </div>
-      <ul className="divide-y divide-[var(--ops-border)] p-4">
-        {results.map((r) => (
-          <li key={r.id} className="flex items-start gap-3 py-2 font-mono text-sm">
-            <span
-              className="mt-0.5 shrink-0"
-              style={{
-                color: r.passed ? "var(--ops-passed)" : "var(--ops-failed)",
-              }}
-            >
-              {r.passed ? "✓" : "✕"}
-            </span>
+      <div className="p-4 space-y-3">
+        {results.map((r, i) => (
+          <div key={i} className="flex items-start justify-between gap-4 rounded-[var(--radius-md)] border border-border bg-muted/30 p-4">
             <div>
-              <span className="font-medium text-[var(--ops-primary)]">
-                {r.ruleId}
-              </span>
-              {!r.passed && (
-                <span className="ml-1 text-[var(--ops-pending)]">
-                  → {r.enforcement === "require_approval" ? "triggered approval gate" : "blocked"}
-                </span>
-              )}
-              <div className="mt-0.5 text-xs text-[var(--ops-primary)]/60">
-                {r.description}
-              </div>
+              <div className="font-bold text-sm text-foreground">{r.ruleId}</div>
+              <div className="mt-1 font-mono text-[10px] text-muted-foreground">{r.description}</div>
             </div>
-          </li>
+            <div className={`mt-0.5 h-2 w-2 rounded-full shadow-[0_0_8px_currentColor] ${r.passed ? "text-[var(--ops-passed)] bg-current" :
+                r.enforcement === "warn" ? "text-[var(--ops-pending)] bg-current" :
+                  "text-[var(--ops-failed)] bg-current"
+              }`} />
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 }

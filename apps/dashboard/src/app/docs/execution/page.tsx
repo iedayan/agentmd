@@ -89,6 +89,22 @@ agentmd run . build lint`}</CodeBlock>
         The dashboard aggregates execution history, success rates (execution-level and command-level), and audit logs. Planned: OpenTelemetry export for integration with Langfuse, Datadog, and other observability platforms.
       </p>
 
+      <h2>Dashboard Execution Modes</h2>
+      <p>
+        When you run executions from the dashboard, the worker supports two modes:
+      </p>
+      <ul>
+        <li><strong>Mock</strong> (default) — Simulates execution with fixed step durations and outputs. No repo access. Use for demos or when the worker doesn&apos;t have <code>AGENTMD_REAL_EXECUTION=1</code>.</li>
+        <li><strong>Real</strong> — Fetches AGENTS.md from <code>agentsMdUrl</code>, parses commands, clones the repo, and runs them. Requires <code>AGENTMD_REAL_EXECUTION=1</code> on the worker. Only supports public GitHub repos.</li>
+      </ul>
+      <p>
+        The execution detail page shows a badge: <strong>Real execution</strong> or <strong>Mock execution</strong>. See{" "}
+        <Link href="https://github.com/agentmd/agentmd/blob/main/deploy/worker/README.md" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+          deploy/worker/README.md
+        </Link>
+        {" "}for worker setup.
+      </p>
+
       <h2>Environment</h2>
       <p>Commands run with <code>shell: true</code> in the repo directory. Environment variables are inherited from the process. For production, consider containerized execution.</p>
 

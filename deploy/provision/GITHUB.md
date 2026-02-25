@@ -1,5 +1,9 @@
 # GitHub OAuth & GitHub App Setup
 
+**Quick setup:** Use the GitHub App Setup Wizard at `https://your-domain.com/setup/github-app` (or run `node deploy/scripts/github-config.mjs https://your-domain.com`) to generate all URLs and env vars. Paste values directly into GitHub.
+
+---
+
 ## 1. GitHub OAuth App (Required for login)
 
 1. Go to [GitHub Developer Settings](https://github.com/settings/developers) → **OAuth Apps**.

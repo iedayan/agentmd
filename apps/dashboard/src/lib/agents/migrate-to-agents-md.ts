@@ -169,7 +169,7 @@ function extractCommand(line: string): string | null {
   }
 
   if (line.length < 100 && /^[a-z0-9._\-\s]+$/i.test(line) && !line.includes(" ")) return null;
-  if (line.includes(" ") && line.length < 80 && /^[a-z0-9._\-\s\/]+$/i.test(line)) return line;
+  if (line.includes(" ") && line.length < 80 && /^[a-z0-9._\-\s/]+$/i.test(line)) return line;
 
   return null;
 }

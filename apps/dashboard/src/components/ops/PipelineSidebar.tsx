@@ -1,6 +1,6 @@
 "use client";
 
-import type { Pipeline, PipelineStatus } from "@/app/ops/mock-data";
+import type { Pipeline, PipelineStatus } from "@/lib/ops/mock-data";
 
 const STATUS_GROUPS: { status: PipelineStatus; label: string }[] = [
   { status: "running", label: "Running" },
@@ -25,37 +25,38 @@ export function PipelineSidebar({
   }));
 
   return (
-    <aside className="w-[260px] shrink-0 border-r border-[var(--ops-border)] bg-[var(--ops-panel)] p-4">
+    <aside className="w-[280px] shrink-0 border-r border-border bg-card/50 p-4 space-y-8">
       {byStatus.map((group) => (
-        <div key={group.status} className="mb-6">
-          <h3 className="mb-2 font-mono text-xs font-semibold uppercase tracking-wider text-[var(--ops-primary)]/60">
-            {group.label} ({group.items.length})
+        <div key={group.status}>
+          <h3 className="mb-3 px-3 font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">
+            {group.label} — {group.items.length}
           </h3>
           <ul className="space-y-1">
-            {group.items.map((p) => (
-              <li key={p.id}>
-                <button
-                  onClick={() => onSelect(p.id)}
-                  className={`w-full rounded-none border-l-2 px-3 py-2 text-left transition-colors ${
-                    selectedId === p.id
-                      ? "border-[var(--ops-primary)] bg-[var(--ops-bg)]"
-                      : "border-transparent hover:bg-[var(--ops-bg)]"
-                  }`}
-                >
-                  <div className="font-display text-[var(--ops-primary)]">
-                    {p.name}
-                  </div>
-                  <div className="mt-0.5 font-mono text-xs text-[var(--ops-primary)]/60">
-                    {p.sourceRef}
-                  </div>
-                  <div className="mt-1 flex items-center gap-2 font-mono text-xs text-[var(--ops-primary)]/50">
-                    <span>{p.trigger}</span>
-                    <span>·</span>
-                    <span>{p.timestamp}</span>
-                  </div>
-                </button>
-              </li>
-            ))}
+            {group.items.map((p) => {
+              const isActive = selectedId === p.id;
+              return (
+                <li key={p.id}>
+                  <button
+                    onClick={() => onSelect(p.id)}
+                    className={`w-full group relative overflow-hidden rounded-[var(--radius-md)] px-4 py-3 text-left transition-all duration-[var(--duration-base)] ${isActive
+                        ? "bg-[hsl(var(--primary-dim))] text-primary border border-primary/20"
+                        : "text-muted-foreground hover:bg-muted/50 hover:text-foreground"
+                      }`}
+                  >
+                    <div className="font-bold text-sm tracking-tight truncate">
+                      {p.name}
+                    </div>
+                    <div className="mt-1 flex items-center justify-between font-mono text-[9px] font-bold uppercase tracking-widest opacity-60">
+                      <span>{p.sourceRef}</span>
+                      <span>{p.timestamp}</span>
+                    </div>
+                    {isActive && (
+                      <span className="absolute left-0 top-1/2 -translate-y-1/2 h-4 w-1 bg-primary rounded-r-full shadow-[0_0_8px_hsl(var(--primary)/0.5)]" />
+                    )}
+                  </button>
+                </li>
+              );
+            })}
           </ul>
         </div>
       ))}

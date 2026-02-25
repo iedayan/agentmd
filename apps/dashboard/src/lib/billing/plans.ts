@@ -1,6 +1,6 @@
 /**
  * AgentMD Subscription Plans & Feature Gating
- * Enterprise competes with AgentOps.ai ($199/mo)
+ * Enterprise competes with AgentOps.ai ($249/mo)
  */
 
 export const PLANS = {
@@ -26,7 +26,7 @@ export const PLANS = {
   },
   pro: {
     name: "Pro",
-    price: 40,
+    price: 49,
     repositories: Infinity,
     executionMinutes: 1000,
     logRetentionDays: 30,
@@ -46,7 +46,7 @@ export const PLANS = {
   },
   enterprise: {
     name: "Enterprise",
-    price: 199,
+    price: 249,
     repositories: Infinity,
     executionMinutes: Infinity,
     logRetentionDays: 90,

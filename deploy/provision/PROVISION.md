@@ -109,21 +109,26 @@ Then copy outputs to your env (see `pnpm run terraform:output`). Full details: [
 
 ## 5. Worker (Optional for soft launch)
 
-For background execution processing, deploy a worker:
+For background execution processing, deploy the worker at `deploy/worker/worker.mjs`.
+
+**Required env**: `DATABASE_URL` (Postgres). Optional: `WORKER_ID`, `WORKER_POLL_INTERVAL_MS`, `JIRA_WEBHOOK_URL`, `AGENTMD_REAL_EXECUTION=1` (enables real command execution from AGENTS.md; default: mock).
 
 ### Railway
 
 1. Create [Railway](https://railway.app) project.
-2. Add service from GitHub repo, set root to `apps/dashboard` or a worker package.
-3. Configure env vars (same as Vercel).
-4. Set start command for worker process (e.g. `node worker.js`).
+2. Add service from GitHub repo (root: repo root).
+3. **Start command**: `node deploy/worker/worker.mjs`
+4. **Build**: `pnpm install` (add `pnpm run build:core` if using `AGENTMD_REAL_EXECUTION=1`)
+5. Add env vars: `DATABASE_URL` (and others as needed).
 
 ### Render
 
 1. Create [Render](https://render.com) account.
 2. **New** → Background Worker.
-3. Connect repo, set build/start commands.
-4. Add environment variables.
+3. Connect repo.
+4. **Build command**: `pnpm install` (add `&& pnpm run build:core` if using `AGENTMD_REAL_EXECUTION=1`)
+5. **Start command**: `node deploy/worker/worker.mjs`
+6. Add environment variables.
 
 ---
 
@@ -150,6 +155,7 @@ Copy to Vercel (and worker if applicable):
 | `GITHUB_APP_ID` | Optional | GitHub App ID |
 | `GITHUB_APP_PRIVATE_KEY` | Optional | GitHub App PEM key |
 | `GITHUB_WEBHOOK_SECRET` | Optional | Webhook signing secret |
+| `AGENTMD_REAL_EXECUTION` | Optional | Set to `1` for worker to run real commands (GitHub repos only) |
 | `STRIPE_SECRET_KEY` | Optional | Stripe secret key |
 | `STRIPE_PRO_PRICE_ID` | Optional | Stripe Pro price ID |
 | `STRIPE_ENTERPRISE_PRICE_ID` | Optional | Stripe Enterprise price ID |

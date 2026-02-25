@@ -1,18 +1,19 @@
 import type { Metadata, Viewport } from "next";
-import { IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
+import { Outfit, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { SessionProvider } from "@/components/auth/session-provider";
 import { ChunkReloadGuard } from "@/components/providers/chunk-reload-guard";
+import { ScrollToTop } from "@/components/providers/scroll-to-top";
 import { DEFAULT_APP_URL, getPublicAppUrl } from "@/lib/core/public-url";
 
-const ibmPlexSans = IBM_Plex_Sans({
+const outfit = Outfit({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   variable: "--font-sans",
   display: "swap",
 });
-const ibmPlexMono = IBM_Plex_Mono({
+const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
   weight: ["400", "500"],
   variable: "--font-mono",
@@ -50,7 +51,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0f172a",
+  themeColor: "#059669",
 };
 
 export default function RootLayout({
@@ -59,9 +60,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning className={`${ibmPlexSans.variable} ${ibmPlexMono.variable}`}>
+    <html lang="en" suppressHydrationWarning className={`${outfit.variable} ${jetbrainsMono.variable}`}>
       <body className="font-sans antialiased">
         <ChunkReloadGuard />
+        <ScrollToTop />
         <SessionProvider>
           <ThemeProvider
             attribute="class"

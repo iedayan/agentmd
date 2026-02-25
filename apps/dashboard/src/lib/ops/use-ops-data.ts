@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import type { Pipeline, PolicyRule, AuditEntry } from "@/app/ops/mock-data";
+import type { Pipeline, PolicyRule, AuditEntry } from "@/lib/ops/mock-data";
 
 export interface OpsAnalytics {
   pipelinesRun: number;

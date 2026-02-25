@@ -141,15 +141,15 @@ export function RegisterForm({ mode = "register" }: { mode?: "register" | "login
         <ol className="space-y-2 text-sm text-muted-foreground">
           <li className="flex gap-2">
             <span className="font-mono text-primary font-bold">1.</span>
-            Connect your first GitHub repository
+            Connect a repo — paste owner/repo and hit Add
           </li>
           <li className="flex gap-2">
             <span className="font-mono text-primary font-bold">2.</span>
-            AgentMD scans for an AGENTS.md file (or generates one)
+            We find or create AGENTS.md — no config needed
           </li>
           <li className="flex gap-2">
             <span className="font-mono text-primary font-bold">3.</span>
-            Run your first execution in under 2 minutes
+            First run in under 2 minutes
           </li>
           {plan === "pro" && (
             <li className="flex gap-2">

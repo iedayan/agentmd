@@ -5,27 +5,27 @@ export function AgentsMdPreview({ content }: { content: string }) {
   const sectionRegex = /^\[([^\]]+)\]/;
 
   return (
-    <div className="border border-[var(--ops-border)] bg-[var(--ops-panel)]">
-      <div className="border-b border-[var(--ops-border)] px-4 py-2 font-mono text-xs font-medium text-[var(--ops-primary)]/70">
+    <div className="bento-card border-luminescent bg-card">
+      <div className="border-b border-border px-4 py-3 font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">
         AGENTS.md
       </div>
-      <pre className="max-h-[320px] overflow-auto p-4 font-mono text-xs leading-relaxed text-[var(--ops-primary)]">
+      <pre className="max-h-[320px] overflow-auto p-4 font-mono text-xs leading-relaxed text-foreground">
         {lines.map((line, i) => {
           const sectionMatch = line.match(sectionRegex);
           const isSection = sectionMatch !== null;
           const isComment = line.trim().startsWith("#");
           return (
             <div key={i} className="flex">
-              <span className="w-8 shrink-0 select-none pr-4 text-right text-[var(--ops-primary)]/40">
+              <span className="w-8 shrink-0 select-none pr-4 text-right text-muted-foreground">
                 {i + 1}
               </span>
               <code
                 className={
                   isSection
-                    ? "text-[var(--ops-running)] font-semibold"
+                    ? "text-primary font-bold"
                     : isComment
-                    ? "text-[var(--ops-primary)]/80"
-                    : ""
+                      ? "text-muted-foreground italic"
+                      : ""
                 }
               >
                 {line || " "}

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { BackLink } from "@/components/ui/back-link";
 import { Logo } from "@/components/brand/logo";
 import { MarkdownContent } from "@/components/blog/markdown-content";
 import { notFound } from "next/navigation";
@@ -157,9 +158,9 @@ export default async function BlogPostPage({
       </header>
 
       <main className="container mx-auto px-4 py-16 max-w-3xl">
-        <Link href="/blog" className="text-sm text-muted-foreground hover:text-foreground mb-6 inline-block">
-          ← Back to Blog
-        </Link>
+        <div className="mb-6">
+          <BackLink href="/blog">Back to Blog</BackLink>
+        </div>
         <h1 className="text-4xl font-bold">{post.title}</h1>
         <p className="mt-2 text-muted-foreground">{post.date}</p>
         <div className="mt-12">

@@ -17,9 +17,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { GitBranch, Plus, RefreshCw, FolderGit2, ShieldCheck, Activity } from "lucide-react";
+import { GitBranch, Plus, RefreshCw, FolderGit2, ShieldCheck, Activity, Zap } from "lucide-react";
 import type { Execution, Repository } from "@/types";
 import { getPlan } from "@/lib/billing/plans";
+import { cn } from "@/lib/core/utils";
 
 export function RepositoryDashboard() {
   const [repos, setRepos] = useState<Repository[]>([]);
@@ -207,73 +208,78 @@ export function RepositoryDashboard() {
   };
 
   const getScoreColor = (score: number) => {
-    if (score >= 80) return "text-emerald-500";
-    if (score >= 50) return "text-amber-500";
-    return "text-red-500";
+    if (score >= 80) return "text-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.2)]";
+    if (score >= 50) return "text-amber-500 shadow-[0_0_10px_rgba(245,158,11,0.2)]";
+    return "text-red-500 shadow-[0_0_10px_rgba(239,68,68,0.2)]";
   };
 
   return (
     <div className="space-y-6">
-      <Card>
-        <CardContent className="pt-6">
-          <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-            <div>
-              <p className="text-sm font-medium">Quick Actions</p>
-              <p className="text-xs text-muted-foreground">
-                Common tasks to get value quickly.
-              </p>
+      <div className="bento-card bg-primary/5 border-primary/20">
+        <CardContent className="py-5">
+          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+            <div className="flex items-center gap-3">
+              <div className="h-10 w-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary border border-primary/20">
+                <Zap className="h-5 w-5" />
+              </div>
+              <div>
+                <p className="text-sm font-bold text-foreground">Quick Actions</p>
+                <p className="text-xs text-muted-foreground">
+                  Common tasks to maximize your agentic efficiency.
+                </p>
+              </div>
             </div>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-2.5">
               <Link href="/dashboard/executions">
-                <Button size="sm" variant="outline">View Runs</Button>
+                <Button size="sm" variant="outline" className="btn-tactile rounded-xl">View Runs</Button>
               </Link>
               <Link href="/docs/quickstart">
-                <Button size="sm" variant="outline">Quickstart</Button>
+                <Button size="sm" variant="outline" className="btn-tactile rounded-xl text-primary border-primary/20 hover:bg-primary/5">Quickstart</Button>
               </Link>
-              <Link href="/marketplace">
-                <Button size="sm">Explore Agents</Button>
+              <Link href="/dashboard/setup/agent">
+                <Button size="sm" className="btn-tactile rounded-xl shadow-glow">Setup Agent</Button>
               </Link>
             </div>
           </div>
         </CardContent>
-      </Card>
+      </div>
 
-      <div className="grid gap-3 md:grid-cols-3">
-        <Card className="border-primary/20 bg-gradient-to-br from-primary/10 via-background to-background">
+      <div className="grid gap-4 md:grid-cols-3">
+        <div className="bento-card border-luminescent bg-gradient-to-br from-primary/[0.08] via-transparent to-transparent">
           <CardHeader className="pb-2">
-            <CardDescription>Connected Repositories</CardDescription>
-            <CardTitle className="text-3xl">{repos.length}</CardTitle>
+            <CardDescription className="text-xs font-bold uppercase tracking-wider text-primary/70">Connected Repositories</CardDescription>
+            <CardTitle className="text-4xl font-black text-gradient">{repos.length}</CardTitle>
           </CardHeader>
-          <CardContent className="pt-0 text-xs text-muted-foreground">
+          <CardContent className="pt-0 text-[10px] text-muted-foreground/80 font-medium">
             {typeof repositoryLimit === "number"
-              ? `${repositoryLimit - repos.length} remaining on Free plan`
-              : "Unlimited on current plan"}
+              ? `${repositoryLimit - repos.length} slots remaining in free tier`
+              : "Enterprise unlimited tier active"}
           </CardContent>
-        </Card>
-        <Card>
+        </div>
+        <div className="bento-card">
           <CardHeader className="pb-2">
-            <CardDescription className="flex items-center gap-2">
-              <ShieldCheck className="h-4 w-4 text-emerald-500" />
+            <CardDescription className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-emerald-500/70">
+              <ShieldCheck className="h-3.5 w-3.5" />
               Healthy Repositories
             </CardDescription>
-            <CardTitle className="text-3xl">{healthyCount}</CardTitle>
+            <CardTitle className="text-4xl font-black text-gradient">{healthyCount}</CardTitle>
           </CardHeader>
-          <CardContent className="pt-0 text-xs text-muted-foreground">
-            Score 80+ across all connected repos
+          <CardContent className="pt-0 text-[10px] text-muted-foreground/80 font-medium font-mono">
+            SCORE &gt; 80% EFFICIENCY
           </CardContent>
-        </Card>
-        <Card>
+        </div>
+        <div className="bento-card">
           <CardHeader className="pb-2">
-            <CardDescription className="flex items-center gap-2">
-              <Activity className="h-4 w-4 text-amber-500" />
+            <CardDescription className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-amber-500/70">
+              <Activity className="h-3.5 w-3.5" />
               Average Readiness
             </CardDescription>
-            <CardTitle className="text-3xl">{averageScore}</CardTitle>
+            <CardTitle className="text-4xl font-black text-gradient">{averageScore}</CardTitle>
           </CardHeader>
-          <CardContent className="pt-0 text-xs text-muted-foreground">
-            Health score averaged over active repositories
+          <CardContent className="pt-0 text-[10px] text-muted-foreground/80 font-medium font-mono">
+            AGENTS.MD COMPLIANCE AGGREGATE
           </CardContent>
-        </Card>
+        </div>
       </div>
 
       <Card>
@@ -292,7 +298,7 @@ export function RepositoryDashboard() {
                       }
                     }
                   }}
-                  placeholder="Connect repo: owner/name (e.g. acme/my-app)"
+                  placeholder="owner/repo (e.g. acme/my-app)"
                 />
               </div>
               <div className="flex gap-2">
@@ -399,8 +405,8 @@ export function RepositoryDashboard() {
       {!loading && repos.length === 0 ? (
         <EmptyState
           icon={<FolderGit2 className="h-12 w-12" />}
-          title="No repositories yet"
-          description="Connect your first repository, or add AGENTS.md locally and run agentmd validate to get started."
+          title="Add your first repo"
+          description="Paste owner/repo above (e.g. acme/my-app) and click Connect. We'll find or create AGENTS.md — no config needed."
           action={{ label: "Quickstart Guide", href: "/docs/quickstart" }}
         />
       ) : loading ? (
@@ -420,55 +426,88 @@ export function RepositoryDashboard() {
       ) : (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {filteredRepos.map((repo) => (
-            <Card key={repo.id} className="hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5 transition-all duration-300">
-              <CardHeader className="flex flex-row items-start justify-between space-y-0">
-                <div className="flex items-center gap-2">
-                  <GitBranch className="h-5 w-5 text-muted-foreground" />
-                  <CardTitle className="text-base">{repo.name}</CardTitle>
+            <div key={repo.id} className="bento-card border-luminescent group hover:shadow-glow/20">
+              <CardHeader className="flex flex-row items-start justify-between space-y-0 pb-3">
+                <div className="flex items-center gap-3">
+                  <div className="h-9 w-9 rounded-xl bg-muted/50 flex items-center justify-center text-muted-foreground group-hover:bg-primary/10 group-hover:text-primary transition-colors duration-300">
+                    <GitBranch className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <CardTitle className="text-base font-bold text-foreground/90">{repo.name}</CardTitle>
+                    <p className="text-[10px] text-muted-foreground font-mono truncate max-w-[120px]">{repo.fullName}</p>
+                  </div>
                 </div>
-                <Badge
-                  variant={repo.healthScore >= 80 ? "success" : repo.healthScore >= 50 ? "warning" : "destructive"}
-                >
+                <div className={cn(
+                  "flex h-10 w-10 items-center justify-center rounded-2xl border text-sm font-black",
+                  repo.healthScore >= 80 ? "bg-emerald-500/10 text-emerald-500 border-emerald-500/20" :
+                    repo.healthScore >= 50 ? "bg-amber-500/10 text-amber-500 border-amber-500/20" :
+                      "bg-red-500/10 text-red-500 border-red-500/20"
+                )}>
                   {repo.healthScore}
-                </Badge>
+                </div>
               </CardHeader>
-              <CardContent className="space-y-4">
-                <CardDescription>{repo.fullName}</CardDescription>
+              <CardContent className="space-y-5">
                 <div>
-                  <div className="flex justify-between text-xs text-muted-foreground mb-1">
-                    <span>Agent-readiness</span>
+                  <div className="flex justify-between text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60 mb-2">
+                    <span>Repository Fitness</span>
                     <span className={getScoreColor(repo.healthScore)}>
-                      {repo.healthScore}/100
+                      {repo.healthScore}%
                     </span>
                   </div>
-                  <Progress value={repo.healthScore} className="h-2" />
+                  <div className="h-1.5 w-full bg-muted/50 rounded-full overflow-hidden">
+                    <div
+                      className={cn(
+                        "h-full transition-all duration-1000 ease-out",
+                        repo.healthScore >= 80 ? "bg-emerald-500" :
+                          repo.healthScore >= 50 ? "bg-amber-500" : "bg-red-500"
+                      )}
+                      style={{ width: `${repo.healthScore}%` }}
+                    />
+                  </div>
                 </div>
-                <div className="flex justify-between text-xs text-muted-foreground">
-                  <span>{repo.agentsMdCount} AGENTS.md</span>
-                  <span>
-                    {repo.lastValidated
-                      ? new Date(repo.lastValidated).toLocaleDateString()
-                      : "Never"}
-                  </span>
+                <div className="grid grid-cols-2 gap-2">
+                  <div className="rounded-xl border border-border/40 bg-muted/30 p-2 text-center">
+                    <p className="text-[9px] font-bold text-muted-foreground/60 uppercase">Agents</p>
+                    <p className="text-sm font-bold text-foreground/80">{repo.agentsMdCount}</p>
+                  </div>
+                  <div className="rounded-xl border border-border/40 bg-muted/30 p-2 text-center">
+                    <p className="text-[9px] font-bold text-muted-foreground/60 uppercase">Last Sync</p>
+                    <p className="text-sm font-bold text-foreground/80 truncate">
+                      {repo.lastValidated
+                        ? new Date(repo.lastValidated).toLocaleDateString([], { month: 'short', day: 'numeric' })
+                        : "Never"}
+                    </p>
+                  </div>
                 </div>
+
                 {repo.latestExecutionStatus ? (
-                  <div className="flex items-center justify-between rounded-md border border-border/60 px-2 py-1 text-xs">
-                    <span className="text-muted-foreground">Latest execution</span>
-                    <Badge
-                      variant={
-                        repo.latestExecutionStatus === "success"
-                          ? "success"
-                          : repo.latestExecutionStatus === "failed"
-                          ? "destructive"
-                          : repo.latestExecutionStatus === "running"
-                          ? "default"
-                          : "secondary"
-                      }
-                    >
+                  <div className="flex items-center justify-between rounded-xl border border-primary/10 bg-primary/[0.02] px-3 py-2 text-xs">
+                    <div className="flex items-center gap-2">
+                      <span className="relative flex h-2 w-2">
+                        <span className={cn(
+                          "animate-ping absolute inline-flex h-full w-full rounded-full opacity-75",
+                          repo.latestExecutionStatus === 'running' ? 'bg-primary' : 'hidden'
+                        )}></span>
+                        <span className={cn(
+                          "relative inline-flex rounded-full h-2 w-2",
+                          repo.latestExecutionStatus === 'success' ? 'bg-emerald-500' :
+                            repo.latestExecutionStatus === 'failed' ? 'bg-red-500' :
+                              repo.latestExecutionStatus === 'running' ? 'bg-primary' : 'bg-muted-foreground'
+                        )}></span>
+                      </span>
+                      <span className="font-medium text-muted-foreground">Status</span>
+                    </div>
+                    <span className={cn(
+                      "font-bold uppercase tracking-tighter text-[10px]",
+                      repo.latestExecutionStatus === 'success' ? 'text-emerald-500' :
+                        repo.latestExecutionStatus === 'failed' ? 'text-red-500' :
+                          repo.latestExecutionStatus === 'running' ? 'text-primary' : 'text-muted-foreground'
+                    )}>
                       {repo.latestExecutionStatus}
-                    </Badge>
+                    </span>
                   </div>
                 ) : null}
+
                 <div className="flex gap-2">
                   <Link
                     href={
@@ -478,21 +517,21 @@ export function RepositoryDashboard() {
                     }
                     className="flex-1"
                   >
-                    <Button variant="outline" size="sm" className="w-full">
-                      View
+                    <Button variant="outline" size="sm" className="w-full rounded-xl btn-tactile font-bold text-xs">
+                      Inspect
                     </Button>
                   </Link>
                   <Button
                     size="sm"
-                    className="flex-1"
+                    className="flex-1 rounded-xl btn-tactile font-bold text-xs"
                     disabled={runningRepoId === repo.id}
                     onClick={() => void handleRunRepository(repo.id)}
                   >
-                    {runningRepoId === repo.id ? "Queuing..." : "Run"}
+                    {runningRepoId === repo.id ? "Working..." : "Execute"}
                   </Button>
                 </div>
               </CardContent>
-            </Card>
+            </div>
           ))}
           {filteredRepos.length === 0 ? (
             <Card className="md:col-span-2 lg:col-span-3">

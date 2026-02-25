@@ -1,12 +1,13 @@
 "use client";
 
-import type { PipelineStage } from "@/app/ops/mock-data";
+import type { PipelineStage } from "@/lib/ops/mock-data";
 
+/* Design system: primary (emerald), destructive, muted, primary */
 const STAGE_COLORS = {
-  passed: "#16a34a",
-  failed: "#dc2626",
-  pending: "#9ca3af",
-  running: "#2563eb",
+  passed: "hsl(var(--primary))",
+  failed: "hsl(var(--destructive))",
+  pending: "hsl(var(--muted-foreground))",
+  running: "hsl(var(--primary))",
 };
 
 export function PipelineDiagram({
@@ -35,7 +36,7 @@ export function PipelineDiagram({
             refY="3.5"
             orient="auto"
           >
-            <polygon points="0 0, 10 3.5, 0 7" fill="#111" />
+            <polygon points="0 0, 10 3.5, 0 7" fill="hsl(var(--foreground))" />
           </marker>
         </defs>
         {stages.map((stage, i) => {
@@ -50,7 +51,7 @@ export function PipelineDiagram({
                   y1={40}
                   x2={x - 12}
                   y2={40}
-                  stroke="#e5e5e5"
+                  stroke="hsl(var(--border))"
                   strokeWidth={1}
                   strokeDasharray="60"
                   className="ops-connector"
@@ -65,7 +66,7 @@ export function PipelineDiagram({
                   y={8}
                   width={width}
                   height={64}
-                  fill="white"
+                  fill="hsl(var(--card))"
                   stroke={color}
                   strokeWidth={stage.status === "failed" ? 2 : 1}
                 />
@@ -74,7 +75,7 @@ export function PipelineDiagram({
                   y={32}
                   textAnchor="middle"
                   className="font-mono text-xs font-medium"
-                  fill="#111"
+                  fill="hsl(var(--foreground))"
                 >
                   {stage.status === "passed" && "✓ "}
                   {stage.status === "failed" && "✕ "}
@@ -89,7 +90,7 @@ export function PipelineDiagram({
                   y={52}
                   textAnchor="middle"
                   className="font-mono text-[10px]"
-                  fill="#6b7280"
+                  fill="hsl(var(--muted-foreground))"
                 >
                   {stage.duration ?? "—"}
                 </text>
@@ -100,7 +101,7 @@ export function PipelineDiagram({
                   y1={40}
                   x2={x + width + gap - 12}
                   y2={40}
-                  stroke="#e5e5e5"
+                  stroke="hsl(var(--border))"
                   strokeWidth={1}
                   markerEnd="url(#arrowhead)"
                 />

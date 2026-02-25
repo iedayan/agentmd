@@ -1,4 +1,22 @@
+"use client";
+
+import { useState } from "react";
+import { Check, Copy } from "lucide-react";
+
+const WORKFLOW_SNIPPET = `- uses: agentmd/agentmd/.github/actions/agentmd@main
+  with:
+    command: validate
+    path: .`;
+
 export function HowItWorks() {
+    const [copied, setCopied] = useState(false);
+
+    const copyWorkflow = async () => {
+        await navigator.clipboard.writeText(WORKFLOW_SNIPPET);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+    };
+
     return (
         <section className="border-b border-border py-20 md:py-24 bg-muted/30">
             <div className="container mx-auto px-4 lg:px-8">
@@ -19,7 +37,7 @@ export function HowItWorks() {
                             <div className="pb-10">
                                 <h3 className="font-semibold mb-1">Create AGENTS.md</h3>
                                 <p className="text-sm text-muted-foreground">
-                                    Run <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-xs">agentmd init</code> — auto-detects Node, Python, Rust, or Go. Or add commands manually.
+                                    Run <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-xs">npx @agentmd/cli init</code> — auto-detects Node, Python, Rust, or Go. No install.
                                 </p>
                             </div>
                         </div>
@@ -47,14 +65,21 @@ export function HowItWorks() {
                         </div>
                     </div>
                     <div className="mt-10 rounded-xl border border-border bg-card p-5 shadow-sm">
-                        <p className="text-xs font-mono text-muted-foreground uppercase tracking-wider mb-3">
-                            Add to .github/workflows/ci.yml
-                        </p>
+                        <div className="flex items-center justify-between mb-3">
+                            <p className="text-xs font-mono text-muted-foreground uppercase tracking-wider">
+                                Add to .github/workflows/ci.yml
+                            </p>
+                            <button
+                                type="button"
+                                onClick={copyWorkflow}
+                                className="inline-flex items-center gap-1.5 rounded-md px-2.5 py-1 text-xs font-medium text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+                            >
+                                {copied ? <Check className="h-3.5 w-3.5 text-primary" /> : <Copy className="h-3.5 w-3.5" />}
+                                {copied ? "Copied" : "Copy"}
+                            </button>
+                        </div>
                         <pre className="overflow-x-auto rounded-lg bg-muted/50 p-4 font-mono text-sm text-foreground">
-                            {`- uses: agentmd/agentmd/.github/actions/agentmd@main
-  with:
-    command: validate
-    path: .`}
+                            {WORKFLOW_SNIPPET}
                         </pre>
                     </div>
                 </div>

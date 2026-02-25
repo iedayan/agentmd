@@ -121,7 +121,7 @@ function parseSectionsTree(lines: string[]): AgentsMdSection[] {
 function parseChildSections(
   lines: string[],
   parentLevel: number,
-  lineOffset: number = 0
+  lineOffset = 0
 ): AgentsMdSection[] {
   const children: AgentsMdSection[] = [];
   let i = 0;

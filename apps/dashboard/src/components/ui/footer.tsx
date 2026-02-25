@@ -15,16 +15,30 @@ export function Footer() {
                             The CI/CD control plane for AI agents.
                         </p>
                     </div>
-                    <nav className="flex gap-12 md:gap-16" aria-label="Footer navigation">
+                    <nav className="flex flex-wrap gap-10 md:gap-12" aria-label="Footer navigation">
                         <FooterCol
                             heading="Product"
                             links={[
                                 ["Features", "/features"],
-                                ["Case Studies", "/case-studies"],
-                                ["Leaderboard", "/leaderboard"],
-                                ["GitHub Action", "https://github.com/agentmd/agentmd/tree/main/.github/actions/agentmd"],
                                 ["Pricing", "/pricing"],
+                                ["FAQ", "/faq"],
                                 ["Docs", "/docs"],
+                                ["Design System", "/design-system"],
+                            ]}
+                        />
+                        <FooterCol
+                            heading="Solutions"
+                            links={[
+                                ["For CI/CD", "/for/ci-cd"],
+                                ["For Enterprises", "/for/enterprises"],
+                                ["Case Studies & ROI", "/case-studies"],
+                                ["Leaderboard", "/leaderboard"],
+                            ]}
+                        />
+                        <FooterCol
+                            heading="Developers"
+                            links={[
+                                ["GitHub Action", "https://github.com/agentmd/agentmd/tree/main/.github/actions/agentmd"],
                                 ["AGENTS.md spec", "https://agents.md"],
                             ]}
                         />

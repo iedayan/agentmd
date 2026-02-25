@@ -68,8 +68,8 @@ export async function GET(req: NextRequest) {
       } else {
         const content = await res.text();
         const parsed = parseAgentsMd(content);
-        validateAgentsMd(parsed);
-        score = computeAgentReadinessScore(parsed);
+        await validateAgentsMd(parsed);
+        score = await computeAgentReadinessScore(parsed);
       }
     } catch {
       score = 0;

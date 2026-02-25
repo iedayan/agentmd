@@ -1,29 +1,73 @@
-# AgentMD
+# AGENTS.md
 
-AgentMD is the CI/CD platform for AI agents — we parse, validate, and execute AGENTS.md files.
+This file provides guidance to WARP (warp.dev) when working with code in this repository.
 
-## Development setup
+## Repo summary
+AgentMD is a pnpm workspace (Node.js >= 20) that makes AGENTS.md files executable.
 
-- Use `pnpm` for package management. Run `pnpm install` from the repo root.
-- This is a pnpm workspace. Packages live in `packages/`, apps in `apps/`.
-- Use `pnpm --filter <package-name>` to run commands in specific packages.
+Key workspace units:
+- `packages/core`: parse/validate/compose/discover/execute AGENTS.md
+- `packages/cli`: `agentmd` CLI (thin wrapper around core)
+- `packages/sdk`: programmatic API for integrations
+- `apps/dashboard`: Next.js dashboard (dev server on port 3001)
+- `deploy/worker`: background execution worker + deploy scripts/infra
 
-## Build and test commands
+## Setup
+- Install deps: `pnpm install`
 
-- **Build**: `pnpm run build` from root builds all packages.
-- **Test**: `pnpm run test` runs the test suite across packages.
-- **Lint**: `pnpm run lint` runs ESLint.
-- **CLI**: After building, run `pnpm agentmd <command>` or `pnpm --filter @agentmd/cli exec agentmd <command>`.
+## Common commands (from repo root)
+- Build all packages/apps: `pnpm run build`
+- Run all tests (Vitest): `pnpm run test`
+- Lint repo (ESLint): `pnpm run lint`
+- Fix lint: `pnpm run lint:fix`
+- Format (Prettier): `pnpm run format`
+- CI-style check: `pnpm run check`
 
-## Testing instructions
+### Package-scoped commands
+Use `pnpm --filter <pkg>` to target a package.
 
-- Tests use Vitest. Run `pnpm test` in each package or from root.
-- Core parser tests are in `packages/core/src/__tests__/`.
-- Add tests for new parsing rules or validation logic.
-- Run `pnpm run build` before committing to ensure TypeScript compiles.
+Core (`@agentmd/core`):
+- Build: `pnpm --filter @agentmd/core run build`
+- Typecheck (tsc --noEmit): `pnpm --filter @agentmd/core run lint`
+- Tests: `pnpm --filter @agentmd/core run test`
+- Single test file: `pnpm --filter @agentmd/core run test -- packages/core/src/__tests__/parser.test.ts`
+- Single test by name: `pnpm --filter @agentmd/core run test -- -t "parseAgentsMd"`
 
-## PR instructions
+CLI (`@agentmd/cli`):
+- Build: `pnpm --filter @agentmd/cli run build`
 
-- Title format: `[package] Brief description` (e.g., `[core] Add command extraction for npm scripts`)
-- Run `pnpm run lint` and `pnpm run test` before committing.
-- Keep AGENTS.md under 150 lines per the standard.
+Dashboard (`@agentmd/dashboard`):
+- Dev: `pnpm --filter @agentmd/dashboard run dev` (http://localhost:3001)
+
+## CLI usage (`agentmd`)
+Root script `pnpm run agentmd` runs the built CLI at `packages/cli/dist/cli.js`.
+
+- Help: `pnpm run agentmd -- help`
+- Validate AGENTS.md (+ output contract): `pnpm run agentmd -- check . --contract`
+- Discover nested AGENTS.md files: `pnpm run agentmd -- discover .`
+- Compose from fragments: `pnpm run agentmd -- compose .`
+- Preflight + dry-run execution: `pnpm run agentmd -- run . --dry-run`
+
+## Architecture (big picture)
+### Core data model
+- `parseAgentsMd()` (`packages/core/src/parser.ts`) parses markdown into `ParsedAgentsMd` (`packages/core/src/types.ts`):
+  - section tree (headings)
+  - extracted commands (from backticks / code blocks)
+  - optional YAML frontmatter + directives
+
+### Main pipelines (in `@agentmd/core`)
+- Parse + command extraction: `parser.ts` + `commands.ts`
+- Validation + scoring: `validator.ts` (calls `executor.isCommandSafe()` for command safety)
+- Discovery: `discovery.ts` finds all AGENTS.md and supports “nearest file wins” resolution (`findNearestAgentsMd()`)
+- Composition: `compose.ts` builds AGENTS.md from fragments (`**/agents-md/**/*.md`, `**/*.agents.md`)
+  - optional config: `agentmd.config.json|js|cjs`
+- Execution: `executor.ts` plans + runs commands with safety patterns and optional permissions/policy
+  - commands with pipes/redirection require `--use-shell`
+- CI export: `ci-export.ts` converts parsed commands into GitHub Actions workflow YAML
+
+### CLI wiring
+- `packages/cli/src/cli.ts` maps subcommands (init/doctor/check/compose/run/score/export) onto core functions.
+
+## PR conventions
+- Title format: `[package] Brief description` (e.g. `[core] Add command extraction for npm scripts`)
+- Keep this file under ~150 lines (the validator warns when it gets long).

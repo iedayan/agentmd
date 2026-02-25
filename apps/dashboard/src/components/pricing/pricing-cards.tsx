@@ -28,8 +28,8 @@ const PLANS = [
   },
   {
     name: "Pro",
-    priceMonthly: 40,
-    priceYearly: 32,
+    priceMonthly: 49,
+    priceYearly: 39,
     desc: "Production teams",
     features: [
       "Unlimited repositories",
@@ -47,8 +47,8 @@ const PLANS = [
   },
   {
     name: "Enterprise",
-    priceMonthly: 199,
-    priceYearly: 159,
+    priceMonthly: 249,
+    priceYearly: 199,
     desc: "Large teams & compliance",
     features: [
       "Everything in Pro",

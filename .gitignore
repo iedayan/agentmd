@@ -1,6 +1,11 @@
 node_modules/
 dist/
 .next/
+.env
+.env.local
+.env.*.local
+apps/dashboard/.data/
+*.tsbuildinfo
 build/
 coverage/
 pnpm-lock.yaml
@@ -8,3 +13,4 @@ package-lock.json
 *.log
 *.tgz
 pnpm-store/
+.pnpm-store/

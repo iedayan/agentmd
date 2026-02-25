@@ -44,7 +44,9 @@ export function SettingsUsage({
           });
         }
       })
-      .catch(() => {})
+      .catch(() => {
+        // Ignore error
+      })
       .finally(() => {
         if (!cancelled) setLoading(false);
       });

@@ -26,10 +26,10 @@ const DEFAULT_JOB = "agentmd";
 /**
  * Generate GitHub Actions workflow YAML from parsed AGENTS.md.
  */
-export function exportToGitHubActions(
+export async function exportToGitHubActions(
   parsed: ParsedAgentsMd,
   options: ExportOptions = {}
-): string {
+): Promise<string> {
   const {
     name = "AgentMD",
     on = DEFAULT_ON,
@@ -40,7 +40,11 @@ export function exportToGitHubActions(
 
   let commands = getSuggestedExecutionOrder(parsed.commands);
   if (safeOnly) {
-    commands = commands.filter((c) => isCommandSafe(c.command).safe);
+    const safetyResults = await Promise.all(commands.map(async (c) => ({
+      cmd: c,
+      safe: (await isCommandSafe(c.command)).safe
+    })));
+    commands = safetyResults.filter(r => r.safe).map(r => r.cmd);
   }
 
   const steps = commands.map((cmd, i) => toActionStep(cmd, i + 1));

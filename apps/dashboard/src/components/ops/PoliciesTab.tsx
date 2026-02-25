@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import type { PolicyRule } from "@/app/ops/mock-data";
+import type { PolicyRule } from "@/lib/ops/mock-data";
 
 export function PoliciesTab({ policies }: { policies: PolicyRule[] }) {
   const [editing, setEditing] = useState<string | null>(null);
@@ -21,29 +21,29 @@ export function PoliciesTab({ policies }: { policies: PolicyRule[] }) {
           placeholder="Search policies..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="h-9 w-64 rounded border border-[var(--ops-border)] bg-[var(--ops-panel)] px-3 font-mono text-sm text-[var(--ops-primary)] placeholder:text-[var(--ops-primary)]/50"
+          className="h-9 w-64 rounded-[var(--radius-sm)] border border-input bg-background px-3 font-mono text-sm text-foreground placeholder:text-muted-foreground"
         />
-        <button className="h-9 rounded bg-[var(--ops-primary)] px-4 font-mono text-sm font-medium text-white hover:opacity-90 transition-opacity">
+        <button className="h-9 rounded-[var(--radius-sm)] bg-primary px-4 font-mono text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors">
           New Policy Rule
         </button>
       </div>
-      <div className="border border-[var(--ops-border)] bg-[var(--ops-panel)]">
+      <div className="rounded-[var(--radius-md)] border border-border bg-card">
         <table className="w-full border-collapse">
           <thead>
-            <tr className="border-b border-[var(--ops-border)]">
-              <th className="px-4 py-3 text-left font-mono text-xs font-semibold uppercase tracking-wider text-[var(--ops-primary)]/70">
+            <tr className="border-b border-border">
+              <th className="px-4 py-3 text-left font-mono text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                 Rule ID
               </th>
-              <th className="px-4 py-3 text-left font-mono text-xs font-semibold uppercase tracking-wider text-[var(--ops-primary)]/70">
+              <th className="px-4 py-3 text-left font-mono text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                 Description
               </th>
-              <th className="px-4 py-3 text-left font-mono text-xs font-semibold uppercase tracking-wider text-[var(--ops-primary)]/70">
+              <th className="px-4 py-3 text-left font-mono text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                 Enforcement
               </th>
-              <th className="px-4 py-3 text-left font-mono text-xs font-semibold uppercase tracking-wider text-[var(--ops-primary)]/70">
+              <th className="px-4 py-3 text-left font-mono text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                 Scope
               </th>
-              <th className="px-4 py-3 text-left font-mono text-xs font-semibold uppercase tracking-wider text-[var(--ops-primary)]/70">
+              <th className="px-4 py-3 text-left font-mono text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                 Last Triggered
               </th>
               <th className="w-20 px-4 py-3" />
@@ -53,10 +53,10 @@ export function PoliciesTab({ policies }: { policies: PolicyRule[] }) {
             {filtered.map((p) => (
               <tr
                 key={p.id}
-                className="border-b border-[var(--ops-border)] hover:bg-[var(--ops-bg)]"
+                className="border-b border-border hover:bg-muted/30"
               >
                 <td className="px-4 py-3 font-mono text-sm">{p.id}</td>
-                <td className="px-4 py-3 font-mono text-sm text-[var(--ops-primary)]/90">
+                <td className="px-4 py-3 font-mono text-sm text-foreground/90">
                   {p.description}
                 </td>
                 <td className="px-4 py-3">
@@ -84,16 +84,16 @@ export function PoliciesTab({ policies }: { policies: PolicyRule[] }) {
                       : "Warn"}
                   </span>
                 </td>
-                <td className="px-4 py-3 font-mono text-sm text-[var(--ops-primary)]/70">
+                <td className="px-4 py-3 font-mono text-sm text-muted-foreground">
                   {p.scope}
                 </td>
-                <td className="px-4 py-3 font-mono text-sm text-[var(--ops-primary)]/60">
+                <td className="px-4 py-3 font-mono text-sm text-muted-foreground">
                   {p.lastTriggered}
                 </td>
                 <td className="px-4 py-3">
                   <button
                     onClick={() => setEditing(p.id)}
-                    className="font-mono text-xs text-[var(--ops-primary)]/70 underline hover:text-[var(--ops-primary)]"
+                    className="font-mono text-xs text-muted-foreground underline hover:text-foreground"
                   >
                     Edit
                   </button>
@@ -104,12 +104,12 @@ export function PoliciesTab({ policies }: { policies: PolicyRule[] }) {
         </table>
       </div>
       {editing && (
-        <div className="fixed inset-y-0 right-0 w-full max-w-md border-l border-[var(--ops-border)] bg-[var(--ops-panel)] p-6 shadow-[-4px_0_24px_rgba(0,0,0,0.06)]">
+        <div className="fixed inset-y-0 right-0 w-full max-w-md border-l border-border bg-card p-6 shadow-[-4px_0_24px_rgba(0,0,0,0.06)]">
           <div className="flex items-center justify-between">
             <h3 className="font-mono text-sm font-semibold">Edit Policy</h3>
             <button
               onClick={() => setEditing(null)}
-              className="font-mono text-xs text-[var(--ops-primary)]/60"
+              className="font-mono text-xs text-muted-foreground"
             >
               Close
             </button>
@@ -122,7 +122,7 @@ export function PoliciesTab({ policies }: { policies: PolicyRule[] }) {
               <input
                 type="text"
                 defaultValue={policies.find((p) => p.id === editing)?.id}
-                className="w-full rounded border border-[var(--ops-border)] bg-[var(--ops-panel)] p-2 font-mono text-sm text-[var(--ops-primary)] placeholder:text-[var(--ops-primary)]/50"
+                className="w-full rounded-[var(--radius-sm)] border border-input bg-background p-2 font-mono text-sm text-foreground placeholder:text-muted-foreground"
               />
             </div>
             <div>
@@ -131,7 +131,7 @@ export function PoliciesTab({ policies }: { policies: PolicyRule[] }) {
               </label>
               <textarea
                 rows={4}
-                className="w-full rounded border border-[var(--ops-border)] bg-[var(--ops-panel)] p-2 font-mono text-sm text-[var(--ops-primary)] placeholder:text-[var(--ops-primary)]/50"
+                className="w-full rounded-[var(--radius-sm)] border border-input bg-background p-2 font-mono text-sm text-foreground placeholder:text-muted-foreground"
                 placeholder="tool == 'web_search'"
               />
             </div>
@@ -139,7 +139,7 @@ export function PoliciesTab({ policies }: { policies: PolicyRule[] }) {
               <label className="mb-1 block font-mono text-xs text-[var(--ops-primary)]/70">
                 Enforcement level
               </label>
-              <select className="w-full rounded border border-[var(--ops-border)] bg-[var(--ops-panel)] p-2 font-mono text-sm text-[var(--ops-primary)]">
+              <select className="w-full rounded-[var(--radius-sm)] border border-input bg-background p-2 font-mono text-sm text-foreground">
                 <option>Block</option>
                 <option>Warn</option>
                 <option>Require Approval</option>
@@ -152,7 +152,7 @@ export function PoliciesTab({ policies }: { policies: PolicyRule[] }) {
               <input
                 type="text"
                 placeholder="platform-team"
-                className="w-full rounded border border-[var(--ops-border)] bg-[var(--ops-panel)] p-2 font-mono text-sm text-[var(--ops-primary)] placeholder:text-[var(--ops-primary)]/50"
+                className="w-full rounded-[var(--radius-sm)] border border-input bg-background p-2 font-mono text-sm text-foreground placeholder:text-muted-foreground"
               />
             </div>
           </div>

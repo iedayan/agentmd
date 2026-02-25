@@ -20,12 +20,12 @@ export function Logo({ className, size = "md" }: { className?: string; size?: "s
     >
       <defs>
         <linearGradient id={`logo-bg-${id}`} x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#0ea5e9" />
-          <stop offset="1" stopColor="#0284c7" />
+          <stop stopColor="#10b981" />
+          <stop offset="1" stopColor="#059669" />
         </linearGradient>
         <linearGradient id={`logo-accent-${id}`} x1="0" y1="0" x2="1" y2="1" gradientUnits="objectBoundingBox">
-          <stop stopColor="#38bdf8" />
-          <stop offset="1" stopColor="#22d3ee" />
+          <stop stopColor="#34d399" />
+          <stop offset="1" stopColor="#6ee7b7" />
         </linearGradient>
       </defs>
 

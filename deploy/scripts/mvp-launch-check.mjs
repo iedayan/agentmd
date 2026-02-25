@@ -27,6 +27,7 @@ function parseArgs(argv) {
   const out = {
     target: "production",
     softLaunch: false,
+    skipDb: false,
     appUrl: process.env.NEXT_PUBLIC_APP_URL || "",
     repos: [],
     branch: "main",
@@ -37,6 +38,7 @@ function parseArgs(argv) {
   for (const arg of argv) {
     if (arg.startsWith("--target=")) out.target = arg.split("=")[1] || out.target;
     else if (arg === "--soft-launch") out.softLaunch = true;
+    else if (arg === "--skip-db") out.skipDb = true;
     else if (arg.startsWith("--app-url=")) out.appUrl = arg.split("=")[1] || "";
     else if (arg.startsWith("--repos=")) {
       out.repos = (arg.split("=")[1] || "")
@@ -61,7 +63,9 @@ async function main() {
   const checks = [];
 
   checks.push(runEnvValidation(args));
-  checks.push(runDbTableCheck());
+  if (!args.skipDb) {
+    checks.push(runDbTableCheck());
+  }
   checks.push(await runHealthChecks(args.appUrl));
 
   if (args.verifyGitHub) {

@@ -29,10 +29,10 @@ const FILE = {
 
 function color(type: string): string {
   switch (type) {
-    case "h2":      return "#22d3ee"; // cyan-400 (primary)
+    case "h2":      return "#34d399"; // emerald-400 (primary)
     case "cmd":     return "#e4e4e7";
     case "comment": return "#52525b";
-    case "fm":      return "#67e8f9"; // cyan-300
+    case "fm":      return "#6ee7b7"; // emerald-300
     case "fence":   return "#3f3f46";
     default:        return "transparent";
   }
@@ -81,7 +81,7 @@ export function HeroCode() {
               <div key={i} className="h-6 flex items-center whitespace-pre">
                 {line.type === "cmd" ? (
                   <span>
-                    <span style={{ color: "#22d3ee" }}>{"$ "}</span>
+                    <span style={{ color: "#34d399" }}>{"$ "}</span>
                     <span style={{ color: color(line.type) }}>{line.txt}</span>
                   </span>
                 ) : line.txt ? (

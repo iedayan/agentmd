@@ -61,4 +61,3 @@ export interface AuditEntry {
   result: "pass" | "fail" | "approved" | "rejected";
   details?: string;
 }
-

@@ -12,8 +12,8 @@ const COMMANDS: {
   primary?: boolean;
 }[] = [
   {
-    label: "Try without installing",
-    desc: "No install required",
+    label: "Get started in 60 seconds",
+    desc: "One command, no install",
     cmd: "npx @agentmd/cli init",
     icon: Terminal,
     primary: true,
@@ -27,8 +27,8 @@ const COMMANDS: {
   {
     label: "Add to GitHub",
     desc: "Install the app",
-    cmd: "https://github.com/apps/agentmd",
-    href: "https://github.com/apps/agentmd",
+    cmd: "/github/install",
+    href: "/github/install",
     icon: Github,
   },
   {

@@ -8,7 +8,7 @@ import Link from "next/link";
 
 const STORAGE_KEY = "agentmd-onboarding";
 const STEPS = [
-  { id: "template", title: "Get AGENTS.md", desc: "Use the generator or init to create your first AGENTS.md", href: "/marketplace/developers/generator" },
+  { id: "template", title: "Get AGENTS.md", desc: "Use the setup wizard to create your first AGENTS.md", href: "/dashboard/setup/agent" },
   { id: "connect", title: "Connect a repo", desc: "Add your repository to start monitoring AGENTS.md", href: "/docs/quickstart" },
   { id: "validate", title: "Validate", desc: "AgentMD parses and scores your AGENTS.md on every push", href: "/docs/parse" },
   { id: "execute", title: "Run execution", desc: "Trigger a run or connect GitHub for automatic runs", href: "/docs/execution" },
@@ -149,6 +149,9 @@ export function OnboardingWizard() {
               <Button variant="outline">View Guide</Button>
             </Link>
           )}
+          <Link href="/dashboard/setup/agent">
+            <Button size="sm" className="btn-tactile rounded-xl shadow-glow">Setup Agent</Button>
+          </Link>
           <Link href="/docs/quickstart">
             <Button variant="ghost" size="sm">Quickstart</Button>
           </Link>

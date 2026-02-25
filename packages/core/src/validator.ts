@@ -53,10 +53,10 @@ export interface ValidationOptions {
 /**
  * Validate a parsed AGENTS.md file.
  */
-export function validateAgentsMd(
+export async function validateAgentsMd(
   parsed: ParsedAgentsMd,
   options?: ValidationOptions
-): ValidationResult {
+): Promise<ValidationResult> {
   const errors: ValidationError[] = [];
   const warnings: ValidationWarning[] = [];
   const suggestions: string[] = [];
@@ -149,7 +149,7 @@ export function validateAgentsMd(
 
   // Command safety checks
   for (const cmd of parsed.commands) {
-    const safe = isCommandSafe(cmd.command);
+    const safe = await isCommandSafe(cmd.command);
     if (!safe.safe) {
       errors.push({
         code: "UNSAFE_COMMAND",
@@ -193,7 +193,7 @@ const SCORE_WEIGHTS = {
  * Compute agent-readiness score (0-100).
  * Based on: sections, commands, frontmatter, safety.
  */
-export function computeAgentReadinessScore(parsed: ParsedAgentsMd): number {
+export async function computeAgentReadinessScore(parsed: ParsedAgentsMd): Promise<number> {
   let score = 0;
   const max = 100;
 
@@ -235,11 +235,12 @@ export function computeAgentReadinessScore(parsed: ParsedAgentsMd): number {
     parsed.frontmatter?.guardrails && parsed.frontmatter.guardrails.length > 0;
   if (hasGuardrails) score += SCORE_WEIGHTS.hasGuardrails;
 
-  const allSafe = parsed.commands.every((c) => isCommandSafe(c.command).safe);
+  const safetyResults = await Promise.all(parsed.commands.map(c => isCommandSafe(c.command)));
+  const allSafe = safetyResults.every(r => r.safe);
   if (parsed.commands.length === 0 || allSafe) score += SCORE_WEIGHTS.allCommandsSafe;
 
   // Penalty: unsafe commands (already blocked, but deduct from score)
-  const unsafeCount = parsed.commands.filter((c) => !isCommandSafe(c.command).safe).length;
+  const unsafeCount = safetyResults.filter((r) => !r.safe).length;
   if (unsafeCount > 0) score -= Math.min(unsafeCount * 10, 25);
 
   // Penalty: sections but no commands (documentation without executable instructions)

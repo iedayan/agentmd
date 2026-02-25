@@ -91,8 +91,8 @@ export async function POST(req: NextRequest) {
     }
 
     const parsed = parseAgentsMd(content);
-    const validation = validateAgentsMd(parsed);
-    const score = computeAgentReadinessScore(parsed);
+    const validation = await validateAgentsMd(parsed);
+    const score = await computeAgentReadinessScore(parsed);
 
     return apiOk(
       {

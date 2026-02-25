@@ -1,0 +1,1313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AgentMD — Design System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<style>
+  /* ── Tokens ────────────────────────────────────────────── */
+  :root {
+    --bg-base:        hsl(220 20% 6%);
+    --bg-surface:     hsl(220 18% 9%);
+    --bg-elevated:    hsl(220 16% 12%);
+    --bg-subtle:      hsl(220 14% 15%);
+
+    --border-default: hsl(220 14% 20%);
+    --border-subtle:  hsl(220 14% 16%);
+    --border-strong:  hsl(220 14% 28%);
+
+    --text-primary:   hsl(220 20% 96%);
+    --text-secondary: hsl(220 14% 65%);
+    --text-tertiary:  hsl(220 10% 45%);
+    --text-inverse:   hsl(220 20% 6%);
+
+    --primary:        hsl(160 84% 39%);
+    --primary-dim:    hsl(160 84% 39% / 0.15);
+    --primary-glow:   hsl(160 84% 39% / 0.35);
+    --primary-bright: hsl(160 84% 50%);
+    --warning:        hsl(38 95% 55%);
+    --error:          hsl(0 72% 55%);
+    --info:           hsl(210 80% 58%);
+
+    --space-1: 4px;  --space-2: 8px;  --space-3: 12px; --space-4: 16px;
+    --space-5: 20px; --space-6: 24px; --space-8: 32px; --space-10: 40px;
+    --space-12: 48px; --space-16: 64px; --space-24: 96px;
+
+    --duration-fast:   120ms;
+    --duration-base:   220ms;
+    --duration-slow:   400ms;
+    --duration-reveal: 600ms;
+    --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-in: cubic-bezier(0.4, 0, 1, 1);
+
+    --font-sans: 'Outfit', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 16px;
+  }
+
+  /* ── Reset ─────────────────────────────────────────────── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--font-sans);
+    background: var(--bg-base);
+    color: var(--text-primary);
+    line-height: 1.5;
+    overflow-x: hidden;
+  }
+
+  /* ── Animations ────────────────────────────────────────── */
+  @keyframes fadeSlideUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes glowPulse {
+    0%, 100% { box-shadow: 0 0 8px 2px var(--primary-glow); }
+    50%       { box-shadow: 0 0 20px 6px var(--primary-glow); }
+  }
+  @keyframes blink {
+    0%, 100% { opacity: 1; } 50% { opacity: 0; }
+  }
+  @keyframes scanLine {
+    from { transform: translateY(0); opacity: 0.6; }
+    to   { transform: translateY(100%); opacity: 0; }
+  }
+  @keyframes shimmer {
+    from { background-position: -200% 0; }
+    to   { background-position: 200% 0; }
+  }
+  @keyframes statusPop {
+    0%   { transform: scale(0.85); }
+    60%  { transform: scale(1.05); }
+    100% { transform: scale(1); }
+  }
+  @keyframes typewriter {
+    from { width: 0; }
+    to   { width: 100%; }
+  }
+  @keyframes gridFade {
+    from { opacity: 0; } to { opacity: 1; }
+  }
+
+  .reveal {
+    opacity: 0;
+    animation: fadeSlideUp var(--duration-reveal) var(--ease-out-expo) forwards;
+  }
+
+  /* ── Layout ────────────────────────────────────────────── */
+  .page-wrap {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    min-height: 100vh;
+  }
+
+  /* ── Sidebar ───────────────────────────────────────────── */
+  .sidebar {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    background: var(--bg-surface);
+    border-right: 1px solid var(--border-default);
+    padding: var(--space-8) 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+  .sidebar-logo {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: 0 var(--space-6) var(--space-6);
+    border-bottom: 1px solid var(--border-subtle);
+    margin-bottom: var(--space-4);
+  }
+  .logo-mark {
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+  }
+  .logo-name {
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: var(--text-primary);
+  }
+  .logo-sub {
+    font-size: 0.6875rem;
+    font-family: var(--font-mono);
+    color: var(--primary);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .nav-section {
+    padding: var(--space-3) var(--space-6) var(--space-1);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+  }
+  .nav-link {
+    display: block;
+    padding: var(--space-2) var(--space-6);
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    text-decoration: none;
+    border-left: 2px solid transparent;
+    transition: color var(--duration-fast), border-color var(--duration-fast), background var(--duration-fast);
+  }
+  .nav-link:hover {
+    color: var(--text-primary);
+    background: var(--bg-subtle);
+    border-left-color: var(--border-strong);
+  }
+  .nav-link.active {
+    color: var(--primary);
+    border-left-color: var(--primary);
+    background: var(--primary-dim);
+  }
+
+  /* ── Main ──────────────────────────────────────────────── */
+  main {
+    padding: var(--space-16);
+    max-width: 900px;
+  }
+
+  /* ── Section ───────────────────────────────────────────── */
+  .section {
+    margin-bottom: var(--space-24);
+  }
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-4);
+    margin-bottom: var(--space-8);
+    padding-bottom: var(--space-4);
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  .section-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: -0.02em;
+  }
+  .section-tag {
+    font-size: 0.6875rem;
+    font-family: var(--font-mono);
+    color: var(--primary);
+    background: var(--primary-dim);
+    border: 1px solid hsl(160 84% 39% / 0.3);
+    border-radius: 4px;
+    padding: 2px 8px;
+  }
+  .subsection-title {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+    margin-bottom: var(--space-4);
+    margin-top: var(--space-8);
+  }
+
+  /* ── Hero / Page Header ─────────────────────────────────── */
+  .page-hero {
+    position: relative;
+    margin-bottom: var(--space-16);
+    padding: var(--space-12) 0;
+    overflow: hidden;
+  }
+  .hero-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(hsl(160 84% 39% / 0.06) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(160 84% 39% / 0.06) 1px, transparent 1px);
+    background-size: 40px 40px;
+    animation: gridFade 1s var(--ease-out-expo) 0.2s both;
+  }
+  .hero-orb {
+    position: absolute;
+    top: -60px;
+    right: -60px;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, hsl(160 84% 39% / 0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-content { position: relative; }
+  .hero-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--primary);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: var(--space-3);
+    animation: fadeSlideUp 0.5s var(--ease-out-expo) 0.1s both;
+  }
+  .hero-title {
+    font-size: 2.25rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    animation: fadeSlideUp 0.6s var(--ease-out-expo) 0.2s both;
+  }
+  .hero-title span { color: var(--primary); }
+  .hero-desc {
+    margin-top: var(--space-4);
+    font-size: 1rem;
+    color: var(--text-secondary);
+    max-width: 480px;
+    animation: fadeSlideUp 0.6s var(--ease-out-expo) 0.35s both;
+  }
+
+  /* ── Color Swatches ─────────────────────────────────────── */
+  .swatch-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: var(--space-3);
+  }
+  .swatch {
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    border: 1px solid var(--border-default);
+  }
+  .swatch-color {
+    height: 56px;
+    width: 100%;
+  }
+  .swatch-info {
+    padding: var(--space-3);
+    background: var(--bg-elevated);
+  }
+  .swatch-name {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    font-family: var(--font-mono);
+    margin-bottom: 2px;
+  }
+  .swatch-value {
+    font-size: 0.6875rem;
+    color: var(--text-tertiary);
+    font-family: var(--font-mono);
+  }
+
+  /* ── Type Specimens ─────────────────────────────────────── */
+  .type-specimen {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    padding: var(--space-6);
+    background: var(--bg-surface);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-lg);
+  }
+  .type-row {
+    display: grid;
+    grid-template-columns: 200px 1fr 80px;
+    align-items: baseline;
+    gap: var(--space-4);
+    padding: var(--space-3) 0;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  .type-row:last-child { border-bottom: none; }
+  .type-meta {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    color: var(--text-tertiary);
+  }
+  .type-preview { color: var(--text-primary); }
+  .type-size {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    color: var(--text-secondary);
+    text-align: right;
+  }
+
+  /* ── Buttons ────────────────────────────────────────────── */
+  .btn-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    align-items: center;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: 10px 20px;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-sans);
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition:
+      background var(--duration-fast),
+      border-color var(--duration-fast),
+      color var(--duration-fast),
+      box-shadow var(--duration-base),
+      transform var(--duration-fast);
+    text-decoration: none;
+    position: relative;
+    overflow: hidden;
+  }
+  .btn:active { transform: scale(0.98); }
+  .btn-primary {
+    background: var(--primary);
+    color: var(--text-inverse);
+    border-color: var(--primary);
+  }
+  .btn-primary:hover {
+    background: var(--primary-bright);
+    box-shadow: 0 0 16px 2px var(--primary-glow);
+  }
+  .btn-secondary {
+    background: var(--bg-elevated);
+    color: var(--text-primary);
+    border-color: var(--border-default);
+  }
+  .btn-secondary:hover {
+    background: var(--bg-subtle);
+    border-color: var(--border-strong);
+  }
+  .btn-ghost {
+    background: transparent;
+    color: var(--text-secondary);
+    border-color: transparent;
+  }
+  .btn-ghost:hover {
+    background: var(--bg-subtle);
+    color: var(--text-primary);
+  }
+  .btn-danger {
+    background: hsl(0 72% 55% / 0.12);
+    color: var(--error);
+    border-color: hsl(0 72% 55% / 0.3);
+  }
+  .btn-danger:hover {
+    background: hsl(0 72% 55% / 0.2);
+    border-color: var(--error);
+  }
+  .btn-sm { padding: 6px 14px; font-size: 0.8125rem; }
+  .btn-lg { padding: 14px 28px; font-size: 1rem; }
+  .btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+  /* ── Badges / Status ─────────────────────────────────────── */
+  .badge-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    align-items: center;
+  }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 10px;
+    border-radius: 100px;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    border: 1px solid transparent;
+  }
+  .badge-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .badge-success {
+    background: var(--primary-dim);
+    color: var(--primary);
+    border-color: hsl(160 84% 39% / 0.3);
+  }
+  .badge-success .badge-dot { background: var(--primary); animation: glowPulse 2s ease-in-out infinite; }
+  .badge-warning {
+    background: hsl(38 95% 55% / 0.12);
+    color: var(--warning);
+    border-color: hsl(38 95% 55% / 0.3);
+  }
+  .badge-warning .badge-dot { background: var(--warning); }
+  .badge-error {
+    background: hsl(0 72% 55% / 0.12);
+    color: var(--error);
+    border-color: hsl(0 72% 55% / 0.3);
+  }
+  .badge-error .badge-dot { background: var(--error); }
+  .badge-info {
+    background: hsl(210 80% 58% / 0.12);
+    color: var(--info);
+    border-color: hsl(210 80% 58% / 0.3);
+  }
+  .badge-info .badge-dot { background: var(--info); }
+  .badge-neutral {
+    background: var(--bg-elevated);
+    color: var(--text-secondary);
+    border-color: var(--border-default);
+  }
+  .badge-neutral .badge-dot { background: var(--text-tertiary); }
+
+  /* ── Cards ──────────────────────────────────────────────── */
+  .card-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-4);
+  }
+  .card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-lg);
+    padding: var(--space-6);
+    transition: border-color var(--duration-base), box-shadow var(--duration-base);
+  }
+  .card:hover {
+    border-color: var(--border-strong);
+  }
+  .card-active {
+    border-color: hsl(160 84% 39% / 0.5);
+    box-shadow: 0 0 0 1px hsl(160 84% 39% / 0.2), 0 4px 24px hsl(160 84% 39% / 0.08);
+  }
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: var(--space-3);
+  }
+  .card-title {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    letter-spacing: -0.01em;
+  }
+  .card-sub {
+    font-size: 0.8125rem;
+    color: var(--text-secondary);
+    margin-top: 2px;
+  }
+  .card-metric {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: -0.03em;
+    font-family: var(--font-mono);
+    margin-top: var(--space-4);
+  }
+  .card-metric span {
+    font-size: 0.875rem;
+    font-weight: 400;
+    color: var(--text-tertiary);
+    letter-spacing: 0;
+  }
+
+  /* ── Terminal Block ──────────────────────────────────────── */
+  .terminal {
+    background: hsl(220 20% 5%);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    font-family: var(--font-mono);
+  }
+  .terminal-bar {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-3) var(--space-4);
+    background: var(--bg-elevated);
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  .terminal-dots {
+    display: flex;
+    gap: 6px;
+  }
+  .terminal-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+  }
+  .terminal-title {
+    font-size: 0.75rem;
+    color: var(--text-tertiary);
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .terminal-body {
+    padding: var(--space-5);
+    font-size: 0.8125rem;
+    line-height: 1.8;
+    position: relative;
+    overflow: hidden;
+  }
+  .t-line { display: flex; gap: var(--space-2); }
+  .t-prompt { color: var(--primary); user-select: none; }
+  .t-cmd { color: var(--text-primary); }
+  .t-out { color: var(--text-secondary); }
+  .t-success { color: var(--primary); }
+  .t-error { color: var(--error); }
+  .t-warn { color: var(--warning); }
+  .t-comment { color: var(--text-tertiary); }
+  .cursor {
+    display: inline-block;
+    width: 8px;
+    height: 14px;
+    background: var(--primary);
+    vertical-align: text-bottom;
+    animation: blink 1s step-end infinite;
+  }
+  .scan-line {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, hsl(160 84% 39% / 0.4), transparent);
+    animation: scanLine 3s linear infinite;
+    pointer-events: none;
+  }
+
+  /* ── Inputs ──────────────────────────────────────────────── */
+  .input-row { display: flex; flex-direction: column; gap: var(--space-3); }
+  .input-group { display: flex; flex-direction: column; gap: var(--space-2); }
+  .input-label { font-size: 0.8125rem; font-weight: 500; color: var(--text-secondary); }
+  .input {
+    padding: 10px 14px;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-sans);
+    font-size: 0.875rem;
+    color: var(--text-primary);
+    outline: none;
+    transition: border-color var(--duration-fast), box-shadow var(--duration-base);
+    width: 100%;
+    max-width: 320px;
+  }
+  .input::placeholder { color: var(--text-tertiary); }
+  .input:hover { border-color: var(--border-strong); }
+  .input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px var(--primary-glow);
+  }
+  .input-error { border-color: var(--error) !important; }
+  .input-error:focus { box-shadow: 0 0 0 3px hsl(0 72% 55% / 0.2) !important; }
+  .input-hint { font-size: 0.75rem; color: var(--text-tertiary); }
+  .input-hint.err { color: var(--error); }
+
+  /* ── Progress / Pipeline ─────────────────────────────────── */
+  .pipeline {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-lg);
+    padding: var(--space-5) var(--space-6);
+  }
+  .pipeline-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-2);
+    flex: 1;
+    position: relative;
+  }
+  .pipeline-step + .pipeline-step::before {
+    content: '';
+    position: absolute;
+    left: -50%;
+    right: 50%;
+    top: 18px;
+    height: 2px;
+    background: var(--border-default);
+  }
+  .pipeline-step.done + .pipeline-step::before { background: var(--primary); }
+  .step-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 700;
+    position: relative;
+    z-index: 1;
+    border: 2px solid var(--border-default);
+    background: var(--bg-base);
+    color: var(--text-tertiary);
+    transition: all var(--duration-base) var(--ease-out-expo);
+  }
+  .pipeline-step.done .step-icon {
+    border-color: var(--primary);
+    background: var(--primary-dim);
+    color: var(--primary);
+  }
+  .pipeline-step.active .step-icon {
+    border-color: var(--primary);
+    background: var(--primary);
+    color: var(--text-inverse);
+    box-shadow: 0 0 12px 3px var(--primary-glow);
+    animation: glowPulse 2s ease-in-out infinite;
+  }
+  .step-label {
+    font-size: 0.6875rem;
+    font-family: var(--font-mono);
+    font-weight: 500;
+    color: var(--text-tertiary);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .pipeline-step.done .step-label,
+  .pipeline-step.active .step-label { color: var(--primary); }
+
+  /* ── Progress bar ────────────────────────────────────────── */
+  .progress-wrap { display: flex; flex-direction: column; gap: var(--space-3); }
+  .progress-label-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .progress-label { font-size: 0.8125rem; color: var(--text-secondary); }
+  .progress-pct {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--primary);
+  }
+  .progress-track {
+    height: 6px;
+    background: var(--bg-elevated);
+    border-radius: 100px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    border-radius: 100px;
+    background: var(--primary);
+    box-shadow: 0 0 8px 1px var(--primary-glow);
+    transition: width 1s var(--ease-out-expo);
+  }
+
+  /* ── Agent Card ──────────────────────────────────────────── */
+  .agent-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-lg);
+    padding: var(--space-6);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    transition: border-color var(--duration-base);
+  }
+  .agent-card:hover { border-color: var(--border-strong); }
+  .agent-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  .agent-id {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    color: var(--text-tertiary);
+    letter-spacing: 0.06em;
+  }
+  .agent-name {
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin-top: 2px;
+  }
+  .agent-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: var(--space-3);
+  }
+  .agent-stat-label {
+    font-size: 0.6875rem;
+    color: var(--text-tertiary);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 2px;
+  }
+  .agent-stat-value {
+    font-family: var(--font-mono);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: var(--text-primary);
+  }
+
+  /* ── Skeleton ────────────────────────────────────────────── */
+  .skeleton {
+    background: linear-gradient(90deg, var(--bg-elevated) 25%, var(--bg-subtle) 50%, var(--bg-elevated) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: 4px;
+  }
+
+  /* ── Spacing Viz ─────────────────────────────────────────── */
+  .space-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    margin-bottom: var(--space-2);
+  }
+  .space-block {
+    background: var(--primary-dim);
+    border: 1px solid hsl(160 84% 39% / 0.3);
+    border-radius: 3px;
+    height: 20px;
+    flex-shrink: 0;
+  }
+  .space-meta {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+  }
+  .space-val { color: var(--primary); }
+
+  /* ── Divider ─────────────────────────────────────────────── */
+  .divider {
+    height: 1px;
+    background: var(--border-subtle);
+    margin: var(--space-8) 0;
+  }
+
+  /* ── Code token sample ───────────────────────────────────── */
+  .token-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: var(--space-3);
+  }
+  .token-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-3) var(--space-4);
+    background: var(--bg-surface);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-sm);
+  }
+  .token-name { font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-secondary); }
+  .token-preview { width: 20px; height: 20px; border-radius: 4px; border: 1px solid hsl(0 0% 100% / 0.08); }
+
+  @media (max-width: 768px) {
+    .page-wrap { grid-template-columns: 1fr; }
+    .sidebar { height: auto; position: relative; }
+    .card-grid { grid-template-columns: 1fr; }
+    .type-row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page-wrap">
+
+  <!-- ── Sidebar ── -->
+  <nav class="sidebar">
+    <div class="sidebar-logo">
+      <svg class="logo-mark" viewBox="0 0 32 32" fill="none">
+        <rect x="4" y="2" width="18" height="22" rx="2" fill="none" stroke="hsl(160 84% 39%)" stroke-width="1.5"/>
+        <path d="M4 8h18" stroke="hsl(160 84% 39% / 0.4)" stroke-width="1" />
+        <path d="M8 13h6M8 17h10M8 21h4" stroke="hsl(220 14% 65%)" stroke-width="1.2" stroke-linecap="round"/>
+        <text x="18" y="28" font-family="JetBrains Mono, monospace" font-size="13" font-weight="700" fill="hsl(160 84% 50%)">›</text>
+      </svg>
+      <div>
+        <div class="logo-name">AgentMD</div>
+        <div class="logo-sub">Design System</div>
+      </div>
+    </div>
+
+    <span class="nav-section">Foundation</span>
+    <a href="#colors" class="nav-link active">Color Tokens</a>
+    <a href="#typography" class="nav-link">Typography</a>
+    <a href="#spacing" class="nav-link">Spacing</a>
+    <a href="#motion" class="nav-link">Motion</a>
+
+    <span class="nav-section">Components</span>
+    <a href="#buttons" class="nav-link">Buttons</a>
+    <a href="#badges" class="nav-link">Badges &amp; Status</a>
+    <a href="#cards" class="nav-link">Cards</a>
+    <a href="#inputs" class="nav-link">Inputs</a>
+    <a href="#terminal" class="nav-link">Terminal</a>
+    <a href="#pipeline" class="nav-link">Pipeline</a>
+    <a href="#loading" class="nav-link">Loading States</a>
+    <a href="#agent" class="nav-link">Agent Card</a>
+  </nav>
+
+  <!-- ── Main ── -->
+  <main>
+    <div class="page-hero">
+      <div class="hero-grid"></div>
+      <div class="hero-orb"></div>
+      <div class="hero-content">
+        <div class="hero-eyebrow">&gt; design_system.md</div>
+        <h1 class="hero-title">Agent<span>MD</span><br/>Design Tokens</h1>
+        <p class="hero-desc">A living reference for every visual decision in the AgentMD product — colors, type, spacing, motion, and components.</p>
+      </div>
+    </div>
+
+    <!-- ── Colors ── -->
+    <section class="section" id="colors">
+      <div class="section-header">
+        <h2 class="section-title">Color Tokens</h2>
+        <span class="section-tag">--primary · --bg · --text · --border</span>
+      </div>
+
+      <div class="subsection-title">Brand</div>
+      <div class="swatch-grid">
+        <div class="swatch"><div class="swatch-color" style="background:hsl(160 84% 39%)"></div><div class="swatch-info"><div class="swatch-name">--primary</div><div class="swatch-value">hsl(160 84% 39%)</div></div></div>
+        <div class="swatch"><div class="swatch-color" style="background:hsl(160 84% 50%)"></div><div class="swatch-info"><div class="swatch-name">--primary-bright</div><div class="swatch-value">hsl(160 84% 50%)</div></div></div>
+        <div class="swatch"><div class="swatch-color" style="background:hsl(160 84% 39% / 0.15);border:1px solid hsl(160 84% 39% / 0.3)"></div><div class="swatch-info"><div class="swatch-name">--primary-dim</div><div class="swatch-value">15% alpha</div></div></div>
+        <div class="swatch"><div class="swatch-color" style="background:hsl(38 95% 55%)"></div><div class="swatch-info"><div class="swatch-name">--warning</div><div class="swatch-value">hsl(38 95% 55%)</div></div></div>
+        <div class="swatch"><div class="swatch-color" style="background:hsl(0 72% 55%)"></div><div class="swatch-info"><div class="swatch-name">--error</div><div class="swatch-value">hsl(0 72% 55%)</div></div></div>
+        <div class="swatch"><div class="swatch-color" style="background:hsl(210 80% 58%)"></div><div class="swatch-info"><div class="swatch-name">--info</div><div class="swatch-value">hsl(210 80% 58%)</div></div></div>
+      </div>
+
+      <div class="subsection-title">Backgrounds</div>
+      <div class="swatch-grid">
+        <div class="swatch"><div class="swatch-color" style="background:hsl(220 20% 6%);border-bottom:1px solid hsl(220 14% 20%)"></div><div class="swatch-info"><div class="swatch-name">--bg-base</div><div class="swatch-value">hsl(220 20% 6%)</div></div></div>
+        <div class="swatch"><div class="swatch-color" style="background:hsl(220 18% 9%);border-bottom:1px solid hsl(220 14% 20%)"></div><div class="swatch-info"><div class="swatch-name">--bg-surface</div><div class="swatch-value">hsl(220 18% 9%)</div></div></div>
+        <div class="swatch"><div class="swatch-color" style="background:hsl(220 16% 12%);border-bottom:1px solid hsl(220 14% 20%)"></div><div class="swatch-info"><div class="swatch-name">--bg-elevated</div><div class="swatch-value">hsl(220 16% 12%)</div></div></div>
+        <div class="swatch"><div class="swatch-color" style="background:hsl(220 14% 15%);border-bottom:1px solid hsl(220 14% 20%)"></div><div class="swatch-info"><div class="swatch-name">--bg-subtle</div><div class="swatch-value">hsl(220 14% 15%)</div></div></div>
+      </div>
+
+      <div class="subsection-title">Text &amp; Borders</div>
+      <div class="token-grid">
+        <div class="token-row"><span class="token-name">--text-primary</span><div class="token-preview" style="background:hsl(220 20% 96%)"></div></div>
+        <div class="token-row"><span class="token-name">--text-secondary</span><div class="token-preview" style="background:hsl(220 14% 65%)"></div></div>
+        <div class="token-row"><span class="token-name">--text-tertiary</span><div class="token-preview" style="background:hsl(220 10% 45%)"></div></div>
+        <div class="token-row"><span class="token-name">--border-default</span><div class="token-preview" style="background:hsl(220 14% 20%)"></div></div>
+        <div class="token-row"><span class="token-name">--border-subtle</span><div class="token-preview" style="background:hsl(220 14% 16%)"></div></div>
+        <div class="token-row"><span class="token-name">--border-strong</span><div class="token-preview" style="background:hsl(220 14% 28%)"></div></div>
+      </div>
+    </section>
+
+    <!-- ── Typography ── -->
+    <section class="section" id="typography">
+      <div class="section-header">
+        <h2 class="section-title">Typography</h2>
+        <span class="section-tag">Outfit · JetBrains Mono</span>
+      </div>
+
+      <div class="type-specimen">
+        <div class="type-row">
+          <span class="type-meta">--text-2xl · 700</span>
+          <span class="type-preview" style="font-size:2.25rem;font-weight:700;line-height:1.1;letter-spacing:-0.03em">Agent Execution</span>
+          <span class="type-size">2.25rem</span>
+        </div>
+        <div class="type-row">
+          <span class="type-meta">--text-xl · 700</span>
+          <span class="type-preview" style="font-size:1.75rem;font-weight:700;line-height:1.2;letter-spacing:-0.02em">Spec Validated</span>
+          <span class="type-size">1.75rem</span>
+        </div>
+        <div class="type-row">
+          <span class="type-meta">--text-lg · 600</span>
+          <span class="type-preview" style="font-size:1.25rem;font-weight:600;line-height:1.3;letter-spacing:-0.01em">Running Agent Health Check</span>
+          <span class="type-size">1.25rem</span>
+        </div>
+        <div class="type-row">
+          <span class="type-meta">--text-md · 400</span>
+          <span class="type-preview" style="font-size:1rem;font-weight:400;line-height:1.5">The agent parsed all 14 spec requirements and passed validation. Ready to execute.</span>
+          <span class="type-size">1rem</span>
+        </div>
+        <div class="type-row">
+          <span class="type-meta">--text-sm · 400</span>
+          <span class="type-preview" style="font-size:0.875rem;font-weight:400;line-height:1.5;color:hsl(220 14% 65%)">Last validated 3 minutes ago · 14 of 14 checks passed</span>
+          <span class="type-size">0.875rem</span>
+        </div>
+        <div class="type-row">
+          <span class="type-meta">--text-xs · mono</span>
+          <span class="type-preview" style="font-size:0.75rem;font-family:'JetBrains Mono',monospace;color:hsl(160 84% 39%)">agent.id = "agmd_7f3a2b" · status = READY</span>
+          <span class="type-size">0.75rem</span>
+        </div>
+        <div class="type-row">
+          <span class="type-meta">--text-code · mono</span>
+          <span class="type-preview" style="font-size:0.875rem;font-family:'JetBrains Mono',monospace;color:hsl(220 20% 96%)"><span style="color:hsl(210 80% 58%)">const</span> agent = <span style="color:hsl(160 84% 39%)">new</span> Agent(spec)</span>
+          <span class="type-size">0.875rem</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Spacing ── -->
+    <section class="section" id="spacing">
+      <div class="section-header">
+        <h2 class="section-title">Spacing Scale</h2>
+        <span class="section-tag">4px base unit</span>
+      </div>
+      <div>
+        <div class="space-row"><div class="space-block" style="width:4px"></div><span class="space-meta">--space-1 <span class="space-val">4px</span> — icon gaps, tight padding</span></div>
+        <div class="space-row"><div class="space-block" style="width:8px"></div><span class="space-meta">--space-2 <span class="space-val">8px</span> — inline icon spacing</span></div>
+        <div class="space-row"><div class="space-block" style="width:12px"></div><span class="space-meta">--space-3 <span class="space-val">12px</span> — button padding (y)</span></div>
+        <div class="space-row"><div class="space-block" style="width:16px"></div><span class="space-meta">--space-4 <span class="space-val">16px</span> — default component padding</span></div>
+        <div class="space-row"><div class="space-block" style="width:24px"></div><span class="space-meta">--space-6 <span class="space-val">24px</span> — card padding (default)</span></div>
+        <div class="space-row"><div class="space-block" style="width:32px"></div><span class="space-meta">--space-8 <span class="space-val">32px</span> — section gaps (tight)</span></div>
+        <div class="space-row"><div class="space-block" style="width:48px"></div><span class="space-meta">--space-12 <span class="space-val">48px</span> — section gaps (relaxed)</span></div>
+        <div class="space-row"><div class="space-block" style="width:64px"></div><span class="space-meta">--space-16 <span class="space-val">64px</span> — page section padding</span></div>
+        <div class="space-row"><div class="space-block" style="width:96px"></div><span class="space-meta">--space-24 <span class="space-val">96px</span> — hero vertical padding</span></div>
+      </div>
+    </section>
+
+    <!-- ── Motion ── -->
+    <section class="section" id="motion">
+      <div class="section-header">
+        <h2 class="section-title">Motion</h2>
+        <span class="section-tag">staged reveals · status transitions</span>
+      </div>
+      <div class="card-grid">
+        <div class="card" id="demo-reveal-card" style="cursor:pointer">
+          <div class="card-title">fadeSlideUp</div>
+          <div class="card-sub" style="font-size:0.8125rem;margin-top:var(--space-2)">Click to replay — used for section and card reveals on page load.</div>
+          <div id="reveal-demo" style="margin-top:var(--space-4);padding:var(--space-3);background:var(--bg-elevated);border-radius:6px;font-family:var(--font-mono);font-size:0.75rem;color:var(--primary)">
+            opacity 0 → 1 · translateY 12px → 0
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">glowPulse</div>
+          <div class="card-sub" style="font-size:0.8125rem;margin-top:var(--space-2)">Used on active agent status indicators and pipeline step icons.</div>
+          <div style="margin-top:var(--space-4);display:flex;gap:var(--space-3);align-items:center">
+            <div style="width:12px;height:12px;border-radius:50%;background:var(--primary);animation:glowPulse 2s ease-in-out infinite"></div>
+            <span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--primary)">AGENT RUNNING</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">statusPop</div>
+          <div class="card-sub" style="font-size:0.8125rem;margin-top:var(--space-2)">Scale 0.85 → 1.05 → 1 for badge state changes.</div>
+          <div style="margin-top:var(--space-4)">
+            <span id="pop-badge" class="badge badge-success" style="cursor:pointer"><span class="badge-dot"></span>READY — click me</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">Timing Tokens</div>
+          <div style="margin-top:var(--space-3);display:flex;flex-direction:column;gap:var(--space-2)">
+            <div style="display:flex;justify-content:space-between"><span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-secondary)">--duration-fast</span><span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--primary)">120ms</span></div>
+            <div style="display:flex;justify-content:space-between"><span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-secondary)">--duration-base</span><span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--primary)">220ms</span></div>
+            <div style="display:flex;justify-content:space-between"><span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-secondary)">--duration-slow</span><span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--primary)">400ms</span></div>
+            <div style="display:flex;justify-content:space-between"><span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-secondary)">--duration-reveal</span><span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--primary)">600ms</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Buttons ── -->
+    <section class="section" id="buttons">
+      <div class="section-header">
+        <h2 class="section-title">Buttons</h2>
+        <span class="section-tag">primary · secondary · ghost · danger</span>
+      </div>
+      <div class="subsection-title">Variants</div>
+      <div class="btn-row">
+        <button class="btn btn-primary">Execute Spec</button>
+        <button class="btn btn-secondary">View Details</button>
+        <button class="btn btn-ghost">Cancel</button>
+        <button class="btn btn-danger">Terminate Agent</button>
+      </div>
+      <div class="subsection-title">Sizes</div>
+      <div class="btn-row">
+        <button class="btn btn-primary btn-sm">Deploy</button>
+        <button class="btn btn-primary">Deploy</button>
+        <button class="btn btn-primary btn-lg">Deploy Agent</button>
+      </div>
+      <div class="subsection-title">States</div>
+      <div class="btn-row">
+        <button class="btn btn-primary" disabled>Disabled</button>
+        <button class="btn btn-secondary" disabled>Disabled</button>
+        <button class="btn btn-primary" style="animation:glowPulse 2s ease-in-out infinite">Active</button>
+      </div>
+    </section>
+
+    <!-- ── Badges ── -->
+    <section class="section" id="badges">
+      <div class="section-header">
+        <h2 class="section-title">Badges &amp; Status</h2>
+        <span class="section-tag">agent health indicators</span>
+      </div>
+      <div class="badge-row">
+        <span class="badge badge-success"><span class="badge-dot"></span>READY</span>
+        <span class="badge badge-success"><span class="badge-dot"></span>VALIDATED</span>
+        <span class="badge badge-warning"><span class="badge-dot"></span>DEGRADED</span>
+        <span class="badge badge-error"><span class="badge-dot"></span>FAILED</span>
+        <span class="badge badge-info"><span class="badge-dot"></span>PENDING</span>
+        <span class="badge badge-neutral"><span class="badge-dot"></span>IDLE</span>
+      </div>
+    </section>
+
+    <!-- ── Cards ── -->
+    <section class="section" id="cards">
+      <div class="section-header">
+        <h2 class="section-title">Cards</h2>
+        <span class="section-tag">surface · elevated · active</span>
+      </div>
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Spec Parser</div>
+              <div class="card-sub">v2.4.1 — Idle</div>
+            </div>
+            <span class="badge badge-neutral"><span class="badge-dot"></span>IDLE</span>
+          </div>
+          <div class="card-metric">0 <span>runs today</span></div>
+        </div>
+        <div class="card card-active">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Health Monitor</div>
+              <div class="card-sub">v1.9.0 — Active</div>
+            </div>
+            <span class="badge badge-success"><span class="badge-dot"></span>READY</span>
+          </div>
+          <div class="card-metric">142 <span>checks / hr</span></div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Validation Engine</div>
+              <div class="card-sub">v3.1.0 — Warning</div>
+            </div>
+            <span class="badge badge-warning"><span class="badge-dot"></span>DEGRADED</span>
+          </div>
+          <div class="card-metric">87<span style="color:var(--warning)">%</span> <span>pass rate</span></div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Exec Runner</div>
+              <div class="card-sub">v4.0.2 — Error</div>
+            </div>
+            <span class="badge badge-error"><span class="badge-dot"></span>FAILED</span>
+          </div>
+          <div class="card-metric" style="color:var(--error)">3 <span>errors</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Inputs ── -->
+    <section class="section" id="inputs">
+      <div class="section-header">
+        <h2 class="section-title">Inputs</h2>
+        <span class="section-tag">default · focus · error states</span>
+      </div>
+      <div class="input-row">
+        <div class="input-group">
+          <label class="input-label">Spec Name</label>
+          <input class="input" type="text" placeholder="e.g. health-check-v2" />
+          <span class="input-hint">Alphanumeric with hyphens only.</span>
+        </div>
+        <div class="input-group">
+          <label class="input-label">Agent ID</label>
+          <input class="input" type="text" value="agmd_7f3a2b91" style="font-family:var(--font-mono)" />
+        </div>
+        <div class="input-group">
+          <label class="input-label">Endpoint URL</label>
+          <input class="input input-error" type="text" value="not-a-valid-url" />
+          <span class="input-hint err">Must be a valid https:// URL.</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Terminal ── -->
+    <section class="section" id="terminal">
+      <div class="section-header">
+        <h2 class="section-title">Terminal</h2>
+        <span class="section-tag">spec output · execution logs</span>
+      </div>
+      <div class="terminal">
+        <div class="terminal-bar">
+          <div class="terminal-dots">
+            <div class="terminal-dot" style="background:#ff5f57"></div>
+            <div class="terminal-dot" style="background:#febc2e"></div>
+            <div class="terminal-dot" style="background:#28c840"></div>
+          </div>
+          <span class="terminal-title">agentmd — execution log</span>
+        </div>
+        <div class="terminal-body">
+          <div class="scan-line"></div>
+          <div class="t-line"><span class="t-prompt">$</span><span class="t-cmd">agentmd run ./specs/health-check.md</span></div>
+          <div class="t-line"><span class="t-comment">  # Parsing spec file...</span></div>
+          <div class="t-line"><span class="t-out">  ✓ Loaded 14 requirements (312ms)</span></div>
+          <div class="t-line"><span class="t-out">  ✓ Resolved 3 dependencies</span></div>
+          <br/>
+          <div class="t-line"><span class="t-comment">  # Running validation pass...</span></div>
+          <div class="t-line"><span class="t-success">  ✓ schema valid</span></div>
+          <div class="t-line"><span class="t-success">  ✓ all endpoints reachable</span></div>
+          <div class="t-line"><span class="t-warn">  ⚠ rate limit warning on /api/infer (920/1000 rph)</span></div>
+          <br/>
+          <div class="t-line"><span class="t-comment">  # Executing agent...</span></div>
+          <div class="t-line"><span class="t-success">  ✓ Agent agmd_7f3a2b91 is READY</span></div>
+          <div class="t-line"><span class="t-prompt">$</span><span class="cursor"></span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Pipeline ── -->
+    <section class="section" id="pipeline">
+      <div class="section-header">
+        <h2 class="section-title">Execution Pipeline</h2>
+        <span class="section-tag">parse → validate → execute</span>
+      </div>
+      <div class="pipeline">
+        <div class="pipeline-step done">
+          <div class="step-icon">✓</div>
+          <span class="step-label">Parse</span>
+        </div>
+        <div class="pipeline-step done">
+          <div class="step-icon">✓</div>
+          <span class="step-label">Validate</span>
+        </div>
+        <div class="pipeline-step active">
+          <div class="step-icon">3</div>
+          <span class="step-label">Execute</span>
+        </div>
+        <div class="pipeline-step">
+          <div class="step-icon">4</div>
+          <span class="step-label">Report</span>
+        </div>
+      </div>
+
+      <div class="subsection-title">Progress</div>
+      <div class="progress-wrap">
+        <div>
+          <div class="progress-label-row">
+            <span class="progress-label">Spec validation</span>
+            <span class="progress-pct">100%</span>
+          </div>
+          <div class="progress-track"><div class="progress-fill" style="width:100%"></div></div>
+        </div>
+        <div>
+          <div class="progress-label-row">
+            <span class="progress-label">Agent execution</span>
+            <span class="progress-pct">62%</span>
+          </div>
+          <div class="progress-track"><div class="progress-fill" style="width:62%"></div></div>
+        </div>
+        <div>
+          <div class="progress-label-row">
+            <span class="progress-label">Report generation</span>
+            <span class="progress-pct">0%</span>
+          </div>
+          <div class="progress-track"><div class="progress-fill" style="width:0%"></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Loading ── -->
+    <section class="section" id="loading">
+      <div class="section-header">
+        <h2 class="section-title">Loading States</h2>
+        <span class="section-tag">skeleton · shimmer</span>
+      </div>
+      <div class="card" style="display:flex;flex-direction:column;gap:var(--space-4)">
+        <div style="display:flex;align-items:center;gap:var(--space-3)">
+          <div class="skeleton" style="width:40px;height:40px;border-radius:50%"></div>
+          <div style="flex:1;display:flex;flex-direction:column;gap:var(--space-2)">
+            <div class="skeleton" style="height:14px;width:60%"></div>
+            <div class="skeleton" style="height:11px;width:40%"></div>
+          </div>
+          <div class="skeleton" style="height:24px;width:70px;border-radius:100px"></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:var(--space-2)">
+          <div class="skeleton" style="height:10px;width:100%"></div>
+          <div class="skeleton" style="height:10px;width:88%"></div>
+          <div class="skeleton" style="height:10px;width:72%"></div>
+        </div>
+        <div style="display:flex;gap:var(--space-3)">
+          <div class="skeleton" style="height:34px;width:100px;border-radius:6px"></div>
+          <div class="skeleton" style="height:34px;width:80px;border-radius:6px"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Agent Card ── -->
+    <section class="section" id="agent">
+      <div class="section-header">
+        <h2 class="section-title">Agent Card</h2>
+        <span class="section-tag">composite pattern</span>
+      </div>
+      <div class="agent-card">
+        <div class="agent-top">
+          <div>
+            <div class="agent-id">agmd_7f3a2b91 · health-monitor</div>
+            <div class="agent-name">Health Monitor v1.9</div>
+          </div>
+          <span class="badge badge-success"><span class="badge-dot"></span>READY</span>
+        </div>
+
+        <div class="progress-wrap" style="gap:var(--space-2)">
+          <div class="progress-label-row">
+            <span class="progress-label" style="font-size:0.75rem">Spec completion</span>
+            <span class="progress-pct" style="font-size:0.75rem">14/14 checks</span>
+          </div>
+          <div class="progress-track"><div class="progress-fill" style="width:100%"></div></div>
+        </div>
+
+        <div class="agent-stats">
+          <div>
+            <div class="agent-stat-label">Uptime</div>
+            <div class="agent-stat-value">99.8%</div>
+          </div>
+          <div>
+            <div class="agent-stat-label">Checks/hr</div>
+            <div class="agent-stat-value">142</div>
+          </div>
+          <div>
+            <div class="agent-stat-label">Latency</div>
+            <div class="agent-stat-value">38ms</div>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:var(--space-3)">
+          <button class="btn btn-primary btn-sm">Execute</button>
+          <button class="btn btn-secondary btn-sm">View Spec</button>
+          <button class="btn btn-ghost btn-sm" style="margin-left:auto">Terminate</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+  // Sidebar active link on scroll
+  const sections = document.querySelectorAll('section[id]');
+  const links = document.querySelectorAll('.nav-link');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        links.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + e.target.id));
+      }
+    });
+  }, { threshold: 0.3, rootMargin: '-10% 0px -60% 0px' });
+  sections.forEach(s => observer.observe(s));
+
+  // Reveal card replay
+  const revealCard = document.getElementById('demo-reveal-card');
+  const revealDemo = document.getElementById('reveal-demo');
+  if (revealCard && revealDemo) {
+    revealCard.addEventListener('click', () => {
+      revealDemo.style.animation = 'none';
+      revealDemo.offsetHeight;
+      revealDemo.style.animation = 'fadeSlideUp 0.6s cubic-bezier(0.16,1,0.3,1) forwards';
+    });
+  }
+
+  // Status pop badge
+  const popBadge = document.getElementById('pop-badge');
+  if (popBadge) {
+    popBadge.addEventListener('click', () => {
+      popBadge.style.animation = 'none';
+      popBadge.offsetHeight;
+      popBadge.style.animation = 'statusPop 0.4s cubic-bezier(0.16,1,0.3,1) forwards';
+    });
+  }
+</script>
+
+</body>
+</html>

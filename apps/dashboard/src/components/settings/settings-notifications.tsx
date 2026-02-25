@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,18 +8,43 @@ import { Input } from "@/components/ui/input";
 export function SettingsNotifications() {
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [webhookUrl, setWebhookUrl] = useState("");
   const [emailAlerts, setEmailAlerts] = useState(true);
   const [slackAlerts, setSlackAlerts] = useState(false);
 
+  useEffect(() => {
+    fetch("/api/account/notifications", { cache: "no-store" })
+      .then((r) => r.json())
+      .then((d: { ok?: boolean; webhookUrl?: string; emailAlerts?: boolean; slackAlerts?: boolean }) => {
+        if (typeof d.webhookUrl === "string") setWebhookUrl(d.webhookUrl);
+        if (typeof d.emailAlerts === "boolean") setEmailAlerts(d.emailAlerts);
+        if (typeof d.slackAlerts === "boolean") setSlackAlerts(d.slackAlerts);
+      })
+      .finally(() => setLoading(false));
+  }, []);
+
   const handleSave = async () => {
     setSaving(true);
     setSaved(false);
-    // Placeholder: would call API to save preferences
-    await new Promise((r) => setTimeout(r, 500));
-    setSaving(false);
-    setSaved(true);
-    setTimeout(() => setSaved(false), 2000);
+    try {
+      const res = await fetch("/api/account/notifications", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ webhookUrl, emailAlerts, slackAlerts }),
+      });
+      const data = (await res.json()) as { ok?: boolean; error?: string };
+      if (res.ok && data.ok) {
+        setSaved(true);
+        setTimeout(() => setSaved(false), 2000);
+      } else {
+        alert(data.error ?? "Failed to save preferences.");
+      }
+    } catch {
+      alert("Failed to save preferences.");
+    } finally {
+      setSaving(false);
+    }
   };
 
   return (
@@ -67,7 +92,7 @@ export function SettingsNotifications() {
             <span className="text-sm">Connect Slack workspace (Pro)</span>
           </label>
         </div>
-        <Button onClick={handleSave} disabled={saving}>
+        <Button onClick={handleSave} disabled={saving || loading}>
           {saving ? "Saving..." : saved ? "Saved" : "Save preferences"}
         </Button>
       </CardContent>

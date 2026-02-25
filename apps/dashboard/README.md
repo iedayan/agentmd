@@ -9,11 +9,11 @@ Next.js 14 dashboard for the AgentMD platform — GitHub Actions for agent instr
 - **Execution Timeline** — Step-by-step view with pass/fail, duration, output
 - **Cost Tracking** — Execution minutes, monthly usage
 - **Dark Mode** — Full theme support
-- **Stripe Billing** — Pro ($40/mo) subscription with feature gating
+- **Stripe Billing** — Pro ($49/mo) subscription with feature gating
 
 ## Plans
 
-| | Free | Pro ($40/mo) |
+| | Free | Pro ($49/mo) |
 |---|---|---|
 | Repositories | 3 | Unlimited |
 | Execution min/mo | 100 | 1000 |

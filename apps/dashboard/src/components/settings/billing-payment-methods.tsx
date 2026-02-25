@@ -1,20 +1,40 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
-const PLACEHOLDER_METHODS: { id: string; brand: string; last4: string; expiry: string }[] = [];
+type PaymentMethod = { id: string; brand: string; last4: string; expiry: string };
 
 export function BillingPaymentMethods() {
-  const methods = PLACEHOLDER_METHODS;
+  const [methods, setMethods] = useState<PaymentMethod[]>([]);
+  const [loading, setLoading] = useState(true);
   const [adding, setAdding] = useState(false);
+
+  useEffect(() => {
+    fetch("/api/billing/payment-methods", { cache: "no-store" })
+      .then((r) => r.json())
+      .then((d: { ok?: boolean; methods?: PaymentMethod[] }) => {
+        setMethods(d.methods ?? []);
+      })
+      .finally(() => setLoading(false));
+  }, []);
 
   const handleAdd = async () => {
     setAdding(true);
-    // Placeholder: would redirect to Stripe billing portal or add payment method
-    await new Promise((r) => setTimeout(r, 500));
-    setAdding(false);
+    try {
+      const res = await fetch("/api/billing/portal", { method: "POST" });
+      const data = (await res.json()) as { ok?: boolean; url?: string; error?: string };
+      if (res.ok && data.url) {
+        window.location.href = data.url;
+        return;
+      }
+      alert(data.error ?? "Could not open billing portal.");
+    } catch {
+      alert("Could not open billing portal.");
+    } finally {
+      setAdding(false);
+    }
   };
 
   return (
@@ -26,7 +46,9 @@ export function BillingPaymentMethods() {
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
-        {methods.length === 0 ? (
+        {loading ? (
+          <p className="text-sm text-muted-foreground">Loading payment methods…</p>
+        ) : methods.length === 0 ? (
           <p className="text-sm text-muted-foreground">
             No payment methods on file. Add a card when you upgrade.
           </p>

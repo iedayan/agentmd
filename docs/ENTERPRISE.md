@@ -1,8 +1,28 @@
 # AgentMD Enterprise
 
-Competitive with AgentOps.ai enterprise offerings.
+AgentMD Enterprise provides the governance, security, and scale required for production AI agent deployments.
 
-## Pricing
+## 1. Feature Status
+
+Which enterprise features are implemented vs. planned. Updated as we ship.
+
+### Implemented
+| Feature | Status | Notes |
+|---------|--------|-------|
+| **Audit logs** | ✅ Implemented | `audit_logs` table; who ran what when. Dashboard at `/dashboard/audit`. |
+| **Execution history** | ✅ Implemented | Full history per repo with success/failure, duration, commands run. |
+| **Kill switch** | ✅ Implemented | Cancel running execution via `POST /api/executions/[id]/cancel`. |
+| **Permission boundaries** | ✅ Implemented | AGENTS.md frontmatter `shell.allow`/`deny`; enforcment in cores. |
+| **Policy-as-code** | ✅ Implemented | Enterprise policy config in core; approval requirements per command. |
+| **Self-hosted** | ✅ Implemented | Docker Compose, Helm, air-gapped options in `deploy/`. |
+
+### In Progress / Roadmap
+- **SSO Enforcement** — Config UI exists; SAML flow integration in progress.
+- **RBAC Enforcement** — Role model in place; dashboard UI for assignment live.
+- **Slack Approvals** — Approval request flow exists; Slack action handlers in place.
+- **SLA & Compliance** — 99.9% target; SOC2 / HIPAA readiness on roadmap.
+
+## 2. Pricing
 
 | | Free | Pro ($40/mo) | Enterprise ($199/mo) |
 |---|---|---|---|
@@ -10,35 +30,17 @@ Competitive with AgentOps.ai enterprise offerings.
 | Execution min | 100 | 1000 | Unlimited |
 | Self-hosted | — | — | ✓ |
 | SSO/SAML | — | — | ✓ |
-| RBAC | — | — | ✓ |
 | Audit logs | — | — | ✓ |
-| Approval workflows | — | — | ✓ |
-| Policy-as-code | — | — | ✓ |
 | SLA | — | — | 99.9% |
-| Support | Community | Priority | Dedicated |
 
-## Self-Hosted
+## 3. Deployment & Security
 
-- **Docker Compose** — `deploy/docker-compose.yml`
-- **Kubernetes/Helm** — `deploy/helm/`
-- **Air-gapped** — `deploy/air-gapped/README.md`
-- **BYOD** — PostgreSQL, Redis
+Enterprise self-hosted options include Docker Compose, Kubernetes/Helm, and Air-gapped environments. 
 
-## Enterprise Security
+### Security Controls
+- **SSO/SAML** — Okta, Azure AD, Google Workspace integration.
+- **RBAC** — Admin, Developer, Viewer, Approver + custom roles.
+- **Compliance** — Designed for SOC2 and HIPAA compatibility.
 
-- **SSO/SAML** — Okta, Azure AD, Google Workspace
-- **RBAC** — Admin, Developer, Viewer, Approver + custom roles
-- **Audit logs** — Who ran what when, PII masking
-- **Compliance** — SOC2, HIPAA ready
-
-## Governance
-
-- **Human-in-the-loop** — Approval before deploy/migrate
-- **Policy-as-code** — YAML rules, guardrails at runtime
-- **Cost controls** — Budgets per team/project
-
-## License Key
-
-Enterprise self-hosted requires `AGENTMD_LICENSE_KEY`. Contact sales@agentmd.io.
-
-Annual contracts with volume discounts available.
+### Licensing
+Enterprise self-hosted requires `AGENTMD_LICENSE_KEY`. Contact sales@agentmd.io for trials and license keys.

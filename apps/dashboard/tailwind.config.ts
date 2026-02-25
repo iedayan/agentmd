@@ -46,9 +46,9 @@ const config: Config = {
         },
       },
       borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
+        lg: "var(--radius-lg)",
+        md: "var(--radius-md)",
+        sm: "var(--radius-sm)",
       },
       animation: {
         "fade-in": "fadeIn 0.5s ease-out forwards",
@@ -61,6 +61,9 @@ const config: Config = {
         "float": "float 6s ease-in-out infinite",
         "pulse-glow": "pulseGlow 3s cubic-bezier(0.4, 0, 0.6, 1) infinite",
         "aurora": "aurora 15s linear infinite",
+        "thought-pulse": "thoughtPulse 2s ease-in-out infinite",
+        "beam": "beam 3s linear infinite",
+        "glow-pulse": "glowPulse 2s ease-in-out infinite",
       },
       keyframes: {
         fadeIn: {
@@ -103,6 +106,18 @@ const config: Config = {
           "0%": { backgroundPosition: "0% 50%" },
           "50%": { backgroundPosition: "100% 50%" },
           "100%": { backgroundPosition: "0% 50%" },
+        },
+        thoughtPulse: {
+          "0%, 100%": { opacity: "0.4", transform: "scale(0.98)" },
+          "50%": { opacity: "1", transform: "scale(1)" },
+        },
+        beam: {
+          "0%": { transform: "translateX(-100%)" },
+          "100%": { transform: "translateX(100%)" },
+        },
+        glowPulse: {
+          "0%, 100%": { boxShadow: "0 0 8px 2px hsl(var(--primary) / 0.25)" },
+          "50%": { boxShadow: "0 0 20px 6px hsl(var(--primary) / 0.4)" },
         },
       },
       backgroundImage: {

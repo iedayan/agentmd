@@ -1,12 +1,23 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
-const PLACEHOLDER_INVOICES: { id: string; date: string; amount: string; status: string }[] = [];
+type Invoice = { id: string; date: string; amount: string; status: string; hostedInvoiceUrl?: string };
 
 export function BillingInvoiceHistory() {
-  const invoices = PLACEHOLDER_INVOICES;
+  const [invoices, setInvoices] = useState<Invoice[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch("/api/billing/invoices", { cache: "no-store" })
+      .then((r) => r.json())
+      .then((d: { ok?: boolean; invoices?: Invoice[] }) => {
+        setInvoices(d.invoices ?? []);
+      })
+      .finally(() => setLoading(false));
+  }, []);
 
   return (
     <Card>
@@ -17,7 +28,9 @@ export function BillingInvoiceHistory() {
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
-        {invoices.length === 0 ? (
+        {loading ? (
+          <p className="text-sm text-muted-foreground">Loading invoices…</p>
+        ) : invoices.length === 0 ? (
           <p className="text-sm text-muted-foreground">
             No invoices yet. Invoices appear here when you have a paid subscription.
           </p>
@@ -34,9 +47,17 @@ export function BillingInvoiceHistory() {
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="font-mono text-sm">{inv.amount}</span>
-                  <Button variant="ghost" size="sm" disabled>
-                    Download
-                  </Button>
+                  {inv.hostedInvoiceUrl ? (
+                    <Button variant="ghost" size="sm" asChild>
+                      <a href={inv.hostedInvoiceUrl} target="_blank" rel="noopener noreferrer">
+                        Download
+                      </a>
+                    </Button>
+                  ) : (
+                    <Button variant="ghost" size="sm" disabled>
+                      Download
+                    </Button>
+                  )}
                 </div>
               </div>
             ))}

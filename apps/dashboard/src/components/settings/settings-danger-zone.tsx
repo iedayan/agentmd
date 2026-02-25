@@ -10,17 +10,49 @@ export function SettingsDangerZone() {
 
   const handleExport = async () => {
     setExporting(true);
-    // Placeholder: would trigger data export
-    await new Promise((r) => setTimeout(r, 1000));
-    setExporting(false);
+    try {
+      const res = await fetch("/api/account/export");
+      const data = await res.json();
+      if (!res.ok) {
+        alert((data as { error?: string }).error ?? "Export failed.");
+        return;
+      }
+      const blob = new Blob([JSON.stringify(data, null, 2)], {
+        type: "application/json",
+      });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `agentmd-export-${new Date().toISOString().slice(0, 10)}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+    } catch {
+      alert("Export failed.");
+    } finally {
+      setExporting(false);
+    }
   };
 
   const handleDelete = async () => {
     if (!confirm("Are you sure? This action cannot be undone.")) return;
     setDeleting(true);
-    // Placeholder: would call API to delete account
-    await new Promise((r) => setTimeout(r, 1500));
-    setDeleting(false);
+    try {
+      const res = await fetch("/api/account/delete", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ confirm: true }),
+      });
+      const data = (await res.json()) as { ok?: boolean; error?: string };
+      if (res.ok && data.ok) {
+        window.location.href = "/api/auth/signout?callbackUrl=/";
+      } else {
+        alert(data.error ?? "Failed to delete account.");
+      }
+    } catch {
+      alert("Failed to delete account.");
+    } finally {
+      setDeleting(false);
+    }
   };
 
   return (

@@ -107,7 +107,7 @@ export function LandingDemo() {
 
   return (
     <section className="py-24 md:py-32 border-b border-border/50">
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-4 flex flex-col items-center">
         <div className="mx-auto max-w-2xl text-center mb-16">
           <span className="inline-block h-1 w-12 rounded-full bg-primary/60 mb-6" aria-hidden />
           <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
@@ -118,7 +118,7 @@ export function LandingDemo() {
           </p>
         </div>
 
-        <div className="mx-auto max-w-5xl grid gap-6 lg:grid-cols-2 lg:gap-8">
+        <div className="w-full max-w-5xl grid gap-6 lg:grid-cols-2 lg:gap-8">
           <div className="space-y-3">
             <div className="rounded-xl border border-border/60 bg-card overflow-hidden shadow-sm">
               <div className="flex items-center justify-between px-4 py-2.5 border-b border-border/50 bg-muted/50">
@@ -398,7 +398,6 @@ function BadgeCopyButton({
   const handleCopy = async () => {
     await navigator.clipboard.writeText(markdown);
     onCopy();
-    setTimeout(() => {}, 2000);
   };
 
   return (

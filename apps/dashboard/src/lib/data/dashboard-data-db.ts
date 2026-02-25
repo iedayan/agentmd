@@ -3,6 +3,7 @@
  * Used when DATABASE_URL is set.
  */
 import type { Execution, ExecutionStep, Repository, TriggerType } from "@/types";
+import { normalizeBlockedCommands } from "@/lib/execution/blocked-commands";
 import type { ApiExecutionRecord, AuditLog } from "./dashboard-data";
 import { getPool } from "./db";
 import { randomUUID } from "crypto";
@@ -43,6 +44,17 @@ function mapExecutionStatus(value: string): Execution["status"] {
 
 function mapExecutionRow(row: Record<string, unknown>): Execution {
   const result = toResultMap(row.result);
+  const executionMode = result.executionMode as "real" | "mock" | undefined;
+  const agentsMdUrl = typeof result.agentsMdUrl === "string" ? result.agentsMdUrl.trim() : "";
+  const preflightPlan = result.preflightPlan;
+  const storedBlocked = result.blockedCommands;
+  const normalized = Array.isArray(storedBlocked)
+    ? {
+        blockedCommands: storedBlocked as Execution["blockedCommands"],
+        runnableCount: (result.preflightRunnableCount as number) ?? 0,
+        blockedCount: (result.preflightBlockedCount as number) ?? storedBlocked.length,
+      }
+    : normalizeBlockedCommands(preflightPlan);
   return {
     id: String(row.id),
     repositoryId: String(row.repository_id),
@@ -58,6 +70,14 @@ function mapExecutionRow(row: Record<string, unknown>): Execution {
     commandsRun: (result.commandsRun as number) ?? 0,
     commandsPassed: (result.commandsPassed as number) ?? 0,
     commandsFailed: (result.commandsFailed as number) ?? 0,
+    executionMode:
+      executionMode === "real" || executionMode === "mock" ? executionMode : undefined,
+    agentsMdUrl: agentsMdUrl.length > 0 ? agentsMdUrl : undefined,
+    preflightPlan:
+      preflightPlan && typeof preflightPlan === "object" ? preflightPlan : undefined,
+    blockedCommands: normalized?.blockedCommands,
+    preflightRunnableCount: normalized?.runnableCount,
+    preflightBlockedCount: normalized?.blockedCount,
   };
 }
 
@@ -377,20 +397,67 @@ export async function listExecutionStepsDb(executionId: string, userId: string):
   if (!exec) return [];
 
   const p = pool();
-  const res = await p.query(
-    `SELECT id, command, type, status, duration_ms, output, error
-     FROM execution_steps WHERE execution_id = $1 ORDER BY created_at`,
-    [executionId]
-  );
-  return res.rows.map((r) => ({
-    id: r.id,
-    command: r.command,
-    type: r.type,
-    status: r.status,
-    durationMs: r.duration_ms ?? undefined,
-    output: r.output ?? undefined,
-    error: r.error ?? undefined,
-  }));
+
+  // Backwards compatible with older schemas that don't yet have execution_steps.details.
+  const queryWithDetails = async () =>
+    p.query(
+      `SELECT id, command, type, status, duration_ms, output, error, details
+       FROM execution_steps WHERE execution_id = $1 ORDER BY created_at`,
+      [executionId]
+    );
+
+  const queryWithoutDetails = async () =>
+    p.query(
+      `SELECT id, command, type, status, duration_ms, output, error
+       FROM execution_steps WHERE execution_id = $1 ORDER BY created_at`,
+      [executionId]
+    );
+
+  let res;
+  try {
+    res = await queryWithDetails();
+  } catch {
+    res = await queryWithoutDetails();
+  }
+
+  return res.rows.map((r) => {
+    const details = toResultMap((r as Record<string, unknown>).details);
+    const reasons = Array.isArray(details.reasons)
+      ? (details.reasons.filter((v) => typeof v === "string") as string[])
+      : undefined;
+    const reasonDetails = Array.isArray(details.reasonDetails)
+      ? (details.reasonDetails
+          .filter((v) => v && typeof v === "object")
+          .map((v) => v as { code?: unknown; message?: unknown })
+          .filter((v) => typeof v.code === "string" && typeof v.message === "string")
+          .map((v) => ({ code: v.code as string, message: v.message as string })) as Array<{
+          code: string;
+          message: string;
+        }>)
+      : undefined;
+
+    const status = String(r.status);
+    const normalizedStatus: ExecutionStep["status"] =
+      status === "pending" ||
+      status === "running" ||
+      status === "success" ||
+      status === "failed" ||
+      status === "blocked"
+        ? (status as ExecutionStep["status"])
+        : "pending";
+
+    return {
+      id: r.id,
+      command: r.command,
+      type: r.type,
+      status: normalizedStatus,
+      reasons,
+      reasonDetails,
+      durationMs: r.duration_ms ?? undefined,
+      output: r.output ?? undefined,
+      error: r.error ?? undefined,
+    };
+  });
 }
 
 export async function createQueuedExecutionDb(

@@ -1,7 +1,7 @@
 import { apiOk, getRequestId } from "@/lib/core/api-response";
 import { listAuditLogs } from "@/lib/data/dashboard-data-facade";
 import { requireSessionUserId } from "@/lib/auth/session";
-import type { AuditEntry } from "@/app/ops/mock-data";
+import type { AuditEntry } from "@/lib/ops/mock-data";
 
 export const dynamic = "force-dynamic";
 

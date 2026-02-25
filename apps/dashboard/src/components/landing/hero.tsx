@@ -7,23 +7,28 @@ import { ArrowRight } from "lucide-react";
 export function Hero() {
     return (
         <section className="relative border-b border-border bg-muted/30 overflow-hidden">
-            <div className="absolute inset-0 hero-dot-grid opacity-50"></div>
-            <div className="absolute inset-0 bg-gradient-to-b from-transparent to-background/90 mix-blend-multiply"></div>
-            <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/20 rounded-full blur-[120px] mix-blend-screen animate-pulse-glow"></div>
-            <div className="absolute bottom-1/4 right-1/4 w-[30rem] h-[30rem] bg-indigo-500/10 rounded-full blur-[120px] mix-blend-screen animate-float"></div>
+            <div className="absolute inset-0 hero-execution-grid"></div>
+            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background/95"></div>
+            <div className="absolute top-1/3 left-1/4 w-80 h-80 bg-primary/15 rounded-full blur-[100px] animate-pulse-glow"></div>
+            <div className="absolute bottom-1/3 right-1/4 w-72 h-72 bg-primary/10 rounded-full blur-[80px] animate-float"></div>
 
             <div className="container relative mx-auto px-4 lg:px-8 py-20 md:py-28 z-10">
                 <div className="mx-auto max-w-3xl text-center md:text-left">
                     <p className="font-mono text-xs tracking-widest uppercase mb-4 text-primary animate-fade-up">
-                        Is your repo agent-ready?
+                        Parse → Validate → Execute
                     </p>
-                    <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight leading-[1.1] animate-fade-up animation-delay-100 drop-shadow-sm">
+                    <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight leading-[1.1] animate-fade-up animation-delay-100 drop-shadow-sm text-gradient">
                         Your AGENTS.md is the spec.
                         <br />
-                        <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-400">We execute it.</span>
+                        <span className="text-primary-glow">We execute it.</span>
                     </h1>
                     <p className="mt-6 text-lg text-muted-foreground max-w-xl animate-fade-up animation-delay-200">
-                        Get your agent-readiness score. Validate and execute AGENTS.md in CI, on every push. One file, one platform, zero drift.
+                        Get your agent-readiness score in under 2 minutes. One file, one command, zero config.
+                    </p>
+                    <p className="mt-2 text-sm text-muted-foreground/80 animate-fade-up animation-delay-200">
+                        <Link href="/docs/why-execute" className="text-primary hover:underline">
+                            Why execute vs. read-only?
+                        </Link>
                     </p>
                     <div className="mt-10 flex flex-wrap items-center justify-center md:justify-start gap-4 animate-fade-up animation-delay-300">
                         <Link href="/register">
@@ -41,12 +46,12 @@ export function Hero() {
                     <div className="animate-fade-up animation-delay-500">
                         <QuickInstall />
                         <p className="mt-3 text-xs text-muted-foreground/80">
-                            Free for 3 repos · No credit card
+                            No install required · Free for 3 repos · No credit card
                         </p>
                     </div>
-                    <div className="mt-14 max-w-2xl animate-fade-up animation-delay-500 relative group">
-                        <div className="absolute -inset-1 bg-gradient-to-r from-primary/30 to-blue-500/30 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-1000 group-hover:duration-200"></div>
-                        <div className="relative">
+                    <div className="mt-14 max-w-2xl mx-auto md:mx-0 animate-fade-up animation-delay-500 relative group">
+                        <div className="absolute -inset-1 bg-gradient-to-r from-primary/40 to-emerald-400/30 rounded-2xl blur-xl opacity-10 group-hover:opacity-30 transition duration-1000"></div>
+                        <div className="relative border-luminescent border-white/20 dark:border-white/5 rounded-2xl overflow-hidden shadow-2xl">
                             <HeroCode />
                         </div>
                     </div>

@@ -13,6 +13,7 @@ const navLinks = [
   { href: "/features", label: "Features" },
   { href: "/pricing", label: "Pricing" },
   { href: "/docs", label: "Docs" },
+  { href: "/design-system", label: "Design" },
   { href: "/marketplace", label: "Marketplace" },
   { href: "/ops", label: "Ops" },
 ];
@@ -32,7 +33,7 @@ export function Nav() {
   return (
     <header
       className={cn(
-        "sticky top-0 z-50 border-b bg-background/95 backdrop-blur-md transition-all duration-200",
+        "sticky top-0 z-50 border-b bg-background/95 backdrop-blur-md transition-all duration-[var(--duration-base)]",
         scrolled
           ? "border-border/60 shadow-sm shadow-black/5"
           : "border-transparent"
@@ -54,9 +55,9 @@ export function Nav() {
                 key={link.href}
                 href={link.href}
                 className={cn(
-                  "px-3 py-1.5 text-sm font-medium rounded-lg transition-colors",
+                  "px-3 py-1.5 text-sm font-medium rounded-[var(--radius-sm)] transition-colors duration-[var(--duration-base)]",
                   isActive
-                    ? "text-foreground bg-muted"
+                    ? "text-primary bg-[hsl(var(--primary-dim))]"
                     : "text-muted-foreground hover:text-foreground hover:bg-muted/60"
                 )}
               >
@@ -67,12 +68,12 @@ export function Nav() {
           <div className="w-px h-4 bg-border/60 mx-2" aria-hidden />
           <ThemeToggle />
           <Link href="/dashboard">
-            <Button variant="ghost" size="sm" className="font-medium text-sm rounded-lg">
+            <Button variant="ghost" size="sm" className="font-medium text-sm rounded-[var(--radius-sm)]">
               Dashboard
             </Button>
           </Link>
             <Link href="/register">
-              <Button size="sm" className="font-semibold text-sm rounded-lg shadow-sm shadow-primary/20 ml-1">
+              <Button size="sm" className="font-semibold text-sm rounded-[var(--radius-sm)] shadow-sm shadow-primary/20 ml-1">
                 Get Started
               </Button>
             </Link>
@@ -82,7 +83,7 @@ export function Nav() {
           <ThemeToggle />
           <button
             type="button"
-            className="p-2 -m-1 rounded-lg hover:bg-muted transition-colors"
+            className="p-2 -m-1 rounded-[var(--radius-sm)] hover:bg-muted transition-colors duration-[var(--duration-base)]"
             onClick={() => setOpen(!open)}
             aria-label={open ? "Close menu" : "Open menu"}
           >
@@ -108,9 +109,9 @@ export function Nav() {
                   <Link
                     href={link.href}
                     className={cn(
-                      "block py-2.5 px-3 text-sm font-medium rounded-lg transition-colors",
+                      "block py-2.5 px-3 text-sm font-medium rounded-[var(--radius-sm)] transition-colors duration-[var(--duration-base)]",
                       isActive
-                        ? "text-foreground bg-muted"
+                        ? "text-primary bg-[hsl(var(--primary-dim))]"
                         : "text-muted-foreground hover:text-foreground hover:bg-muted/60"
                     )}
                     onClick={() => setOpen(false)}
@@ -122,10 +123,10 @@ export function Nav() {
             })}
             <li className="pt-3 mt-3 border-t border-border/50 flex gap-2">
               <Link href="/dashboard" onClick={() => setOpen(false)} className="flex-1">
-                <Button variant="outline" className="w-full text-sm rounded-lg">Dashboard</Button>
+                <Button variant="outline" className="w-full text-sm rounded-[var(--radius-sm)]">Dashboard</Button>
               </Link>
                 <Link href="/register" onClick={() => setOpen(false)} className="flex-1">
-                  <Button className="w-full text-sm rounded-lg">Get Started</Button>
+                  <Button className="w-full text-sm rounded-[var(--radius-sm)]">Get Started</Button>
                 </Link>
             </li>
           </ul>

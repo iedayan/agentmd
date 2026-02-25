@@ -46,3 +46,11 @@ export {
   type OtelExecutionSpan,
   type ExecutionTraceContext,
 } from "./otel.js";
+export {
+  GOVERNANCE_TEMPLATES,
+  BASELINE_SECURITY_TEMPLATE,
+  STRICT_COMPLIANCE_TEMPLATE,
+  CI_CD_STANDARD_TEMPLATE,
+  getTemplateById,
+  type GovernanceTemplate,
+} from "./templates.js";

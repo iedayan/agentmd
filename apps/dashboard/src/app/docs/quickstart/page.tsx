@@ -47,6 +47,11 @@ agentmd run . test       # Run test commands`}</CodeBlock>
       <h2>4. Connect to Dashboard</h2>
       <p>
         Link your GitHub repo to run executions from the dashboard, view success rates, and get ROI metrics.
+        Deploying? Use the{" "}
+        <Link href="/setup/github-app" className="text-primary hover:underline">
+          GitHub App Setup Wizard
+        </Link>
+        {" "}to generate OAuth and GitHub App URLs and env vars.
       </p>
 
       <p className="mt-8 flex gap-3">

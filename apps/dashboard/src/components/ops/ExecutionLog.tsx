@@ -1,6 +1,6 @@
 "use client";
 
-import type { LogLine } from "@/app/ops/mock-data";
+import type { LogLine } from "@/lib/ops/mock-data";
 
 export function ExecutionLog({
   lines,
@@ -10,13 +10,13 @@ export function ExecutionLog({
   isStreaming?: boolean;
 }) {
   return (
-    <div className="border border-[var(--ops-border)] bg-[var(--ops-bg)]">
-      <div className="flex items-center justify-between border-b border-[var(--ops-border)] px-4 py-2">
-        <span className="font-mono text-xs font-medium text-[var(--ops-primary)]/70">
+    <div className="rounded-[var(--radius-md)] border border-border bg-muted/30">
+      <div className="flex items-center justify-between border-b border-border px-4 py-2">
+        <span className="font-mono text-xs font-medium text-muted-foreground">
           Execution Log
         </span>
         {isStreaming && (
-          <span className="ops-pulse-running font-mono text-xs text-[var(--ops-running)]">
+          <span className="ops-pulse-running font-mono text-xs text-primary">
             Streaming
           </span>
         )}
@@ -24,7 +24,7 @@ export function ExecutionLog({
       <pre className="max-h-[240px] overflow-auto p-4 font-mono text-xs leading-relaxed">
         {lines.map((line, i) => (
           <div key={i} className="flex gap-2">
-            <span className="shrink-0 text-[var(--ops-primary)]/50">
+            <span className="shrink-0 text-muted-foreground">
               [{line.timestamp}]
             </span>
             <span
@@ -33,7 +33,7 @@ export function ExecutionLog({
             >
               [{line.stage}]
             </span>
-            <span className="text-[var(--ops-primary)]">{line.message}</span>
+            <span className="text-foreground">{line.message}</span>
           </div>
         ))}
       </pre>

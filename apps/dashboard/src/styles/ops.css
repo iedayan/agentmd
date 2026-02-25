@@ -1,0 +1,52 @@
+/* AgentMD Ops — Design system integration */
+.ops-ops {
+  --ops-bg: hsl(var(--background));
+  --ops-panel: hsl(var(--card));
+  --ops-primary: hsl(var(--foreground));
+  --ops-border: hsl(var(--border));
+  --ops-passed: hsl(var(--primary));
+  --ops-pending: hsl(38 95% 55%);
+  --ops-failed: hsl(var(--destructive));
+  --ops-running: hsl(var(--primary));
+  --ops-accent: hsl(var(--primary));
+  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  background: var(--ops-bg);
+  color: var(--ops-primary);
+}
+
+.ops-ops .font-mono {
+  font-family: var(--font-mono), ui-monospace, monospace;
+}
+
+/* Pipeline stage connector animation */
+@keyframes connectorDraw {
+  from {
+    stroke-dashoffset: 60;
+  }
+
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.ops-connector {
+  stroke-dasharray: 60;
+  animation: connectorDraw 0.6s ease-out forwards;
+}
+
+/* Running badge pulse */
+@keyframes pulseRunning {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.6;
+  }
+}
+
+.ops-pulse-running {
+  animation: pulseRunning 1.5s ease-in-out infinite;
+}
