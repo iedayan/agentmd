@@ -160,6 +160,8 @@ async function markExecutionSucceededDb(executionId: string): Promise<void> {
   }
 }
 
+// Reserved for future lifecycle scheduling
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function scheduleExecutionLifecycleDb(executionId: string): void {
   const existing = dbExecutionTimers.get(executionId);
   if (existing && existing.length > 0) return;

@@ -53,8 +53,8 @@ agent:
         When <code>shell.allow</code> is set, only listed commands (or wildcard matches) can execute. When <code>shell.default: deny</code>, any command not in allow is blocked.
       </p>
       <ul>
-        <li><code>allow: ["pnpm *"]</code> — Allow any pnpm command</li>
-        <li><code>deny: ["rm -rf"]</code> — Block even if otherwise allowed</li>
+        <li><code>allow: [&quot;pnpm *&quot;]</code> — Allow any pnpm command</li>
+        <li><code>deny: [&quot;rm -rf&quot;]</code> — Block even if otherwise allowed</li>
       </ul>
 
       <h2>Flat vs Nested</h2>

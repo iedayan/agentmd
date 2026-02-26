@@ -74,6 +74,7 @@ export function BadgeShareModal({ isOpen, onClose, repoFullName, repoName }: Bad
 
                         <div className="flex flex-col items-center justify-center p-8 rounded-2xl bg-muted/30 border border-border/40 bg-gradient-to-br from-primary/[0.02] to-transparent">
                             <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/40 mb-6">Live Preview</p>
+                            {/* eslint-disable-next-line @next/next/no-img-element -- Dynamic badge URL from API; Next Image requires known domains */}
                             <img
                                 src={badgeUrl}
                                 alt="Agent-Ready Badge Preview"

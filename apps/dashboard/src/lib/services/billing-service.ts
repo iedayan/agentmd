@@ -42,7 +42,7 @@ export const billingService = {
         return res.ok ? { ok: true, checkoutUrl: body.url } : { ok: false, error: body.error };
     },
 
-    async getUsageMetrics(): Promise<{ ok: boolean; metrics?: any; error?: string }> {
+    async getUsageMetrics(): Promise<{ ok: boolean; metrics?: Record<string, unknown>; error?: string }> {
         const res = await fetch("/api/billing/usage", { cache: "no-store" });
         const body = await res.json();
         return res.ok ? { ok: true, metrics: body.metrics } : { ok: false, error: body.error };

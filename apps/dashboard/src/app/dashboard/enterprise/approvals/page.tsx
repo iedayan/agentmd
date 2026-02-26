@@ -5,7 +5,6 @@ import { ApprovalQueue } from "@/components/enterprise/approval-queue";
 import { Approval } from "@/types";
 import { governanceService } from "@/lib/services/governance-service";
 import {
-    ShieldCheck,
     Activity,
     History,
     FileText,
@@ -28,8 +27,8 @@ export default function ApprovalsPage() {
             const res = await governanceService.getApprovals();
             if (!res.ok) throw new Error(res.error ?? "Failed to load approvals.");
             setApprovals(res.approvals ?? []);
-        } catch (e) {
-            setError(e instanceof Error ? e.message : "Load failed");
+        } catch (err) {
+            setError(err instanceof Error ? err.message : "Load failed");
         } finally {
             setLoading(false);
         }
@@ -77,6 +76,11 @@ export default function ApprovalsPage() {
                 </div>
             </div>
 
+            {error && (
+                <div className="rounded-lg border border-destructive/30 bg-destructive/10 px-4 py-2 text-sm text-destructive">
+                    {error}
+                </div>
+            )}
             <div className="flex items-center justify-between pb-2 border-b border-border/10">
                 <div className="flex items-center gap-6">
                     <div className="flex items-center gap-2 group cursor-pointer">

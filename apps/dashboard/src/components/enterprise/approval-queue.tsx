@@ -6,12 +6,9 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
     ShieldCheck,
-    Clock,
     CheckCircle2,
-    XCircle,
     Activity,
     AlertCircle,
-    ChevronRight,
     ArrowRight
 } from "lucide-react";
 import { cn } from "@/lib/core/utils";

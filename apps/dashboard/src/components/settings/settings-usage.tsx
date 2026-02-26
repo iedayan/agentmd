@@ -53,6 +53,7 @@ export function SettingsUsage({
     return () => {
       cancelled = true;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- fetch on mount only; planId/limits come from usage response
   }, []);
 
   const repos = usage?.repositories ?? 0;

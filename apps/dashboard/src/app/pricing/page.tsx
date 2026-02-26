@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Check, Shield, Lock, Activity, HelpCircle } from "lucide-react";
+import { Shield, Lock, Activity, HelpCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/brand/logo";
 import { Nav } from "@/components/landing/nav";

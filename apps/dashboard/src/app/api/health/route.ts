@@ -1,4 +1,3 @@
-import { NextResponse } from "next/server";
 import { getDashboardCounts } from "@/lib/data/dashboard-data";
 import { apiOk } from "@/lib/core/api-response";
 

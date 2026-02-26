@@ -8,13 +8,11 @@ import { Input } from "@/components/ui/input";
 import {
   Users,
   ShieldCheck,
-  CheckCircle2,
   Bell,
   Crown,
   ChevronRight,
   Settings,
   Mail,
-  Activity,
   UserPlus
 } from "lucide-react";
 import { cn } from "@/lib/core/utils";

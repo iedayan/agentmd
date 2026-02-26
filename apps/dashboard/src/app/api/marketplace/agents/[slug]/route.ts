@@ -1,4 +1,3 @@
-import { NextResponse } from "next/server";
 import { getMarketplaceAgentBySlug } from "@/lib/data/dashboard-data";
 import { apiError, apiOk, getRequestId } from "@/lib/core/api-response";
 

@@ -52,7 +52,7 @@ export interface AuditLogEntry {
     resourceId: string;
     status: "success" | "warning" | "failure";
     location?: string;
-    details?: any;
+    details?: Record<string, unknown>;
 }
 
 export interface PolicyRule {

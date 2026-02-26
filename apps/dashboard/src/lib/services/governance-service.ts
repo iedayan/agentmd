@@ -1,4 +1,4 @@
-import { Approval, PolicyRule, AuditLogEntry } from "@/types";
+import { Approval, PolicyRule, AuditLogEntry, GitHubGate, NotificationItem } from "@/types";
 
 /**
  * Service for managing Governance Workflows (Approvals, Policies, Audit).
@@ -61,7 +61,7 @@ export const governanceService = {
     /**
      * Notifications
      */
-    async getNotifications(): Promise<{ ok: boolean; notifications?: any[]; error?: string }> {
+    async getNotifications(): Promise<{ ok: boolean; notifications?: NotificationItem[]; error?: string }> {
         const res = await fetch("/api/workflows/notifications", { cache: "no-store" });
         const body = await res.json();
         return res.ok ? { ok: true, notifications: body.notifications } : { ok: false, error: body.error };
@@ -80,7 +80,7 @@ export const governanceService = {
     /**
      * GitHub Status Gates
      */
-    async getGithubGates(): Promise<{ ok: boolean; gates?: any[]; error?: string }> {
+    async getGithubGates(): Promise<{ ok: boolean; gates?: GitHubGate[]; error?: string }> {
         const res = await fetch("/api/github/checks", { cache: "no-store" });
         const body = await res.json();
         return res.ok ? { ok: true, gates: body.gates } : { ok: false, error: body.error };

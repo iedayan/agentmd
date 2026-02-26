@@ -499,6 +499,7 @@ export function getExecutionById(id: string): Execution | undefined {
 }
 
 export function cancelExecution(_id: string, _userId: string): Execution | null {
+  void _userId; // Reserved for future auth checks
   const execution = executions.find((e) => e.id === _id);
   if (!execution || (execution.status !== "pending" && execution.status !== "running")) {
     return null;

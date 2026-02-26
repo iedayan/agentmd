@@ -68,7 +68,7 @@ export async function POST(req: NextRequest) {
   });
 
   if (!preflight.allowed) {
-    return apiError(preflight.reason!, {
+    return apiError(preflight.reason ?? "Forbidden", {
       status: preflight.code === "APPROVAL_REQUIRED" ? 409 : 403,
       requestId,
       headers: { "X-RateLimit-Remaining": String(rate.remaining) },

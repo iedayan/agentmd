@@ -1,4 +1,4 @@
-import { SsoConfig, Member, Role, ReleaseIntegrity } from "@/types";
+import { SsoConfig, Member, Role, ReleaseIntegrity, ComplianceArtifact } from "@/types";
 
 /**
  * Service for managing Enterprise Identity and Access (SSO & RBAC).
@@ -55,7 +55,7 @@ export const enterpriseService = {
     /**
      * Compliance Artifacts
      */
-    async getComplianceArtifacts(): Promise<{ ok: boolean; artifacts?: any[]; error?: string }> {
+    async getComplianceArtifacts(): Promise<{ ok: boolean; artifacts?: ComplianceArtifact[]; error?: string }> {
         const res = await fetch("/api/enterprise/compliance", { cache: "no-store" });
         const body = await res.json();
         return res.ok ? { ok: true, artifacts: body.artifacts } : { ok: false, error: body.error };

@@ -3,7 +3,7 @@
  */
 import { NextRequest } from "next/server";
 import Stripe from "stripe";
-import { apiError, apiOk, getRequestId } from "@/lib/core/api-response";
+import { apiOk, getRequestId } from "@/lib/core/api-response";
 import { requireSessionUserId } from "@/lib/auth/session";
 import { getPool } from "@/lib/data/db";
 

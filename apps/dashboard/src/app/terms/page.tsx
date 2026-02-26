@@ -12,7 +12,7 @@ export default function TermsPage() {
 
       <h2>2. Description of Service</h2>
       <p>
-        AgentMD provides tools for parsing, validating, and executing AGENTS.md files. Our services are provided "as is" and we make no guarantees regarding uptime or reliability for free-tier users.
+        AgentMD provides tools for parsing, validating, and executing AGENTS.md files. Our services are provided &quot;as is&quot; and we make no guarantees regarding uptime or reliability for free-tier users.
       </p>
 
       <h2>3. User Responsibilities</h2>

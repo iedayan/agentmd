@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { GithubAppSetupWizard } from "@/components/setup/github-app-setup-wizard";
 import { BackLink } from "@/components/ui/back-link";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 export const metadata = {
   title: "GitHub App Setup | AgentMD",

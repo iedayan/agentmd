@@ -3,7 +3,6 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
 import { BarChart3, TrendingUp, DollarSign, Zap } from "lucide-react";
 import { cn } from "@/lib/core/utils";
 
@@ -303,7 +302,7 @@ export function AnalyticsDashboard() {
               </div>
             ) : (
               <div className="grid h-48 grid-cols-14 gap-2.5 items-end">
-                {(data?.trend ?? []).map((point, idx) => (
+                {(data?.trend ?? []).map((point) => (
                   <div
                     key={point.date}
                     className="group relative flex flex-col items-center justify-end h-full w-full"

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Terminal, Activity, ChevronRight, CheckCircle2, AlertCircle, Clock } from "lucide-react";
 import { cn } from "@/lib/core/utils";
 import { Execution, ExecutionStatus } from "@/types";

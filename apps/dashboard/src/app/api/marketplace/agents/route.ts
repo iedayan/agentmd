@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import { listMarketplaceAgents } from "@/lib/data/dashboard-data";
 import { apiOk, getRequestId } from "@/lib/core/api-response";
 

@@ -18,7 +18,6 @@ function scoreToColor(score: number): string {
 function renderBadgeSvg(score: number, label = "AgentMD Score"): string {
   const color = scoreToColor(score);
   const text = `${score}/100`;
-  const width = 120;
   const labelWidth = 90;
   const valueWidth = 50;
   const totalWidth = labelWidth + valueWidth;

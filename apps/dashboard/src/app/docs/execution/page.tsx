@@ -34,7 +34,7 @@ export default function ExecutionPage() {
         <li><code>chmod -R 777</code>, <code>chown -R ... /</code></li>
         <li><code>curl ... | sh</code>, <code>wget ... | bash</code></li>
         <li><code>base64 -d ... | sh</code></li>
-        <li><code>eval "..."</code></li>
+        <li><code>eval &quot;...&quot;</code></li>
         <li><code>nc ... -e</code>, <code>ncat ... --exec</code></li>
         <li><code>mkfs.*</code>, <code>dd if=... of=/dev</code></li>
         <li><code>&gt; /etc/</code>, <code>&gt; /usr/</code></li>

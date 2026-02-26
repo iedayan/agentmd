@@ -35,7 +35,7 @@ describe("Auth middleware", () => {
   });
 
   it("allows authenticated users to access /dashboard", async () => {
-    vi.mocked(getToken).mockResolvedValue({ sub: "user-1" } as any);
+    vi.mocked(getToken).mockResolvedValue({ sub: "user-1" } as { sub: string });
 
     const middleware = await loadMiddleware();
     const req = createNextRequest("http://localhost/dashboard");
@@ -45,7 +45,7 @@ describe("Auth middleware", () => {
   });
 
   it("redirects authenticated users from /register to /dashboard", async () => {
-    vi.mocked(getToken).mockResolvedValue({ sub: "user-1" } as any);
+    vi.mocked(getToken).mockResolvedValue({ sub: "user-1" } as { sub: string });
 
     const middleware = await loadMiddleware();
     const req = createNextRequest("http://localhost/register");

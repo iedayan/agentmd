@@ -194,7 +194,7 @@ export function getReliabilityStats() {
       ? Math.round(
           (resolved.reduce((sum, incident) => {
             const opened = Date.parse(incident.openedAt);
-            const closed = Date.parse(incident.resolvedAt!);
+            const closed = Date.parse(incident.resolvedAt ?? incident.openedAt);
             return sum + Math.max(0, closed - opened);
           }, 0) /
             resolved.length /

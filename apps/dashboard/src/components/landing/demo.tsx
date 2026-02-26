@@ -94,9 +94,12 @@ export function LandingDemo() {
       if (!res.ok || data.ok === false) {
         throw new Error(data.error || "Parse failed");
       }
+      if (!data.parsed || !data.validation) {
+        throw new Error("Invalid response");
+      }
       setResult({
-        parsed: data.parsed!,
-        validation: data.validation!,
+        parsed: data.parsed,
+        validation: data.validation,
         score: data.score ?? 0,
       });
     } catch (e) {

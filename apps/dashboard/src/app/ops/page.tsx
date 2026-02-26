@@ -43,6 +43,7 @@ export default function OpsPage() {
   const selectedPipeline = pipelines.find((p) => p.id === selectedPipelineId);
   const isStreaming = selectedPipeline?.status === "running";
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- onStageClick signature requires stageId
   const handleStageClick = (stageId: string) => {
     logRef.current?.scrollIntoView({ behavior: "smooth" });
   };

@@ -20,7 +20,6 @@ export async function GET() {
   const total = executions.length;
   const failed = executions.filter((execution) => execution.status === "failed").length;
   const success = executions.filter((execution) => execution.status === "success").length;
-  const running = executions.filter((execution) => execution.status === "running").length;
 
   const dayBuckets = Array.from({ length: 7 }).map((_, index) => {
     const date = new Date();

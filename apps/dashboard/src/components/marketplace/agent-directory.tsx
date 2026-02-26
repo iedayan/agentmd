@@ -12,7 +12,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Star, Shield, Search, ShoppingCart, Lock } from "lucide-react";
+import { Star, Shield, Search, ShoppingCart } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
 import type { AgentListing } from "@agentmd/core";
@@ -168,9 +168,9 @@ export function AgentDirectory() {
                 <CardHeader className="flex flex-row items-start justify-between space-y-0">
                   <CardTitle className="text-base">{agent.name}</CardTitle>
                   <div className="flex items-center gap-1">
-                    {(agent as any).license && (
+                    {"license" in agent && agent.license && (
                       <Badge variant="outline" className="text-[10px] font-black uppercase text-muted-foreground/60 border-border/40">
-                        {(agent as any).license}
+                        {String(agent.license)}
                       </Badge>
                     )}
                     {agent.certified && (

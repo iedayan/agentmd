@@ -149,7 +149,7 @@ export async function POST(req: NextRequest) {
     });
   }
 
-  const repository = await getRepositoryByFullName(repositoryFullName!);
+  const repository = await getRepositoryByFullName(repositoryFullName);
   if (!repository) {
     markWebhookDeliveryStatus(deliveryId, "failed", "Repository not connected");
     recordGitHubWebhookEvent({

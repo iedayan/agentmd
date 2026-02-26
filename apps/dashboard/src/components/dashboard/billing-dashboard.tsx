@@ -16,7 +16,7 @@ import {
     Rocket
 } from "lucide-react";
 import { billingService, PlanStatus } from "@/lib/services/billing-service";
-import { PLANS, PlanId, getPlan } from "@/lib/billing/plans";
+import { PlanId, getPlan } from "@/lib/billing/plans";
 import { cn } from "@/lib/core/utils";
 import { toast } from "sonner";
 

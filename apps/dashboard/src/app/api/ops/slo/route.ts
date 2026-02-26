@@ -25,7 +25,7 @@ export async function GET(req: NextRequest) {
   const approvalLatencyMinutes = listApprovalRequests()
     .filter((approval) => approval.decidedAt)
     .map((approval) =>
-      Math.max(0, (Date.parse(approval.decidedAt!) - Date.parse(approval.createdAt)) / 60000)
+      Math.max(0, (Date.parse(approval.decidedAt ?? approval.createdAt) - Date.parse(approval.createdAt)) / 60000)
     );
 
   const approvalP95 = Math.round(percentile(approvalLatencyMinutes, 0.95) * 10) / 10;

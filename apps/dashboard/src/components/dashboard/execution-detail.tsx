@@ -236,22 +236,6 @@ export function ExecutionDetail({ executionId }: { executionId: string }) {
     }
   };
 
-  if (!loading && notFound) {
-    return (
-      <div className="space-y-6">
-        <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-sm text-muted-foreground">
-          <BackLink href="/dashboard/executions">Executions</BackLink>
-          <ChevronRight className="h-4 w-4 shrink-0" aria-hidden />
-          <span className="font-medium text-foreground">Execution {id}</span>
-        </nav>
-        <h1 className="text-2xl font-bold">Execution not found</h1>
-        <p className="text-muted-foreground">
-          The requested execution id does not exist.
-        </p>
-      </div>
-    );
-  }
-
   const durationSeconds = execution?.durationMs
     ? (execution.durationMs / 1000).toFixed(1)
     : "0.0";
@@ -287,24 +271,6 @@ export function ExecutionDetail({ executionId }: { executionId: string }) {
       return null;
     }
   }, [execution?.preflightPlan]);
-
-  const copyPreflight = async () => {
-    if (!preflightJson) return;
-    await navigator.clipboard.writeText(preflightJson);
-    setCopiedPreflight(true);
-    setTimeout(() => setCopiedPreflight(false), 1500);
-  };
-
-  const downloadPreflight = () => {
-    if (!preflightJson) return;
-    const blob = new Blob([preflightJson], { type: "application/json;charset=utf-8;" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `execution-${id}-preflight.json`;
-    a.click();
-    URL.revokeObjectURL(url);
-  };
 
   const blockedItems = useMemo(() => {
     if (!preflight) {
@@ -347,13 +313,6 @@ export function ExecutionDetail({ executionId }: { executionId: string }) {
     });
   }, [blockedItems, blockedCodeFilter, blockedSearch]);
 
-  const copyCommandToClipboard = async (command: string) => {
-    if (!command) return;
-    await navigator.clipboard.writeText(command);
-    setCopiedCommand(command);
-    setTimeout(() => setCopiedCommand(null), 1500);
-  };
-
   const blockedByCode = useMemo(() => {
     if (!preflight) return [] as Array<{ code: string; count: number; messages: string[]; sampleCommand?: string }>;
 
@@ -388,13 +347,56 @@ export function ExecutionDetail({ executionId }: { executionId: string }) {
       }))
       .sort((a, b) => b.count - a.count);
   }, [preflight]);
-  const executionMinutes = execution?.durationMs
-    ? (execution.durationMs / 60000).toFixed(2)
-    : "0.00";
+
   const completedSteps = useMemo(
     () => steps.filter((step) => step.status === "success").length,
     [steps]
   );
+
+  if (!loading && notFound) {
+    return (
+      <div className="space-y-6">
+        <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-sm text-muted-foreground">
+          <BackLink href="/dashboard/executions">Executions</BackLink>
+          <ChevronRight className="h-4 w-4 shrink-0" aria-hidden />
+          <span className="font-medium text-foreground">Execution {id}</span>
+        </nav>
+        <h1 className="text-2xl font-bold">Execution not found</h1>
+        <p className="text-muted-foreground">
+          The requested execution id does not exist.
+        </p>
+      </div>
+    );
+  }
+
+  const copyPreflight = async () => {
+    if (!preflightJson) return;
+    await navigator.clipboard.writeText(preflightJson);
+    setCopiedPreflight(true);
+    setTimeout(() => setCopiedPreflight(false), 1500);
+  };
+
+  const downloadPreflight = () => {
+    if (!preflightJson) return;
+    const blob = new Blob([preflightJson], { type: "application/json;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `execution-${id}-preflight.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const copyCommandToClipboard = async (command: string) => {
+    if (!command) return;
+    await navigator.clipboard.writeText(command);
+    setCopiedCommand(command);
+    setTimeout(() => setCopiedCommand(null), 1500);
+  };
+
+  const executionMinutes = execution?.durationMs
+    ? (execution.durationMs / 60000).toFixed(2)
+    : "0.00";
 
   const exportLogs = () => {
     if (!steps.length) return;

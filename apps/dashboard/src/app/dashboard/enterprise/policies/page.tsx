@@ -9,7 +9,6 @@ import {
   ShieldAlert,
   Terminal,
   CheckCircle2,
-  AlertCircle,
   Zap,
   Code2,
   Dna,
@@ -47,8 +46,8 @@ export default function PoliciesPage() {
       setPolicies(policiesRes.policies ?? []);
       setGates(gatesRes.gates ?? []);
       setError(null);
-    } catch (loadError) {
-      setError(loadError instanceof Error ? loadError.message : "Failed to load policies");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to load policies");
     } finally {
       setLoading(false);
     }
@@ -132,6 +131,11 @@ ${policies
   return (
     <FeatureGate feature="Policy-as-Code Enforcement" planRequired="enterprise">
       <div className="p-6 md:p-10 space-y-10">
+        {error && (
+          <div className="rounded-lg border border-destructive/30 bg-destructive/10 px-4 py-2 text-sm text-destructive">
+            {error}
+          </div>
+        )}
         <div className="relative overflow-hidden rounded-[2rem] border border-primary/20 glass-card p-10 bg-gradient-to-br from-background via-background/90 to-primary/10 shadow-glow/5">
           <div className="absolute top-0 right-0 -mr-20 -mt-20 h-80 w-80 rounded-full bg-primary/10 blur-[100px]" />
           <div className="relative z-10">

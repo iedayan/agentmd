@@ -43,7 +43,7 @@ export function MarkdownContent({ content }: { content: string }) {
       i++;
       elements.push(
         <pre key={key++} className="rounded-lg bg-muted p-4 text-sm overflow-x-auto my-6">
-          <code>{codeLines.join("\n")}</code>
+          <code className={lang ? `language-${lang}` : undefined}>{codeLines.join("\n")}</code>
         </pre>
       );
       continue;
