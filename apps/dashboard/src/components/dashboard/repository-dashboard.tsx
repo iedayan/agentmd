@@ -5,10 +5,10 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { EmptyState } from "./empty-state";
 import { ActionableInsights } from "./actionable-insights";
 import { ImpactPanel } from "./impact-panel";
+import { GovernanceOverview } from "./governance-overview";
+import { ExecutionOverview } from "./execution-overview";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -215,6 +215,10 @@ export function RepositoryDashboard() {
 
   return (
     <div className="space-y-6">
+      <div className="grid gap-4 sm:grid-cols-2">
+        <ExecutionOverview />
+        <GovernanceOverview />
+      </div>
       <div className="bento-card bg-primary/5 border-primary/20">
         <CardContent className="py-5">
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
@@ -508,20 +512,28 @@ export function RepositoryDashboard() {
                   </div>
                 ) : null}
 
-                <div className="flex gap-2">
-                  <Link
-                    href={
-                      repo.latestExecutionId
-                        ? `/dashboard/executions/${repo.latestExecutionId}`
-                        : "/dashboard/executions"
-                    }
-                    className="flex-1"
-                  >
-                    <Button variant="outline" size="sm" className="w-full rounded-xl btn-tactile font-bold text-xs">
-                      Inspect
-                    </Button>
-                  </Link>
-                  <Button
+                <div className="flex flex-col gap-2">
+                  {repo.healthScore < 80 && (
+                    <Link href="/docs/parse" className="w-full">
+                      <Button variant="ghost" size="sm" className="w-full rounded-xl text-xs text-amber-600 dark:text-amber-400 hover:bg-amber-500/10">
+                        Improve score →
+                      </Button>
+                    </Link>
+                  )}
+                  <div className="flex gap-2">
+                    <Link
+                      href={
+                        repo.latestExecutionId
+                          ? `/dashboard/executions/${repo.latestExecutionId}`
+                          : "/dashboard/executions"
+                      }
+                      className="flex-1"
+                    >
+                      <Button variant="outline" size="sm" className="w-full rounded-xl btn-tactile font-bold text-xs">
+                        Inspect
+                      </Button>
+                    </Link>
+                    <Button
                     size="sm"
                     className="flex-1 rounded-xl btn-tactile font-bold text-xs"
                     disabled={runningRepoId === repo.id}
@@ -529,6 +541,7 @@ export function RepositoryDashboard() {
                   >
                     {runningRepoId === repo.id ? "Working..." : "Execute"}
                   </Button>
+                  </div>
                 </div>
               </CardContent>
             </div>

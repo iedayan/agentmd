@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import type { Execution, ExecutionStep } from "@/types";
 import { getPlan } from "@/lib/billing/plans";
+import { cn } from "@/lib/core/utils";
 
 type PreflightReasonDetail = { code?: string; message?: string };
 type PreflightPlanItem = {
@@ -535,13 +536,42 @@ export function ExecutionDetail({ executionId }: { executionId: string }) {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <Card className="md:col-span-2 bento-card">
           <CardHeader>
-            <CardTitle className="text-lg flex items-center gap-2">
-              <span className="h-2 w-2 rounded-full bg-primary shadow-[0_0_8px_hsl(var(--primary))]" />
-              Timeline
-            </CardTitle>
-            <p className="text-sm text-muted-foreground">
-              Each step from AGENTS.md commands
-            </p>
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <CardTitle className="text-lg flex items-center gap-2">
+                  <span className="h-2 w-2 rounded-full bg-primary shadow-[0_0_8px_hsl(var(--primary))]" />
+                  Timeline
+                </CardTitle>
+                <p className="text-sm text-muted-foreground">
+                  Each step from AGENTS.md commands
+                </p>
+              </div>
+              {steps.length > 0 && (
+                <div className="flex items-center gap-1.5 overflow-x-auto py-1">
+                  {steps.map((step, i) => (
+                    <span key={step.id} className="flex items-center gap-1.5 shrink-0">
+                      <span
+                        className={cn(
+                          "rounded-lg px-2 py-1 text-xs font-mono",
+                          step.status === "success"
+                            ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
+                            : step.status === "failed" || step.status === "blocked"
+                              ? "bg-red-500/10 text-red-600 dark:text-red-400"
+                              : step.status === "running"
+                                ? "bg-primary/10 text-primary"
+                                : "bg-muted text-muted-foreground"
+                        )}
+                      >
+                        {step.type || "cmd"}
+                      </span>
+                      {i < steps.length - 1 && (
+                        <ChevronRight className="h-3.5 w-3.5 text-muted-foreground/50" aria-hidden />
+                      )}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </div>
           </CardHeader>
           <CardContent>
             {loading ? (
@@ -919,7 +949,12 @@ export function ExecutionDetail({ executionId }: { executionId: string }) {
                   <span className="font-mono text-sm font-bold">{executionMinutes} min</span>
                 </div>
                 <div className="h-1.5 w-full bg-muted rounded-full overflow-hidden">
-                  <div className="h-full bg-primary animate-beam w-1/3" />
+                  <div
+                    className="h-full bg-primary transition-all duration-500"
+                    style={{
+                      width: `${Math.min(100, (monthlyMinutesUsed / executionLimit) * 100)}%`,
+                    }}
+                  />
                 </div>
               </div>
               <div className="flex items-center justify-between px-1">
