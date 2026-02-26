@@ -94,8 +94,8 @@ export function Nav() {
 
       <div
         className={cn(
-          "md:hidden overflow-hidden transition-[max-height] duration-200 ease-out border-t border-border/50",
-          open ? "max-h-96" : "max-h-0 border-transparent"
+          "md:hidden overflow-y-auto transition-[max-height] duration-300 ease-out border-t border-border/50",
+          open ? "max-h-[85vh]" : "max-h-0 overflow-hidden border-transparent"
         )}
       >
         <div className="bg-background px-4 py-4">

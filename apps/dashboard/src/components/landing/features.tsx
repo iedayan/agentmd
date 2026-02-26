@@ -2,7 +2,7 @@ import { CheckCircle } from "lucide-react";
 
 export function Features() {
     return (
-        <section className="border-b border-border py-24 relative overflow-hidden bg-background">
+        <section className="border-b border-border py-16 sm:py-20 md:py-24 relative overflow-hidden bg-background">
             <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/5 via-background to-background pointer-events-none"></div>
             <div className="container mx-auto px-4 lg:px-8 relative z-10">
                 <div className="mx-auto max-w-5xl">
@@ -10,12 +10,12 @@ export function Features() {
                         <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight mb-4 text-gradient">
                             Parse · Validate · Execute
                         </h2>
-                        <p className="text-muted-foreground text-lg max-w-2xl mx-auto leading-relaxed">
+                        <p className="text-muted-foreground text-base sm:text-lg max-w-2xl mx-auto leading-relaxed px-2 sm:px-0">
                             A complete lifecycle engine for your AI agents, seamlessly integrated into your repository via <span className="text-foreground font-semibold">Agentic UX</span>.
                         </p>
                     </div>
 
-                    <div className="grid gap-6 md:grid-cols-3 max-w-5xl mx-auto text-center md:text-left">
+                    <div className="grid gap-4 sm:gap-6 grid-cols-1 md:grid-cols-3 max-w-5xl mx-auto text-center md:text-left">
                         {/* Large Featured Card */}
                         <div className="md:col-span-2 bento-card border-luminescent flex flex-col justify-between items-center md:items-start p-8 md:p-10">
                             <div className="w-full">
@@ -46,7 +46,7 @@ export function Features() {
                         </div>
 
                         {/* Smaller Card 1 */}
-                        <div className="bento-card border-luminescent flex flex-col justify-center items-center p-8 md:p-10 text-center">
+                        <div className="bento-card border-luminescent flex flex-col justify-center items-center p-6 sm:p-8 md:p-10 text-center">
                             <h3 className="font-bold text-2xl mb-4">Readiness score</h3>
                             <p className="text-sm leading-relaxed text-muted-foreground">
                                 Get a 0–100 score on how agent-ready your repository is.
@@ -58,7 +58,7 @@ export function Features() {
                         </div>
 
                         {/* Smaller Card 2 */}
-                        <div className="md:col-span-3 bento-card relative overflow-hidden group p-8 md:p-12 text-center">
+                        <div className="md:col-span-3 bento-card relative overflow-hidden group p-6 sm:p-8 md:p-12 text-center">
                             <div className="flex flex-col items-center justify-center h-full">
                                 <h3 className="font-bold text-2xl mb-4">Parse & validate</h3>
                                 <p className="text-lg leading-relaxed text-muted-foreground max-w-2xl mx-auto">

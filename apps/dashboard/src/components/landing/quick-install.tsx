@@ -53,7 +53,7 @@ export function QuickInstall() {
       <p className="mb-3 text-xs font-mono tracking-[0.15em] text-muted-foreground/70 uppercase">
         Quick install
       </p>
-      <div className="grid gap-3 sm:grid-cols-2">
+      <div className="grid gap-3 grid-cols-1 sm:grid-cols-2">
         {COMMANDS.map(({ label, desc, cmd, href, icon: Icon, primary }) => (
           <div
             key={cmd}
@@ -70,10 +70,10 @@ export function QuickInstall() {
             >
               <Icon className="h-5 w-5" />
             </div>
-            <div className="min-w-0 flex-1">
-              <p className="font-medium text-foreground">{label}</p>
+            <div className="min-w-0 flex-1 overflow-hidden">
+              <p className="font-medium text-foreground truncate">{label}</p>
               <p className="text-xs text-muted-foreground">{desc}</p>
-              <code className="mt-2 block break-all font-mono text-sm text-foreground/90 sm:truncate">
+              <code className="mt-2 block break-all font-mono text-xs sm:text-sm text-foreground/90">
                 {cmd}
               </code>
             </div>

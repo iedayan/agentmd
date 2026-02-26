@@ -56,7 +56,7 @@ export function HeroCode() {
       </div>
 
       {/* Editor body */}
-      <div className="flex min-h-[280px]">
+      <div className="flex min-h-[200px] sm:min-h-[240px] md:min-h-[280px]">
         {/* Gutter */}
         <div
           className="py-5 px-3 select-none border-r border-white/[0.04]"
@@ -66,7 +66,7 @@ export function HeroCode() {
           {FILE.lines.map((_, i) => (
             <div
               key={i}
-              className="h-6 flex items-center justify-end font-mono text-[11px]"
+              className="h-5 sm:h-6 flex items-center justify-end font-mono text-[10px] sm:text-[11px]"
               style={{ color: "#3f3f46", lineHeight: "1.5rem" }}
             >
               {i + 1}
@@ -75,10 +75,10 @@ export function HeroCode() {
         </div>
 
         {/* Code */}
-        <pre className="flex-1 py-5 px-5 overflow-x-auto text-[13px] font-mono leading-6">
+        <pre className="flex-1 py-4 sm:py-5 px-3 sm:px-5 overflow-x-auto text-[11px] sm:text-[12px] md:text-[13px] font-mono leading-5 sm:leading-6">
           <code>
             {FILE.lines.map((line, i) => (
-              <div key={i} className="h-6 flex items-center whitespace-pre">
+              <div key={i} className="h-5 sm:h-6 flex items-center whitespace-pre">
                 {line.type === "cmd" ? (
                   <span>
                     <span style={{ color: "#34d399" }}>{"$ "}</span>

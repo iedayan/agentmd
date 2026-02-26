@@ -1,8 +1,9 @@
 import Link from "next/link";
-import { Zap, Code, Rocket, Terminal, FileCode, Layers, Shield, ArrowRight, BookOpen, BookMarked, DollarSign, CircleHelp } from "lucide-react";
+import { Zap, Code, Rocket, Terminal, FileCode, Layers, Shield, ArrowRight, BookOpen, BookMarked, DollarSign, CircleHelp, AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const GUIDES = [
+  { title: "The Problem", desc: "Agent sprawl, governance gaps, and why enterprises can't trust execution", href: "/docs/the-problem", icon: AlertTriangle },
   { title: "How It Works", desc: "Plain-language explanation of the core engine", href: "/docs/how-it-works", icon: CircleHelp },
   { title: "Beginner Path", desc: "First-time setup in plain language", href: "/docs/beginner", icon: BookOpen },
   { title: "Quickstart", desc: "AGENTS.md in 5 minutes", href: "/docs/quickstart", icon: Rocket },

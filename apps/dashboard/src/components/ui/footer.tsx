@@ -3,9 +3,9 @@ import { Logo } from "@/components/brand/logo";
 
 export function Footer() {
     return (
-        <footer className="border-t border-border py-12">
-            <div className="container mx-auto px-4 lg:px-8">
-                <div className="flex flex-col gap-10 md:flex-row md:justify-between">
+        <footer className="border-t border-border py-10 sm:py-12">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="flex flex-col gap-8 sm:gap-10 md:flex-row md:justify-between">
                     <div className="max-w-[200px]">
                         <Link href="/" className="flex items-center gap-2 font-semibold mb-2">
                             <Logo size="sm" />
@@ -15,7 +15,7 @@ export function Footer() {
                             The CI/CD control plane for AI agents.
                         </p>
                     </div>
-                    <nav className="flex flex-wrap gap-10 md:gap-12" aria-label="Footer navigation">
+                    <nav className="flex flex-wrap gap-8 sm:gap-10 md:gap-12" aria-label="Footer navigation">
                         <FooterCol
                             heading="Product"
                             links={[

@@ -2,9 +2,9 @@ import { Star } from "lucide-react";
 
 export function SocialProof() {
     return (
-        <div className="border-b border-border bg-muted/20 py-6">
-            <div className="container mx-auto px-4 lg:px-8">
-                <div className="flex flex-wrap items-center justify-center gap-8 sm:gap-12">
+        <div className="border-b border-border bg-muted/20 py-4 sm:py-6">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-4 sm:gap-8 sm:gap-12">
                     <a
                         href="https://github.com/iedayan/agentmd"
                         target="_blank"

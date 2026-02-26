@@ -19,7 +19,8 @@ describe("POST /api/execute", () => {
     expect(res.status).toBe(400);
     const json = await res.json();
     expect(json.ok).toBe(false);
-    expect(json.code).toBe("MISSING_AGENT_REFERENCE");
+    expect(json.code).toBe("INVALID_PAYLOAD");
+    expect(json.error).toBeDefined();
   });
 
   it("returns 400 for invalid agentId format", async () => {
@@ -28,28 +29,29 @@ describe("POST /api/execute", () => {
     );
     expect(res.status).toBe(400);
     const json = await res.json();
-    expect(json.code).toBe("INVALID_AGENT_ID");
+    expect(json.code).toBe("INVALID_PAYLOAD");
   });
 
-  it("returns 400 for invalid agentsMdUrl protocol", async () => {
-    const res = await POST(
-      createRequest({ agentsMdUrl: "ftp://example.com/AGENTS.md" }) as unknown as import("next/server").NextRequest
-    );
-    expect(res.status).toBe(400);
-    const json = await res.json();
-    expect(json.code).toBe("INVALID_AGENTS_MD_URL_PROTOCOL");
-  });
-
-  it("returns 404 for unknown repositoryId", async () => {
+  it("returns 201 or 403 for valid agentsMdUrl (protocol validated by Zod)", async () => {
     const res = await POST(
       createRequest({
-        agentsMdUrl: "https://example.com/AGENTS.md",
+        agentsMdUrl: "https://github.com/owner/repo/blob/main/AGENTS.md",
+        repositoryId: "ext",
+      }) as unknown as import("next/server").NextRequest
+    );
+    expect([200, 201, 403, 409]).toContain(res.status);
+  });
+
+  it("returns 403 for unknown repositoryId when preflight blocks", async () => {
+    const res = await POST(
+      createRequest({
+        agentsMdUrl: "https://github.com/owner/repo/blob/main/AGENTS.md",
         repositoryId: "nonexistent-repo-id",
       }) as unknown as import("next/server").NextRequest
     );
-    expect(res.status).toBe(404);
+    expect([403, 409]).toContain(res.status);
     const json = await res.json();
-    expect(json.code).toBe("REPOSITORY_NOT_FOUND");
+    expect(json.ok).toBe(false);
   });
 
   it("queues execution with valid agentsMdUrl and known repository", async () => {

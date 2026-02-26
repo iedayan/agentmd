@@ -118,14 +118,14 @@ export function LandingDemo() {
   }, [run]);
 
   return (
-    <section className="py-24 md:py-32 border-b border-border/50">
-      <div className="container mx-auto px-4 flex flex-col items-center">
-        <div className="mx-auto max-w-2xl text-center mb-16">
-          <span className="inline-block h-1 w-12 rounded-full bg-primary/60 mb-6" aria-hidden />
-          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
+    <section className="py-16 sm:py-20 md:py-24 lg:py-32 border-b border-border/50">
+      <div className="container mx-auto px-4 sm:px-6 flex flex-col items-center">
+        <div className="mx-auto max-w-2xl text-center mb-10 sm:mb-16">
+          <span className="inline-block h-1 w-12 rounded-full bg-primary/60 mb-4 sm:mb-6" aria-hidden />
+          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight md:text-4xl">
             Try it live
           </h2>
-          <p className="mt-4 text-muted-foreground text-lg">
+          <p className="mt-3 sm:mt-4 text-muted-foreground text-base sm:text-lg px-2 sm:px-0">
             Paste your AGENTS.md or README. We parse it, validate it, and show your agent-readiness score.
           </p>
         </div>
@@ -133,8 +133,8 @@ export function LandingDemo() {
         <div className="w-full max-w-5xl grid gap-6 lg:grid-cols-2 lg:gap-8">
           <div className="space-y-3">
             <div className="rounded-xl border border-border/60 bg-card overflow-hidden shadow-sm">
-              <div className="flex items-center justify-between px-4 py-2.5 border-b border-border/50 bg-muted/50">
-                <div className="flex gap-2">
+              <div className="flex flex-wrap items-center justify-between gap-2 px-3 sm:px-4 py-2.5 border-b border-border/50 bg-muted/50">
+                <div className="flex gap-2 flex-wrap">
                   <button
                     type="button"
                     onClick={() => {
@@ -166,7 +166,7 @@ export function LandingDemo() {
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
                 placeholder={sourceType === "readme" ? "Paste your README…" : "Paste your AGENTS.md content…"}
-                className="w-full min-h-[260px] p-4 bg-transparent text-sm font-mono text-foreground placeholder:text-muted-foreground/50 resize-y focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset"
+                className="w-full min-h-[200px] sm:min-h-[240px] md:min-h-[260px] p-3 sm:p-4 bg-transparent text-xs sm:text-sm font-mono text-foreground placeholder:text-muted-foreground/50 resize-y focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset"
                 spellCheck={false}
                 aria-describedby="demo-hint"
               />
@@ -186,7 +186,7 @@ export function LandingDemo() {
             </div>
           </div>
 
-          <div className="rounded-xl border border-border/60 bg-card overflow-hidden min-h-[320px] shadow-sm">
+          <div className="rounded-xl border border-border/60 bg-card overflow-hidden min-h-[280px] sm:min-h-[320px] shadow-sm">
             <div className="px-4 py-2.5 border-b border-border/50 bg-muted/50">
               <span className="text-xs font-mono text-muted-foreground">Results</span>
             </div>
@@ -203,7 +203,7 @@ export function LandingDemo() {
                 <>
                   <div className="flex items-center gap-6">
                     <ScoreRing score={result.score} />
-                    <div className="flex-1">
+                    <div className="flex-1 w-full text-center sm:text-left">
                       <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-1">
                         Agent-readiness score
                       </p>
@@ -264,7 +264,7 @@ export function LandingDemo() {
                             <span className="shrink-0 px-1.5 py-0.5 rounded bg-muted text-xs font-mono">
                               {c.type}
                             </span>
-                            <code className="text-foreground/90 break-all">{c.command}</code>
+                            <code className="text-foreground/90 break-all text-xs sm:text-sm">{c.command}</code>
                           </li>
                         ))}
                       </ul>

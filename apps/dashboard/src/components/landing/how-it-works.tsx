@@ -18,10 +18,10 @@ export function HowItWorks() {
     };
 
     return (
-        <section className="border-b border-border py-20 md:py-24 bg-muted/30">
-            <div className="container mx-auto px-4 lg:px-8">
+        <section className="border-b border-border py-16 sm:py-20 md:py-24 bg-muted/30">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="mx-auto max-w-3xl">
-                    <h2 className="text-2xl font-bold tracking-tight mb-12">
+                    <h2 className="text-xl sm:text-2xl font-bold tracking-tight mb-8 sm:mb-12">
                         Agent-ready in three steps. Under a minute.
                     </h2>
                     <div className="relative space-y-0">
