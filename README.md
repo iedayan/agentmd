@@ -175,20 +175,16 @@ Discover, purchase, and execute agents through AGENTS.md:
 
 - **Free**: Basic parsing + validation, 3 repos, 100 min/mo
 - **Pro ($40/mo)**: Unlimited repos, 1000 min, team features
-- **Enterprise ($199/mo)**: Self-hosted, SSO, RBAC, audit logs. See [docs/ENTERPRISE.md](docs/ENTERPRISE.md)
+- **Enterprise ($249/mo)**: Self-hosted, SSO, RBAC, audit logs. See [docs/INFRASTRUCTURE.md](docs/INFRASTRUCTURE.md) for deployment options.
 
 ## Open Source Readiness
 
-- **Philosophy & Strategy**: [docs/STRATEGY.md](docs/STRATEGY.md)
-- **How it works** (plain language): [docs/HOW_IT_WORKS.md](docs/HOW_IT_WORKS.md)
-- **Design system**: [docs/DESIGN_SYSTEM.md](docs/DESIGN_SYSTEM.md) — live reference at `/design-system.html` when dashboard runs
 - **Installation & CLI reference**: [docs/INSTALL.md](docs/INSTALL.md)
-- Security policy and disclosure: [SECURITY.md](SECURITY.md)
-- Contribution guide and required test matrix: [CONTRIBUTING.md](CONTRIBUTING.md)
-- Core stable API contract: [docs/CORE_PUBLIC_API.md](docs/CORE_PUBLIC_API.md)
-- SemVer policy: [docs/SEMVER_POLICY.md](docs/SEMVER_POLICY.md)
-- Performance and benchmark notes: [docs/PERFORMANCE.md](docs/PERFORMANCE.md)
-- Release history: [CHANGELOG.md](CHANGELOG.md)
+- **Core API contract**: [docs/CORE_PUBLIC_API.md](docs/CORE_PUBLIC_API.md)
+- **Infrastructure & deployment**: [docs/INFRASTRUCTURE.md](docs/INFRASTRUCTURE.md)
+- **Security policy**: [SECURITY.md](SECURITY.md)
+- **Contribution guide**: [CONTRIBUTING.md](CONTRIBUTING.md)
+- **Release history**: [CHANGELOG.md](CHANGELOG.md)
 
 Notes:
 

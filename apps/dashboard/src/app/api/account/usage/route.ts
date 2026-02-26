@@ -4,7 +4,7 @@ import {
   getDashboardCounts,
   getUserSubscriptionPlan,
 } from "@/lib/data/dashboard-data-facade";
-import { getPlan, type PlanId } from "@/lib/billing/plans";
+import { getPlan, isAppSumoPlan, type PlanId } from "@/lib/billing/plans";
 import { apiError, apiOk, getRequestId } from "@/lib/core/api-response";
 import Stripe from "stripe";
 import { getServerSession } from "next-auth";
@@ -29,7 +29,9 @@ export async function GET() {
 
     const resolvedPlanId = await resolvePlanId(userId);
     const planId: PlanId =
-      resolvedPlanId === "pro" || resolvedPlanId === "enterprise"
+      resolvedPlanId === "pro" ||
+      resolvedPlanId === "enterprise" ||
+      (resolvedPlanId && isAppSumoPlan(resolvedPlanId))
         ? resolvedPlanId
         : "free";
     const plan = getPlan(planId);
@@ -59,9 +61,14 @@ export async function GET() {
   }
 }
 
-async function resolvePlanId(userId: string): Promise<PlanId> {
+async function resolvePlanId(userId: string): Promise<PlanId | null> {
   const dbPlan = await getUserSubscriptionPlan(userId);
-  if (dbPlan === "pro" || dbPlan === "enterprise") return dbPlan;
+  if (
+    dbPlan === "pro" ||
+    dbPlan === "enterprise" ||
+    (dbPlan && isAppSumoPlan(dbPlan as PlanId))
+  )
+    return dbPlan as PlanId;
 
   const stripeSecretKey = process.env.STRIPE_SECRET_KEY?.trim();
   if (!stripeSecretKey) return "free";

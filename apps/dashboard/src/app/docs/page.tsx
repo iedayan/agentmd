@@ -255,7 +255,7 @@ export default function DocsOverviewPage() {
           </li>
         </ul>
         <p className="mt-2 text-sm text-muted-foreground">
-          See <code>docs/INTEGRATIONS.md</code> for setup details.
+          Configure via environment variables. See <Link href="/docs/quickstart" className="text-primary hover:underline">Quickstart</Link> and <Link href="/docs/execution" className="text-primary hover:underline">Execution</Link> for setup.
         </p>
       </section>
 

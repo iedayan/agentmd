@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { billingService, PlanStatus } from "@/lib/services/billing-service";
+import { hasProFeatures } from "@/lib/billing/plans";
 import { Button } from "@/components/ui/button";
 import { Shield, Lock, ArrowUpRight, Crown } from "lucide-react";
 import Link from "next/link";
@@ -34,7 +35,7 @@ export function FeatureGate({ children, feature, planRequired, className }: Feat
     const currentPlan = status?.currentPlan || "free";
 
     const hasAccess =
-        (planRequired === "pro" && (currentPlan === "pro" || currentPlan === "enterprise")) ||
+        (planRequired === "pro" && (currentPlan === "pro" || currentPlan === "enterprise" || hasProFeatures(currentPlan))) ||
         (planRequired === "enterprise" && currentPlan === "enterprise");
 
     if (hasAccess) return <>{children}</>;
