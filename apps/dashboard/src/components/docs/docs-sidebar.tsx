@@ -88,7 +88,7 @@ export function DocsSidebar() {
                         href={link.href}
                         onClick={() => setOpen(false)}
                         className={cn(
-                          "flex items-center gap-2 py-2 px-3 rounded-[var(--radius-sm)] text-sm transition-colors duration-[var(--duration-base)]",
+                          "flex items-center gap-2 py-2 px-3 rounded-[var(--radius-sm)] text-sm transition-colors duration-base",
                           isActive
                             ? "bg-[hsl(var(--primary-dim))] text-primary font-medium border-l-2 border-primary pl-4"
                             : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
@@ -136,7 +136,7 @@ export function DocsSidebar() {
                           href={link.href}
                           onClick={() => setOpen(false)}
                         className={cn(
-                          "flex items-center gap-2 py-2 px-3 rounded-[var(--radius-sm)] text-sm transition-colors duration-[var(--duration-base)]",
+                          "flex items-center gap-2 py-2 px-3 rounded-[var(--radius-sm)] text-sm transition-colors duration-base",
                           isActive
                             ? "bg-[hsl(var(--primary-dim))] text-primary font-medium border-l-2 border-primary pl-4"
                             : "text-muted-foreground hover:text-foreground hover:bg-muted/50"

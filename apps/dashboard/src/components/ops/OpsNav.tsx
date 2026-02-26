@@ -27,7 +27,7 @@ export function OpsNav({ activeTab, onTabChange }: { activeTab: string; onTabCha
               <button
                 key={tab.id}
                 onClick={() => onTabChange(tab.id)}
-                className={`relative px-4 py-2 font-mono text-xs font-bold transition-all duration-[var(--duration-base)] ${isActive
+                className={`relative px-4 py-2 font-mono text-xs font-bold transition-all duration-base ${isActive
                     ? "text-foreground"
                     : "text-muted-foreground hover:text-foreground"
                   }`}

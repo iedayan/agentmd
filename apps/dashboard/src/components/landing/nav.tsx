@@ -33,7 +33,7 @@ export function Nav() {
   return (
     <header
       className={cn(
-        "sticky top-0 z-50 border-b bg-background/95 backdrop-blur-md transition-all duration-[var(--duration-base)]",
+        "sticky top-0 z-50 border-b bg-background/95 backdrop-blur-md transition-all duration-base",
         scrolled
           ? "border-border/60 shadow-sm shadow-black/5"
           : "border-transparent"
@@ -55,7 +55,7 @@ export function Nav() {
                 key={link.href}
                 href={link.href}
                 className={cn(
-                  "px-3 py-1.5 text-sm font-medium rounded-[var(--radius-sm)] transition-colors duration-[var(--duration-base)]",
+                  "px-3 py-1.5 text-sm font-medium rounded-[var(--radius-sm)] transition-colors duration-base",
                   isActive
                     ? "text-primary bg-[hsl(var(--primary-dim))]"
                     : "text-muted-foreground hover:text-foreground hover:bg-muted/60"
@@ -83,7 +83,7 @@ export function Nav() {
           <ThemeToggle />
           <button
             type="button"
-            className="p-2 -m-1 rounded-[var(--radius-sm)] hover:bg-muted transition-colors duration-[var(--duration-base)]"
+            className="p-2 -m-1 rounded-[var(--radius-sm)] hover:bg-muted transition-colors duration-base"
             onClick={() => setOpen(!open)}
             aria-label={open ? "Close menu" : "Open menu"}
           >
@@ -109,7 +109,7 @@ export function Nav() {
                   <Link
                     href={link.href}
                     className={cn(
-                      "block py-2.5 px-3 text-sm font-medium rounded-[var(--radius-sm)] transition-colors duration-[var(--duration-base)]",
+                      "block py-2.5 px-3 text-sm font-medium rounded-[var(--radius-sm)] transition-colors duration-base",
                       isActive
                         ? "text-primary bg-[hsl(var(--primary-dim))]"
                         : "text-muted-foreground hover:text-foreground hover:bg-muted/60"

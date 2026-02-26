@@ -50,6 +50,13 @@ const config: Config = {
         md: "var(--radius-md)",
         sm: "var(--radius-sm)",
       },
+      transitionDuration: {
+        "120": "120ms",
+        base: "var(--duration-base)",
+      },
+      transitionTimingFunction: {
+        smooth: "cubic-bezier(0.16, 1, 0.3, 1)",
+      },
       animation: {
         "fade-in": "fadeIn 0.5s ease-out forwards",
         "fade-up": "fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards",

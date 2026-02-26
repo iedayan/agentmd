@@ -38,7 +38,7 @@ export function PipelineSidebar({
                 <li key={p.id}>
                   <button
                     onClick={() => onSelect(p.id)}
-                    className={`w-full group relative overflow-hidden rounded-[var(--radius-md)] px-4 py-3 text-left transition-all duration-[var(--duration-base)] ${isActive
+                    className={`w-full group relative overflow-hidden rounded-[var(--radius-md)] px-4 py-3 text-left transition-all duration-base ${isActive
                         ? "bg-[hsl(var(--primary-dim))] text-primary border border-primary/20"
                         : "text-muted-foreground hover:bg-muted/50 hover:text-foreground"
                       }`}
