@@ -27,13 +27,13 @@ import { cn } from "@/lib/core/utils";
 import { SsoConfig, ComplianceArtifact } from "@/types";
 import { enterpriseService } from "@/lib/services/enterprise-service";
 
+import { toast } from "sonner";
+
 export default function SSOPage() {
   const [config, setConfig] = useState<SsoConfig | null>(null);
   const [compliance, setCompliance] = useState<ComplianceArtifact[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [message, setMessage] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
 
   const loadData = async () => {
     setLoading(true);
@@ -43,13 +43,13 @@ export default function SSOPage() {
         enterpriseService.getComplianceArtifacts(),
       ]);
       if (ssoRes.ok && ssoRes.sso) setConfig(ssoRes.sso);
-      else setError(ssoRes.error ?? "Failed to load SSO config");
+      else toast.error(ssoRes.error ?? "Failed to load SSO config");
 
       if (complianceRes.ok && complianceRes.artifacts) {
         setCompliance(complianceRes.artifacts);
       }
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Load failed");
+      toast.error(e instanceof Error ? e.message : "Load failed");
     } finally {
       setLoading(false);
     }
@@ -64,11 +64,10 @@ export default function SSOPage() {
     setSaving(true);
     const res = await enterpriseService.saveSsoConfig(config);
     if (res.ok) {
-      setMessage("SSO configuration updated.");
-      setTimeout(() => setMessage(null), 3000);
+      toast.success("SSO configuration updated.");
       void loadData();
     } else {
-      setError(res.error ?? "Failed to save SSO config.");
+      toast.error(res.error ?? "Failed to save SSO config.");
     }
     setSaving(false);
   };
@@ -302,27 +301,6 @@ export default function SSOPage() {
         </div>
       </div>
 
-      {message && (
-        <div className="fixed bottom-6 right-6 z-50 animate-fade-up">
-          <div className="glass-card border-emerald-500/30 bg-emerald-500/5 px-6 py-4 flex items-center gap-4 border-luminescent shadow-2xl">
-            <div className="h-8 w-8 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-500 border border-emerald-500/30">
-              <ShieldCheck className="h-4 w-4" />
-            </div>
-            <p className="text-sm font-black text-foreground/90 tracking-tight">{message}</p>
-          </div>
-        </div>
-      )}
-
-      {error && (
-        <div className="fixed bottom-6 right-6 z-50 animate-fade-up">
-          <div className="glass-card border-destructive/30 bg-destructive/5 px-6 py-4 flex items-center gap-4 border-luminescent shadow-2xl">
-            <div className="h-8 w-8 rounded-full bg-destructive/20 flex items-center justify-center text-destructive border border-destructive/30">
-              <AlertCircle className="h-4 w-4" />
-            </div>
-            <p className="text-sm font-black text-foreground/90 tracking-tight">{error}</p>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

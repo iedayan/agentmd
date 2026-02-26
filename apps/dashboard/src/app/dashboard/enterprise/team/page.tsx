@@ -23,6 +23,8 @@ import { ApprovalQueue } from "@/components/enterprise/approval-queue";
 import { enterpriseService } from "@/lib/services/enterprise-service";
 import { governanceService } from "@/lib/services/governance-service";
 
+import { toast } from "sonner";
+
 export default function TeamPage() {
   const [members, setMembers] = useState<Member[]>([]);
   const [roles, setRoles] = useState<Role[]>([]);
@@ -30,8 +32,6 @@ export default function TeamPage() {
   const [notifications, setNotifications] = useState<NotificationItem[]>([]);
   const [ownerInput, setOwnerInput] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [message, setMessage] = useState<string | null>(null);
 
   const loadData = async () => {
     setLoading(true);
@@ -50,9 +50,8 @@ export default function TeamPage() {
       setMembers(rbacRes.members ?? []);
       setApprovals(approvalsRes.approvals ?? []);
       setNotifications(notificationsRes.notifications ?? []);
-      setError(null);
     } catch (loadError) {
-      setError(loadError instanceof Error ? loadError.message : "Failed to load team workflows.");
+      toast.error(loadError instanceof Error ? loadError.message : "Failed to load team workflows.");
     } finally {
       setLoading(false);
     }
@@ -65,11 +64,10 @@ export default function TeamPage() {
   const updateRole = async (memberId: string, roleId: string) => {
     const res = await enterpriseService.updateMemberRole(memberId, roleId);
     if (!res.ok) {
-      setError(res.error ?? "Failed to update role.");
+      toast.error(res.error ?? "Failed to update role.");
       return;
     }
-    setMessage("Role updated.");
-    setTimeout(() => setMessage(null), 3000);
+    toast.success("Role updated.");
     void loadData();
   };
 
@@ -81,22 +79,20 @@ export default function TeamPage() {
       .filter(Boolean);
     const res = await enterpriseService.updateMemberOwnership(memberId, ownedRepositoryIds);
     if (!res.ok) {
-      setError(res.error ?? "Failed to update ownership.");
+      toast.error(res.error ?? "Failed to update ownership.");
       return;
     }
-    setMessage("Ownership updated.");
-    setTimeout(() => setMessage(null), 3000);
+    toast.success("Ownership updated.");
     void loadData();
   };
 
   const decideApproval = async (approvalId: string, decision: "approved" | "rejected") => {
     const res = await governanceService.decideApproval(approvalId, decision, "team_approver");
     if (!res.ok) {
-      setError(res.error ?? "Failed to update approval.");
+      toast.error(res.error ?? "Failed to update approval.");
       return;
     }
-    setMessage(`Approval ${decision}.`);
-    setTimeout(() => setMessage(null), 3000);
+    toast.success(`Approval ${decision}.`);
     void loadData();
   };
 
@@ -293,17 +289,6 @@ export default function TeamPage() {
           </Card>
         </div>
       </div>
-
-      {message && (
-        <div className="fixed bottom-6 right-6 z-50 animate-fade-up">
-          <div className="glass-card border-emerald-500/30 bg-emerald-500/5 px-6 py-4 flex items-center gap-4 border-luminescent shadow-2xl">
-            <div className="h-8 w-8 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-500 border border-emerald-500/30">
-              <CheckCircle2 className="h-4 w-4" />
-            </div>
-            <p className="text-sm font-black text-foreground/90 tracking-tight">{message}</p>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

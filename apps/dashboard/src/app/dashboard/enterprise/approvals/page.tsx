@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { toast } from "sonner";
 
 export default function ApprovalsPage() {
     const [approvals, setApprovals] = useState<Approval[]>([]);
@@ -41,9 +42,10 @@ export default function ApprovalsPage() {
     const handleDecide = async (approvalId: string, decision: "approved" | "rejected") => {
         const res = await governanceService.decideApproval(approvalId, decision, "governance_center");
         if (!res.ok) {
-            alert(res.error ?? "Decision failed.");
+            toast.error(res.error ?? "Decision failed.");
             return;
         }
+        toast.success(`Approval ${decision} successfully.`);
         await loadApprovals();
     };
 

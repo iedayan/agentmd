@@ -7,9 +7,11 @@ import { ActionableInsights } from "./actionable-insights";
 import { ImpactPanel } from "./impact-panel";
 import { GovernanceOverview } from "@/components/enterprise/governance-overview";
 import { ExecutionOverview } from "./execution-overview";
+import { RecentActivityFeed } from "@/components/enterprise/recent-activity-feed";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { toast } from "sonner";
 import {
   Select,
   SelectContent,
@@ -24,14 +26,13 @@ import { cn } from "@/lib/core/utils";
 
 export function RepositoryDashboard() {
   const [repos, setRepos] = useState<Repository[]>([]);
+  const [executions, setExecutions] = useState<Execution[]>([]);
   const [loading, setLoading] = useState(true);
   const [connecting, setConnecting] = useState(false);
   const [runningRepoId, setRunningRepoId] = useState<string | null>(null);
   const [newRepoFullName, setNewRepoFullName] = useState("");
   const [repoSearch, setRepoSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<"all" | "healthy" | "attention">("all");
-  const [message, setMessage] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
   const [syncing, setSyncing] = useState(false);
 
   const repositoryLimit = getPlan("free").repositories;
@@ -58,24 +59,22 @@ export function RepositoryDashboard() {
   const loadRepositories = useCallback(async () => {
     setLoading(true);
     try {
-      const res = await fetch("/api/repositories", { cache: "no-store" });
-      const data = (await res.json()) as {
-        ok?: boolean;
-        repositories?: Repository[];
-        error?: string;
-      };
-      if (!res.ok || data.ok === false) {
-        throw new Error(data.error ?? "Unable to load repositories right now.");
+      const [reposRes, execRes] = await Promise.all([
+        fetch("/api/repositories", { cache: "no-store" }),
+        fetch("/api/executions?limit=10", { cache: "no-store" })
+      ]);
+
+      const reposData = (await reposRes.json()) as { ok?: boolean; repositories?: Repository[]; error?: string; };
+      const execData = (await execRes.json()) as { ok?: boolean; executions?: Execution[]; error?: string; };
+
+      if (!reposRes.ok || reposData.ok === false) {
+        throw new Error(reposData.error ?? "Unable to load repositories.");
       }
-      setRepos(data.repositories ?? []);
-      setError(null);
+      setRepos(reposData.repositories ?? []);
+      if (execData.ok) setExecutions(execData.executions ?? []);
     } catch (loadError) {
       setRepos([]);
-      setError(
-        loadError instanceof Error
-          ? loadError.message
-          : "Unable to load repositories right now."
-      );
+      toast.error(loadError instanceof Error ? loadError.message : "Load failed.");
     } finally {
       setLoading(false);
     }
@@ -103,37 +102,21 @@ export function RepositoryDashboard() {
     return () => clearInterval(intervalId);
   }, [hasActiveExecutions, loadRepositories]);
 
-  useEffect(() => {
-    if (!message) return;
-    const timeoutId = setTimeout(() => setMessage(null), 5000);
-    return () => clearTimeout(timeoutId);
-  }, [message]);
+  // Removed local timeout logic
 
   const handleSyncGitHub = async () => {
     setSyncing(true);
-    setError(null);
-    setMessage(null);
     try {
       const res = await fetch("/api/github/sync", { method: "POST" });
-      const body = (await res.json().catch(() => ({}))) as {
-        ok?: boolean;
-        error?: string;
-        added?: number;
-        skipped?: number;
-        total?: number;
-      };
+      const body = (await res.json().catch(() => ({}))) as { ok?: boolean; error?: string; added?: number; skipped?: number; total?: number; };
       if (!res.ok || body.ok === false) {
-        setError(body.error ?? "Failed to sync from GitHub");
+        toast.error(body.error ?? "Failed to sync from GitHub");
         return;
       }
-      setMessage(
-        body.added !== undefined
-          ? `Synced: ${body.added} added, ${body.skipped ?? 0} already connected`
-          : "Synced from GitHub"
-      );
+      toast.success(body.added !== undefined ? `Synced: ${body.added} added` : "Synced from GitHub");
       await loadRepositories();
     } catch {
-      setError("Failed to sync from GitHub");
+      toast.error("Failed to sync from GitHub");
     } finally {
       setSyncing(false);
     }
@@ -143,27 +126,22 @@ export function RepositoryDashboard() {
     const fullName = newRepoFullName.trim();
     if (!fullName) return;
     setConnecting(true);
-    setError(null);
-    setMessage(null);
     try {
       const response = await fetch("/api/repositories", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ fullName }),
       });
-      const body = (await response.json().catch(() => ({}))) as {
-        ok?: boolean;
-        error?: string;
-      };
+      const body = (await response.json().catch(() => ({}))) as { ok?: boolean; error?: string; };
       if (!response.ok || body.ok === false) {
-        setError(body.error ?? "Failed to connect repository");
+        toast.error(body.error ?? "Failed to connect repository");
         return;
       }
       setNewRepoFullName("");
-      setMessage(`Connected ${fullName}`);
+      toast.success(`Connected ${fullName}`);
       await loadRepositories();
     } catch {
-      setError("Failed to connect repository");
+      toast.error("Failed to connect repository");
     } finally {
       setConnecting(false);
     }
@@ -171,8 +149,6 @@ export function RepositoryDashboard() {
 
   const handleRunRepository = async (repositoryId: string) => {
     setRunningRepoId(repositoryId);
-    setError(null);
-    setMessage(null);
     try {
       const response = await fetch("/api/execute", {
         method: "POST",
@@ -186,22 +162,15 @@ export function RepositoryDashboard() {
           agentId: "pr-labeler",
         }),
       });
-      const body = (await response.json().catch(() => ({}))) as {
-        ok?: boolean;
-        error?: string;
-        dashboardExecution?: Execution;
-      };
+      const body = (await response.json().catch(() => ({}))) as { ok?: boolean; error?: string; dashboardExecution?: Execution; };
       if (!response.ok || body.ok === false) {
-        setError(body.error ?? "Failed to queue execution");
+        toast.error(body.error ?? "Failed to queue execution");
         return;
       }
-      setMessage(
-        body.dashboardExecution
-          ? `Execution ${body.dashboardExecution.id} queued`
-          : "Execution queued"
-      );
+      toast.success(body.dashboardExecution ? `Execution ${body.dashboardExecution.id} queued` : "Execution queued");
+      await loadRepositories();
     } catch {
-      setError("Failed to queue execution");
+      toast.error("Failed to queue execution");
     } finally {
       setRunningRepoId(null);
     }
@@ -215,9 +184,10 @@ export function RepositoryDashboard() {
 
   return (
     <div className="space-y-6">
-      <div className="grid gap-4 sm:grid-cols-2">
+      <div className="grid gap-4 lg:grid-cols-3">
         <ExecutionOverview />
         <GovernanceOverview />
+        <RecentActivityFeed executions={executions} className="h-[300px] lg:h-auto" />
       </div>
       <div className="glass-card bg-primary/[0.03] border-primary/20 p-1">
         <CardContent className="py-4">
@@ -388,16 +358,6 @@ export function RepositoryDashboard() {
               </button>
             </p>
           </div>
-          {message ? (
-            <div className="mt-3 rounded-md border border-emerald-500/30 bg-emerald-500/10 px-3 py-2 text-sm text-emerald-400">
-              {message}
-            </div>
-          ) : null}
-          {error ? (
-            <div className="mt-3 rounded-md border border-red-500/30 bg-red-500/10 px-3 py-2 text-sm text-red-400">
-              {error}
-            </div>
-          ) : null}
         </CardContent>
       </Card>
 

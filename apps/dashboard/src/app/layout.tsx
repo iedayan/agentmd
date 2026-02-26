@@ -55,6 +55,8 @@ export const viewport: Viewport = {
   themeColor: "#059669",
 };
 
+import { Toaster } from "sonner";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -73,6 +75,7 @@ export default function RootLayout({
             themes={["light", "dark", "theme-focus", "theme-evening"]}
           >
             {children}
+            <Toaster richColors position="top-right" />
             <Analytics />
           </ThemeProvider>
         </SessionProvider>

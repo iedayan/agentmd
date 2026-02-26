@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { Check, Copy, ExternalLink } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -44,6 +44,12 @@ function ConfigRow({ label, value, description }: { label: string; value: string
 export function GithubAppSetupWizard() {
   const [baseUrl, setBaseUrl] = useState("https://agentmd.io");
   const [webhookSecret, setWebhookSecret] = useState("");
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setBaseUrl(window.location.origin);
+    }
+  }, []);
 
   const normalized = baseUrl.replace(/\/$/, "");
   const isHttps = normalized.startsWith("https://");
