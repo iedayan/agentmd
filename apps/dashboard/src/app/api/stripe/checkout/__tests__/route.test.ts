@@ -4,6 +4,14 @@ import { POST } from "../route";
 
 const mockCreate = vi.fn();
 
+vi.mock("@/lib/auth/session", () => ({
+  requireSessionUserId: vi.fn().mockResolvedValue("user-123"),
+}));
+
+vi.mock("next-auth", () => ({
+  getServerSession: vi.fn().mockResolvedValue({ user: { email: "test@example.com" } }),
+}));
+
 vi.mock("@/lib/core/public-url", () => ({
   getPublicAppUrl: vi.fn().mockReturnValue("http://localhost:3001"),
 }));

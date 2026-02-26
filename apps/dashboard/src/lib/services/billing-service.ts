@@ -17,18 +17,28 @@ export interface PlanStatus {
  */
 export const billingService = {
     async getPlanStatus(): Promise<{ ok: boolean; status?: PlanStatus; error?: string }> {
-        // In a real app, this would fetch from /api/billing/status
-        // Mocking return for Phase 4 demo
+        const usageRes = await fetch("/api/account/usage", { cache: "no-store" });
+        if (!usageRes.ok) {
+            const body = await usageRes.json().catch(() => ({}));
+            return { ok: false, error: (body as { error?: string }).error ?? "Failed to load plan status" };
+        }
+        const data = (await usageRes.json()) as {
+            planId?: string;
+            repositories?: number;
+            executionMinutesUsed?: number;
+            executionMinutesLimit?: number;
+        };
+        const planId = (data.planId as PlanId) ?? "free";
         return {
             ok: true,
             status: {
-                currentPlan: "free",
+                currentPlan: planId,
                 usage: {
-                    repositories: 3,
-                    executionMinutes: 88,
-                    teamSeats: 1
-                }
-            }
+                    repositories: data.repositories ?? 0,
+                    executionMinutes: Math.round((data.executionMinutesUsed ?? 0) * 100) / 100,
+                    teamSeats: 1,
+                },
+            },
         };
     },
 

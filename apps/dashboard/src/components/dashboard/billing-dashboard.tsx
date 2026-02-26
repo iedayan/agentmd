@@ -37,17 +37,17 @@ export function BillingDashboard() {
     }, []);
 
     const handleUpgrade = async (planId: PlanId) => {
+        if (planId === "free") return;
         setUpgradingPlan(planId);
-        toast.info(`Preparing ${planId} upgrade...`);
-
-        // Simulate checkout delay
-        setTimeout(() => {
-            toast.success(`Redirecting to secure checkout for ${planId}...`);
-            setTimeout(() => {
-                setUpgradingPlan(null);
-                // In real app: window.location.href = checkoutUrl;
-            }, 1000);
-        }, 1500);
+        toast.info(`Preparing ${planId} checkout...`);
+        const res = await billingService.upgradePlan(planId);
+        setUpgradingPlan(null);
+        if (res.ok && res.checkoutUrl) {
+            toast.success("Redirecting to secure checkout...");
+            window.location.href = res.checkoutUrl;
+        } else {
+            toast.error(res.error ?? "Could not start checkout");
+        }
     };
 
     if (loading) {

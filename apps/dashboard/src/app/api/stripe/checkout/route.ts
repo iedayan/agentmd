@@ -1,14 +1,22 @@
 import { NextRequest } from "next/server";
 import Stripe from "stripe";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth/auth";
 import { apiError, apiOk, getRequestId } from "@/lib/core/api-response";
 import { getClientKey } from "@/lib/core/request-context";
 import { rateLimit } from "@/lib/core/rate-limit";
+import { requireSessionUserId } from "@/lib/auth/session";
 import { getPublicAppUrl } from "@/lib/core/public-url";
 
 const PRO_TRIAL_DAYS = 7;
 
 export async function POST(req: NextRequest) {
   const requestId = getRequestId(req);
+  try {
+    await requireSessionUserId();
+  } catch (res) {
+    return res as Response;
+  }
   const rate = await rateLimit(getClientKey(req), {
     scope: "stripe-checkout",
     maxRequests: 12,
@@ -72,17 +80,21 @@ export async function POST(req: NextRequest) {
     const subscriptionData: Stripe.Checkout.SessionCreateParams.SubscriptionData | undefined =
       planId === "pro" ? { trial_period_days: PRO_TRIAL_DAYS } : undefined;
 
+    const sessionAuth = await getServerSession(authOptions);
+    const customerEmail = sessionAuth?.user?.email?.trim() || undefined;
+
     const session = await stripe.checkout.sessions.create({
       mode: "subscription",
       payment_method_types: ["card"],
+      customer_email: customerEmail,
       line_items: [
         {
           price: priceId,
           quantity: 1,
         },
       ],
-      success_url: `${appUrl}/dashboard/settings?success=true`,
-      cancel_url: `${appUrl}/dashboard/settings?canceled=true`,
+      success_url: `${appUrl}/dashboard/settings/billing?success=true`,
+      cancel_url: `${appUrl}/dashboard/settings/billing?canceled=true`,
       metadata: { planId, trialDays: planId === "pro" ? String(PRO_TRIAL_DAYS) : "0" },
       subscription_data: subscriptionData,
     });
