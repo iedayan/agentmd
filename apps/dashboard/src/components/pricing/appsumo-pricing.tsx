@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { Check, Zap, BadgeCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/core/utils";

@@ -1,12 +1,21 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { Shield, Lock, Activity, HelpCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/brand/logo";
 import { Nav } from "@/components/landing/nav";
 import { PricingCards } from "@/components/pricing/pricing-cards";
 import { AppSumoPricing } from "@/components/pricing/appsumo-pricing";
+import { FaqSchema } from "@/components/seo/faq-schema";
 
 const PRO_TRIAL_DAYS = 7;
+
+export const metadata: Metadata = {
+  title: "Pricing — AgentMD",
+  description:
+    "Transparent pricing for AgentMD. Free tier, Pro trial, AppSumo lifetime deal, and Enterprise. No hidden fees. Cancel anytime.",
+  keywords: ["AgentMD pricing", "AGENTS.md", "agent execution", "AppSumo", "CI/CD pricing"],
+};
 
 const TRUST_ITEMS = [
   { label: "SOC2 Type II", icon: Shield },
@@ -42,6 +51,7 @@ const TAGLINE = "Make Your Repository Agent-Ready";
 export default function PricingPage() {
   return (
     <div id="top" className="min-h-screen bg-background">
+      <FaqSchema items={FAQ.map(({ q, a }) => ({ question: q, answer: a }))} />
       <Nav />
 
       <main role="main">

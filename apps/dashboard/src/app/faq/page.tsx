@@ -5,6 +5,7 @@ import { Nav } from "@/components/landing/nav";
 import { Footer } from "@/components/ui/footer";
 import { Button } from "@/components/ui/button";
 import { FaqItem } from "@/components/faq/faq-item";
+import { FaqSchema } from "@/components/seo/faq-schema";
 
 const FAQ_ITEMS = [
   {
@@ -98,11 +99,15 @@ export const metadata: Metadata = {
   title: "FAQ — AgentMD",
   description:
     "Frequently asked questions about AgentMD: AGENTS.md execution, pricing, integration, security, and getting started.",
+  keywords: ["AgentMD FAQ", "AGENTS.md", "agentic AI", "agent execution", "agent governance"],
 };
+
+const allFaqItems = FAQ_ITEMS.flatMap((g) => g.items);
 
 export default function FaqPage() {
   return (
     <div className="min-h-screen bg-background">
+      <FaqSchema items={allFaqItems.map((i) => ({ question: i.q, answer: i.a }))} />
       <Nav />
 
       <main role="main">

@@ -6,6 +6,7 @@ import { ThemeProvider } from "@/components/providers/theme-provider";
 import { SessionProvider } from "@/components/auth/session-provider";
 import { ChunkReloadGuard } from "@/components/providers/chunk-reload-guard";
 import { ScrollToTop } from "@/components/providers/scroll-to-top";
+import { OrganizationSchema } from "@/components/seo/organization-schema";
 import { DEFAULT_APP_URL, getPublicAppUrl } from "@/lib/core/public-url";
 
 const outfit = Outfit({
@@ -29,6 +30,16 @@ export const metadata: Metadata = {
   applicationName: "AgentMD",
   description:
     "Parse, validate, and execute AGENTS.md files. The CI/CD platform for AI agents. Get an agent-readiness score, run commands automatically, and join the marketplace.",
+  keywords: [
+    "AGENTS.md",
+    "agentic AI",
+    "AI agents",
+    "CI/CD",
+    "agent governance",
+    "AGENTS.md execution",
+    "agent-readiness",
+    "AI coding tools",
+  ],
   manifest: "/manifest.webmanifest",
   icons: {
     icon: [
@@ -62,9 +73,12 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const appUrl = getPublicAppUrl(DEFAULT_APP_URL);
+
   return (
     <html lang="en" suppressHydrationWarning className={`${outfit.variable} ${jetbrainsMono.variable}`}>
       <body className="font-sans antialiased">
+        <OrganizationSchema baseUrl={appUrl} />
         <ChunkReloadGuard />
         <ScrollToTop />
         <SessionProvider>
