@@ -5,7 +5,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { EmptyState } from "./empty-state";
 import { ActionableInsights } from "./actionable-insights";
 import { ImpactPanel } from "./impact-panel";
-import { GovernanceOverview } from "./governance-overview";
+import { GovernanceOverview } from "@/components/enterprise/governance-overview";
 import { ExecutionOverview } from "./execution-overview";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";

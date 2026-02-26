@@ -11,7 +11,6 @@ import {
   CheckCircle2,
   AlertCircle,
   Zap,
-  Search,
   Code2,
   Dna,
   History,
@@ -20,22 +19,8 @@ import {
   Download
 } from "lucide-react";
 import { cn } from "@/lib/core/utils";
-
-type PolicyRule = {
-  id: string;
-  name: string;
-  enabled: boolean;
-  requireApprovalForPatterns: string[];
-  blockPatterns: string[];
-};
-
-type GitHubGate = {
-  repositoryId: string;
-  repositoryName: string;
-  requiredChecks: string[];
-  checks: Record<string, "success" | "failed" | "pending" | "missing">;
-  updatedAt: string;
-};
+import { PolicyRule, GitHubGate } from "@/types";
+import { governanceService } from "@/lib/services/governance-service";
 
 export default function PoliciesPage() {
   const [policies, setPolicies] = useState<PolicyRule[]>([]);
@@ -51,27 +36,15 @@ export default function PoliciesPage() {
     setLoading(true);
     try {
       const [policiesRes, gatesRes] = await Promise.all([
-        fetch("/api/policies", { cache: "no-store" }),
-        fetch("/api/github/checks", { cache: "no-store" }),
+        governanceService.getPolicies(),
+        governanceService.getGithubGates(),
       ]);
-      const policiesBody = (await policiesRes.json()) as {
-        ok?: boolean;
-        policies?: PolicyRule[];
-        error?: string;
-      };
-      const gatesBody = (await gatesRes.json()) as {
-        ok?: boolean;
-        gates?: GitHubGate[];
-        error?: string;
-      };
-      if (!policiesRes.ok || policiesBody.ok === false) {
-        throw new Error(policiesBody.error ?? "Failed to load policies.");
-      }
-      if (!gatesRes.ok || gatesBody.ok === false) {
-        throw new Error(gatesBody.error ?? "Failed to load status gates.");
-      }
-      setPolicies(policiesBody.policies ?? []);
-      setGates(gatesBody.gates ?? []);
+
+      if (!policiesRes.ok) throw new Error(policiesRes.error ?? "Failed to load policies.");
+      if (!gatesRes.ok) throw new Error(gatesRes.error ?? "Failed to load status gates.");
+
+      setPolicies(policiesRes.policies ?? []);
+      setGates(gatesRes.gates ?? []);
       setError(null);
     } catch (loadError) {
       setError(loadError instanceof Error ? loadError.message : "Failed to load policies");
@@ -92,33 +65,22 @@ ${policies
         .map(
           (policy) => `  - id: ${policy.id}
     name: ${policy.name}
-    enabled: ${policy.enabled}
-    requireApprovalForPatterns: [${policy.requireApprovalForPatterns.join(", ")}]
-    blockPatterns: [${policy.blockPatterns.join(", ")}]`
+    enabled: ${policy.status === "active"}
+    rules: [${policy.rules.join(", ")}]`
         )
         .join("\n")}`;
   }, [policies]);
 
-  const togglePolicy = async (id: string) => {
-    const next = policies.map((policy) =>
-      policy.id === id ? { ...policy, enabled: !policy.enabled } : policy
-    );
-    setPolicies(next);
-    const res = await fetch("/api/policies", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ policies: next }),
-    });
-    const body = (await res.json().catch(() => ({}))) as {
-      ok?: boolean;
-      error?: string;
-    };
-    if (!res.ok || body.ok === false) {
-      setError(body.error ?? "Failed to update policies.");
+  const togglePolicy = async (id: string, currentStatus: "active" | "inactive" | "bypass") => {
+    const nextStatus: "active" | "inactive" = currentStatus === "active" ? "inactive" : "active";
+    const res = await governanceService.togglePolicy(id, nextStatus);
+    if (!res.ok) {
+      setError(res.error ?? "Failed to update policies.");
       return;
     }
-    setMessage("Policies updated.");
+    setMessage("Policy updated.");
     setTimeout(() => setMessage(null), 3000);
+    void loadData();
   };
 
   const updateCheckStatus = async (
@@ -126,17 +88,9 @@ ${policies
     checkName: string,
     status: "success" | "failed" | "pending"
   ) => {
-    const res = await fetch("/api/github/checks", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ repositoryId, checkName, status }),
-    });
-    const body = (await res.json().catch(() => ({}))) as {
-      ok?: boolean;
-      error?: string;
-    };
-    if (!res.ok || body.ok === false) {
-      setError(body.error ?? "Failed to update check status.");
+    const res = await governanceService.updateGithubGateStatus(repositoryId, checkName, status);
+    if (!res.ok) {
+      setError(res.error ?? "Failed to update check status.");
       return;
     }
     setMessage(`Updated ${checkName} to ${status}.`);
@@ -146,25 +100,16 @@ ${policies
 
   const runPreflight = async () => {
     setPreflightResult("Running diagnostic...");
-    const res = await fetch("/api/preflight", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        repositoryId: preflightRepoId,
-        trigger: "manual",
-        requestedBy: "enterprise_admin",
-        agentId: preflightAgentId,
-      }),
+    const res = await governanceService.runPreflight({
+      repositoryId: preflightRepoId,
+      trigger: "manual",
+      requestedBy: "enterprise_admin",
+      agentId: preflightAgentId,
     });
-    const body = (await res.json().catch(() => ({}))) as {
-      ok?: boolean;
-      error?: string;
-      code?: string;
-      details?: { approvalId?: string };
-    };
-    if (!res.ok || body.ok === false) {
+
+    if (!res.ok) {
       setPreflightResult(
-        `[BLOCKED] ${body.error ?? "Policy rejection"}${body.details?.approvalId ? ` (REF: ${body.details.approvalId})` : ""}`
+        `[BLOCKED] ${res.error ?? "Policy rejection"}${res.details?.approvalId ? ` (REF: ${res.details.approvalId})` : ""}`
       );
       return;
     }
@@ -237,16 +182,16 @@ ${policies
                       </div>
                       <div className="flex flex-col items-end gap-3 shrink-0">
                         <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-border/40 bg-muted/30">
-                          <div className={cn("h-2 w-2 rounded-full", policy.enabled ? "bg-emerald-500" : "bg-muted-foreground/30")} />
-                          <span className="text-[10px] font-black text-muted-foreground/60 uppercase">{policy.enabled ? "ACTIVE" : "IDLE"}</span>
+                          <div className={cn("h-2 w-2 rounded-full", policy.status === "active" ? "bg-emerald-500" : "bg-muted-foreground/30")} />
+                          <span className="text-[10px] font-black text-muted-foreground/60 uppercase">{policy.status === "active" ? "ACTIVE" : "IDLE"}</span>
                         </div>
                         <Button
                           size="sm"
-                          variant={policy.enabled ? "default" : "outline"}
-                          onClick={() => void togglePolicy(policy.id)}
+                          variant={policy.status === "active" ? "default" : "outline"}
+                          onClick={() => void togglePolicy(policy.id, policy.status)}
                           className="rounded-xl font-bold text-[10px] px-5 py-4 btn-tactile h-9"
                         >
-                          {policy.enabled ? "Disable Rule" : "Enable Rule"}
+                          {policy.status === "active" ? "Disable Rule" : "Enable Rule"}
                         </Button>
                       </div>
                     </div>

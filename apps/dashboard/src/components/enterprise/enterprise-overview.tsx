@@ -38,14 +38,14 @@ const ENTERPRISE_FEATURES = [
     title: "SSO/SAML",
     desc: "Okta, Azure AD, Google Workspace integration.",
     href: "/dashboard/enterprise/sso",
-    status: "locked"
+    status: "available"
   },
   {
     icon: Users,
     title: "RBAC",
     desc: "Custom roles, granular permissions, and team isolation.",
     href: "/dashboard/enterprise/team",
-    status: "locked"
+    status: "available"
   },
   {
     icon: FileText,
@@ -58,8 +58,8 @@ const ENTERPRISE_FEATURES = [
     icon: CheckCircle,
     title: "Approval Workflows",
     desc: "Human-in-the-loop governance for high-stakes agent actions.",
-    href: "/dashboard/enterprise/policies",
-    status: "locked"
+    href: "/dashboard/enterprise/approvals",
+    status: "available"
   },
   {
     icon: Terminal,

@@ -1,4 +1,4 @@
-import { EnterpriseOverview } from "@/components/dashboard/enterprise-overview";
+import { EnterpriseOverview } from "@/components/enterprise/enterprise-overview";
 
 export default function EnterprisePage() {
   return (

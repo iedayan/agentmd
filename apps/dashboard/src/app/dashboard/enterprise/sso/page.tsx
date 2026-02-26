@@ -6,77 +6,48 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import {
+  Shield,
+  ChevronRight,
+  Settings2,
+  Lock,
+  FileCheck,
+  ExternalLink,
   ShieldCheck,
+  Zap,
+  CheckCircle2,
+  AlertCircle,
+  Activity,
+  Fingerprint,
   Key,
   Globe,
-  Lock,
-  Fingerprint,
-  FileCheck,
   Download,
-  ExternalLink,
-  ShieldAlert,
-  Activity,
-  ChevronRight
+  ShieldAlert
 } from "lucide-react";
 import { cn } from "@/lib/core/utils";
-
-type SsoConfig = {
-  enabled: boolean;
-  provider: "okta" | "azure-ad" | "google-workspace" | "custom";
-  entityId: string;
-  ssoUrl: string;
-  enforceSso: boolean;
-  updatedAt: string;
-};
-
-type ComplianceArtifact = {
-  id: string;
-  framework: "SOC2" | "ISO27001" | "HIPAA";
-  name: string;
-  status: "ready" | "in_progress";
-  lastGeneratedAt: string;
-};
+import { SsoConfig, ComplianceArtifact } from "@/types";
+import { enterpriseService } from "@/lib/services/enterprise-service";
 
 export default function SSOPage() {
-  const [config, setConfig] = useState<SsoConfig>({
-    enabled: false,
-    provider: "okta",
-    entityId: "",
-    ssoUrl: "",
-    enforceSso: false,
-    updatedAt: "",
-  });
+  const [config, setConfig] = useState<SsoConfig | null>(null);
   const [compliance, setCompliance] = useState<ComplianceArtifact[]>([]);
   const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const load = async () => {
+  const loadData = async () => {
     setLoading(true);
     try {
       const [ssoRes, complianceRes] = await Promise.all([
-        fetch("/api/enterprise/sso", { cache: "no-store" }),
-        fetch("/api/enterprise/compliance", { cache: "no-store" }),
+        enterpriseService.getSsoConfig(),
+        enterpriseService.getComplianceArtifacts(),
       ]);
-      const ssoBody = (await ssoRes.json()) as {
-        ok?: boolean;
-        sso?: SsoConfig;
-        error?: string;
-      };
-      const complianceBody = (await complianceRes.json()) as {
-        ok?: boolean;
-        artifacts?: ComplianceArtifact[];
-        error?: string;
-      };
-      if (!ssoRes.ok || ssoBody.ok === false) {
-        throw new Error(ssoBody.error ?? "Failed to load SSO.");
+      if (ssoRes.ok && ssoRes.sso) setConfig(ssoRes.sso);
+      else setError(ssoRes.error ?? "Failed to load SSO config");
+
+      if (complianceRes.ok && complianceRes.artifacts) {
+        setCompliance(complianceRes.artifacts);
       }
-      if (!complianceRes.ok || complianceBody.ok === false) {
-        throw new Error(complianceBody.error ?? "Failed to load compliance artifacts.");
-      }
-      setConfig(ssoBody.sso ?? config);
-      setCompliance(complianceBody.artifacts ?? []);
-      setError(null);
     } catch (e) {
       setError(e instanceof Error ? e.message : "Load failed");
     } finally {
@@ -85,28 +56,40 @@ export default function SSOPage() {
   };
 
   useEffect(() => {
-    void load();
+    void loadData();
   }, []);
 
   const save = async () => {
-    const res = await fetch("/api/enterprise/sso", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(config),
-    });
-    const body = (await res.json().catch(() => ({}))) as {
-      ok?: boolean;
-      sso?: SsoConfig;
-      error?: string;
-    };
-    if (!res.ok || body.ok === false) {
-      setError(body.error ?? "Failed to save SSO config.");
-      return;
+    if (!config) return;
+    setSaving(true);
+    const res = await enterpriseService.saveSsoConfig(config);
+    if (res.ok) {
+      setMessage("SSO configuration updated.");
+      setTimeout(() => setMessage(null), 3000);
+      void loadData();
+    } else {
+      setError(res.error ?? "Failed to save SSO config.");
     }
-    setConfig(body.sso ?? config);
-    setMessage("SSO configuration updated.");
-    setTimeout(() => setMessage(null), 3000);
+    setSaving(false);
   };
+
+  if (loading && !config) {
+    return (
+      <div className="p-10 flex items-center justify-center min-h-[400px]">
+        <Activity className="h-8 w-8 animate-spin text-primary/50" />
+      </div>
+    );
+  }
+
+  if (!config) {
+    return (
+      <div className="p-10 text-center min-h-[400px] flex flex-col items-center justify-center">
+        <AlertCircle className="h-10 w-10 text-destructive/50 mb-4" />
+        <p className="text-destructive font-bold">Failed to initialize configuration.</p>
+        <Button onClick={() => void loadData()} variant="outline" className="mt-4">Retry Sync</Button>
+      </div>
+    );
+  }
 
   return (
     <div className="p-6 md:p-10 space-y-10">
@@ -163,7 +146,7 @@ export default function SSOPage() {
                   <select
                     value={config.provider}
                     onChange={(event) =>
-                      setConfig((prev) => ({ ...prev, provider: event.target.value as SsoConfig["provider"] }))
+                      setConfig((prev) => prev ? ({ ...prev, provider: event.target.value as SsoConfig["provider"] }) : null)
                     }
                     className="w-full h-11 rounded-xl border border-border/40 bg-muted/20 px-4 py-2 text-sm font-bold focus:ring-1 focus:ring-primary/40 focus:outline-none focus:bg-muted/40 transition-all appearance-none cursor-pointer"
                   >
@@ -177,7 +160,7 @@ export default function SSOPage() {
                   <label className="text-[10px] font-black text-muted-foreground/60 uppercase tracking-widest ml-1">Entity Identifier</label>
                   <Input
                     value={config.entityId}
-                    onChange={(event) => setConfig((prev) => ({ ...prev, entityId: event.target.value }))}
+                    onChange={(event) => setConfig((prev) => prev ? ({ ...prev, entityId: event.target.value }) : null)}
                     placeholder="https://agentmd.yourcompany.com/saml/metadata"
                     className="h-11 rounded-xl border-border/40 bg-muted/20 font-mono text-xs focus:ring-primary/40"
                   />
@@ -188,7 +171,7 @@ export default function SSOPage() {
                 <label className="text-[10px] font-black text-muted-foreground/60 uppercase tracking-widest ml-1">SSO Entrypoint (ACS URL)</label>
                 <Input
                   value={config.ssoUrl}
-                  onChange={(event) => setConfig((prev) => ({ ...prev, ssoUrl: event.target.value }))}
+                  onChange={(event) => setConfig((prev) => prev ? ({ ...prev, ssoUrl: event.target.value }) : null)}
                   placeholder="https://idp.yourcompany.com/sso"
                   className="h-11 rounded-xl border-border/40 bg-muted/20 font-mono text-xs focus:ring-primary/40"
                 />
@@ -197,7 +180,7 @@ export default function SSOPage() {
               <div className="grid gap-4 md:grid-cols-3 pt-6">
                 <Button
                   variant={config.enabled ? "default" : "outline"}
-                  onClick={() => setConfig((prev) => ({ ...prev, enabled: !prev.enabled }))}
+                  onClick={() => setConfig((prev) => prev ? ({ ...prev, enabled: !prev.enabled }) : null)}
                   className={cn(
                     "rounded-xl h-12 btn-tactile font-black text-[10px] uppercase tracking-widest",
                     config.enabled && "shadow-glow bg-primary text-primary-foreground hover:bg-primary/90"
@@ -210,7 +193,7 @@ export default function SSOPage() {
                 </Button>
                 <Button
                   variant={config.enforceSso ? "default" : "outline"}
-                  onClick={() => setConfig((prev) => ({ ...prev, enforceSso: !prev.enforceSso }))}
+                  onClick={() => setConfig((prev) => prev ? ({ ...prev, enforceSso: !prev.enforceSso }) : null)}
                   className={cn(
                     "rounded-xl h-12 btn-tactile font-black text-[10px] uppercase tracking-widest",
                     config.enforceSso && "shadow-glow bg-primary text-primary-foreground hover:bg-primary/90"
@@ -223,9 +206,10 @@ export default function SSOPage() {
                 </Button>
                 <Button
                   onClick={() => void save()}
+                  disabled={saving}
                   className="rounded-xl h-12 btn-tactile font-black text-[10px] uppercase tracking-widest shadow-glow"
                 >
-                  Commit Config
+                  {saving ? "SAVING..." : "COMMIT CONFIG"}
                 </Button>
               </div>
 
@@ -255,7 +239,7 @@ export default function SSOPage() {
             </CardHeader>
             <CardContent className="p-0">
               <div className="divide-y divide-border/10">
-                {loading ? (
+                {loading && compliance.length === 0 ? (
                   <div className="p-6 space-y-4">
                     {[1, 2, 3].map(i => <div key={i} className="h-16 rounded-2xl animate-pulse bg-muted/20" />)}
                   </div>
@@ -325,6 +309,17 @@ export default function SSOPage() {
               <ShieldCheck className="h-4 w-4" />
             </div>
             <p className="text-sm font-black text-foreground/90 tracking-tight">{message}</p>
+          </div>
+        </div>
+      )}
+
+      {error && (
+        <div className="fixed bottom-6 right-6 z-50 animate-fade-up">
+          <div className="glass-card border-destructive/30 bg-destructive/5 px-6 py-4 flex items-center gap-4 border-luminescent shadow-2xl">
+            <div className="h-8 w-8 rounded-full bg-destructive/20 flex items-center justify-center text-destructive border border-destructive/30">
+              <AlertCircle className="h-4 w-4" />
+            </div>
+            <p className="text-sm font-black text-foreground/90 tracking-tight">{error}</p>
           </div>
         </div>
       )}

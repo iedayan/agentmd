@@ -18,15 +18,8 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/core/utils";
 
-type AuditLogEntry = {
-  id: string;
-  timestamp: string;
-  userId: string;
-  action: string;
-  resourceType: string;
-  resourceId: string;
-  details?: unknown;
-};
+import { AuditLogEntry } from "@/types";
+import { governanceService } from "@/lib/services/governance-service";
 
 export function AuditLogView() {
   const [logs, setLogs] = useState<AuditLogEntry[]>([]);
@@ -37,16 +30,11 @@ export function AuditLogView() {
     try {
       setLoading(true);
       setError(null);
-      const res = await fetch("/api/audit?limit=100", { cache: "no-store" });
-      const data = (await res.json()) as {
-        ok?: boolean;
-        logs?: AuditLogEntry[];
-        error?: string;
-      };
-      if (!res.ok || data.ok === false) {
-        throw new Error(data.error ?? "Failed to load audit logs.");
+      const res = await governanceService.getAuditLogs();
+      if (!res.ok) {
+        throw new Error(res.error ?? "Failed to load audit logs.");
       }
-      setLogs(data.logs ?? []);
+      setLogs(res.logs ?? []);
     } catch (loadError) {
       setLogs([]);
       setError(
