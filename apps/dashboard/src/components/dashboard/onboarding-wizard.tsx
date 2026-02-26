@@ -86,6 +86,7 @@ export function OnboardingWizard() {
         setTimeout(() => setIsScanning(false), 3000);
       }
     } catch {
+      // Ignore fetch errors; onboarding state is best-effort
     } finally {
       setLoading(false);
     }
