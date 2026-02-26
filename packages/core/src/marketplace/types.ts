@@ -39,6 +39,7 @@ export interface AgentListing {
   /** AGENTS.md file URL for execution */
   agentsMdUrl: string;
   category: AgentCategory;
+  license: string;
   /** Trust score 0-100 */
   trustScore: number;
   /** Certified AGENTS.md Compatible */

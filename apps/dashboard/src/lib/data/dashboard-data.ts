@@ -39,6 +39,7 @@ const repositories: Repository[] = [
     healthScore: 62,
     lastValidated: "2024-02-20T10:15:00Z",
     agentsMdCount: 3,
+    healthDrift: true,
   },
   {
     id: "3",
@@ -251,6 +252,7 @@ const marketplaceAgents: AgentListing[] = [
     capabilities: ["PR analysis", "Size labeling", "GitHub integration"],
     requiredPermissions: ["pull_requests: write"],
     pricing: { model: "free" },
+    license: "MIT",
     exampleAgentsMd: "agent:\n  name: pr-labeler\n  triggers: [pull_request.opened]",
     agentsMdUrl: "https://github.com/agentmd/pr-labeler/AGENTS.md",
     category: "pr-labeler",
@@ -271,6 +273,7 @@ const marketplaceAgents: AgentListing[] = [
     capabilities: ["Testing", "CI", "Coverage"],
     requiredPermissions: ["contents: read", "workflows: write"],
     pricing: { model: "usage-based", usagePrice: 500 },
+    license: "Commercial",
     exampleAgentsMd: "agent:\n  name: test-runner\n  triggers: [push]",
     agentsMdUrl: "https://github.com/agentmd/test-runner/AGENTS.md",
     category: "testing",
@@ -290,6 +293,7 @@ const marketplaceAgents: AgentListing[] = [
     capabilities: ["Code review", "Security", "Linting"],
     requiredPermissions: ["pull_requests: read", "pull_requests: write"],
     pricing: { model: "subscription", subscriptionPrice: 1999 },
+    license: "Commercial",
     exampleAgentsMd: "agent:\n  name: code-review\n  model: gpt-4o",
     agentsMdUrl: "https://github.com/agentmd/code-review/AGENTS.md",
     category: "code-review",
@@ -310,6 +314,7 @@ const marketplaceAgents: AgentListing[] = [
     capabilities: ["Scaffolding", "Templates", "React"],
     requiredPermissions: ["contents: write"],
     pricing: { model: "one-time", oneTimePrice: 999 },
+    license: "BSL",
     exampleAgentsMd: "agent:\n  name: react-template\n  purpose: Scaffold React apps",
     agentsMdUrl: "https://github.com/agentmd/react-template/AGENTS.md",
     category: "template",
@@ -435,6 +440,7 @@ export function listRepositories(options?: {
         ...repo,
         latestExecutionId: latest?.id,
         latestExecutionStatus: latest?.status,
+        healthDrift: repo.healthDrift,
       };
     });
 }

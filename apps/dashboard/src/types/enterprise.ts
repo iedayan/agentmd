@@ -63,6 +63,7 @@ export interface PolicyRule {
     requireApprovalForPatterns: string[];
     blockPatterns: string[];
     rules: string[];
+    enforcePrGate: boolean;
     lastModified: string;
 }
 

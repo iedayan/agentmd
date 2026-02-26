@@ -8,6 +8,7 @@ import { ImpactPanel } from "./impact-panel";
 import { GovernanceOverview } from "@/components/enterprise/governance-overview";
 import { ExecutionOverview } from "./execution-overview";
 import { RecentActivityFeed } from "@/components/enterprise/recent-activity-feed";
+import { BadgeShareModal } from "./badge-share-modal";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -19,7 +20,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { GitBranch, Plus, RefreshCw, FolderGit2, ShieldCheck, Activity, Zap } from "lucide-react";
+import { GitBranch, Plus, RefreshCw, FolderGit2, ShieldCheck, Activity, Zap, Share2, ShieldAlert } from "lucide-react";
 import type { Execution, Repository } from "@/types";
 import { getPlan } from "@/lib/billing/plans";
 import { cn } from "@/lib/core/utils";
@@ -34,6 +35,7 @@ export function RepositoryDashboard() {
   const [repoSearch, setRepoSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<"all" | "healthy" | "attention">("all");
   const [syncing, setSyncing] = useState(false);
+  const [badgeModalRepo, setBadgeModalRepo] = useState<{ id: string; fullName: string; name: string } | null>(null);
 
   const repositoryLimit = getPlan("free").repositories;
   const canAddRepo = typeof repositoryLimit === "number" ? repos.length < repositoryLimit : true;
@@ -454,31 +456,45 @@ export function RepositoryDashboard() {
                   </div>
                 </div>
 
-                {repo.latestExecutionStatus ? (
-                  <div className="flex items-center justify-between rounded-2xl border border-primary/15 bg-primary/[0.03] px-4 py-3 text-xs shadow-sm">
-                    <div className="flex items-center gap-3">
-                      <span className="relative flex h-2.5 w-2.5">
+                {repo.latestExecutionStatus || repo.healthDrift ? (
+                  <div className="flex flex-col gap-2">
+                    {repo.healthDrift && (
+                      <div className="flex items-center justify-between rounded-2xl border border-amber-500/20 bg-amber-500/5 px-4 py-3 text-xs shadow-sm animate-pulse">
+                        <div className="flex items-center gap-3 text-amber-500">
+                          <ShieldAlert className="h-3.5 w-3.5" />
+                          <span className="font-black uppercase tracking-widest text-[10px]">Health Drift Detected</span>
+                        </div>
+                        <span className="text-[10px] font-black text-amber-500/80 uppercase">Out of sync</span>
+                      </div>
+                    )}
+
+                    {repo.latestExecutionStatus && (
+                      <div className="flex items-center justify-between rounded-2xl border border-primary/15 bg-primary/[0.03] px-4 py-3 text-xs shadow-sm">
+                        <div className="flex items-center gap-3">
+                          <span className="relative flex h-2.5 w-2.5">
+                            <span className={cn(
+                              "animate-ping absolute inline-flex h-full w-full rounded-full opacity-75",
+                              repo.latestExecutionStatus === 'running' ? 'bg-primary' : 'hidden'
+                            )}></span>
+                            <span className={cn(
+                              "relative inline-flex rounded-full h-2.5 w-2.5",
+                              repo.latestExecutionStatus === 'success' ? 'bg-emerald-500 animate-glow-pulse' :
+                                repo.latestExecutionStatus === 'failed' ? 'bg-red-500 border border-red-400' :
+                                  repo.latestExecutionStatus === 'running' ? 'bg-primary' : 'bg-muted-foreground/50'
+                            )}></span>
+                          </span>
+                          <span className="font-black uppercase tracking-widest text-[10px] text-muted-foreground/80">Status</span>
+                        </div>
                         <span className={cn(
-                          "animate-ping absolute inline-flex h-full w-full rounded-full opacity-75",
-                          repo.latestExecutionStatus === 'running' ? 'bg-primary' : 'hidden'
-                        )}></span>
-                        <span className={cn(
-                          "relative inline-flex rounded-full h-2.5 w-2.5",
-                          repo.latestExecutionStatus === 'success' ? 'bg-emerald-500 animate-glow-pulse' :
-                            repo.latestExecutionStatus === 'failed' ? 'bg-red-500 border border-red-400' :
-                              repo.latestExecutionStatus === 'running' ? 'bg-primary' : 'bg-muted-foreground/50'
-                        )}></span>
-                      </span>
-                      <span className="font-black uppercase tracking-widest text-[10px] text-muted-foreground/80">Status</span>
-                    </div>
-                    <span className={cn(
-                      "font-black uppercase tracking-tighter text-[11px] px-2 py-0.5 rounded-md",
-                      repo.latestExecutionStatus === 'success' ? 'text-emerald-500 bg-emerald-500/5' :
-                        repo.latestExecutionStatus === 'failed' ? 'text-red-500 bg-red-500/5' :
-                          repo.latestExecutionStatus === 'running' ? 'text-primary bg-primary/5' : 'text-muted-foreground bg-muted/5'
-                    )}>
-                      {repo.latestExecutionStatus}
-                    </span>
+                          "font-black uppercase tracking-tighter text-[11px] px-2 py-0.5 rounded-md",
+                          repo.latestExecutionStatus === 'success' ? 'text-emerald-500 bg-emerald-500/5' :
+                            repo.latestExecutionStatus === 'failed' ? 'text-red-500 bg-red-500/5' :
+                              repo.latestExecutionStatus === 'running' ? 'text-primary bg-primary/5' : 'text-muted-foreground bg-muted/5'
+                        )}>
+                          {repo.latestExecutionStatus}
+                        </span>
+                      </div>
+                    )}
                   </div>
                 ) : null}
 
@@ -504,6 +520,15 @@ export function RepositoryDashboard() {
                       </Button>
                     </Link>
                     <Button
+                      variant="outline"
+                      size="sm"
+                      className="px-4 rounded-2xl btn-tactile font-black text-[10px] uppercase tracking-widest py-5 border-border/60"
+                      onClick={() => setBadgeModalRepo({ id: repo.id, fullName: repo.fullName, name: repo.name })}
+                      title="Share Badge"
+                    >
+                      <Share2 className="h-4 w-4" />
+                    </Button>
+                    <Button
                       size="sm"
                       className="flex-1 rounded-2xl btn-tactile font-black text-[10px] uppercase tracking-widest py-5 shadow-glow/10"
                       disabled={runningRepoId === repo.id}
@@ -524,6 +549,15 @@ export function RepositoryDashboard() {
             </Card>
           ) : null}
         </div>
+      )}
+
+      {badgeModalRepo && (
+        <BadgeShareModal
+          isOpen={!!badgeModalRepo}
+          onClose={() => setBadgeModalRepo(null)}
+          repoFullName={badgeModalRepo.fullName}
+          repoName={badgeModalRepo.name}
+        />
       )}
     </div>
   );

@@ -60,6 +60,7 @@ export type PolicyRule = {
   enabled: boolean;
   requireApprovalForPatterns: string[];
   blockPatterns: string[];
+  enforcePrGate: boolean;
 };
 
 export type ApprovalRequest = {
@@ -192,6 +193,7 @@ let policyRules: PolicyRule[] = [
     enabled: true,
     requireApprovalForPatterns: ["deploy", "release", "migrate", "terraform apply"],
     blockPatterns: [],
+    enforcePrGate: true,
   },
   {
     id: "policy-2",
@@ -199,6 +201,7 @@ let policyRules: PolicyRule[] = [
     enabled: true,
     requireApprovalForPatterns: [],
     blockPatterns: ["rm -rf", "drop database", "truncate table"],
+    enforcePrGate: false,
   },
 ];
 
@@ -222,12 +225,12 @@ let governanceMetrics = {
   lastGitHubSyncAt: undefined as string | undefined,
   lastGitHubSync: undefined as
     | {
-        total: number;
-        added: number;
-        skipped: number;
-        gateUpdated: number;
-        backfilledRepositories: Array<{ id: string; name: string }>;
-      }
+      total: number;
+      added: number;
+      skipped: number;
+      gateUpdated: number;
+      backfilledRepositories: Array<{ id: string; name: string }>;
+    }
     | undefined,
   contractValidationEvents: [] as Array<{
     at: string;

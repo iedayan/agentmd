@@ -33,10 +33,17 @@ export const governanceService = {
     },
 
     async togglePolicy(id: string, status: "active" | "inactive" | "bypass"): Promise<{ ok: boolean; error?: string }> {
+        const res = await this.getPolicies();
+        if (!res.ok || !res.policies) return { ok: false, error: res.error };
+        const next = res.policies.map(p => p.id === id ? { ...p, status } : p);
+        return this.updatePolicies(next);
+    },
+
+    async updatePolicies(policies: PolicyRule[]): Promise<{ ok: boolean; error?: string }> {
         const res = await fetch("/api/policies", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ id, status }),
+            body: JSON.stringify({ policies }),
         });
         const body = await res.json();
         return res.ok ? { ok: true } : { ok: false, error: body.error };

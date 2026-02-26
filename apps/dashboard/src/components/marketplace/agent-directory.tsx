@@ -12,8 +12,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Star, Shield, Search } from "lucide-react";
+import { Star, Shield, Search, ShoppingCart, Lock } from "lucide-react";
 import Link from "next/link";
+import { toast } from "sonner";
 import type { AgentListing } from "@agentmd/core";
 
 const CATEGORIES = [
@@ -163,20 +164,24 @@ export function AgentDirectory() {
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {filtered.map((agent) => (
             <Link key={agent.id} href={`/marketplace/${agent.slug}`}>
-              <Card className="h-full hover:border-primary/50 transition-colors">
+              <Card className="h-full hover:border-primary/50 transition-colors flex flex-col">
                 <CardHeader className="flex flex-row items-start justify-between space-y-0">
                   <CardTitle className="text-base">{agent.name}</CardTitle>
                   <div className="flex items-center gap-1">
+                    {(agent as any).license && (
+                      <Badge variant="outline" className="text-[10px] font-black uppercase text-muted-foreground/60 border-border/40">
+                        {(agent as any).license}
+                      </Badge>
+                    )}
                     {agent.certified && (
                       <Badge variant="secondary" className="text-xs">
                         <Shield className="mr-1 h-3 w-3" />
                         Certified
                       </Badge>
                     )}
-                    <Badge variant="outline">{agent.trustScore}</Badge>
                   </div>
                 </CardHeader>
-                <CardContent className="space-y-3">
+                <CardContent className="space-y-3 flex-1">
                   <CardDescription className="line-clamp-2">
                     {agent.description}
                   </CardDescription>
@@ -187,11 +192,28 @@ export function AgentDirectory() {
                       ({agent.reviewCount} reviews)
                     </span>
                   </div>
-                  <div className="flex items-center justify-between">
-                    <span className="font-medium">{formatPrice(agent)}</span>
-                    <span className="text-xs text-muted-foreground">
-                      {agent.category}
-                    </span>
+                  <div className="flex items-center justify-between mt-auto pt-4">
+                    <div className="flex flex-col">
+                      <span className="text-[10px] uppercase font-black text-muted-foreground/60 tracking-wider">Starting at</span>
+                      <span className="font-bold text-lg">{formatPrice(agent)}</span>
+                    </div>
+                    {agent.pricing.model === "free" ? (
+                      <Button variant="outline" size="sm" className="rounded-xl border-border/40 font-bold" asChild>
+                        <Link href={`/marketplace/${agent.slug}`}>Install Free</Link>
+                      </Button>
+                    ) : (
+                      <Button
+                        size="sm"
+                        className="rounded-xl bg-primary shadow-glow font-bold"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          toast.success(`Opening checkout for ${agent.name}...`);
+                        }}
+                      >
+                        <ShoppingCart className="mr-2 h-3.5 w-3.5" />
+                        Buy
+                      </Button>
+                    )}
                   </div>
                 </CardContent>
               </Card>

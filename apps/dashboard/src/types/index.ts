@@ -16,6 +16,7 @@ export interface Repository {
   agentsMdCount: number;
   latestExecutionId?: string;
   latestExecutionStatus?: ExecutionStatus;
+  healthDrift?: boolean;
 }
 
 export interface Execution {

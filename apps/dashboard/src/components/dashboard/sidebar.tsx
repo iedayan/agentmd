@@ -17,6 +17,7 @@ import {
   LogOut,
   ArrowRight,
   CheckCircle2,
+  CreditCard,
 } from "lucide-react";
 import { cn } from "@/lib/core/utils";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
@@ -31,6 +32,7 @@ const nav = [
   { href: "/dashboard/enterprise/runbook", label: "Ops Runbook", icon: Activity },
   { href: "/dashboard/audit", label: "Audit Logs", icon: History },
   { href: "/dashboard/analytics", label: "Analytics", icon: BarChart3 },
+  { href: "/dashboard/settings/billing", label: "Billing", icon: CreditCard },
   { href: "/dashboard/settings", label: "Settings", icon: Settings },
 ];
 

@@ -41,6 +41,7 @@ export async function POST(req: NextRequest) {
       const blockPatterns = Array.isArray(item.blockPatterns)
         ? item.blockPatterns.filter((value): value is string => typeof value === "string")
         : [];
+      const enforcePrGate = !!item.enforcePrGate;
       if (!id || !name) {
         return apiError("Each policy requires id and name", {
           status: 400,
@@ -54,6 +55,7 @@ export async function POST(req: NextRequest) {
         enabled,
         requireApprovalForPatterns,
         blockPatterns,
+        enforcePrGate,
       });
     }
     replacePolicyRules(normalized);
