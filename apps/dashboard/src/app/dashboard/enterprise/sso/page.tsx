@@ -21,10 +21,11 @@ import {
   Key,
   Globe,
   Download,
-  ShieldAlert
+  ShieldAlert,
+  Copy
 } from "lucide-react";
 import { cn } from "@/lib/core/utils";
-import { SsoConfig, ComplianceArtifact } from "@/types";
+import { SsoConfig, ComplianceArtifact, ReleaseIntegrity } from "@/types";
 import { enterpriseService } from "@/lib/services/enterprise-service";
 
 import { toast } from "sonner";
@@ -32,21 +33,27 @@ import { toast } from "sonner";
 export default function SSOPage() {
   const [config, setConfig] = useState<SsoConfig | null>(null);
   const [compliance, setCompliance] = useState<ComplianceArtifact[]>([]);
+  const [integrity, setIntegrity] = useState<ReleaseIntegrity[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
   const loadData = async () => {
     setLoading(true);
     try {
-      const [ssoRes, complianceRes] = await Promise.all([
+      const [ssoRes, complianceRes, integrityRes] = await Promise.all([
         enterpriseService.getSsoConfig(),
         enterpriseService.getComplianceArtifacts(),
+        enterpriseService.getReleaseIntegrity(),
       ]);
       if (ssoRes.ok && ssoRes.sso) setConfig(ssoRes.sso);
       else toast.error(ssoRes.error ?? "Failed to load SSO config");
 
       if (complianceRes.ok && complianceRes.artifacts) {
         setCompliance(complianceRes.artifacts);
+      }
+
+      if (integrityRes.ok && integrityRes.integrity) {
+        setIntegrity(integrityRes.integrity);
       }
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Load failed");
@@ -218,6 +225,64 @@ export default function SSOPage() {
                   <span>Fingerprint: {loading ? "..." : (config.updatedAt || "unverified").slice(0, 8)}</span>
                 </div>
                 <span>Sync Ref: {Math.random().toString(36).substring(7).toUpperCase()}</span>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="glass-card bg-background/40 backdrop-blur-md border border-border/40 overflow-hidden shadow-2xl">
+            <CardHeader className="p-8 border-b border-border/10">
+              <div className="flex items-center gap-4">
+                <div className="h-10 w-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary border border-primary/20">
+                  <Fingerprint className="h-5 w-5" />
+                </div>
+                <div>
+                  <CardTitle className="text-lg font-black text-foreground/90 tracking-tight flex items-center gap-3">
+                    Security & Integrity
+                    <div className="flex items-center gap-1 bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 px-2 py-0.5 rounded-full">
+                      <CheckCircle2 className="h-3 w-3" />
+                      <span className="text-[7px] font-black uppercase tracking-tight">Verified Manifest</span>
+                    </div>
+                  </CardTitle>
+                  <CardDescription className="text-[10px] font-black uppercase tracking-widest opacity-60 mt-1">Official Release Verification</CardDescription>
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent className="p-0">
+              <div className="divide-y divide-border/10">
+                {integrity.map((item) => (
+                  <div key={item.id} className="p-6 hover:bg-primary/[0.01] transition-all group">
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="flex items-center gap-3">
+                        <span className="text-sm font-black text-foreground/80 tracking-tight">{item.packageName}</span>
+                        <Badge variant="outline" className="text-[9px] font-black tracking-widest px-2 py-0 uppercase border-border/40 bg-muted/20">
+                          {item.version}
+                        </Badge>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div className="h-2 w-2 rounded-full bg-primary shadow-glow animate-pulse" />
+                        <span className="text-[9px] font-black uppercase tracking-widest text-primary/80">Hardened</span>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2 bg-muted/30 rounded-lg p-3 border border-border/10">
+                      <code className="text-[10px] font-mono text-muted-foreground break-all flex-1">
+                        {item.sha256}
+                      </code>
+                      <button
+                        onClick={() => {
+                          navigator.clipboard.writeText(item.sha256);
+                          toast.success(`${item.packageName} SHA copied`);
+                        }}
+                        className="h-8 w-8 rounded-lg flex items-center justify-center bg-background border border-border/40 hover:bg-muted/40 transition-all shadow-sm"
+                      >
+                        <Copy className="h-3.5 w-3.5 text-muted-foreground" />
+                      </button>
+                    </div>
+                    <div className="mt-3 flex items-center justify-between text-[9px] font-medium text-muted-foreground/50 italic px-1">
+                      <span>Platform: {item.platform}</span>
+                      <span>Synced: {new Date(item.lastHardened).toLocaleDateString()}</span>
+                    </div>
+                  </div>
+                ))}
               </div>
             </CardContent>
           </Card>

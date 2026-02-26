@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Check, Copy } from "lucide-react";
 
-const WORKFLOW_SNIPPET = `- uses: agentmd/agentmd/.github/actions/agentmd@main
+const WORKFLOW_SNIPPET = `- uses: iedayan/agentmd/.github/actions/agentmd@7f23caa9a688230815368fc07716828884479cad
   with:
     command: validate
     path: .`;

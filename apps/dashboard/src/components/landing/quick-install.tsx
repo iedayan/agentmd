@@ -11,33 +11,33 @@ const COMMANDS: {
   icon: typeof Terminal;
   primary?: boolean;
 }[] = [
-  {
-    label: "Get started in 60 seconds",
-    desc: "One command, no install",
-    cmd: "npx @agentmd/cli init",
-    icon: Terminal,
-    primary: true,
-  },
-  {
-    label: "GitHub Action",
-    desc: "Add to CI",
-    cmd: "uses: agentmd/agentmd/.github/actions/agentmd@main",
-    icon: Github,
-  },
-  {
-    label: "Add to GitHub",
-    desc: "Install the app",
-    cmd: "/github/install",
-    href: "/github/install",
-    icon: Github,
-  },
-  {
-    label: "npm package",
-    desc: "Add to project",
-    cmd: "pnpm add @agentmd/core",
-    icon: Package,
-  },
-];
+    {
+      label: "Get started in 60 seconds",
+      desc: "One command, no install",
+      cmd: "npx @agentmd/cli init",
+      icon: Terminal,
+      primary: true,
+    },
+    {
+      label: "GitHub Action",
+      desc: "Add to CI (Pinned SHA)",
+      cmd: "uses: iedayan/agentmd/.github/actions/agentmd@7f23caa9a688230815368fc07716828884479cad",
+      icon: Github,
+    },
+    {
+      label: "Add to GitHub",
+      desc: "Install the app",
+      cmd: "/github/install",
+      href: "/github/install",
+      icon: Github,
+    },
+    {
+      label: "npm package",
+      desc: "Add to project",
+      cmd: "pnpm add @agentmd/core",
+      icon: Package,
+    },
+  ];
 
 export function QuickInstall() {
   const [copied, setCopied] = useState<string | null>(null);
@@ -57,16 +57,14 @@ export function QuickInstall() {
         {COMMANDS.map(({ label, desc, cmd, href, icon: Icon, primary }) => (
           <div
             key={cmd}
-            className={`group flex items-stretch gap-3 rounded-xl border bg-background p-4 transition-all ${
-              primary
+            className={`group flex items-stretch gap-3 rounded-xl border bg-background p-4 transition-all ${primary
                 ? "border-primary/40 bg-primary/5 shadow-sm dark:bg-primary/5"
                 : "border-border/60 hover:border-border hover:bg-muted/30"
-            }`}
+              }`}
           >
             <div
-              className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg ${
-                primary ? "bg-primary/15 text-primary" : "bg-muted text-muted-foreground"
-              }`}
+              className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg ${primary ? "bg-primary/15 text-primary" : "bg-muted text-muted-foreground"
+                }`}
             >
               <Icon className="h-5 w-5" />
             </div>

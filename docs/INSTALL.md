@@ -38,7 +38,8 @@ pnpm run agentmd -- improve . --apply
 Use the composite action in your workflow — no manual install required:
 
 ```yaml
-- uses: agentmd/agentmd/.github/actions/agentmd@main
+# Pin to immutable SHA for security
+- uses: iedayan/agentmd/.github/actions/agentmd@7f23caa9a688230815368fc07716828884479cad
   with:
     command: check
     contract: "true"

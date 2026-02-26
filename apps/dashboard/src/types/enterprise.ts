@@ -82,3 +82,12 @@ export type NotificationItem = {
     createdAt: string;
     read: boolean;
 };
+
+export interface ReleaseIntegrity {
+    id: string;
+    packageName: string;
+    version: string;
+    sha256: string;
+    lastHardened: string;
+    platform: string;
+}
