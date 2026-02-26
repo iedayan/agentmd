@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { BarChart3, TrendingUp, DollarSign, Zap } from "lucide-react";
+import { cn } from "@/lib/core/utils";
 
 type AnalyticsOverview = {
   impact: {
@@ -130,59 +131,59 @@ export function AnalyticsDashboard() {
           <CardContent className="py-4 text-sm text-destructive">{error}</CardContent>
         </Card>
       ) : null}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <div className="bento-card border-luminescent group">
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/80">Execution Minutes</CardTitle>
-            <Zap className="h-4 w-4 text-primary group-hover:animate-pulse" />
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+        <div className="bento-card border-luminescent group bg-gradient-to-br from-primary/[0.05] to-transparent p-1">
+          <CardHeader className="flex flex-row items-center justify-between pb-3">
+            <CardTitle className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/80">Execution Speed</CardTitle>
+            <Zap className="h-5 w-5 text-primary group-hover:animate-pulse transition-all duration-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-black text-gradient">
+            <div className="text-4xl font-black text-gradient">
               {loading ? "…" : `${(data?.impact.avgExecutionSeconds ?? 0).toFixed(1)}s`}
             </div>
-            <p className="text-[10px] text-muted-foreground font-medium mt-1">LATENCY AGGREGATE</p>
-            <div className="mt-4 h-1 w-full bg-muted/50 rounded-full overflow-hidden">
+            <p className="text-[10px] text-muted-foreground/60 font-black mt-2 tracking-widest">LATENCY AGGREGATE</p>
+            <div className="mt-5 h-1.5 w-full bg-muted/40 rounded-full overflow-hidden border border-border/10 shadow-inner">
               <div
-                className="h-full bg-primary transition-all duration-1000"
+                className="h-full bg-gradient-to-r from-primary to-primary-bright transition-all duration-1000 ease-out"
                 style={{ width: `${loading ? 0 : Math.min(100, ((data?.impact.avgExecutionSeconds ?? 0) / 120) * 100)}%` }}
               />
             </div>
           </CardContent>
         </div>
-        <div className="bento-card border-luminescent">
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/80">Time Saved</CardTitle>
-            <TrendingUp className="h-4 w-4 text-emerald-500" />
+        <div className="bento-card border-luminescent group bg-gradient-to-br from-emerald-500/[0.05] to-transparent p-1">
+          <CardHeader className="flex flex-row items-center justify-between pb-3">
+            <CardTitle className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/80">Time Saved</CardTitle>
+            <TrendingUp className="h-5 w-5 text-emerald-500 transition-all duration-500 group-hover:scale-125" />
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-black text-emerald-500 text-primary-glow">
-              {loading ? "…" : `${data?.impact.automationHoursSaved ?? 0}`} <span className="text-sm font-bold opacity-60">HRS</span>
+            <div className="text-4xl font-black text-emerald-500 text-primary-glow">
+              {loading ? "…" : `${data?.impact.automationHoursSaved ?? 0}`} <span className="text-sm font-black opacity-40 ml-1">HRS</span>
             </div>
-            <p className="text-[10px] text-muted-foreground font-medium mt-1">EFFICIENCY SURPLUS</p>
+            <p className="text-[10px] text-muted-foreground/60 font-black mt-2 tracking-widest uppercase">Efficiency Surplus</p>
           </CardContent>
         </div>
-        <div className="bento-card border-luminescent bg-primary/[0.03]">
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-[10px] font-bold uppercase tracking-widest text-primary/80">ROI Multiple</CardTitle>
-            <DollarSign className="h-4 w-4 text-primary" />
+        <div className="bento-card border-luminescent bg-primary/[0.03] p-1 border-beam">
+          <CardHeader className="flex flex-row items-center justify-between pb-3">
+            <CardTitle className="text-[10px] font-black uppercase tracking-[0.2em] text-primary/80">ROI Multiple</CardTitle>
+            <DollarSign className="h-5 w-5 text-primary animate-glow-pulse rounded-full p-0.5" />
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-black text-primary text-primary-glow">
+            <div className="text-4xl font-black text-primary text-primary-glow">
               {loading ? "…" : `${data?.kpis.roiMultiple ?? 1}x`}
             </div>
-            <p className="text-[10px] text-primary/60 font-medium mt-1">CAPITAL EFFICIENCY</p>
+            <p className="text-[10px] text-primary/60 font-black mt-2 tracking-widest uppercase">Capital Efficiency</p>
           </CardContent>
         </div>
-        <div className="bento-card border-luminescent">
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/80">Success Rate</CardTitle>
-            <BarChart3 className="h-4 w-4 text-indigo-500" />
+        <div className="bento-card border-luminescent group p-1 bg-gradient-to-br from-indigo-500/[0.05] to-transparent">
+          <CardHeader className="flex flex-row items-center justify-between pb-3">
+            <CardTitle className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/80">Success Rate</CardTitle>
+            <BarChart3 className="h-5 w-5 text-indigo-500 transition-all duration-500 group-hover:rotate-12" />
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-black text-gradient">
+            <div className="text-4xl font-black text-gradient">
               {loading ? "…" : `${data?.impact.commandSuccessRate ?? 0}%`}
             </div>
-            <p className="text-[10px] text-muted-foreground font-medium mt-1">CONTRACT COMPLIANCE</p>
+            <p className="text-[10px] text-muted-foreground/60 font-black mt-2 tracking-widest uppercase">Contract Compliance</p>
           </CardContent>
         </div>
       </div>
@@ -202,30 +203,33 @@ export function AnalyticsDashboard() {
           </div>
         </CardHeader>
         <CardContent>
-          <div className="grid gap-4 md:grid-cols-3">
-            <div className="rounded-2xl border border-border/40 bg-background/50 p-4 relative group hover:border-emerald-500/30 transition-colors">
-              <p className="text-[10px] font-bold text-muted-foreground/60 uppercase tracking-widest mb-1">Gross Value</p>
-              <p className="text-2xl font-black text-emerald-500 drop-shadow-[0_0_8px_rgba(16,185,129,0.2)]">
+          <div className="grid gap-6 md:grid-cols-3">
+            <div className="rounded-3xl border border-border/40 bg-background/40 p-6 relative group hover:border-emerald-500/40 transition-all duration-500 shadow-sm hover:shadow-glow/5">
+              <p className="text-[10px] font-black text-muted-foreground/50 uppercase tracking-[0.2em] mb-2">Gross Value</p>
+              <p className="text-3xl font-black text-emerald-500 drop-shadow-[0_0_12px_rgba(16,185,129,0.3)]">
                 {loading ? "…" : `$${(roi?.value.grossValueUsd ?? 0).toLocaleString()}`}
               </p>
+              <div className="absolute bottom-0 left-0 h-1 w-full bg-emerald-500/10 rounded-b-3xl" />
             </div>
-            <div className="rounded-2xl border border-border/40 bg-background/50 p-4 hover:border-emerald-500/30 transition-colors">
-              <p className="text-[10px] font-bold text-muted-foreground/60 uppercase tracking-widest mb-1">Net Value</p>
-              <p className="text-2xl font-black text-emerald-500 drop-shadow-[0_0_8px_rgba(16,185,129,0.2)]">
+            <div className="rounded-3xl border border-border/40 bg-background/40 p-6 hover:border-emerald-500/40 transition-all duration-500 shadow-sm hover:shadow-glow/5">
+              <p className="text-[10px] font-black text-muted-foreground/50 uppercase tracking-[0.2em] mb-2">Net Value</p>
+              <p className="text-3xl font-black text-emerald-500 drop-shadow-[0_0_12px_rgba(16,185,129,0.3)]">
                 {loading ? "…" : `$${(roi?.value.netValueUsd ?? 0).toLocaleString()}`}
               </p>
+              <div className="absolute bottom-0 left-0 h-1 w-full bg-emerald-500/10 rounded-b-3xl" />
             </div>
-            <div className="rounded-2xl border border-border/40 bg-background/50 p-4 hover:border-emerald-500/30 transition-colors">
-              <p className="text-[10px] font-bold text-muted-foreground/60 uppercase tracking-widest mb-1">Prevented Failures</p>
-              <p className="text-2xl font-black text-indigo-500 drop-shadow-[0_0_8px_rgba(99,102,241,0.2)]">
+            <div className="rounded-3xl border border-border/40 bg-background/40 p-6 hover:border-indigo-500/40 transition-all duration-500 shadow-sm hover:shadow-glow/5">
+              <p className="text-[10px] font-black text-muted-foreground/50 uppercase tracking-[0.2em] mb-2">Prevented Failures</p>
+              <p className="text-3xl font-black text-indigo-500 drop-shadow-[0_0_12px_rgba(99,102,241,0.3)]">
                 {loading ? "…" : `${roi?.metrics.preventedFailures ?? 0}`}
               </p>
+              <div className="absolute bottom-0 left-0 h-1 w-full bg-indigo-500/10 rounded-b-3xl" />
             </div>
           </div>
-          <div className="mt-4 flex items-center gap-2">
-            <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-            <p className="text-[10px] font-bold text-muted-foreground/60 uppercase tracking-tighter">
-              Confidence Index: {loading ? "…" : roi?.confidence ?? "n/a"}
+          <div className="mt-6 flex items-center gap-3">
+            <span className="h-2 w-2 rounded-full bg-emerald-500 animate-glow-pulse" />
+            <p className="text-[10px] font-black text-muted-foreground/50 uppercase tracking-[0.15em]">
+              Confidence Index: <span className="text-foreground/80">{loading ? "…" : roi?.confidence ?? "n/a"}</span>
             </p>
           </div>
         </CardContent>
@@ -290,29 +294,35 @@ export function AnalyticsDashboard() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="rounded-lg border p-4">
+          <div className="rounded-2xl border border-border/40 p-6 bg-background/40 backdrop-blur-sm">
             {loading ? (
-              <div className="grid h-40 grid-cols-7 gap-2">
+              <div className="grid h-48 grid-cols-14 gap-2">
                 {Array.from({ length: 14 }).map((_, index) => (
-                  <div key={index} className="animate-pulse rounded bg-muted/50" />
+                  <div key={index} className="animate-pulse rounded-full bg-muted/40" />
                 ))}
               </div>
             ) : (
-              <div className="grid h-40 grid-cols-7 gap-2">
-                {(data?.trend ?? []).map((point) => (
+              <div className="grid h-48 grid-cols-14 gap-2.5 items-end">
+                {(data?.trend ?? []).map((point, idx) => (
                   <div
                     key={point.date}
-                    className="flex flex-col items-center justify-end gap-1"
+                    className="group relative flex flex-col items-center justify-end h-full w-full"
                     title={`${point.date}: ${point.executions} runs, ${point.failedExecutions} failed`}
                   >
                     <div
-                      className="w-full rounded bg-primary/70"
+                      className={cn(
+                        "w-full rounded-full transition-all duration-500 group-hover:scale-x-125 group-hover:shadow-glow/10",
+                        point.failedExecutions > 0 ? "bg-gradient-to-t from-red-500/40 to-red-400/60" : "bg-gradient-to-t from-primary/60 to-primary-bright/80"
+                      )}
                       style={{
-                        height: `${Math.max(10, (point.executions / maxExecutions) * 100)}%`,
+                        height: `${Math.max(8, (point.executions / maxExecutions) * 100)}%`,
                       }}
                     />
-                    <span className="text-[10px] text-muted-foreground">
-                      {point.date.slice(5)}
+                    <div className="absolute -top-8 bg-card border border-border/50 rounded-md px-2 py-1 text-[9px] font-black opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-20 shadow-xl">
+                      {point.executions} RUNS
+                    </div>
+                    <span className="text-[9px] font-black text-muted-foreground/40 mt-3 group-hover:text-primary transition-colors">
+                      {point.date.slice(5).replace('-', '/')}
                     </span>
                   </div>
                 ))}

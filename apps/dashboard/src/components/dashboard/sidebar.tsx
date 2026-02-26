@@ -117,39 +117,39 @@ export function Sidebar() {
                 href={item.href}
                 onClick={closeMobile}
                 className={cn(
-                  "group relative flex items-center gap-3 rounded-xl px-4 py-2.5 text-sm font-medium transition-all duration-300",
+                  "group relative flex items-center gap-3 rounded-xl px-4 py-2.5 text-sm font-semibold transition-all duration-300",
                   isActive
-                    ? "bg-primary/10 text-primary border-luminescent border-primary/20"
-                    : "text-muted-foreground hover:bg-muted/50 hover:text-foreground"
+                    ? "bg-primary/15 text-primary border-luminescent border-primary/25 shadow-[0_0_20px_rgba(16,185,129,0.1)]"
+                    : "text-muted-foreground/80 hover:bg-muted/60 hover:text-foreground"
                 )}
               >
                 <item.icon className={cn(
-                  "h-[18px] w-[18px] shrink-0 transition-transform duration-300 group-hover:scale-110",
-                  isActive ? "text-primary" : "text-muted-foreground/70 group-hover:text-foreground"
+                  "h-[18px] w-[18px] shrink-0 transition-all duration-300 group-hover:scale-125",
+                  isActive ? "text-primary filter drop-shadow-[0_0_8px_rgba(16,185,129,0.4)]" : "text-muted-foreground/60 group-hover:text-foreground"
                 )} />
-                {item.label}
+                <span className="relative z-10">{item.label}</span>
                 {showBadge && (
-                  <span className="ml-auto min-w-[20px] h-5 px-1.5 rounded-full bg-amber-500/20 text-amber-600 dark:text-amber-400 text-xs font-semibold flex items-center justify-center">
+                  <span className="ml-auto min-w-[20px] h-5 px-1.5 rounded-full bg-amber-500/20 text-amber-600 dark:text-amber-400 text-[10px] font-black flex items-center justify-center animate-pulse border border-amber-500/30">
                     {pendingApprovals}
                   </span>
                 )}
                 {isActive && (
-                  <span className="absolute left-0 top-1/2 -translate-y-1/2 h-5 w-1 bg-primary rounded-r-full shadow-[0_0_8px_hsl(var(--primary))]" />
+                  <span className="absolute left-0 top-1/2 -translate-y-1/2 h-6 w-1 bg-primary rounded-r-full shadow-[0_0_12px_hsl(var(--primary))]" />
                 )}
               </Link>
             );
           })}
         </nav>
         <div className="border-t border-border/40 p-5 space-y-4">
-          <div className="bento-card bg-primary/5 border-primary/10 p-4 relative overflow-hidden group">
-            <div className="absolute top-0 right-0 p-2 opacity-20 transition-opacity group-hover:opacity-40">
-              <Shield className="h-12 w-12 -mr-4 -mt-4 text-primary" />
+          <div className="glass-card bg-primary/5 border-primary/20 p-4 relative overflow-hidden group border-luminescent mb-2">
+            <div className="absolute top-0 right-0 p-2 opacity-10 transition-all duration-500 group-hover:opacity-30 group-hover:scale-110 group-hover:rotate-12">
+              <Shield className="h-14 w-14 -mr-4 -mt-4 text-primary" />
             </div>
-            <p className="text-[10px] font-bold text-primary uppercase tracking-widest">Free Plan</p>
-            <p className="mt-1 text-sm font-medium text-foreground/80">3 repos · 100 min/mo</p>
+            <p className="text-[10px] font-black text-primary uppercase tracking-[0.2em]">Free Plan</p>
+            <p className="mt-1.5 text-xs font-bold text-foreground/80">3 repos · 100 min/mo</p>
             <Link href="/dashboard/settings/billing" onClick={closeMobile}>
-              <span className="mt-3 block text-xs font-semibold text-primary hover:underline flex items-center gap-1">
-                Upgrade to Pro
+              <span className="mt-4 block text-[11px] font-black text-primary hover:underline flex items-center gap-1.5 transition-all group-hover:gap-2.5">
+                UPGRADE TO PRO
                 <ArrowRight className="h-3 w-3" />
               </span>
             </Link>

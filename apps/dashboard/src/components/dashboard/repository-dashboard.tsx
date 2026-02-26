@@ -219,29 +219,29 @@ export function RepositoryDashboard() {
         <ExecutionOverview />
         <GovernanceOverview />
       </div>
-      <div className="bento-card bg-primary/5 border-primary/20">
-        <CardContent className="py-5">
-          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-            <div className="flex items-center gap-3">
-              <div className="h-10 w-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary border border-primary/20">
-                <Zap className="h-5 w-5" />
+      <div className="glass-card bg-primary/[0.03] border-primary/20 p-1">
+        <CardContent className="py-4">
+          <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between px-2">
+            <div className="flex items-center gap-4">
+              <div className="h-12 w-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary border border-primary/20 shadow-glow/10">
+                <Zap className="h-6 w-6" />
               </div>
               <div>
-                <p className="text-sm font-bold text-foreground">Quick Actions</p>
-                <p className="text-xs text-muted-foreground">
-                  Common tasks to maximize your agentic efficiency.
+                <p className="text-sm font-black text-foreground uppercase tracking-wider">Quick Actions</p>
+                <p className="text-xs text-muted-foreground font-medium">
+                  Maximize your agentic efficiency.
                 </p>
               </div>
             </div>
-            <div className="flex flex-wrap gap-2.5">
+            <div className="flex flex-wrap gap-3">
               <Link href="/dashboard/executions">
-                <Button size="sm" variant="outline" className="btn-tactile rounded-xl">View Runs</Button>
+                <Button size="sm" variant="outline" className="btn-tactile rounded-[0.75rem] px-5 font-bold border-border/60">View Runs</Button>
               </Link>
               <Link href="/docs/quickstart">
-                <Button size="sm" variant="outline" className="btn-tactile rounded-xl text-primary border-primary/20 hover:bg-primary/5">Quickstart</Button>
+                <Button size="sm" variant="outline" className="btn-tactile rounded-[0.75rem] px-5 font-bold text-primary border-primary/20 hover:bg-primary/5">Quickstart</Button>
               </Link>
               <Link href="/dashboard/setup/agent">
-                <Button size="sm" className="btn-tactile rounded-xl shadow-glow">Setup Agent</Button>
+                <Button size="sm" className="btn-tactile rounded-[0.75rem] px-6 font-bold shadow-glow border-beam">Setup Agent</Button>
               </Link>
             </div>
           </div>
@@ -249,40 +249,42 @@ export function RepositoryDashboard() {
       </div>
 
       <div className="grid gap-4 md:grid-cols-3">
-        <div className="bento-card border-luminescent bg-gradient-to-br from-primary/[0.08] via-transparent to-transparent">
-          <CardHeader className="pb-2">
-            <CardDescription className="text-xs font-bold uppercase tracking-wider text-primary/70">Connected Repositories</CardDescription>
-            <CardTitle className="text-4xl font-black text-gradient">{repos.length}</CardTitle>
-          </CardHeader>
-          <CardContent className="pt-0 text-[10px] text-muted-foreground/80 font-medium">
-            {typeof repositoryLimit === "number"
-              ? `${repositoryLimit - repos.length} slots remaining in free tier`
-              : "Enterprise unlimited tier active"}
-          </CardContent>
-        </div>
-        <div className="bento-card">
-          <CardHeader className="pb-2">
-            <CardDescription className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-emerald-500/70">
-              <ShieldCheck className="h-3.5 w-3.5" />
-              Healthy Repositories
-            </CardDescription>
-            <CardTitle className="text-4xl font-black text-gradient">{healthyCount}</CardTitle>
-          </CardHeader>
-          <CardContent className="pt-0 text-[10px] text-muted-foreground/80 font-medium font-mono">
-            SCORE &gt; 80% EFFICIENCY
-          </CardContent>
-        </div>
-        <div className="bento-card">
-          <CardHeader className="pb-2">
-            <CardDescription className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-amber-500/70">
-              <Activity className="h-3.5 w-3.5" />
-              Average Readiness
-            </CardDescription>
-            <CardTitle className="text-4xl font-black text-gradient">{averageScore}</CardTitle>
-          </CardHeader>
-          <CardContent className="pt-0 text-[10px] text-muted-foreground/80 font-medium font-mono">
-            AGENTS.MD COMPLIANCE AGGREGATE
-          </CardContent>
+        <div className="grid gap-6 md:grid-cols-3">
+          <div className="bento-card border-luminescent bg-gradient-to-br from-primary/[0.08] via-transparent to-transparent p-2">
+            <CardHeader className="pb-2">
+              <CardDescription className="text-[10px] font-black uppercase tracking-[0.2em] text-primary/70">Connected Repositories</CardDescription>
+              <CardTitle className="text-5xl font-black text-gradient mt-2">{repos.length}</CardTitle>
+            </CardHeader>
+            <CardContent className="pt-0 text-[10px] text-muted-foreground/60 font-black uppercase tracking-widest">
+              {typeof repositoryLimit === "number"
+                ? `${repositoryLimit - repos.length} SLOTS REMAINING`
+                : "ENTERPRISE UNLIMITED"}
+            </CardContent>
+          </div>
+          <div className="bento-card p-2 bg-gradient-to-br from-emerald-500/[0.03] to-transparent">
+            <CardHeader className="pb-2">
+              <CardDescription className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-emerald-500/70">
+                <ShieldCheck className="h-3.5 w-3.5" />
+                Healthy Repositories
+              </CardDescription>
+              <CardTitle className="text-5xl font-black text-gradient mt-2">{healthyCount}</CardTitle>
+            </CardHeader>
+            <CardContent className="pt-0 text-[10px] text-muted-foreground/60 font-black uppercase tracking-widest font-mono">
+              SCORE &gt; 80% EFFICIENCY
+            </CardContent>
+          </div>
+          <div className="bento-card p-2 bg-gradient-to-br from-amber-500/[0.03] to-transparent">
+            <CardHeader className="pb-2">
+              <CardDescription className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-amber-500/70">
+                <Activity className="h-3.5 w-3.5" />
+                Average Readiness
+              </CardDescription>
+              <CardTitle className="text-5xl font-black text-gradient mt-2">{averageScore}</CardTitle>
+            </CardHeader>
+            <CardContent className="pt-0 text-[10px] text-muted-foreground/60 font-black uppercase tracking-widest font-mono">
+              AGENTS.MD COMPLIANCE
+            </CardContent>
+          </div>
         </div>
       </div>
 
@@ -429,20 +431,28 @@ export function RepositoryDashboard() {
         </div>
       ) : (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {filteredRepos.map((repo) => (
-            <div key={repo.id} className="bento-card border-luminescent group hover:shadow-glow/20">
-              <CardHeader className="flex flex-row items-start justify-between space-y-0 pb-3">
-                <div className="flex items-center gap-3">
-                  <div className="h-9 w-9 rounded-xl bg-muted/50 flex items-center justify-center text-muted-foreground group-hover:bg-primary/10 group-hover:text-primary transition-colors duration-300">
-                    <GitBranch className="h-5 w-5" />
+          {filteredRepos.map((repo, idx) => (
+            <div
+              key={repo.id}
+              className={cn(
+                "bento-card border-luminescent group hover:shadow-glow/10 animate-fade-up",
+                idx === 1 && "animation-delay-100",
+                idx === 2 && "animation-delay-200",
+                idx > 2 && "animation-delay-300"
+              )}
+            >
+              <CardHeader className="flex flex-row items-start justify-between space-y-0 pb-6 p-6">
+                <div className="flex items-center gap-4">
+                  <div className="h-11 w-11 rounded-2xl bg-muted/60 flex items-center justify-center text-muted-foreground group-hover:bg-primary/10 group-hover:text-primary transition-all duration-500 shadow-sm border border-border/40">
+                    <GitBranch className="h-6 w-6" />
                   </div>
                   <div>
-                    <CardTitle className="text-base font-bold text-foreground/90">{repo.name}</CardTitle>
-                    <p className="text-[10px] text-muted-foreground font-mono truncate max-w-[120px]">{repo.fullName}</p>
+                    <CardTitle className="text-lg font-black text-foreground/90 tracking-tight">{repo.name}</CardTitle>
+                    <p className="text-[10px] text-muted-foreground font-black uppercase tracking-widest truncate max-w-[140px] opacity-60">{repo.fullName}</p>
                   </div>
                 </div>
                 <div className={cn(
-                  "flex h-10 w-10 items-center justify-center rounded-2xl border text-sm font-black",
+                  "flex h-12 w-12 items-center justify-center rounded-2xl border-2 text-base font-black shadow-sm",
                   repo.healthScore >= 80 ? "bg-emerald-500/10 text-emerald-500 border-emerald-500/20" :
                     repo.healthScore >= 50 ? "bg-amber-500/10 text-amber-500 border-amber-500/20" :
                       "bg-red-500/10 text-red-500 border-red-500/20"
@@ -450,33 +460,33 @@ export function RepositoryDashboard() {
                   {repo.healthScore}
                 </div>
               </CardHeader>
-              <CardContent className="space-y-5">
+              <CardContent className="space-y-6 p-6 pt-0">
                 <div>
-                  <div className="flex justify-between text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60 mb-2">
+                  <div className="flex justify-between text-[11px] font-black uppercase tracking-[0.15em] text-muted-foreground/60 mb-2.5">
                     <span>Repository Fitness</span>
-                    <span className={getScoreColor(repo.healthScore)}>
+                    <span className={cn("font-black", getScoreColor(repo.healthScore))}>
                       {repo.healthScore}%
                     </span>
                   </div>
-                  <div className="h-1.5 w-full bg-muted/50 rounded-full overflow-hidden">
+                  <div className="h-2 w-full bg-muted/40 rounded-full overflow-hidden border border-border/20 shadow-inner">
                     <div
                       className={cn(
                         "h-full transition-all duration-1000 ease-out",
-                        repo.healthScore >= 80 ? "bg-emerald-500" :
-                          repo.healthScore >= 50 ? "bg-amber-500" : "bg-red-500"
+                        repo.healthScore >= 80 ? "bg-gradient-to-r from-emerald-500 to-emerald-400" :
+                          repo.healthScore >= 50 ? "bg-gradient-to-r from-amber-500 to-amber-400" : "bg-gradient-to-r from-red-500 to-red-400"
                       )}
                       style={{ width: `${repo.healthScore}%` }}
                     />
                   </div>
                 </div>
-                <div className="grid grid-cols-2 gap-2">
-                  <div className="rounded-xl border border-border/40 bg-muted/30 p-2 text-center">
-                    <p className="text-[9px] font-bold text-muted-foreground/60 uppercase">Agents</p>
-                    <p className="text-sm font-bold text-foreground/80">{repo.agentsMdCount}</p>
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="rounded-2xl border border-border/40 bg-muted/20 p-3 text-center transition-colors group-hover:bg-muted/40">
+                    <p className="text-[10px] font-black text-muted-foreground/50 uppercase tracking-widest mb-1">Agents</p>
+                    <p className="text-base font-black text-foreground/80">{repo.agentsMdCount}</p>
                   </div>
-                  <div className="rounded-xl border border-border/40 bg-muted/30 p-2 text-center">
-                    <p className="text-[9px] font-bold text-muted-foreground/60 uppercase">Last Sync</p>
-                    <p className="text-sm font-bold text-foreground/80 truncate">
+                  <div className="rounded-2xl border border-border/40 bg-muted/20 p-3 text-center transition-colors group-hover:bg-muted/40 text-ellipsis overflow-hidden">
+                    <p className="text-[10px] font-black text-muted-foreground/50 uppercase tracking-widest mb-1">Last Sync</p>
+                    <p className="text-base font-black text-foreground/80 truncate">
                       {repo.lastValidated
                         ? new Date(repo.lastValidated).toLocaleDateString([], { month: 'short', day: 'numeric' })
                         : "Never"}
@@ -485,42 +495,42 @@ export function RepositoryDashboard() {
                 </div>
 
                 {repo.latestExecutionStatus ? (
-                  <div className="flex items-center justify-between rounded-xl border border-primary/10 bg-primary/[0.02] px-3 py-2 text-xs">
-                    <div className="flex items-center gap-2">
-                      <span className="relative flex h-2 w-2">
+                  <div className="flex items-center justify-between rounded-2xl border border-primary/15 bg-primary/[0.03] px-4 py-3 text-xs shadow-sm">
+                    <div className="flex items-center gap-3">
+                      <span className="relative flex h-2.5 w-2.5">
                         <span className={cn(
                           "animate-ping absolute inline-flex h-full w-full rounded-full opacity-75",
                           repo.latestExecutionStatus === 'running' ? 'bg-primary' : 'hidden'
                         )}></span>
                         <span className={cn(
-                          "relative inline-flex rounded-full h-2 w-2",
-                          repo.latestExecutionStatus === 'success' ? 'bg-emerald-500' :
-                            repo.latestExecutionStatus === 'failed' ? 'bg-red-500' :
-                              repo.latestExecutionStatus === 'running' ? 'bg-primary' : 'bg-muted-foreground'
+                          "relative inline-flex rounded-full h-2.5 w-2.5",
+                          repo.latestExecutionStatus === 'success' ? 'bg-emerald-500 animate-glow-pulse' :
+                            repo.latestExecutionStatus === 'failed' ? 'bg-red-500 border border-red-400' :
+                              repo.latestExecutionStatus === 'running' ? 'bg-primary' : 'bg-muted-foreground/50'
                         )}></span>
                       </span>
-                      <span className="font-medium text-muted-foreground">Status</span>
+                      <span className="font-black uppercase tracking-widest text-[10px] text-muted-foreground/80">Status</span>
                     </div>
                     <span className={cn(
-                      "font-bold uppercase tracking-tighter text-[10px]",
-                      repo.latestExecutionStatus === 'success' ? 'text-emerald-500' :
-                        repo.latestExecutionStatus === 'failed' ? 'text-red-500' :
-                          repo.latestExecutionStatus === 'running' ? 'text-primary' : 'text-muted-foreground'
+                      "font-black uppercase tracking-tighter text-[11px] px-2 py-0.5 rounded-md",
+                      repo.latestExecutionStatus === 'success' ? 'text-emerald-500 bg-emerald-500/5' :
+                        repo.latestExecutionStatus === 'failed' ? 'text-red-500 bg-red-500/5' :
+                          repo.latestExecutionStatus === 'running' ? 'text-primary bg-primary/5' : 'text-muted-foreground bg-muted/5'
                     )}>
                       {repo.latestExecutionStatus}
                     </span>
                   </div>
                 ) : null}
 
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-3 pt-2">
                   {repo.healthScore < 80 && (
                     <Link href="/docs/parse" className="w-full">
-                      <Button variant="ghost" size="sm" className="w-full rounded-xl text-xs text-amber-600 dark:text-amber-400 hover:bg-amber-500/10">
-                        Improve score →
+                      <Button variant="ghost" size="sm" className="w-full rounded-2xl text-[10px] font-black uppercase tracking-widest text-amber-600 dark:text-amber-400 hover:bg-amber-500/10 border border-amber-500/10 hover:border-amber-500/30">
+                        Improve fitness score →
                       </Button>
                     </Link>
                   )}
-                  <div className="flex gap-2">
+                  <div className="flex gap-3">
                     <Link
                       href={
                         repo.latestExecutionId
@@ -529,18 +539,18 @@ export function RepositoryDashboard() {
                       }
                       className="flex-1"
                     >
-                      <Button variant="outline" size="sm" className="w-full rounded-xl btn-tactile font-bold text-xs">
+                      <Button variant="outline" size="sm" className="w-full rounded-2xl btn-tactile font-black text-[10px] uppercase tracking-widest py-5 border-border/60">
                         Inspect
                       </Button>
                     </Link>
                     <Button
-                    size="sm"
-                    className="flex-1 rounded-xl btn-tactile font-bold text-xs"
-                    disabled={runningRepoId === repo.id}
-                    onClick={() => void handleRunRepository(repo.id)}
-                  >
-                    {runningRepoId === repo.id ? "Working..." : "Execute"}
-                  </Button>
+                      size="sm"
+                      className="flex-1 rounded-2xl btn-tactile font-black text-[10px] uppercase tracking-widest py-5 shadow-glow/10"
+                      disabled={runningRepoId === repo.id}
+                      onClick={() => void handleRunRepository(repo.id)}
+                    >
+                      {runningRepoId === repo.id ? "Working..." : "Execute"}
+                    </Button>
                   </div>
                 </div>
               </CardContent>
