@@ -3,9 +3,8 @@
 import { useState } from "react";
 import { Copy, Check, X, Share2, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
-import { cn } from "@/lib/core/utils";
 
 interface BadgeShareModalProps {
     isOpen: boolean;
@@ -75,7 +74,6 @@ export function BadgeShareModal({ isOpen, onClose, repoFullName, repoName }: Bad
 
                         <div className="flex flex-col items-center justify-center p-8 rounded-2xl bg-muted/30 border border-border/40 bg-gradient-to-br from-primary/[0.02] to-transparent">
                             <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/40 mb-6">Live Preview</p>
-                            {/* eslint-disable-next-line @next/next/no-img-element */}
                             <img
                                 src={badgeUrl}
                                 alt="Agent-Ready Badge Preview"
