@@ -10,13 +10,22 @@ import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { cn } from "@/lib/core/utils";
 
 const navLinks = [
+  { href: "/docs", label: "Docs" },
   { href: "/features", label: "Features" },
   { href: "/pricing", label: "Pricing" },
-  { href: "/contact", label: "Contact" },
-  { href: "/docs", label: "Docs" },
   { href: "/marketplace", label: "Marketplace" },
   { href: "/ops", label: "Ops" },
+  { href: "/contact", label: "Contact" },
 ];
+
+/** Scrolls to #try-it on homepage, or navigates to /#try-it */
+function scrollToTryIt() {
+  if (typeof window === "undefined") return;
+  const el = document.getElementById("try-it");
+  if (el) {
+    el.scrollIntoView({ behavior: "smooth" });
+  }
+}
 
 export function Nav() {
   const [open, setOpen] = useState(false);
@@ -100,6 +109,19 @@ export function Nav() {
       >
         <div className="bg-background px-4 py-4">
           <ul className="space-y-1">
+            <li>
+              <button
+                type="button"
+                className="block w-full text-left py-2.5 px-3 text-sm font-medium rounded-[var(--radius-sm)] text-primary bg-[hsl(var(--primary-dim))]"
+                onClick={() => {
+                  setOpen(false);
+                  if (pathname === "/") scrollToTryIt();
+                  else window.location.href = "/#try-it";
+                }}
+              >
+                Get your score
+              </button>
+            </li>
             {navLinks.map((link) => {
               const isActive =
                 pathname === link.href ||

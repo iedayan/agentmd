@@ -21,9 +21,15 @@ export function HowItWorks() {
         <section className="border-b border-border py-16 sm:py-20 md:py-24 bg-muted/30">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="mx-auto max-w-3xl">
-                    <h2 className="text-xl sm:text-2xl font-bold tracking-tight mb-8 sm:mb-12">
-                        Agent-ready in three steps. Under a minute.
-                    </h2>
+                    <div className="mb-8 sm:mb-12">
+                        <span className="inline-block h-1 w-12 rounded-full bg-primary/60 mb-4" aria-hidden />
+                        <h2 className="text-xl sm:text-2xl font-bold tracking-tight mb-2">
+                            How to get started
+                        </h2>
+                        <p className="text-muted-foreground text-sm sm:text-base">
+                            Agent-ready in three steps. Under a minute.
+                        </p>
+                    </div>
                     <div className="relative space-y-0">
                         {/* Step connector line */}
                         <div

@@ -23,7 +23,7 @@ export function Hero() {
                         <span className="text-primary-glow">We execute it.</span>
                     </h1>
                     <p className="mt-4 sm:mt-6 text-base sm:text-lg text-muted-foreground max-w-xl mx-auto md:mx-0 animate-fade-up animation-delay-200">
-                        Get your agent-readiness score in under 2 minutes. One file, one command, zero config.
+                        The CI/CD platform for AI agents. Get your agent-readiness score in under 2 minutes—one file, no config.
                     </p>
                     <p className="mt-2 text-sm text-muted-foreground/80 animate-fade-up animation-delay-200">
                         <Link href="/docs/why-execute" className="text-primary hover:underline">
@@ -31,14 +31,19 @@ export function Hero() {
                         </Link>
                     </p>
                     <div className="mt-8 sm:mt-10 flex flex-wrap items-center justify-center md:justify-start gap-3 sm:gap-4 animate-fade-up animation-delay-300">
-                        <Link href="/register">
+                        <a href="#try-it" className="inline-flex">
                             <Button size="lg" className="h-11 sm:h-12 gap-2 px-6 sm:px-8 font-semibold rounded-full text-sm sm:text-base">
-                                Start free
+                                Get your score
                                 <ArrowRight className="h-4 w-4" />
+                            </Button>
+                        </a>
+                        <Link href="/register">
+                            <Button size="lg" variant="outline" className="h-11 sm:h-12 px-6 sm:px-8 rounded-full border-border/80 backdrop-blur-sm bg-background/50 hover:bg-background/80 text-sm sm:text-base">
+                                Start free
                             </Button>
                         </Link>
                         <Link href="/ops">
-                            <Button size="lg" variant="outline" className="h-11 sm:h-12 px-6 sm:px-8 rounded-full border-border/80 backdrop-blur-sm bg-background/50 hover:bg-background/80 text-sm sm:text-base">
+                            <Button size="lg" variant="ghost" className="h-11 sm:h-12 px-6 sm:px-8 rounded-full text-muted-foreground hover:text-foreground text-sm sm:text-base">
                                 See it live
                             </Button>
                         </Link>

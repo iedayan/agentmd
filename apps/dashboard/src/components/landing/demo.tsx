@@ -121,15 +121,15 @@ export function LandingDemo() {
   }, [run]);
 
   return (
-    <section className="py-16 sm:py-20 md:py-24 lg:py-32 border-b border-border/50">
+    <section id="try-it" className="py-16 sm:py-20 md:py-24 lg:py-32 border-b border-border/50 scroll-mt-20">
       <div className="container mx-auto px-4 sm:px-6 flex flex-col items-center">
         <div className="mx-auto max-w-2xl text-center mb-10 sm:mb-16">
           <span className="inline-block h-1 w-12 rounded-full bg-primary/60 mb-4 sm:mb-6" aria-hidden />
           <h2 className="text-2xl sm:text-3xl font-bold tracking-tight md:text-4xl">
-            Try it live
+            Get your agent-readiness score
           </h2>
           <p className="mt-3 sm:mt-4 text-muted-foreground text-base sm:text-lg px-2 sm:px-0">
-            Paste your AGENTS.md or README. We parse it, validate it, and show your agent-readiness score.
+            Paste your AGENTS.md or README below. No signup required—instant results.
           </p>
         </div>
 
