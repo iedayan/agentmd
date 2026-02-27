@@ -83,13 +83,24 @@
   ],
   "approvalRequests": [
     {
-      "id": "apr-108",
+      "id": "apr-109",
       "repositoryId": "1",
       "repositoryName": "agentmd/agentmd",
       "requestedBy": "test-user-id",
       "reason": "Repository owner approval required for non-owner execution.",
       "status": "pending",
-      "createdAt": "2026-02-26T20:52:45.489Z"
+      "createdAt": "2026-02-27T02:27:08.119Z"
+    },
+    {
+      "id": "apr-108",
+      "repositoryId": "1",
+      "repositoryName": "agentmd/agentmd",
+      "requestedBy": "test-user-id",
+      "reason": "Repository owner approval required for non-owner execution.",
+      "status": "approved",
+      "createdAt": "2026-02-26T20:52:45.489Z",
+      "decidedAt": "2026-02-27T02:27:07.927Z",
+      "decidedBy": "slack.approver"
     },
     {
       "id": "apr-107",
@@ -170,6 +181,22 @@
     }
   ],
   "notifications": [
+    {
+      "id": "ntf-117",
+      "type": "approval.requested",
+      "title": "Approval required",
+      "message": "agentmd/agentmd: Repository owner approval required for non-owner execution.",
+      "createdAt": "2026-02-27T02:27:08.119Z",
+      "read": false
+    },
+    {
+      "id": "ntf-116",
+      "type": "approval.approved",
+      "title": "Approval approved",
+      "message": "agentmd/agentmd: Repository owner approval required for non-owner execution.",
+      "createdAt": "2026-02-27T02:27:07.927Z",
+      "read": false
+    },
     {
       "id": "ntf-115",
       "type": "approval.requested",
@@ -291,8 +318,8 @@
       "read": false
     }
   ],
-  "nextApprovalId": 108,
-  "nextNotificationId": 115,
+  "nextApprovalId": 109,
+  "nextNotificationId": 117,
   "teamMembers": [
     {
       "id": "tm-1",
@@ -332,13 +359,13 @@
   "governanceMetrics": {
     "blockedByStatusGate": 0,
     "blockedByPolicy": 0,
-    "approvalRequired": 20,
+    "approvalRequired": 23,
     "webhookReceived": 11,
     "webhookProcessed": 12,
     "webhookSignatureFailures": 4,
     "webhookErrors": 4,
     "prCommentsPosted": 0,
-    "slackApprovalActions": 7,
+    "slackApprovalActions": 8,
     "lastWebhookAt": "2026-02-26T02:20:48.161Z",
     "lastWebhookEvent": "check_run",
     "contractValidationEvents": [
@@ -469,6 +496,21 @@
       },
       {
         "at": "2026-02-26T20:52:46.761Z",
+        "contractType": "migration",
+        "status": "success"
+      },
+      {
+        "at": "2026-02-27T02:27:08.673Z",
+        "contractType": "bugfix",
+        "status": "success"
+      },
+      {
+        "at": "2026-02-27T02:27:08.673Z",
+        "contractType": "bugfix",
+        "status": "failed"
+      },
+      {
+        "at": "2026-02-27T02:27:08.673Z",
         "contractType": "migration",
         "status": "success"
       }
