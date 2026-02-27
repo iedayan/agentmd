@@ -54,4 +54,25 @@ describe("Auth middleware", () => {
     expect(res.status).toBe(307);
     expect(res.headers.get("location")).toContain("/dashboard");
   });
+
+  it("allows unauthenticated users to access /marketplace/developers/generator", async () => {
+    vi.mocked(getToken).mockResolvedValue(null);
+
+    const middleware = await loadMiddleware();
+    const req = createNextRequest("http://localhost/marketplace/developers/generator");
+
+    const res = await middleware(req);
+    expect(res.status).toBe(200);
+  });
+
+  it("redirects unauthenticated users from /marketplace to /register", async () => {
+    vi.mocked(getToken).mockResolvedValue(null);
+
+    const middleware = await loadMiddleware();
+    const req = createNextRequest("http://localhost/marketplace");
+
+    const res = await middleware(req);
+    expect(res.status).toBe(307);
+    expect(res.headers.get("location")).toContain("/register");
+  });
 });

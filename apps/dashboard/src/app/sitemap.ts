@@ -7,6 +7,7 @@ const routes = [
   "",
   "/dashboard",
   "/marketplace",
+  "/marketplace/developers/generator",
   "/pricing",
   "/features",
   "/faq",

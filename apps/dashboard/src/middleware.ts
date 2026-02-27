@@ -5,8 +5,17 @@ import type { NextRequest } from "next/server";
 const DASHBOARD_PATHS = ["/dashboard", "/marketplace"];
 const AUTH_PATHS = ["/register", "/login"];
 
+/** Marketplace paths that are public (no auth required). */
+const PUBLIC_MARKETPLACE_PATHS = ["/marketplace/developers/generator"];
+
 function isDashboardPath(pathname: string): boolean {
   return DASHBOARD_PATHS.some((p) => pathname === p || pathname.startsWith(`${p}/`));
+}
+
+function isPublicMarketplacePath(pathname: string): boolean {
+  return PUBLIC_MARKETPLACE_PATHS.some(
+    (p) => pathname === p || pathname.startsWith(`${p}/`)
+  );
 }
 
 function isAuthPath(pathname: string): boolean {
@@ -23,7 +32,11 @@ export async function middleware(req: NextRequest) {
 
   const isSignedIn = !!token;
 
-  if (isDashboardPath(pathname) && !isSignedIn) {
+  if (
+    isDashboardPath(pathname) &&
+    !isPublicMarketplacePath(pathname) &&
+    !isSignedIn
+  ) {
     const url = req.nextUrl.clone();
     url.pathname = "/register";
     url.searchParams.set("callbackUrl", pathname);
