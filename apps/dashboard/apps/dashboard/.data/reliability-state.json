@@ -4,9 +4,9 @@
       "id": "delivery-1",
       "event": "check_run",
       "status": "processed",
-      "attempts": 9,
+      "attempts": 11,
       "firstSeenAt": "2026-02-26T01:40:39.377Z",
-      "lastSeenAt": "2026-02-27T02:27:08.046Z"
+      "lastSeenAt": "2026-02-27T04:15:57.641Z"
     },
     {
       "id": "no-delivery-b3ff0cee-35e2-455b-99b8-06ccb1f8c65d",
@@ -21,35 +21,35 @@
       "id": "delivery-invalid-signature",
       "event": "check_run",
       "status": "failed",
-      "attempts": 9,
+      "attempts": 11,
       "firstSeenAt": "2026-02-26T01:40:39.382Z",
-      "lastSeenAt": "2026-02-27T02:27:08.049Z",
+      "lastSeenAt": "2026-02-27T04:15:57.644Z",
       "error": "Invalid webhook signature"
     },
     {
       "id": "delivery-invalid-json",
       "event": "check_run",
       "status": "failed",
-      "attempts": 9,
+      "attempts": 11,
       "firstSeenAt": "2026-02-26T01:40:39.384Z",
-      "lastSeenAt": "2026-02-27T02:27:08.053Z",
+      "lastSeenAt": "2026-02-27T04:15:57.644Z",
       "error": "Invalid JSON payload"
     },
     {
       "id": "delivery-pr-event",
       "event": "pull_request",
       "status": "processed",
-      "attempts": 9,
+      "attempts": 11,
       "firstSeenAt": "2026-02-26T01:40:39.387Z",
-      "lastSeenAt": "2026-02-27T02:27:08.053Z"
+      "lastSeenAt": "2026-02-27T04:15:57.645Z"
     },
     {
       "id": "delivery-dup",
       "event": "check_run",
       "status": "processed",
-      "attempts": 18,
+      "attempts": 22,
       "firstSeenAt": "2026-02-26T01:40:39.390Z",
-      "lastSeenAt": "2026-02-27T02:27:08.058Z"
+      "lastSeenAt": "2026-02-27T04:15:57.646Z"
     },
     {
       "id": "vitest-delivery-1772070039534",
@@ -194,9 +194,59 @@
       "attempts": 2,
       "firstSeenAt": "2026-02-27T02:27:08.430Z",
       "lastSeenAt": "2026-02-27T02:27:08.438Z"
+    },
+    {
+      "id": "no-delivery-82c7318e-5287-4937-831a-3d093bf00c41",
+      "event": "unknown",
+      "status": "failed",
+      "attempts": 1,
+      "firstSeenAt": "2026-02-27T04:15:01.005Z",
+      "lastSeenAt": "2026-02-27T04:15:01.005Z",
+      "error": "Missing GitHub event headers"
+    },
+    {
+      "id": "vitest-delivery-1772165701293",
+      "event": "check_run",
+      "status": "processed",
+      "attempts": 2,
+      "firstSeenAt": "2026-02-27T04:15:01.293Z",
+      "lastSeenAt": "2026-02-27T04:15:01.294Z"
+    },
+    {
+      "id": "no-delivery-e44ea512-3e80-4e69-9643-0b5d6bee12a1",
+      "event": "unknown",
+      "status": "failed",
+      "attempts": 1,
+      "firstSeenAt": "2026-02-27T04:15:57.643Z",
+      "lastSeenAt": "2026-02-27T04:15:57.643Z",
+      "error": "Missing GitHub event headers"
+    },
+    {
+      "id": "vitest-delivery-1772165757969",
+      "event": "check_run",
+      "status": "processed",
+      "attempts": 2,
+      "firstSeenAt": "2026-02-27T04:15:57.969Z",
+      "lastSeenAt": "2026-02-27T04:15:57.970Z"
     }
   ],
   "incidents": [
+    {
+      "id": "inc-114",
+      "source": "vitest",
+      "severity": "low",
+      "summary": "Synthetic incident 1772165757971",
+      "openedAt": "2026-02-27T04:15:57.971Z",
+      "resolvedAt": "2026-02-27T04:15:57.972Z"
+    },
+    {
+      "id": "inc-113",
+      "source": "vitest",
+      "severity": "low",
+      "summary": "Synthetic incident 1772165701295",
+      "openedAt": "2026-02-27T04:15:01.295Z",
+      "resolvedAt": "2026-02-27T04:15:01.296Z"
+    },
     {
       "id": "inc-112",
       "source": "vitest",
@@ -291,10 +341,10 @@
       "openedAt": "2026-02-26T01:40:39.381Z"
     }
   ],
-  "nextIncidentId": 112,
+  "nextIncidentId": 114,
   "metrics": {
-    "totalDeliveries": 72,
-    "duplicateDeliveries": 58,
-    "retryAttempts": 58
+    "totalDeliveries": 88,
+    "duplicateDeliveries": 72,
+    "retryAttempts": 72
   }
 }
