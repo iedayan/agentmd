@@ -65,6 +65,9 @@ export function Features() {
                         {/* Smaller Card 2 */}
                         <div className="md:col-span-3 bento-card relative overflow-hidden group p-6 sm:p-8 md:p-12 text-center">
                             <div className="flex flex-col items-center justify-center h-full">
+                                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-primary/25 to-primary/5 ring-1 ring-primary/15 shadow-[0_0_20px_-4px_hsl(var(--primary)/0.2)] mb-4">
+                                    <FileSearch className="h-6 w-6 text-primary" strokeWidth={1.75} />
+                                </div>
                                 <h3 className="font-bold text-2xl mb-4">Parse & validate</h3>
                                 <p className="text-lg leading-relaxed text-muted-foreground max-w-2xl mx-auto">
                                     Extract sections and commands directly from your <code className="text-primary font-semibold bg-primary/10 px-1.5 py-0.5 rounded">AGENTS.md</code> file. Surface errors and syntax issues immediately in our dashboard before CI runs.

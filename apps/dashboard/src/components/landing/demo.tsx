@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import { FileSearch, Play, Share2, Check, Copy } from "lucide-react";
 
 const SAMPLE_AGENTS_MD = `---
@@ -337,27 +338,27 @@ function EmptyState() {
 
 function ResultsSkeleton() {
   return (
-    <div className="space-y-5 animate-pulse">
+    <div className="space-y-5">
       <div className="flex items-center gap-6">
-        <div className="h-20 w-20 rounded-full bg-muted" />
+        <Skeleton className="h-20 w-20 rounded-full" />
         <div className="space-y-2">
-          <div className="h-3 w-24 bg-muted rounded" />
-          <div className="h-8 w-16 bg-muted rounded" />
+          <Skeleton className="h-3 w-24" />
+          <Skeleton className="h-8 w-16" />
         </div>
       </div>
       <div className="space-y-2">
-        <div className="h-3 w-28 bg-muted rounded" />
+        <Skeleton className="h-3 w-28" />
         <div className="space-y-2">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="h-4 bg-muted rounded" style={{ width: `${60 + i * 10}%` }} />
+            <Skeleton key={i} className="h-4" style={{ width: `${60 + i * 10}%` }} />
           ))}
         </div>
       </div>
       <div className="space-y-2">
-        <div className="h-3 w-24 bg-muted rounded" />
+        <Skeleton className="h-3 w-24" />
         <div className="space-y-2">
           {[1, 2].map((i) => (
-            <div key={i} className="h-4 bg-muted rounded" style={{ width: `${70 + i * 5}%` }} />
+            <Skeleton key={i} className="h-4" style={{ width: `${70 + i * 5}%` }} />
           ))}
         </div>
       </div>

@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
-import { Outfit, JetBrains_Mono } from "next/font/google";
+import { GeistSans } from "geist/font/sans";
+import { GeistMono } from "geist/font/mono";
 import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
 import { ThemeProvider } from "@/components/providers/theme-provider";
@@ -8,19 +9,6 @@ import { ChunkReloadGuard } from "@/components/providers/chunk-reload-guard";
 import { ScrollToTop } from "@/components/providers/scroll-to-top";
 import { OrganizationSchema } from "@/components/seo/organization-schema";
 import { DEFAULT_APP_URL, getPublicAppUrl } from "@/lib/core/public-url";
-
-const outfit = Outfit({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-sans",
-  display: "swap",
-});
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ["latin"],
-  weight: ["400", "500"],
-  variable: "--font-mono",
-  display: "swap",
-});
 
 const metadataBase = new URL(getPublicAppUrl(DEFAULT_APP_URL));
 
@@ -76,7 +64,7 @@ export default function RootLayout({
   const appUrl = getPublicAppUrl(DEFAULT_APP_URL);
 
   return (
-    <html lang="en" suppressHydrationWarning className={`${outfit.variable} ${jetbrainsMono.variable}`}>
+    <html lang="en" suppressHydrationWarning className={`${GeistSans.variable} ${GeistMono.variable}`}>
       <body className="font-sans antialiased">
         <OrganizationSchema baseUrl={appUrl} />
         <ChunkReloadGuard />

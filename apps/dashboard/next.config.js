@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  transpilePackages: ["geist"],
   // Avoid transpilePackages for @agentmd/core — it can trigger webpack
   // "Cannot read properties of undefined (reading 'call')" in production.
   // Use pre-built dist from packages/core instead.

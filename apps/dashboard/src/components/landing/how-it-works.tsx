@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Check, Copy } from "lucide-react";
+import { CodeBlock } from "@/components/ui/code-block";
 
 const WORKFLOW_SNIPPET = `- uses: iedayan/agentmd/.github/actions/agentmd@7f23caa9a688230815368fc07716828884479cad
   with:
@@ -70,8 +71,8 @@ export function HowItWorks() {
                             </div>
                         </div>
                     </div>
-                    <div className="mt-10 rounded-xl border border-border bg-card p-5 shadow-sm">
-                        <div className="flex items-center justify-between mb-3">
+                    <div className="mt-10">
+                        <div className="flex items-center justify-between mb-2">
                             <p className="text-xs font-mono text-muted-foreground uppercase tracking-wider">
                                 Add to .github/workflows/ci.yml
                             </p>
@@ -84,9 +85,9 @@ export function HowItWorks() {
                                 {copied ? "Copied" : "Copy"}
                             </button>
                         </div>
-                        <pre className="overflow-x-auto rounded-lg bg-muted/50 p-4 font-mono text-sm text-foreground">
+                        <CodeBlock label=".github/workflows/ci.yml">
                             {WORKFLOW_SNIPPET}
-                        </pre>
+                        </CodeBlock>
                     </div>
                 </div>
             </div>
