@@ -15,7 +15,7 @@ export function SocialProof() {
         const average = typeof d.average === "number" ? d.average : null;
         setStats({ average, count });
       })
-      .catch(() => {});
+      .catch(() => undefined);
   }, []);
 
   return (
