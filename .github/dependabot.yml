@@ -20,6 +20,10 @@ updates:
       day: "monday"
     open-pull-requests-limit: 3
     labels: ["dependencies", "dashboard"]
+    ignore:
+      # Tailwind v4 requires @tailwindcss/postcss and config migration
+      - dependency-name: "tailwindcss"
+        update-types: ["version-update:semver-major"]
 
   - package-ecosystem: "github-actions"
     directory: "/"
