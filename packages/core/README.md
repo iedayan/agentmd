@@ -1,4 +1,4 @@
-# @agentmd/core
+# @agentmd-dev/agentmd-core
 
 **State-of-the-art AGENTS.md runtime** — Parse, validate, discover, compose, and execute agent instructions.
 
@@ -7,9 +7,9 @@ Implements the [AGENTS.md standard](https://agents.md) with production-grade saf
 ## Installation
 
 ```bash
-pnpm add @agentmd/core
+pnpm add @agentmd-dev/agentmd-core
 # or
-npm install @agentmd/core
+npm install @agentmd-dev/agentmd-core
 ```
 
 ## Features
@@ -30,7 +30,7 @@ import {
   extractCommands,
   executeCommand,
   computeAgentReadinessScore,
-} from "@agentmd/core";
+} from "@agentmd-dev/agentmd-core";
 
 const content = `
 ## Build
