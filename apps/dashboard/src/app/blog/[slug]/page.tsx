@@ -1,8 +1,10 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { Button } from "@/components/ui/button";
 import { BackLink } from "@/components/ui/back-link";
 import { Logo } from "@/components/brand/logo";
 import { MarkdownContent } from "@/components/blog/markdown-content";
+import { buildOgUrl } from "@/lib/og";
 import { notFound } from "next/navigation";
 
 const POSTS: Record<string, { title: string; date: string; content: string }> = {
@@ -132,6 +134,34 @@ One \`agentmd compose .\` generates AGENTS.md files per package.
     `.trim(),
   },
 };
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const post = POSTS[slug];
+  if (!post) return {};
+  const title = `${post.title} | AgentMD Blog`;
+  const description = post.content.slice(0, 160).replace(/\n/g, " ").trim() + "...";
+  const ogUrl = buildOgUrl({ title: post.title, description, site: "agentmd.online" });
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      images: [{ url: ogUrl, width: 1200, height: 630 }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [ogUrl],
+    },
+  };
+}
 
 export default async function BlogPostPage({
   params,

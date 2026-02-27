@@ -1,33 +1,50 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { Logo } from "@/components/brand/logo";
+import { buildOgUrl } from "@/lib/og";
 
-export const metadata = {
-  title: "Agent-readiness score | AgentMD",
-  description: "Share your agent-readiness score",
-  openGraph: {
-    title: "Agent-readiness score | AgentMD",
-    description: "My repo is agent-ready",
-  },
-};
+type Props = { searchParams: Promise<{ score?: string }> | { score?: string } };
 
-export default function SharePage({
-  searchParams,
-}: {
-  searchParams: { score?: string };
-}) {
+export async function generateMetadata({ searchParams }: Props): Promise<Metadata> {
+  const params = await Promise.resolve(searchParams);
+  const scoreRaw = params.score;
+  const score = scoreRaw != null ? Math.min(100, Math.max(0, parseInt(scoreRaw, 10) || 0)) : null;
+
+  const title = score != null ? `Agent-readiness ${score}/100 | AgentMD` : "Agent-readiness score | AgentMD";
+  const description = score != null ? "My repo is agent-ready" : "Share your agent-readiness score";
+
+  const ogUrl =
+    score != null
+      ? buildOgUrl({ title: "Agent-readiness score", score, site: "agentmd.online" })
+      : buildOgUrl({ title: "Agent-readiness score", description: "Share your score" });
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      images: [{ url: ogUrl, width: 1200, height: 630 }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [ogUrl],
+    },
+  };
+}
+
+export default async function SharePage({ searchParams }: Props) {
+  const params = await Promise.resolve(searchParams);
   return (
     <div className="min-h-screen bg-background flex flex-col items-center justify-center px-4">
-      <ShareContent searchParams={searchParams} />
+      <ShareContent params={params} />
     </div>
   );
 }
 
-function ShareContent({
-  searchParams,
-}: {
-  searchParams: { score?: string };
-}) {
-  const params = searchParams;
+function ShareContent({ params }: { params: { score?: string } }) {
   const scoreRaw = params.score;
   const score = scoreRaw != null ? Math.min(100, Math.max(0, parseInt(scoreRaw, 10) || 0)) : null;
 
