@@ -195,6 +195,108 @@ describe("validateAgentsMd additional", () => {
     expect(result.errors.some((e) => e.code === "UNSAFE_COMMAND")).toBe(true);
   });
 
+  it("valid frontmatter with all fields produces no errors", async () => {
+    const content = `---
+name: my-agent
+purpose: Run CI pipeline
+model: claude-3-5-sonnet
+triggers:
+  - push
+  - pull-request
+guardrails:
+  - No production deploys without approval
+permissions:
+  shell:
+    default: allow
+    allow:
+      - pnpm test
+  files:
+    read: allow
+    edit: ask
+    delete: deny
+  pull_requests: write
+  issues: read
+  contents: read
+---
+## Build
+\`pnpm run build\`
+## Test
+\`pnpm test\`
+`;
+    const parsed = parseAgentsMd(content);
+    const result = await validateAgentsMd(parsed);
+    expect(result.errors.filter((e) => e.severity === "error")).toHaveLength(0);
+  });
+
+  it("fails on invalid name (empty string)", async () => {
+    const content = `---\nname: ""\n---\n## Test\n\`pnpm test\``;
+    const parsed = parseAgentsMd(content);
+    const result = await validateAgentsMd(parsed);
+    expect(result.errors.some((e) => e.code === "INVALID_NAME")).toBe(true);
+  });
+
+  it("fails on invalid purpose (empty string)", async () => {
+    const content = `---\npurpose: ""\n---\n## Test\n\`pnpm test\``;
+    const parsed = parseAgentsMd(content);
+    const result = await validateAgentsMd(parsed);
+    expect(result.errors.some((e) => e.code === "INVALID_PURPOSE")).toBe(true);
+  });
+
+  it("fails on invalid model (empty string)", async () => {
+    const content = `---\nmodel: ""\n---\n## Test\n\`pnpm test\``;
+    const parsed = parseAgentsMd(content);
+    const result = await validateAgentsMd(parsed);
+    expect(result.errors.some((e) => e.code === "INVALID_MODEL")).toBe(true);
+  });
+
+  it("fails on invalid output_contract schema type", async () => {
+    const content = `---
+output_contract:
+  format: json
+  schema:
+    result: integer
+  quality_gates:
+    - tests_pass
+  artifacts:
+    - report
+  exit_criteria:
+    - done
+---
+## Test
+\`pnpm test\`
+`;
+    const parsed = parseAgentsMd(content);
+    const result = await validateAgentsMd(parsed);
+    expect(result.errors.some((e) => e.code === "INVALID_OUTPUT_CONTRACT_SCHEMA_TYPE")).toBe(true);
+  });
+
+  it("fails on invalid output_contract format", async () => {
+    const content = `---
+output_contract:
+  format: xml
+  schema:
+    summary: string
+  quality_gates:
+    - tests_pass
+  artifacts:
+    - patches
+  exit_criteria:
+    - complete
+---
+## Test
+\`pnpm test\`
+`;
+    const parsed = parseAgentsMd(content);
+    const result = await validateAgentsMd(parsed);
+    expect(result.errors.some((e) => e.code === "INVALID_OUTPUT_CONTRACT_FORMAT")).toBe(true);
+  });
+
+  it("warns when no sections but has content", async () => {
+    const parsed = parseAgentsMd("Just some plain text with no headings.");
+    const result = await validateAgentsMd(parsed);
+    expect(result.warnings.some((w) => w.code === "NO_SECTIONS")).toBe(true);
+  });
+
   it("fails on invalid metadata entry (empty key)", async () => {
     const content = `---
 metadata:

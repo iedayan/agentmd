@@ -19,7 +19,16 @@ export async function checkCommandIntent(
 ): Promise<GuardrailCheckResult> {
     const normalized = command.toLowerCase().trim();
 
-    // 1. Obfuscation detection
+    // 1. Path traversal detection (check first to avoid false positives on sensitive file checks)
+    if (detectPathTraversal(normalized)) {
+        return {
+            safe: false,
+            reason: "Path traversal attempt detected.",
+            confidence: 0.9,
+        };
+    }
+
+    // 2. Obfuscation detection
     if (detectObfuscation(normalized)) {
         return {
             safe: false,
@@ -28,7 +37,7 @@ export async function checkCommandIntent(
         };
     }
 
-    // 2. Sensitive file access intent
+    // 3. Sensitive file access intent
     if (detectSensitiveAccess(normalized)) {
         return {
             safe: false,
@@ -37,7 +46,7 @@ export async function checkCommandIntent(
         };
     }
 
-    // 3. Destructive environment intent
+    // 4. Destructive environment intent
     if (detectDestructiveIntent(normalized)) {
         return {
             safe: false,
@@ -46,6 +55,16 @@ export async function checkCommandIntent(
         };
     }
 
+    // 5. Environment variable injection detection
+    if (detectEnvVarInjection(normalized)) {
+        return {
+            safe: false,
+            reason: "Potential credential/environment variable exfiltration detected.",
+            confidence: 0.85,
+        };
+    }
+
+    void context; // reserved for future context-aware checks
     return { safe: true, confidence: 1.0 };
 }
 
@@ -63,6 +82,11 @@ function detectObfuscation(cmd: string): boolean {
         return true;
     }
 
+    // IFS manipulation or variable-based command obfuscation
+    if (/\$ifs|\${ifs}/.test(cmd)) {
+        return true;
+    }
+
     return false;
 }
 
@@ -75,6 +99,9 @@ function detectSensitiveAccess(cmd: string): boolean {
         ".ssh/id_",
         ".env",
         "config/secrets",
+        "/.netrc",
+        "/.pgpass",
+        "/proc/self/environ",
     ];
 
     return sensitivePaths.some(path => cmd.includes(path));
@@ -85,8 +112,50 @@ function detectDestructiveIntent(cmd: string): boolean {
     const dangerous = /\b(rm|del|erase|truncate|drop|delete|destroy)\b/;
     const broad = /\b(all|everything|system|partition|volume|bucket|database|db)\b/;
 
-    // High confidence destructive intent: "delete all databases" etc
-    if (dangerous.test(cmd) && broad.test(cmd) && !cmd.includes("--force")) {
+    // High confidence destructive intent: "delete all databases", "drop db", etc.
+    if (dangerous.test(cmd) && broad.test(cmd)) {
+        return true;
+    }
+
+    return false;
+}
+
+/**
+ * Detect path traversal attempts (e.g. ../../etc/passwd).
+ */
+function detectPathTraversal(cmd: string): boolean {
+    // Three or more consecutive ../ traversals targeting system paths
+    if (/(?:\.\.\/){3,}/.test(cmd)) {
+        return true;
+    }
+
+    // Traversal that resolves to well-known sensitive paths
+    const traversalToSensitive = /\.\.\/(\.\.\/)*etc\/(passwd|shadow|sudoers)/;
+    if (traversalToSensitive.test(cmd)) {
+        return true;
+    }
+
+    return false;
+}
+
+/**
+ * Detect commands that attempt to exfiltrate environment variables or secrets.
+ * Examples: "curl ... $AWS_SECRET", "echo $GITHUB_TOKEN | nc host port"
+ */
+function detectEnvVarInjection(cmd: string): boolean {
+    const sensitiveVarPattern =
+        /\$(aws_secret|aws_access|github_token|github_pat|npm_token|ci_registry_password|database_url|secret_key|api_key|private_key|password|passwd|credentials)/i;
+
+    // Env var used in network call (exfiltration)
+    const networkCommands = /\b(curl|wget|nc|ncat|socat|ssh)\b/;
+    if (sensitiveVarPattern.test(cmd) && networkCommands.test(cmd)) {
+        return true;
+    }
+
+    // Printing secrets to stdout with redirection or pipe to remote
+    const printCommands = /\b(echo|printf|cat|printenv)\b/;
+    const piped = /\|.*\b(nc|ncat|curl|wget|socat)\b/;
+    if (sensitiveVarPattern.test(cmd) && printCommands.test(cmd) && piped.test(cmd)) {
         return true;
     }
 

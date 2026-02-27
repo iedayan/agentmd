@@ -329,8 +329,9 @@ export function executeCommand(
   cmd: ExtractedCommand,
   options: ExecutorOptions = {}
 ): Promise<ExecutionResult> {
-  return new Promise(async (resolve) => {
-    const start = Date.now();
+  return new Promise((resolve) => {
+    (async () => {
+      const start = Date.now();
     const { permissions, dryRun = false, sandbox = false, useShell = false } = options;
     const timeout = options.timeout ?? (sandbox ? 30000 : 60000);
     let cwd = options.cwd ?? process.cwd();
@@ -517,6 +518,7 @@ export function executeCommand(
         error: "Provider failed to spawn process",
       });
     });
+    })();
   });
 }
 

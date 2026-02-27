@@ -15,7 +15,7 @@
           "agentmd/output-contract": "pending",
           "agentmd/execution-ready": "success"
         },
-        "updatedAt": "2026-02-27T04:15:57.766Z"
+        "updatedAt": "2026-02-27T17:12:23.189Z"
       }
     ],
     [
@@ -89,8 +89,10 @@
       "repositoryName": "agentmd/agentmd",
       "requestedBy": "test-user-id",
       "reason": "Repository owner approval required for non-owner execution.",
-      "status": "pending",
-      "createdAt": "2026-02-27T04:15:57.668Z"
+      "status": "approved",
+      "createdAt": "2026-02-27T04:15:57.668Z",
+      "decidedAt": "2026-02-27T17:12:22.834Z",
+      "decidedBy": "slack.approver"
     },
     {
       "id": "apr-101",
@@ -105,6 +107,14 @@
     }
   ],
   "notifications": [
+    {
+      "id": "ntf-104",
+      "type": "approval.approved",
+      "title": "Approval approved",
+      "message": "agentmd/agentmd: Repository owner approval required for non-owner execution.",
+      "createdAt": "2026-02-27T17:12:22.835Z",
+      "read": false
+    },
     {
       "id": "ntf-103",
       "type": "approval.requested",
@@ -131,7 +141,7 @@
     }
   ],
   "nextApprovalId": 102,
-  "nextNotificationId": 103,
+  "nextNotificationId": 104,
   "teamMembers": [
     {
       "id": "tm-1",
@@ -171,14 +181,14 @@
   "governanceMetrics": {
     "blockedByStatusGate": 0,
     "blockedByPolicy": 0,
-    "approvalRequired": 5,
-    "webhookReceived": 2,
-    "webhookProcessed": 4,
-    "webhookSignatureFailures": 1,
-    "webhookErrors": 1,
+    "approvalRequired": 6,
+    "webhookReceived": 4,
+    "webhookProcessed": 8,
+    "webhookSignatureFailures": 2,
+    "webhookErrors": 2,
     "prCommentsPosted": 0,
-    "slackApprovalActions": 1,
-    "lastWebhookAt": "2026-02-27T04:15:57.646Z",
+    "slackApprovalActions": 2,
+    "lastWebhookAt": "2026-02-27T17:12:22.921Z",
     "lastWebhookEvent": "check_run",
     "contractValidationEvents": [
       {
@@ -208,6 +218,21 @@
       },
       {
         "at": "2026-02-27T04:15:58.097Z",
+        "contractType": "migration",
+        "status": "success"
+      },
+      {
+        "at": "2026-02-27T17:12:23.569Z",
+        "contractType": "bugfix",
+        "status": "success"
+      },
+      {
+        "at": "2026-02-27T17:12:23.569Z",
+        "contractType": "bugfix",
+        "status": "failed"
+      },
+      {
+        "at": "2026-02-27T17:12:23.569Z",
         "contractType": "migration",
         "status": "success"
       }
