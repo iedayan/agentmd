@@ -45,6 +45,7 @@ export function Footer() {
                         <FooterCol
                             heading="Company"
                             links={[
+                                ["Contact", "/contact"],
                                 ["Blog", "/blog"],
                                 ["Roadmap", "/roadmap"],
                                 ["Status", "/status"],

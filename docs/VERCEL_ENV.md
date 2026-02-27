@@ -34,6 +34,7 @@ Copy these into your Vercel project: **Settings → Environment Variables**.
 | `AWS_ACCESS_KEY_ID` | S3/R2 access key | Production |
 | `AWS_SECRET_ACCESS_KEY` | S3/R2 secret key | Production |
 | `JIRA_WEBHOOK_URL` | Jira webhook for execution status | Production |
+| `RESEND_API_KEY` | From [Resend](https://resend.com) — for contact form emails to iedayan03@gmail.com | Production |
 
 ## Generated secrets
 
