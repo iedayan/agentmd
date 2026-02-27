@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/brand/logo";
 import { Nav } from "@/components/landing/nav";
 import { PricingCards } from "@/components/pricing/pricing-cards";
-import { AppSumoPricing } from "@/components/pricing/appsumo-pricing";
 import { FaqSchema } from "@/components/seo/faq-schema";
 
 const PRO_TRIAL_DAYS = 7;
@@ -13,8 +12,8 @@ const PRO_TRIAL_DAYS = 7;
 export const metadata: Metadata = {
   title: "Pricing — AgentMD",
   description:
-    "Transparent pricing for AgentMD. Free tier, Pro trial, AppSumo lifetime deal, and Enterprise. No hidden fees. Cancel anytime.",
-  keywords: ["AgentMD pricing", "AGENTS.md", "agent execution", "AppSumo", "CI/CD pricing"],
+    "Transparent pricing for AgentMD. Free tier, Pro trial, and Enterprise. No hidden fees. Cancel anytime.",
+  keywords: ["AgentMD pricing", "AGENTS.md", "agent execution", "CI/CD pricing"],
 };
 
 const TRUST_ITEMS = [
@@ -39,10 +38,6 @@ const FAQ = [
   {
     q: "What payment methods do you accept?",
     a: "Credit cards (Visa, Mastercard, Amex), and for Enterprise, we can invoice via ACH or wire.",
-  },
-  {
-    q: "What is the AppSumo lifetime deal?",
-    a: "Pay once on AppSumo for lifetime access. Monthly limits (repos, execution minutes) reset each billing cycle. 60-day money-back guarantee. Tier 1–3 offer increasing limits.",
   },
 ];
 
@@ -101,11 +96,6 @@ export default function PricingPage() {
               All plans include SOC2 Type II, GDPR compliance, and GitHub Actions
               integration. Enterprise: annual contracts with volume discounts.
             </p>
-
-            {/* AppSumo Lifetime Deal */}
-            <div className="mt-24 pt-24 border-t border-border/50">
-              <AppSumoPricing />
-            </div>
           </div>
         </section>
 
