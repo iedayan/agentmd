@@ -11,11 +11,7 @@ import { cn } from "@/lib/core/utils";
 
 const navLinks = [
   { href: "/docs", label: "Docs" },
-  { href: "/features", label: "Features" },
   { href: "/pricing", label: "Pricing" },
-  { href: "/marketplace", label: "Marketplace" },
-  { href: "/ops", label: "Ops" },
-  { href: "/contact", label: "Contact" },
 ];
 
 /** Scrolls to #try-it on homepage, or navigates to /#try-it */
