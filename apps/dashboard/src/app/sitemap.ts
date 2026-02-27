@@ -26,6 +26,7 @@ const routes = [
   "/docs/cli",
   "/docs/execution",
   "/docs/best-practices",
+  "/docs/research-best-practices",
   "/docs/roi-methodology",
   "/docs/eu-ai-act",
   "/blog",

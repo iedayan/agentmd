@@ -139,6 +139,13 @@ export default function BestPracticesPage() {
 
       <h2>Further Reading</h2>
       <p>
+        <Link href="/docs/research-best-practices" className="text-primary hover:underline font-medium">
+          AGENTS.md Research &amp; Best Practices
+        </Link>
+        {" "}
+        — When AGENTS.md helps (28% faster, 16% cheaper) vs. when it hurts (bloat, redundancy). Quality beats quantity.
+      </p>
+      <p>
         Deepen your understanding of agentic AI governance and AgentOps:
       </p>
       <ul>
@@ -182,6 +189,10 @@ export default function BestPracticesPage() {
       <p className="mt-8">
         <Link href="/docs/agentic-ai" className="text-primary hover:underline">
           ← What is Agentic AI?
+        </Link>
+        {" · "}
+        <Link href="/docs/research-best-practices" className="text-primary hover:underline">
+          Research &amp; Best Practices
         </Link>
         {" · "}
         <Link href="/docs/execution" className="text-primary hover:underline">

@@ -29,6 +29,7 @@ const DOC_GROUPS = [
       { href: "/docs/compose", label: "Composition" },
       { href: "/docs/execution", label: "Execution &amp; Safety" },
       { href: "/docs/best-practices", label: "Agentic AI Best Practices" },
+      { href: "/docs/research-best-practices", label: "Research &amp; Best Practices" },
       { href: "/docs/eu-ai-act", label: "EU AI Act Compliance" },
     ],
   },
