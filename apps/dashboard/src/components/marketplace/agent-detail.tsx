@@ -12,7 +12,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Star, Shield, ArrowLeft, ChevronRight } from "lucide-react";
-import type { AgentListing } from "@agentmd/core";
+import type { AgentListing } from "@agentmd-dev/agentmd-core";
 
 export function AgentDetail({ slug }: { slug: string }) {
   const [agent, setAgent] = useState<AgentListing | null>(null);

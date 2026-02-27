@@ -1,0 +1,81 @@
+{
+  "name": "@agentmd/vscode",
+  "version": "0.1.0",
+  "description": "AgentMD VS Code Extension - ESLint for AGENTS.md",
+  "displayName": "AgentMD",
+  "publisher": "agentmd",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Linters",
+    "Other"
+  ],
+  "activationEvents": [
+    "onLanguage:markdown",
+    "workspaceContains:**/AGENTS.md"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "languages": [
+      {
+        "id": "agentmd",
+        "aliases": ["AGENTS.md", "agentmd"],
+        "extensions": [".agents.md"],
+        "filenamePatterns": ["**/AGENTS.md"],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "configuration": {
+      "title": "AgentMD",
+      "properties": {
+        "agentmd.diagnostics.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable real-time diagnostics for AGENTS.md files"
+        },
+        "agentmd.diagnostics.debounceMs": {
+          "type": "number",
+          "default": 300,
+          "minimum": 100,
+          "maximum": 2000,
+          "description": "Debounce delay (ms) before running diagnostics"
+        },
+        "agentmd.score.showInStatusBar": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show agent-readiness score in the status bar"
+        }
+      }
+    },
+    "commands": [
+      {
+        "command": "agentmd.validate",
+        "title": "AgentMD: Validate AGENTS.md"
+      },
+      {
+        "command": "agentmd.showScore",
+        "title": "AgentMD: Show Score Breakdown"
+      }
+    ]
+  },
+  "scripts": {
+    "build": "tsup src/extension.ts src/server/index.ts --format cjs --no-dts --external vscode",
+    "dev": "tsup src/extension.ts src/server/index.ts --format cjs --no-dts --external vscode --watch",
+    "package": "vsce package",
+    "lint": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@agentmd-dev/agentmd-core": "^0.1.0",
+    "vscode-languageclient": "^9.0.1",
+    "vscode-languageserver": "^9.0.1",
+    "vscode-languageserver-protocol": "^3.17.5",
+    "vscode-languageserver-textdocument": "^1.0.12"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "@types/vscode": "^1.85.0",
+    "tsup": "^8.3.5",
+    "typescript": "^5.7.2"
+  }
+}

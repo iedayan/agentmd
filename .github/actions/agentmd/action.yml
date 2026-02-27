@@ -39,6 +39,10 @@ inputs:
     description: "For run: allow shell operators (|, &&, etc.)"
     required: false
     default: "false"
+  fail-on-warning:
+    description: "For check/validate: exit 1 if there are warnings (default: false, only errors fail)"
+    required: false
+    default: "false"
 
 runs:
   using: composite
@@ -78,10 +82,12 @@ runs:
         if [ "${{ inputs.command }}" = "validate" ] || [ "${{ inputs.command }}" = "check" ]; then
           EXTRA=""
           [ "${{ inputs.contract }}" = "true" ] && EXTRA="$EXTRA --contract"
-          if [ -n "${{ inputs.output }}" ]; then
-            node "$CLI" check "${{ inputs.path }}" --output "${{ inputs.output }}" $EXTRA
-          else
-            node "$CLI" check "${{ inputs.path }}" $EXTRA
+          [ -n "${{ inputs.output }}" ] && EXTRA="$EXTRA --output ${{ inputs.output }}"
+          node "$CLI" check "${{ inputs.path }}" $EXTRA
+          if [ "${{ inputs.fail-on-warning }}" = "true" ]; then
+            OUT=$(node "$CLI" check "${{ inputs.path }}" --json $EXTRA 2>/dev/null) || true
+            WARNINGS=$(echo "$OUT" | node -e "try{const d=JSON.parse(require('fs').readFileSync(0,'utf8'));console.log((d.warnings||[]).length)}catch(e){console.log(0)}" 2>/dev/null || echo "0")
+            [ "${WARNINGS:-0}" -gt 0 ] && echo "::error::AGENTS.md has $WARNINGS warning(s). Set fail-on-warning: false to allow." && exit 1
           fi
         elif [ "${{ inputs.command }}" = "score" ]; then
           SCORE=$(node "$CLI" score "${{ inputs.path }}" --json 2>/dev/null | node -e "try{const d=require('fs').readFileSync(0,'utf8');console.log(JSON.parse(d).score)}catch(e){console.log(0)}" 2>/dev/null || echo "0")

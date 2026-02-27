@@ -2,7 +2,7 @@ import {
   parseAgentsMd,
   validateAgentsMd,
   computeAgentReadinessScore,
-} from "@agentmd/core";
+} from "@agentmd-dev/agentmd-core";
 import { convertToAgentsMd } from "@/lib/agents/migrate-to-agents-md";
 import { rateLimit } from "@/lib/core/rate-limit";
 import { getClientKey } from "@/lib/core/request-context";

@@ -18,10 +18,16 @@ on:
       - "**/*.agents.md"
       - "**/agents-md/**"
 
+env:
+  FAIL_ON_ERROR: "true"  # Set to "false" to allow merge with validation errors (warnings only)
+
 jobs:
   validate:
     name: Validate AGENTS.md
     runs-on: ubuntu-latest
+    outputs:
+      check_valid: ${{ steps.validate.outputs.valid }}
+      score: ${{ steps.validate.outputs.score }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -41,15 +47,84 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Build
-        run: pnpm run build -w @agentmd/core && pnpm run build -w @agentmd/cli
+        run: pnpm run build -w @agentmd-dev/agentmd-core && pnpm run build -w @agentmd/cli
 
-      - name: Validate AGENTS.md contract
-        run: pnpm run agentmd -- check . --contract
-        continue-on-error: false
+      - name: Validate and score
+        id: validate
+        run: |
+          pnpm run agentmd -- check . --contract --json > check_output.json 2>&1 || true
+          pnpm run agentmd -- score . --json > score_output.json 2>&1 || true
+          VALID=$(node -e "try{const d=JSON.parse(require('fs').readFileSync('check_output.json','utf8'));console.log(d.valid===true?'true':'false')}catch(e){console.log('false')}")
+          SCORE=$(node -e "try{const d=JSON.parse(require('fs').readFileSync('score_output.json','utf8'));console.log(String(d.score??0))}catch(e){console.log('0')}")
+          echo "valid=$VALID" >> $GITHUB_OUTPUT
+          echo "score=$SCORE" >> $GITHUB_OUTPUT
 
-      - name: Agent-readiness score
-        run: npm run agentmd -- score
-        continue-on-error: true
+      - name: Comment on PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            let checkData = {};
+            let scoreData = {};
+            try { checkData = JSON.parse(fs.readFileSync('check_output.json', 'utf8')); } catch (e) {}
+            try { scoreData = JSON.parse(fs.readFileSync('score_output.json', 'utf8')); } catch (e) {}
+            const score = scoreData.score ?? 0;
+            const valid = checkData.valid === true;
+            const errors = checkData.errors ?? [];
+            const warnings = checkData.warnings ?? [];
+            const suggestions = checkData.suggestions ?? [];
+            const scoreEmoji = score >= 80 ? '🟢' : score >= 50 ? '🟡' : '🔴';
+            let body = `## AgentMD — AGENTS.md Validation\n\n`;
+            body += `| | |\n|---|---|\n`;
+            body += `| **Score** | ${scoreEmoji} **${score}/100** |\n`;
+            body += `| **Status** | ${valid ? '✅ Valid' : '❌ Errors'} |\n\n`;
+            if (errors.length > 0) {
+              body += `### Errors\n`;
+              errors.forEach(e => body += `- \`${e.code || 'ERROR'}\`: ${e.message}${e.line ? ` (line ${e.line})` : ''}\n`);
+              body += `\n`;
+            }
+            if (warnings.length > 0) {
+              body += `### Warnings\n`;
+              warnings.forEach(w => body += `- \`${w.code || 'WARN'}\`: ${w.message}${w.line ? ` (line ${w.line})` : ''}\n`);
+              body += `\n`;
+            }
+            if (suggestions.length > 0) {
+              body += `### Suggestions\n`;
+              suggestions.forEach(s => body += `- ${s}\n`);
+              body += `\n`;
+            }
+            body += `---\n*Powered by [AgentMD](https://agentmd.online)*`;
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+            const botComment = comments.find(c => c.user.type === 'Bot' && c.body.includes('AgentMD — AGENTS.md Validation'));
+            if (botComment) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: botComment.id,
+                body,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body,
+              });
+            }
+
+      - name: Fail on validation errors
+        if: env.FAIL_ON_ERROR == 'true'
+        run: |
+          VALID="${{ steps.validate.outputs.valid }}"
+          if [ "$VALID" != "true" ]; then
+            echo "::error::AGENTS.md validation failed. Fix errors before merging."
+            exit 1
+          fi
 
   run-tests:
     name: Run AGENTS.md tests
@@ -74,7 +149,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Build
-        run: pnpm run build -w @agentmd/core && pnpm run build -w @agentmd/cli
+        run: pnpm run build -w @agentmd-dev/agentmd-core && pnpm run build -w @agentmd/cli
 
       - name: Run AGENTS.md test commands
         run: pnpm run agentmd -- run . test

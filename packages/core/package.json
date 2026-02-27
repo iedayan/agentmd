@@ -1,6 +1,7 @@
 {
-  "name": "@agentmd/core",
+  "name": "@agentmd-dev/agentmd-core",
   "version": "0.1.0",
+  "description": "AGENTS.md parsing, validation, scoring, and execution",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -9,6 +10,25 @@
       "import": "./dist/index.js",
       "types": "./dist/index.d.ts"
     }
+  },
+  "files": [
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iedayan/agentmd.git",
+    "directory": "packages/core"
+  },
+  "keywords": [
+    "agents.md",
+    "agents-md",
+    "ai-agents",
+    "validation",
+    "parsing"
+  ],
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
   },
   "scripts": {
     "build": "tsup src/index.ts --format esm --dts",

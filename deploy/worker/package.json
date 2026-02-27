@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "dependencies": {
-    "@agentmd/core": "workspace:*",
+    "@agentmd-dev/agentmd-core": "workspace:*",
     "pg": "^8.13.1"
   }
 }

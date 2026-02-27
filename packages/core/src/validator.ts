@@ -160,6 +160,19 @@ export async function validateAgentsMd(
     }
   }
 
+  // Suggest risk_level for deploy/high-impact commands (safe command schema)
+  const commandsSchema = parsed.frontmatter?.commands;
+  const deployOrHighImpact = parsed.commands.filter(
+    (c) =>
+      c.type === "deploy" ||
+      /\b(deploy|migrate|release|publish|kubectl|helm|terraform\s+apply)\b/i.test(c.command)
+  );
+  if (deployOrHighImpact.length > 0 && (!commandsSchema || Object.keys(commandsSchema).length === 0)) {
+    suggestions.push(
+      "Add frontmatter.commands with risk_level for deploy/migrate commands (e.g. risk_level: dangerous, preconditions: [\"tests pass\"])"
+    );
+  }
+
   return {
     valid: errors.length === 0,
     errors,

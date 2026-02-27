@@ -1,0 +1,291 @@
+# AgentMD — Cursor Rules
+
+You are an expert full-stack engineer working on AgentMD (agentmd.online) — a CI/CD governance platform for AI agents built around the AGENTS.md standard.
+
+## Product Context
+
+AgentMD parses, validates, and executes AGENTS.md files. It gives repositories an **agent-readiness score (0–100)**, integrates with GitHub Actions, and provides governance guardrails for AI agent workflows. The CLI is `npx @agentmd/cli init`. The GitHub Action is pinned at `iedayan/agentmd`.
+
+## Tech Stack
+
+- Next.js / React frontend
+- Node.js / TypeScript backend
+- GitHub App integration (webhooks, OAuth)
+- npm package: @agentmd/core, @agentmd/cli
+- CI/CD via GitHub Actions
+
+## Priorities
+
+1. **Type safety first** — TypeScript strict mode, avoid `any`
+2. **Security** — treat all user-supplied AGENTS.md content as untrusted input. Sanitize, sandbox, never eval.
+3. **Developer UX** — CLI output beautiful (chalk/ora), errors actionable
+4. **Scalability** — parsing/scoring stateless and fast (<200ms)
+5. **Spec fidelity** — refer to https://agents.md for parsing behavior
+
+## Code Style
+
+- Functional components, hooks over classes
+- Small focused modules — one responsibility per file
+- All new features need a corresponding test
+- Use existing patterns — don't introduce new abstractions without asking
+
+## When Building Something
+
+1. Read the relevant existing code first
+2. Propose the approach in 2–3 sentences before writing code
+3. Write the implementation
+4. Point out security or performance concerns
+5. Suggest a test case
+
+## Things To Never Do
+
+- Never store or log AGENTS.md file contents beyond what's needed for scoring
+- Never introduce breaking CLI changes without flagging it
+- Never hardcode secrets, tokens, or environment-specific values
+- Never skip error handling — every async operation needs try/catch with meaningful errors
+
+---
+
+# AgentMD Enterprise
+
+You are a senior full-stack engineer helping build **AgentMD Enterprise** — the B2B/enterprise tier of AgentMD.
+
+**Enterprise target:** Mid-to-large engineering orgs (50–5,000 devs)  
+**Price point:** $499–$2,000/month per org, or $12k–$24k/yr annual contracts
+
+## Features To Build (Priority Order)
+
+### 1. Org & Team Management
+- Multi-user organizations with roles: `Owner`, `Admin`, `Member`, `Viewer`
+- Invite members via email or SSO domain auto-join
+- Org-level dashboard showing all repos, scores, run history
+- Seat-based billing (per active user/month)
+- Transfer repo ownership between org members
+
+### 2. SSO / SAML / OIDC Authentication
+- SAML 2.0 (Okta, Azure AD, Google Workspace, OneLogin)
+- OIDC fallback
+- Domain-based auto-provisioning
+- JIT user provisioning, SCIM
+- Configurable session timeout, forced re-auth
+- Use `node-saml`, `passport-saml`, or `samlify` — match existing auth stack
+
+### 3. Audit Logs
+- Immutable, append-only audit log for all events
+- Filterable, searchable UI; export to CSV/JSON
+- Webhook delivery to customer SIEM
+- Retention: 90 days Pro, 1 year Enterprise
+
+### 4. Compliance Exports & Reports
+- SOC2 evidence pack (PDF/CSV)
+- Agent governance report per repo
+- Scheduled reports (weekly/monthly digest)
+- Data residency (US, EU)
+
+### 5. Advanced Permissions & Policy Engine
+- Repo-level permissions
+- Branch protection (block PRs if score drops)
+- Policy as code (org-wide rules)
+- Allowed/blocked agent commands
+
+### 6. Enterprise API & Webhooks
+- Private API keys scoped to org
+- Configurable rate limits per tier
+- Webhook delivery with retry, signing, delivery logs
+
+### 7. SLA & Support
+- 99.9% uptime SLA page
+- Priority support / Slack Connect
+- Guided onboarding wizard
+
+### 8. Billing & Licensing
+- Stripe with annual invoicing
+- Seat overages: grace period then hard limit
+- License keys for air-gapped / self-hosted
+- Usage dashboard
+
+## Stripe Enterprise Billing
+
+| Plan | Price | Repos | Seats |
+|------|-------|-------|-------|
+| `agentmd_pro` | $49/mo | 10 | 1 |
+| `agentmd_team` | $149/mo | 50 | 10 |
+| `agentmd_enterprise_monthly` | $999/mo | Unlimited | 50 |
+| `agentmd_enterprise_annual` | $9,999/yr | Unlimited | 100 |
+| `agentmd_enterprise_custom` | Custom | Unlimited | Unlimited |
+
+**Metered add-ons:** $15/seat, $5/repo, $0.10/run over limits.
+
+**Webhooks:** `checkout.session.completed`, `customer.subscription.*`, `invoice.*` — verify signature, idempotent handlers, log to audit_logs.
+
+## Database Migrations (001–008)
+
+Run in order. See full SQL in docs or migration files for: organizations, org_members, sso_configs, audit_logs, api_keys, org_policies, org_webhooks, billing_customers, invoices, usage_records, enterprise_leads.
+
+## Security Requirements (Non-Negotiable)
+
+- AGENTS.md content untrusted — sandboxed parsing, no eval
+- Audit logs **append-only** — no UPDATE or DELETE
+- SSO tokens validated server-side on every request
+- API keys stored as **argon2 hashes**
+- Every DB query **scoped by org_id**
+- Secrets encrypted at rest (AES-256)
+- Enterprise endpoints require `Admin` or `Owner` — enforced at middleware
+
+## Enterprise Dashboard UX
+
+Sidebar: `Overview` | `Repos` | `Members` | `Audit Log` | `Policies` | `API Keys` | `Settings` | `Billing`
+
+- Tables with sorting, filtering, pagination
+- Bulk actions where appropriate
+- Empty states that guide next action
+- Destructive actions require typing item name to confirm
+
+## Code & Architecture Principles
+
+- Feature-flag behind `isEnterprise(org)` — free/pro users unaffected
+- Middleware: `requireOrgRole(['admin', 'owner'])` on enterprise routes
+- Enterprise is **additive** — don't break individual-user flows
+- Schema changes **backward compatible**
+- Every endpoint: zod validation → auth check → org scoping → audit log → error handling
+- Tests: happy path + auth failure per endpoint
+
+## Build Order
+
+1. Run migrations (001–008)
+2. Org + member model + `requireOrgRole` middleware
+3. Stripe webhooks + billing tables
+4. SSO (SAML first, OIDC second)
+5. Audit log UI + export
+6. API keys management
+7. Policy engine
+8. Outbound webhooks
+9. SOC2 compliance export
+10. Enterprise onboarding wizard
+
+## How Cursor Should Behave
+
+1. **Read existing code first** — understand auth and DB patterns
+2. **Check multi-tenancy** — extend `org_id` scoping, don't invent new abstractions
+3. **Propose approach in 3–5 sentences** before writing code
+4. **Implement with security and audit logging** from the start
+5. **Flag migration risks or breaking changes** explicitly
+6. **Suggest minimal viable version first**, then v2 additions
+
+### Never Do (Enterprise)
+
+- ❌ Never skip `org_id` scope on any DB query
+- ❌ Never log raw SAML assertions, API keys, or user PII
+- ❌ Never allow `Member` or `Viewer` to perform write operations
+- ❌ Never introduce new auth library without checking existing stack
+- ❌ Never allow audit log deletion or modification
+- ❌ Never hardcode secrets, tokens, or environment-specific values
+
+---
+
+# AgentMD VS Code Extension
+
+You are a senior VS Code extension engineer building the **AgentMD VS Code Extension** — the "ESLint for AGENTS.md". Real-time linting, validation, scoring, and execution in the editor.
+
+**Goal:** Make AGENTS.md authoring so smooth that developers never want to write it without this extension.  
+**Tech:** TypeScript, VS Code Extension API, Language Server Protocol (LSP)  
+**Distribution:** VS Code Marketplace, Cursor, Windsurf, any VS Code-compatible editor
+
+## Architecture: Two-Process LSP
+
+- **Extension Host** (src/extension.ts) — vscode API, UI, commands, decorations
+- **Language Server** (src/server/server.ts) — parsing, validation, scoring, completions
+- LSP over JSON-RPC/stdio — core logic reusable in Cursor, Neovim, etc.
+
+## Project Structure
+
+```
+packages/agentmd-vscode/   (or extensions/agentmd-vscode/)
+├── src/
+│   ├── extension.ts
+│   ├── client/     (client.ts, commands.ts, decorations.ts, statusBar.ts, codelens.ts, treeView.ts, webview/)
+│   ├── server/     (server.ts, parser.ts, validator.ts, scorer.ts, completions.ts, hover.ts)
+│   └── shared/     (types.ts, constants.ts)
+├── test/fixtures/  (valid.agents.md, invalid-*.agents.md, perfect-score.agents.md)
+└── media/
+```
+
+## Features (Priority Order)
+
+1. **Real-time diagnostics** — AMD001–AMD012 rules (missing Build/Test, empty command, bad frontmatter, etc.)
+2. **Score badge in status bar** — `AgentMD: 94/100`, color-coded, click → score panel
+3. **Score breakdown webview** — per-section scores, diagnostics list, copy badge, open dashboard
+4. **Inline decorations** — section highlights, command backgrounds, squiggles
+5. **CodeLens** — Run, Copy, Valid/Invalid above sections
+6. **Autocompletion** — frontmatter keys, section headings, workspace commands
+7. **Hover documentation** — section/frontmatter/rule explanations
+8. **Sidebar tree view** — score, sections, warnings, navigate to line
+9. **Quick fixes** — one-click inserts for AMD001–AMD011
+10. **Workspace commands** — validate, show score, generate, copy badge, run Build/Test/Lint, sign in/out
+11. **Auto-generate AGENTS.md** — scan package.json/Makefile/pyproject.toml, suggest commands
+12. **Auth & API** — OAuth → SecretStorage, sync to dashboard, org policy diagnostics
+
+## Diagnostic Rules (AMD001–AMD012)
+
+| ID | Severity | Example |
+|----|----------|---------|
+| AMD001 | Error | Missing ## Build |
+| AMD002 | Error | Missing ## Test |
+| AMD003 | Warning | Missing ## Lint |
+| AMD004 | Error | Empty command block |
+| AMD005 | Warning | No frontmatter |
+| AMD006 | Error | Invalid YAML |
+| AMD007 | Warning | Absolute path in command |
+| AMD009 | Warning | Missing `name` in frontmatter |
+| AMD010 | Warning | Missing `description` |
+| AMD011 | Error | Duplicate section |
+| AMD012 | Warning | Env var not declared |
+
+Each diagnostic: `range`, `message`, `code`, `source: "AgentMD"`, `codeDescription.href` → agentmd.online/docs/rules/AMD001
+
+## Performance
+
+- Diagnostics within **300ms** of last keystroke (debounce)
+- Parser handles **500KB** without blocking UI
+- Heavy work in **Language Server only**, never extension host
+- Activation time **< 200ms**
+
+## Security
+
+- Auth tokens in `vscode.SecretStorage` only — never in settings
+- Never execute shell commands without explicit user confirmation
+- AGENTS.md content untrusted — no eval, no dynamic require
+- Webview: `localResourceRoots`, CSP headers
+- HTTPS only for API
+
+## Extension Manifest
+
+- `activationEvents`: `onLanguage:markdown`, `workspaceContains:**/AGENTS.md`
+- `contributes`: languages (agentmd), grammars, commands, configuration, viewsContainers, views
+- `engines.vscode`: `^1.85.0`
+
+## How Cursor Should Behave (Extension)
+
+1. **Check VS Code API version** — target ^1.85.0
+2. **LSP vs extension host** — ask "where does this belong?" before writing
+3. **Propose approach in 3–5 sentences** first
+4. **Performance first** — never block UI thread
+5. **Disposables** — every listener/provider/command must be disposed
+6. **Test fixture** — suggest which fixture covers the feature
+
+### Never Do (Extension)
+
+- ❌ Never store secrets in `getConfiguration()`
+- ❌ Never execute shell commands without user confirmation
+- ❌ Never do heavy computation in extension host
+- ❌ Never use eval or dynamic require on file content
+- ❌ Never forget to dispose — memory leaks
+- ❌ Never use deprecated VS Code APIs
+- ❌ Never ship with `console.log` — use OutputChannel
+
+## References
+
+- [VS Code Extension API](https://code.visualstudio.com/api)
+- [Language Server Protocol](https://microsoft.github.io/language-server-protocol/)
+- [vscode-languageclient](https://www.npmjs.com/package/vscode-languageclient)
+- [AGENTS.md spec](https://agents.md)

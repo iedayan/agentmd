@@ -10,9 +10,10 @@
   ],
   "scripts": {
     "build": "pnpm -r run build",
-    "build:core": "pnpm --filter @agentmd/core run build",
+    "build:core": "pnpm --filter @agentmd-dev/agentmd-core run build",
     "build:cli": "pnpm --filter @agentmd/cli run build",
     "build:dashboard": "pnpm --filter @agentmd/dashboard run build",
+    "build:vscode": "pnpm --filter @agentmd/vscode run build",
     "dev:dashboard": "pnpm --filter @agentmd/dashboard run dev",
     "dev": "pnpm -r run dev",
     "test": "pnpm -r run test",

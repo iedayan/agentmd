@@ -15,7 +15,7 @@ import {
 import { Star, Shield, Search, ShoppingCart } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
-import type { AgentListing } from "@agentmd/core";
+import type { AgentListing } from "@agentmd-dev/agentmd-core";
 
 const CATEGORIES = [
   { value: "all", label: "All" },

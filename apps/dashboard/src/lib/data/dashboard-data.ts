@@ -1,4 +1,4 @@
-import type { AgentListing } from "@agentmd/core";
+import type { AgentListing } from "@agentmd-dev/agentmd-core";
 import type { Execution, ExecutionStep, Repository, TriggerType } from "@/types";
 
 export interface AuditLog {

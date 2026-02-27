@@ -19,7 +19,7 @@ import {
   parseFrontmatter,
   stringifyAgentsMd,
   type CommandType,
-} from "@agentmd/core";
+} from "@agentmd-dev/agentmd-core";
 
 const args = process.argv.slice(2);
 const command = args[0];
@@ -175,9 +175,39 @@ async function main() {
   }
 }
 
-type ProjectType = "node" | "python" | "rust" | "go" | "generic";
+type ProjectType = "node" | "python" | "rust" | "go" | "nextjs" | "django" | "rails" | "monorepo" | "generic";
 
 const TEMPLATES: Record<ProjectType, string> = {
+  nextjs: `---
+agent:
+  name: nextjs-agent
+  purpose: "Work on Next.js projects"
+  guardrails:
+    - "Run tests before committing"
+---
+
+# Next.js Project
+
+## Setup
+\`\`\`bash
+pnpm install
+\`\`\`
+
+## Build
+\`\`\`bash
+pnpm run build
+\`\`\`
+
+## Test
+\`\`\`bash
+pnpm test
+\`\`\`
+
+## Lint
+\`\`\`bash
+pnpm run lint
+\`\`\`
+`,
   node: `---
 # Agent instructions for AI coding tools (Node.js)
 ---
@@ -204,6 +234,33 @@ pnpm run test
 
 \`\`\`bash
 pnpm run lint
+\`\`\`
+`,
+  django: `---
+agent:
+  name: django-agent
+  purpose: "Work on Django projects"
+  guardrails:
+    - "Run tests before committing"
+    - "Never run migrate without explicit approval"
+---
+
+# Django Project
+
+## Setup
+\`\`\`bash
+uv sync
+\`\`\`
+
+## Test
+\`\`\`bash
+python manage.py test
+\`\`\`
+
+## Lint
+\`\`\`bash
+ruff check .
+ruff format .
 \`\`\`
 `,
   python: `---
@@ -262,6 +319,31 @@ cargo clippy
 cargo fmt
 \`\`\`
 `,
+  rails: `---
+agent:
+  name: rails-agent
+  purpose: "Work on Ruby on Rails projects"
+  guardrails:
+    - "Run tests before committing"
+---
+
+# Rails Project
+
+## Setup
+\`\`\`bash
+bundle install
+\`\`\`
+
+## Test
+\`\`\`bash
+bundle exec rspec
+\`\`\`
+
+## Lint
+\`\`\`bash
+bundle exec rubocop
+\`\`\`
+`,
   go: `---
 # Agent instructions for AI coding tools (Go)
 ---
@@ -282,6 +364,36 @@ go test ./...
 
 \`\`\`bash
 golangci-lint run
+\`\`\`
+`,
+  monorepo: `---
+agent:
+  name: monorepo-agent
+  purpose: "Work on pnpm monorepo projects"
+  guardrails:
+    - "Run tests from repo root"
+---
+
+# Monorepo
+
+## Setup
+\`\`\`bash
+pnpm install
+\`\`\`
+
+## Build
+\`\`\`bash
+pnpm run build
+\`\`\`
+
+## Test
+\`\`\`bash
+pnpm run test
+\`\`\`
+
+## Lint
+\`\`\`bash
+pnpm run lint
 \`\`\`
 `,
   generic: `---
@@ -311,8 +423,22 @@ pnpm run lint
 function detectProjectType(dir: string): ProjectType {
   if (existsSync(resolve(dir, "Cargo.toml"))) return "rust";
   if (existsSync(resolve(dir, "go.mod"))) return "go";
+  if (existsSync(resolve(dir, "Gemfile")) && existsSync(resolve(dir, "config", "application.rb"))) return "rails";
+  if (existsSync(resolve(dir, "manage.py"))) return "django";
   if (existsSync(resolve(dir, "pyproject.toml")) || existsSync(resolve(dir, "requirements.txt"))) return "python";
-  if (existsSync(resolve(dir, "package.json"))) return "node";
+  if (existsSync(resolve(dir, "pnpm-workspace.yaml")) || existsSync(resolve(dir, "lerna.json"))) return "monorepo";
+  if (existsSync(resolve(dir, "package.json"))) {
+    try {
+      const pkg = JSON.parse(readFileSync(resolve(dir, "package.json"), "utf-8")) as {
+        dependencies?: Record<string, string>;
+        devDependencies?: Record<string, string>;
+      };
+      if (pkg?.dependencies?.next || pkg?.devDependencies?.next) return "nextjs";
+    } catch {
+      /* ignore */
+    }
+    return "node";
+  }
   return "generic";
 }
 
@@ -374,7 +500,7 @@ function cmdInit(target: string, templateOverride?: string) {
       content = TEMPLATES[explicitTemplate];
       console.log(`Using template: ${explicitTemplate}`);
     } else if (explicitTemplate) {
-      console.error(`Unknown template: ${templateOverride}. Use: node, python, rust, go, generic`);
+      console.error(`Unknown template: ${templateOverride}. Use: node, python, rust, go, nextjs, django, rails, monorepo, generic`);
       process.exit(1);
     } else {
       const detected = detectProjectType(dir);

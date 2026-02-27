@@ -64,6 +64,7 @@ Outputs `score` for use in later steps. See `.github/workflows/agentmd-pr-score.
 | `output` | For check/validate: output file to validate | `""` |
 | `dry-run` | For run: preview only | `true` |
 | `use-shell` | For run: allow shell operators | `false` |
+| `fail-on-warning` | For check: exit 1 if there are warnings | `false` |
 
 ## Example workflow
 

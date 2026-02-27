@@ -41,6 +41,24 @@ export interface AgentPermissions {
 /** Guardrail - natural language constraint */
 export type Guardrail = string;
 
+/** Risk level for commands — used for governance and audit */
+export type CommandRiskLevel = "safe" | "read-only" | "write" | "dangerous";
+
+/** Per-command metadata (declared in frontmatter) */
+export interface CommandMetadata {
+  /** Risk level — safe (read-only, no side effects), read-only, write (modifies files), dangerous (deploy, rm, etc.) */
+  risk_level?: CommandRiskLevel;
+  /** Preconditions that must be met before running (e.g. "tests pass", "approval") */
+  preconditions?: string[];
+  /** Audit tags for categorization (e.g. "build", "deploy", "migration") */
+  audit_tags?: string[];
+  /** Human-readable description */
+  description?: string;
+}
+
+/** Command schema — maps command patterns to metadata. Key can be exact command or glob (e.g. "pnpm run *") */
+export type CommandSchema = Record<string, CommandMetadata>;
+
 /** Trigger event (GitHub-style) */
 export type TriggerEvent =
   | "push"
@@ -95,6 +113,8 @@ export interface AgentFrontmatter {
   description?: string;
   /** Required output contract for standardized agent responses */
   output_contract?: OutputContract;
+  /** Per-command metadata: risk_level, preconditions, audit_tags. Key = command or pattern (e.g. "pnpm run deploy") */
+  commands?: CommandSchema;
 }
 
 /** Markdown directive: <!-- agents-md: key=value --> */

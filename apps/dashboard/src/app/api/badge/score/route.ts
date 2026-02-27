@@ -8,7 +8,7 @@ import {
   parseAgentsMd,
   validateAgentsMd,
   computeAgentReadinessScore,
-} from "@agentmd/core";
+} from "@agentmd-dev/agentmd-core";
 function scoreToColor(score: number): string {
   if (score >= 80) return "#16a34a";
   if (score >= 50) return "#d97706";

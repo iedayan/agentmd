@@ -1,4 +1,4 @@
-import { BUILTIN_ROLES } from "@agentmd/core";
+import { BUILTIN_ROLES } from "@agentmd-dev/agentmd-core";
 import { join } from "path";
 import { addAuditLog, getRepositoryById, listRepositories } from "@/lib/data/dashboard-data";
 import { sendWorkflowNotification } from "@/lib/integrations/external-notifier";

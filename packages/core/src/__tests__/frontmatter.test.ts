@@ -78,6 +78,30 @@ agent:
     expect(b.trim()).toBe(body);
   });
 
+  it("parses commands schema with risk_level, preconditions, audit_tags", () => {
+    const withCommands = `---
+agent:
+  name: deploy-agent
+  commands:
+    "pnpm run deploy":
+      risk_level: dangerous
+      preconditions: ["tests pass", "approval"]
+      audit_tags: [deploy, production]
+    "pnpm test":
+      risk_level: safe
+---
+## Build
+\`pnpm build\`
+`;
+    const parsed = parseAgentsMd(withCommands);
+    expect(parsed.frontmatter?.commands).toBeDefined();
+    const deployMeta = parsed.frontmatter?.commands?.["pnpm run deploy"];
+    expect(deployMeta?.risk_level).toBe("dangerous");
+    expect(deployMeta?.preconditions).toEqual(["tests pass", "approval"]);
+    expect(deployMeta?.audit_tags).toEqual(["deploy", "production"]);
+    expect(parsed.frontmatter?.commands?.["pnpm test"]?.risk_level).toBe("safe");
+  });
+
   it("parses output_contract in frontmatter", () => {
     const withContract = `---
 output_contract:

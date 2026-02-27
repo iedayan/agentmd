@@ -4,7 +4,7 @@
  */
 
 import matter from "gray-matter";
-import type { AgentFrontmatter } from "./schema.js";
+import type { AgentFrontmatter, CommandMetadata, CommandRiskLevel } from "./schema.js";
 
 const FRONTMATTER_DELIMITER = "---";
 
@@ -68,6 +68,28 @@ function normalizeFrontmatter(data: Record<string, unknown>): AgentFrontmatter {
 
   if (raw.on && typeof raw.on === "object") {
     result.on = raw.on as Record<string, unknown>;
+  }
+
+  if (raw.commands && typeof raw.commands === "object" && !Array.isArray(raw.commands)) {
+    const RISK_LEVELS = new Set<CommandRiskLevel>(["safe", "read-only", "write", "dangerous"]);
+    result.commands = {};
+    for (const [key, val] of Object.entries(raw.commands)) {
+      if (val && typeof val === "object" && !Array.isArray(val)) {
+        const v = val as Record<string, unknown>;
+        const meta: CommandMetadata = {};
+        if (typeof v.risk_level === "string" && RISK_LEVELS.has(v.risk_level as CommandRiskLevel)) {
+          meta.risk_level = v.risk_level as CommandRiskLevel;
+        }
+        if (Array.isArray(v.preconditions)) {
+          meta.preconditions = v.preconditions.filter((p): p is string => typeof p === "string");
+        }
+        if (Array.isArray(v.audit_tags)) {
+          meta.audit_tags = v.audit_tags.filter((t): t is string => typeof t === "string");
+        }
+        if (typeof v.description === "string") meta.description = v.description;
+        if (Object.keys(meta).length > 0) result.commands[key] = meta;
+      }
+    }
   }
 
   if (raw.output_contract && typeof raw.output_contract === "object") {

@@ -131,6 +131,11 @@ agent:
       default: deny
   guardrails:
     - "Never modify code, never merge"
+  commands:
+    "pnpm run deploy":
+      risk_level: dangerous
+      preconditions: ["tests pass", "approval"]
+      audit_tags: [deploy, production]
   output_contract:
     format: json
     schema:
@@ -141,6 +146,8 @@ agent:
     exit_criteria: [ready_for_review]
 ---
 ```
+
+**Command schema:** `risk_level` = `safe` | `read-only` | `write` | `dangerous`. Use `preconditions` and `audit_tags` for governance.
 
 ## Project Structure
 
