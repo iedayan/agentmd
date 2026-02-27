@@ -25,6 +25,7 @@ Copy these into your Vercel project: **Settings → Environment Variables**.
 | `STRIPE_SECRET_KEY` | From [Stripe Dashboard](https://dashboard.stripe.com) | Production |
 | `STRIPE_PRO_PRICE_ID` | Stripe Pro price ID | Production |
 | `STRIPE_ENTERPRISE_PRICE_ID` | Stripe Enterprise price ID | Production |
+| `STRIPE_WEBHOOK_SECRET` | From Stripe webhook endpoint (see below) | Production |
 | `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` | Stripe publishable key | Production |
 | `SENTRY_DSN` | From [Sentry](https://sentry.io) | Production |
 | `SLACK_WEBHOOK_URL` | Slack incoming webhook | Production |
@@ -60,6 +61,13 @@ GITHUB_ID=<from GitHub OAuth App>
 GITHUB_SECRET=<from GitHub OAuth App>
 DATABASE_URL=<from Neon - use pooled URL>
 ```
+
+## Stripe webhook setup
+
+1. In [Stripe Dashboard](https://dashboard.stripe.com) → Developers → Webhooks → Add endpoint.
+2. **Endpoint URL:** `https://agentmd.online/api/stripe/webhooks`
+3. **Events to send:** `checkout.session.completed`, `customer.subscription.updated`, `customer.subscription.deleted`
+4. Copy the **Signing secret** (starts with `whsec_`) and set as `STRIPE_WEBHOOK_SECRET` in Vercel.
 
 ## After deploy
 

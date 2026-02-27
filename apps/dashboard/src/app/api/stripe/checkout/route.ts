@@ -82,6 +82,7 @@ export async function POST(req: NextRequest) {
 
     const sessionAuth = await getServerSession(authOptions);
     const customerEmail = sessionAuth?.user?.email?.trim() || undefined;
+    const userId = sessionAuth?.user?.id;
 
     const session = await stripe.checkout.sessions.create({
       mode: "subscription",
@@ -95,7 +96,11 @@ export async function POST(req: NextRequest) {
       ],
       success_url: `${appUrl}/dashboard/settings/billing?success=true`,
       cancel_url: `${appUrl}/dashboard/settings/billing?canceled=true`,
-      metadata: { planId, trialDays: planId === "pro" ? String(PRO_TRIAL_DAYS) : "0" },
+      metadata: {
+        planId,
+        trialDays: planId === "pro" ? String(PRO_TRIAL_DAYS) : "0",
+        ...(userId && { userId }),
+      },
       subscription_data: subscriptionData,
     });
 
