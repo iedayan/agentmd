@@ -1,4 +1,4 @@
-import type { ValidationError, ValidationWarning } from "@agentmd-dev/agentmd-core";
+import type { ValidationError, ValidationWarning } from "@agentmd-dev/core";
 
 export interface AgentMdDiagnostic {
   code: string;

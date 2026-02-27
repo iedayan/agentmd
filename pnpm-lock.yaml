@@ -23,7 +23,7 @@ importers:
 
   apps/dashboard:
     dependencies:
-      '@agentmd-dev/agentmd-core':
+      '@agentmd-dev/core':
         specifier: workspace:*
         version: link:../../packages/core
       '@neondatabase/serverless':
@@ -162,7 +162,7 @@ importers:
 
   deploy/worker:
     dependencies:
-      '@agentmd-dev/agentmd-core':
+      '@agentmd-dev/core':
         specifier: workspace:*
         version: link:../../packages/core
       pg:
@@ -171,9 +171,9 @@ importers:
 
   packages/agentmd-vscode:
     dependencies:
-      '@agentmd-dev/agentmd-core':
-        specifier: ^0.1.0
-        version: 0.1.0
+      '@agentmd-dev/core':
+        specifier: workspace:*
+        version: link:../core
       vscode-languageclient:
         specifier: ^9.0.1
         version: 9.0.1
@@ -202,7 +202,7 @@ importers:
 
   packages/cli:
     dependencies:
-      '@agentmd-dev/agentmd-core':
+      '@agentmd-dev/core':
         specifier: workspace:*
         version: link:../core
     devDependencies:
@@ -246,7 +246,7 @@ importers:
 
   packages/sdk:
     dependencies:
-      '@agentmd-dev/agentmd-core':
+      '@agentmd-dev/core':
         specifier: workspace:*
         version: link:../core
     devDependencies:
@@ -264,9 +264,6 @@ importers:
         version: 2.1.9(@types/node@22.19.11)
 
 packages:
-
-  '@agentmd-dev/agentmd-core@0.1.0':
-    resolution: {integrity: sha512-f/ou0daZGstZ0U4++rZ7NBjB6jjHdaOM1lbAk33xuGKxLYEnG9PAHKCuz1r52faEAcoVigclfgEL6MqfePjaLg==}
 
   '@alloc/quick-lru@5.2.0':
     resolution: {integrity: sha512-UrcABB+4bUrFABwbluTIBErXwvbsU/V7TZWfmbgJfbkwiBuziS9gxdODUyuiecfdGQ85jglMW6juS3+z5TsKLw==}
@@ -3709,12 +3706,6 @@ packages:
     resolution: {integrity: sha512-gzUt/qt81nXsFGKIFcC3YnfEAx5NkunCfnDlvuBSSFS02bcXu4Lmea0AFIUwbLWxWPx3d9p8S5QoaujKcNQxcQ==}
 
 snapshots:
-
-  '@agentmd-dev/agentmd-core@0.1.0':
-    dependencies:
-      fast-glob: 3.3.3
-      gray-matter: 4.0.3
-      js-yaml: 4.1.1
 
   '@alloc/quick-lru@5.2.0': {}
 

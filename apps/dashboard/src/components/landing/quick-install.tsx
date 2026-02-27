@@ -34,7 +34,7 @@ const COMMANDS: {
     {
       label: "npm package",
       desc: "Add to project",
-      cmd: "pnpm add @agentmd-dev/agentmd-core",
+      cmd: "pnpm add @agentmd-dev/core",
       icon: Package,
     },
   ];

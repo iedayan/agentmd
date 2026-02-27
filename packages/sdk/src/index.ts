@@ -11,7 +11,7 @@ export {
   validateAgentsMd,
   discoverAgentsMd,
   findNearestAgentsMd,
-} from "@agentmd-dev/agentmd-core";
+} from "@agentmd-dev/core";
 
 export type {
   ParsedAgentsMd,
@@ -22,4 +22,4 @@ export type {
   ValidationResult,
   ValidationError,
   ValidationWarning,
-} from "@agentmd-dev/agentmd-core";
+} from "@agentmd-dev/core";

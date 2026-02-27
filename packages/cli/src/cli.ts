@@ -19,7 +19,7 @@ import {
   parseFrontmatter,
   stringifyAgentsMd,
   type CommandType,
-} from "@agentmd-dev/agentmd-core";
+} from "@agentmd-dev/core";
 
 const args = process.argv.slice(2);
 const command = args[0];

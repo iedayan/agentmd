@@ -14,7 +14,7 @@ import {
 } from "vscode-languageserver/node";
 import { TextDocument } from "vscode-languageserver-textdocument";
 import { getDiagnostics, isAgentsMd } from "./diagnostics.js";
-import { computeAgentReadinessScore } from "@agentmd-dev/agentmd-core";
+import { computeAgentReadinessScore } from "@agentmd-dev/core";
 
 const connection = createConnection(ProposedFeatures.all);
 const documents = new TextDocuments(TextDocument);

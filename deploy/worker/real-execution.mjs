@@ -87,7 +87,7 @@ export async function runRealExecution(agentsMdUrl) {
   const rawUrl = toRawUrl(agentsMdUrl);
   const content = await fetchText(rawUrl);
 
-  const { parseAgentsMd, executeCommands, planCommandExecutions } = await import("@agentmd-dev/agentmd-core");
+  const { parseAgentsMd, executeCommands, planCommandExecutions } = await import("@agentmd-dev/core");
   const parsed = parseAgentsMd(content);
   const commands = parsed.commands;
   const permissions = parsed.frontmatter?.permissions;

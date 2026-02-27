@@ -8,11 +8,11 @@
 
 ---
 
-## Part 1: Publish @agentmd-dev/agentmd-core to npm
+## Part 1: Publish @agentmd-dev/core to npm
 
 ### 1.1 Create npm organization (if needed)
 
-Scoped packages like `@agentmd-dev/agentmd-core` require an npm org:
+Scoped packages like `@agentmd-dev/core` require an npm org:
 
 1. Go to [npmjs.com/org/create](https://www.npmjs.com/org/create)
 2. Create org `agentmd-dev` (or use your username if taken)
@@ -41,16 +41,18 @@ The `--access public` flag is required for scoped packages (`@agentmd-dev/...`) 
 ### 1.5 Verify
 
 ```bash
-npm view @agentmd-dev/agentmd-core
+npm view @agentmd-dev/core
 ```
 
 ---
 
 ## Part 2: Publish VS Code Extension to Marketplace
 
-### 2.1 Publish @agentmd-dev/agentmd-core first
+### 2.1 Publish @agentmd-dev/core first
 
-The extension depends on `@agentmd-dev/agentmd-core`. Publish core to npm **before** packaging the extension. The extension already uses `@agentmd-dev/agentmd-core: ^0.1.0`.
+The extension depends on `@agentmd-dev/core`. Publish core to npm **before** packaging the extension.
+
+**Before packaging the extension**, update `packages/agentmd-vscode/package.json`: change `"@agentmd-dev/core": "workspace:*"` to `"@agentmd-dev/core": "^0.1.0"`.
 
 ### 2.2 Create a publisher
 
@@ -105,8 +107,8 @@ Search for "AgentMD" in the [VS Code Marketplace](https://marketplace.visualstud
 ## Checklist
 
 - [ ] npm org `agentmd-dev` created (or publisher ID matches)
-- [ ] `@agentmd-dev/agentmd-core` published to npm
-- [ ] Extension `package.json` uses `@agentmd-dev/agentmd-core: ^0.1.0`
+- [ ] `@agentmd-dev/core` published to npm
+- [ ] Extension `package.json` uses `@agentmd-dev/core: ^0.1.0` (change from `workspace:*` before packaging)
 - [ ] Extension builds successfully
 - [ ] Publisher created on marketplace
 - [ ] PAT created with Marketplace (Publish) scope
@@ -117,6 +119,6 @@ Search for "AgentMD" in the [VS Code Marketplace](https://marketplace.visualstud
 
 ## Updating published packages
 
-**@agentmd-dev/agentmd-core:** Bump `version` in `packages/core/package.json`, then `npm publish`.
+**@agentmd-dev/core:** Bump `version` in `packages/core/package.json`, then `npm publish`.
 
 **VS Code extension:** Bump `version` in `packages/agentmd-vscode/package.json`, run `vsce package`, then `vsce publish`.

@@ -7,14 +7,14 @@ WORKDIR /app
 COPY package.json package-lock.json* pnpm-lock.yaml* ./
 COPY apps/dashboard/package.json ./apps/dashboard/
 COPY packages/core/package.json ./packages/core/
-RUN npm ci --workspace=@agentmd-dev/agentmd-core --workspace=@agentmd/dashboard 2>/dev/null || npm install
+RUN npm ci --workspace=@agentmd-dev/core --workspace=@agentmd/dashboard 2>/dev/null || npm install
 
 # Builder
 FROM base AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-RUN npm run build -w @agentmd-dev/agentmd-core
+RUN npm run build -w @agentmd-dev/core
 RUN npm run build -w @agentmd/dashboard
 
 # Runner

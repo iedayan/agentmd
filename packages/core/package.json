@@ -1,5 +1,5 @@
 {
-  "name": "@agentmd-dev/agentmd-core",
+  "name": "@agentmd-dev/core",
   "version": "0.1.1",
   "description": "AGENTS.md parsing, validation, scoring, and execution",
   "type": "module",

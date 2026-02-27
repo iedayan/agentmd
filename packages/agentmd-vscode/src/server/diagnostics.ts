@@ -8,7 +8,7 @@ import {
   type ParsedAgentsMd,
   type ValidationError,
   type ValidationWarning,
-} from "@agentmd-dev/agentmd-core";
+} from "@agentmd-dev/core";
 import type { Diagnostic } from "vscode-languageserver";
 import { DiagnosticSeverity } from "vscode-languageserver";
 import { AMD_CODES, RULE_DOC_BASE } from "../shared/constants.js";
@@ -135,15 +135,15 @@ export async function getDiagnostics(
   return { diagnostics, parsed };
 }
 
-function getAllSectionTitles(sections: import("@agentmd-dev/agentmd-core").AgentsMdSection[]): string[] {
+function getAllSectionTitles(sections: import("@agentmd-dev/core").AgentsMdSection[]): string[] {
   return flattenSections(sections).map((s) => s.title);
 }
 
 function flattenSections(
-  sections: import("@agentmd-dev/agentmd-core").AgentsMdSection[]
-): import("@agentmd-dev/agentmd-core").AgentsMdSection[] {
-  const out: import("@agentmd-dev/agentmd-core").AgentsMdSection[] = [];
-  const visit = (s: import("@agentmd-dev/agentmd-core").AgentsMdSection) => {
+  sections: import("@agentmd-dev/core").AgentsMdSection[]
+): import("@agentmd-dev/core").AgentsMdSection[] {
+  const out: import("@agentmd-dev/core").AgentsMdSection[] = [];
+  const visit = (s: import("@agentmd-dev/core").AgentsMdSection) => {
     out.push(s);
     s.children.forEach(visit);
   };

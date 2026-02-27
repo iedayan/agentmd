@@ -1,11 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   transpilePackages: ["geist"],
-  // Avoid transpilePackages for @agentmd-dev/agentmd-core — it can trigger webpack
+  // Avoid transpilePackages for @agentmd-dev/core — it can trigger webpack
   // "Cannot read properties of undefined (reading 'call')" in production.
   // Use pre-built dist from packages/core instead.
   experimental: {
-    serverComponentsExternalPackages: ["@agentmd-dev/agentmd-core"],
+    serverComponentsExternalPackages: ["@agentmd-dev/core"],
     optimizePackageImports: ["lucide-react"],
   },
   images: {

@@ -17,7 +17,7 @@
     "lint": "tsc --noEmit"
   },
   "dependencies": {
-    "@agentmd-dev/agentmd-core": "workspace:*"
+    "@agentmd-dev/core": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^22.10.0",
