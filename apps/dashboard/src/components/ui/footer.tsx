@@ -46,6 +46,7 @@ export function Footer() {
                             heading="Company"
                             links={[
                                 ["Contact", "/contact"],
+                                ["Leave a review", "/review"],
                                 ["Blog", "/blog"],
                                 ["Roadmap", "/roadmap"],
                                 ["Status", "/status"],

@@ -132,6 +132,13 @@ export default function ContactPage() {
             iedayan03@gmail.com
           </a>
         </p>
+        <p className="mt-4 text-sm text-muted-foreground">
+          Enjoying AgentMD?{" "}
+          <Link href="/review" className="text-primary hover:underline">
+            Leave a review
+          </Link>
+          .
+        </p>
       </main>
       <Footer />
     </div>
