@@ -2,7 +2,7 @@ import { getToken } from "next-auth/jwt";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-const DASHBOARD_PATHS = ["/dashboard", "/marketplace"];
+const DASHBOARD_PATHS = ["/dashboard", "/marketplace", "/ops"];
 const AUTH_PATHS = ["/register", "/login"];
 
 /** Marketplace paths that are public (no auth required). */
@@ -56,6 +56,7 @@ export const config = {
   matcher: [
     "/dashboard/:path*",
     "/marketplace/:path*",
+    "/ops/:path*",
     "/register",
     "/login",
   ],

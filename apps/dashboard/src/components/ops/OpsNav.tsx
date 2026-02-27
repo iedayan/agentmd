@@ -42,12 +42,19 @@ export function OpsNav({ activeTab, onTabChange }: { activeTab: string; onTabCha
         </nav>
         <div className="flex items-center gap-3">
           <ThemeToggle />
-          <button className="h-8 rounded-[var(--radius-sm)] bg-primary px-4 font-mono text-[10px] font-bold uppercase tracking-widest text-primary-foreground hover:bg-primary/90 transition-all btn-tactile">
+          <Link
+            href="/dashboard"
+            className="h-8 rounded-[var(--radius-sm)] bg-primary px-4 font-mono text-[10px] font-bold uppercase tracking-widest text-primary-foreground hover:bg-primary/90 transition-all btn-tactile inline-flex items-center justify-center"
+          >
             Deploy
-          </button>
-          <div className="flex h-8 w-8 items-center justify-center rounded-full border border-border text-muted-foreground">
+          </Link>
+          <Link
+            href="/dashboard/settings"
+            className="flex h-8 w-8 items-center justify-center rounded-full border border-border text-muted-foreground hover:text-foreground hover:border-foreground/30 transition-colors"
+            aria-label="Account settings"
+          >
             <User className="h-4 w-4" />
-          </div>
+          </Link>
         </div>
       </div>
     </header>

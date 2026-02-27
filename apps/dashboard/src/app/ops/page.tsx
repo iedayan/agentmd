@@ -26,6 +26,11 @@ const AnalyticsTab = dynamic(
   { loading: () => <div className="p-6 font-mono text-sm">Loading analytics…</div> }
 );
 
+const OpsSettingsTab = dynamic(
+  () => import("@/components/ops/OpsSettingsTab").then((mod) => mod.OpsSettingsTab),
+  { loading: () => <div className="p-6 font-mono text-sm">Loading settings…</div> }
+);
+
 export default function OpsPage() {
   const [activeTab, setActiveTab] = useState("pipelines");
   const { pipelines, policies, audit, analytics, loading, error } = useOpsData({
@@ -133,69 +138,7 @@ export default function OpsPage() {
       {activeTab === "audit" && <AuditTab entries={audit} />}
       {activeTab === "analytics" && <AnalyticsTab analytics={analytics} />}
 
-      {activeTab === "settings" && (
-        <div className="p-6">
-          <div className="rounded-[var(--radius-md)] border border-border bg-card p-8">
-            <h2 className="text-xl font-bold tracking-tight text-[var(--ops-primary)]">
-              Settings
-            </h2>
-            <p className="mt-2 font-mono text-sm text-muted-foreground mb-8">
-              Configure API keys, webhooks, and notifications.
-            </p>
-            <div className="space-y-6 max-w-xl">
-              <div>
-                <label className="font-mono text-xs text-muted-foreground block mb-2">
-                  API Key
-                </label>
-                <input
-                  type="password"
-                  placeholder="agentmd_••••••••••••••••"
-                  readOnly
-                  className="w-full rounded-[var(--radius-sm)] border border-input bg-muted px-3 py-2 font-mono text-sm text-foreground/80"
-                />
-                <p className="mt-1 font-mono text-xs text-muted-foreground/80">
-                  Regenerate in Dashboard → Settings
-                </p>
-              </div>
-              <div>
-                <label className="font-mono text-xs text-muted-foreground block mb-2">
-                  Webhook URL
-                </label>
-                <input
-                  type="url"
-                  placeholder="https://your-server.com/webhook"
-                  className="w-full rounded-[var(--radius-sm)] border border-input bg-background px-3 py-2 font-mono text-sm text-foreground placeholder:text-muted-foreground"
-                />
-                <p className="mt-1 font-mono text-xs text-muted-foreground/80">
-                  Receive execution completion events
-                </p>
-              </div>
-              <div>
-                <label className="font-mono text-xs text-muted-foreground block mb-2">
-                  Notifications
-                </label>
-                <div className="space-y-2">
-                  <label className="flex items-center gap-2 font-mono text-sm text-foreground/80">
-                    <input type="checkbox" defaultChecked className="rounded-[var(--radius-sm)]" />
-                    Pipeline failures
-                  </label>
-                  <label className="flex items-center gap-2 font-mono text-sm text-foreground/80">
-                    <input type="checkbox" defaultChecked className="rounded-[var(--radius-sm)]" />
-                    Approval requests
-                  </label>
-                  <label className="flex items-center gap-2 font-mono text-sm text-foreground/80">
-                    <input type="checkbox" className="rounded-[var(--radius-sm)]" />
-                    Policy violations
-                  </label>
-                </div>
-              </div>
-              <button className="mt-4 h-9 bg-primary px-4 font-mono text-sm font-medium text-primary-foreground rounded-[var(--radius-sm)] hover:bg-primary/90 transition-colors">
-                Save
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      {activeTab === "settings" && <OpsSettingsTab />}
     </div>
   );
 }
