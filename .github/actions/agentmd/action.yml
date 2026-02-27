@@ -2,7 +2,7 @@
 # CI/CD control plane for AI agents — validate and execute AGENTS.md in your pipeline
 #
 # Usage:
-#   - uses: agentmd/agentmd/.github/actions/agentmd@main
+#   - uses: iedayan/agentmd/.github/actions/agentmd@main
 #     with:
 #       command: check   # or: run
 #       path: .
@@ -11,8 +11,8 @@
 name: AgentMD
 description: Validate or execute AGENTS.md in CI
 branding:
-  icon: file-code
-  color: violet
+  icon: code
+  color: purple
 
 inputs:
   command:
@@ -46,7 +46,7 @@ runs:
     - name: Checkout AgentMD
       uses: actions/checkout@v4
       with:
-        repository: agentmd/agentmd
+        repository: iedayan/agentmd
         path: .agentmd-src
 
     - name: Setup pnpm
@@ -62,6 +62,7 @@ runs:
         cache-dependency-path: .agentmd-src/pnpm-lock.yaml
 
     - name: Install and build AgentMD
+      shell: bash
       run: |
         cd .agentmd-src
         pnpm install --frozen-lockfile
@@ -69,6 +70,7 @@ runs:
         pnpm run build:cli
 
     - name: Run AgentMD ${{ inputs.command }}
+      shell: bash
       id: agentmd
       run: |
         cd "${{ github.workspace }}"

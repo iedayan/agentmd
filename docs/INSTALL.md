@@ -17,7 +17,7 @@ Installation options and full CLI reference for AgentMD.
 Clone the repo and build:
 
 ```bash
-git clone https://github.com/agentmd/agentmd.git
+git clone https://github.com/iedayan/agentmd.git
 cd agentmd
 pnpm install
 pnpm run build:core
@@ -99,24 +99,26 @@ Then run directly: `agentmd check . --contract`
 
 ## Quick workflow
 
+When using from source, prefix with `pnpm run agentmd --`:
+
 ```bash
 # 1. Create AGENTS.md
-agentmd init .
+pnpm run agentmd -- init .
 
 # 2. Diagnose and improve
-agentmd doctor .
-agentmd improve . --apply
+pnpm run agentmd -- doctor .
+pnpm run agentmd -- improve . --apply
 
 # 3. Validate and score
-agentmd check . --contract
-agentmd score .
+pnpm run agentmd -- check . --contract
+pnpm run agentmd -- score .
 
 # 4. Preview and run
-agentmd run . --dry-run
-agentmd run . test
+pnpm run agentmd -- run . --dry-run
+pnpm run agentmd -- run . test
 ```
 
-## Pre-commit Contract Hook
+## Pre-commit Hook
 
 Enable local pre-commit enforcement:
 
@@ -124,11 +126,7 @@ Enable local pre-commit enforcement:
 pnpm run hooks:install
 ```
 
-This installs `.githooks/pre-commit` and runs:
-
-```bash
-agentmd check . --contract
-```
+This configures `.githooks/pre-commit` to run `pnpm run lint` before each commit.
 
 ---
 

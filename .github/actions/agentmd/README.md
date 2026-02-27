@@ -16,7 +16,7 @@ The action checks out the AgentMD repo, installs dependencies, builds core + CLI
 ### Check AGENTS.md (recommended for CI)
 
 ```yaml
-- uses: agentmd/agentmd/.github/actions/agentmd@main
+- uses: iedayan/agentmd/.github/actions/agentmd@main
   with:
     command: check
     path: .
@@ -26,7 +26,7 @@ The action checks out the AgentMD repo, installs dependencies, builds core + CLI
 ### Score (agent-readiness 0–100)
 
 ```yaml
-- uses: agentmd/agentmd/.github/actions/agentmd@main
+- uses: iedayan/agentmd/.github/actions/agentmd@main
   with:
     command: score
     path: .
@@ -36,7 +36,7 @@ Outputs `score` for use in later steps. See `.github/workflows/agentmd-pr-score.
 ### Run commands (dry-run by default)
 
 ```yaml
-- uses: agentmd/agentmd/.github/actions/agentmd@main
+- uses: iedayan/agentmd/.github/actions/agentmd@main
   with:
     command: run
     path: .
@@ -47,7 +47,7 @@ Outputs `score` for use in later steps. See `.github/workflows/agentmd-pr-score.
 ### Execute for real
 
 ```yaml
-- uses: agentmd/agentmd/.github/actions/agentmd@main
+- uses: iedayan/agentmd/.github/actions/agentmd@main
   with:
     command: run
     path: .
@@ -79,7 +79,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Check AGENTS.md contract
-        uses: agentmd/agentmd/.github/actions/agentmd@main
+        uses: iedayan/agentmd/.github/actions/agentmd@main
         with:
           command: check
           contract: "true"

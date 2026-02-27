@@ -6,8 +6,7 @@ Overview
   - @agentmd/core: Core parsing, validation, discovery, composition, and execution logic for AGENTS.md.
   - @agentmd/cli: Command-line interface to interact with AgentMD features.
   - @agentmd/sdk: Client SDK exposing core capabilities for external tools.
-  - @agentmd/dashboard: Next.js dashboard UI for visibility into agent health and runs.
-  - apps/dashboard: The Next.js app source within the monorepo structure.
+  - @agentmd/dashboard (apps/dashboard): Next.js dashboard UI for visibility into agent health and runs.
 
 Data flow (high level)
 - AGENTS.md input is parsed by core, producing a ParsedAgentsMd structure.

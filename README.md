@@ -37,7 +37,7 @@ AgentMD is the runtime environment for agent instructions:
 **From source** (clone and build):
 
 ```bash
-git clone https://github.com/agentmd/agentmd.git
+git clone https://github.com/iedayan/agentmd.git
 cd agentmd
 pnpm install
 pnpm run build:core
@@ -53,6 +53,8 @@ pnpm run agentmd -- init .
 ```
 
 **In CI** — Use the [GitHub Action](.github/actions/agentmd/README.md); no manual install.
+
+**Dashboard** — `pnpm run dev:dashboard` (Next.js on port 3001).
 
 **npm** — `@agentmd/cli` is not yet published. Use from source until first release. See [docs/INSTALL.md](docs/INSTALL.md) for full options.
 
@@ -103,7 +105,7 @@ pnpm run agentmd -- run . --dry-run
 pnpm run agentmd -- run . test
 ```
 
-5. Install local pre-commit contract checks:
+5. Install local pre-commit hook (runs lint):
 ```bash
 pnpm run hooks:install
 ```
@@ -151,13 +153,15 @@ agentsmd/
 ├── apps/
 │   └── dashboard/      # Next.js 14 dashboard (repos, executions, billing)
 ├── deploy/
-│   └── worker/         # Background execution worker (Railway, Render)
+│   ├── migrations/     # SQL migrations (run via pnpm run migrate)
+│   ├── provision/     # Vercel, Neon, GitHub setup
+│   └── worker/        # Background execution worker (Railway, Render)
 └── docs/               # Specification extensions
 ```
 
 ## Deployment
 
-- **Dashboard** — Deploy to Vercel; see [deploy/provision/PROVISION.md](deploy/provision/PROVISION.md).
+- **Dashboard** — Deploy to Vercel; run `pnpm run migrate` for DB migrations. See [deploy/provision/PROVISION.md](deploy/provision/PROVISION.md).
 - **Worker** — Run `node deploy/worker/worker.mjs` with `DATABASE_URL`. Set `AGENTMD_REAL_EXECUTION=1` to run real commands from AGENTS.md (clones repo, executes); otherwise uses mock execution. See [deploy/worker/README.md](deploy/worker/README.md).
 - **GitHub setup** — Use the setup wizard at `https://your-domain.com/setup/github-app` or run `pnpm run github:config https://your-domain.com` to generate OAuth and GitHub App URLs and env vars.
 
@@ -174,7 +178,7 @@ Discover, purchase, and execute agents through AGENTS.md:
 ## Pricing
 
 - **Free**: Basic parsing + validation, 3 repos, 100 min/mo
-- **Pro ($40/mo)**: Unlimited repos, 1000 min, team features
+- **Pro ($49/mo)**: Unlimited repos, 1000 min, team features
 - **Enterprise ($249/mo)**: Self-hosted, SSO, RBAC, audit logs. See [docs/INFRASTRUCTURE.md](docs/INFRASTRUCTURE.md) for deployment options.
 
 ## Open Source Readiness
