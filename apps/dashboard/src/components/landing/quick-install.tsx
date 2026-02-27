@@ -57,16 +57,18 @@ export function QuickInstall() {
         {COMMANDS.map(({ label, desc, cmd, href, icon: Icon, primary }) => (
           <div
             key={cmd}
-            className={`group flex items-stretch gap-3 rounded-xl border bg-background p-4 transition-all ${primary
-                ? "border-primary/40 bg-primary/5 shadow-sm dark:bg-primary/5"
+            className={`group flex items-stretch gap-3 rounded-2xl border bg-background p-4 transition-all ${primary
+                ? "border-primary/40 bg-gradient-to-br from-primary/10 to-primary/5 shadow-sm ring-1 ring-primary/10"
                 : "border-border/60 hover:border-border hover:bg-muted/30"
               }`}
           >
             <div
-              className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg ${primary ? "bg-primary/15 text-primary" : "bg-muted text-muted-foreground"
+              className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl ${primary
+                  ? "bg-gradient-to-br from-primary/25 to-primary/10 text-primary ring-1 ring-primary/20 shadow-sm"
+                  : "bg-muted/80 text-muted-foreground group-hover:bg-muted group-hover:text-foreground ring-1 ring-border/50"
                 }`}
             >
-              <Icon className="h-5 w-5" />
+              <Icon className="h-5 w-5" strokeWidth={2} />
             </div>
             <div className="min-w-0 flex-1 overflow-hidden">
               <p className="font-medium text-foreground truncate">{label}</p>

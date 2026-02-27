@@ -33,11 +33,11 @@ export function HowItWorks() {
                     <div className="relative space-y-0">
                         {/* Step connector line */}
                         <div
-                            className="absolute left-[15px] top-8 bottom-8 w-px bg-border"
+                            className="absolute left-[17px] top-9 bottom-9 w-px bg-gradient-to-b from-primary/30 via-border to-primary/30"
                             aria-hidden
                         />
                         <div className="relative flex gap-6">
-                            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/15 font-mono text-sm font-medium text-primary">
+                            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-primary/25 to-primary/10 ring-1 ring-primary/20 font-mono text-sm font-semibold text-primary shadow-sm">
                                 1
                             </span>
                             <div className="pb-10">
@@ -59,7 +59,7 @@ export function HowItWorks() {
                             </div>
                         </div>
                         <div className="relative flex gap-6">
-                            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/15 font-mono text-sm font-medium text-primary">
+                            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-primary/25 to-primary/10 ring-1 ring-primary/20 font-mono text-sm font-semibold text-primary shadow-sm">
                                 3
                             </span>
                             <div>

@@ -28,8 +28,8 @@ export function TrustBadges() {
               key={label}
               className="flex items-center gap-3 text-center sm:text-left"
             >
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                <Icon className="h-5 w-5" />
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 ring-1 ring-primary/20 shadow-sm">
+                <Icon className="h-5 w-5 text-primary" strokeWidth={2} />
               </div>
               <div>
                 <p className="font-semibold text-foreground text-sm sm:text-base">

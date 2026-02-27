@@ -36,10 +36,10 @@ export function WhyAgentMD() {
           {REASONS.map(({ icon: Icon, title, desc }) => (
             <div
               key={title}
-              className="rounded-xl border border-border/60 bg-background p-6 sm:p-8 hover:border-primary/30 transition-colors"
+              className="rounded-2xl border border-border/60 bg-background p-6 sm:p-8 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5 transition-all duration-300"
             >
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary mb-4">
-                <Icon className="h-6 w-6" />
+              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-primary/25 to-primary/5 ring-1 ring-primary/15 shadow-[0_0_24px_-4px_hsl(var(--primary)/0.2)] mb-5">
+                <Icon className="h-7 w-7 text-primary" strokeWidth={1.75} />
               </div>
               <h3 className="font-bold text-lg mb-2">{title}</h3>
               <p className="text-sm text-muted-foreground leading-relaxed">

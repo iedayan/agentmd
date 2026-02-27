@@ -44,11 +44,11 @@ export function TheProblem() {
             <Link
               key={title}
               href={href}
-              className="group rounded-xl border border-border/60 bg-background p-5 sm:p-6 hover:border-primary/30 hover:bg-muted/30 transition-all"
+              className="group rounded-2xl border border-border/60 bg-background p-5 sm:p-6 hover:border-primary/30 hover:bg-muted/30 hover:shadow-md transition-all duration-300"
             >
               <div className="flex items-start gap-3">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                  <Icon className="h-5 w-5" />
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-amber-500/15 to-amber-500/5 ring-1 ring-amber-500/20 group-hover:from-primary/20 group-hover:to-primary/5 group-hover:ring-primary/20 transition-colors">
+                  <Icon className="h-5 w-5 text-amber-600 dark:text-amber-400 group-hover:text-primary transition-colors" strokeWidth={2} />
                 </div>
                 <div className="min-w-0 flex-1">
                   <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground mb-1">

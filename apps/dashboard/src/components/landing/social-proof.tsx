@@ -15,7 +15,9 @@ export function SocialProof() {
             Open source on GitHub
           </a>
           <span className="hidden sm:inline-flex items-center gap-2 text-sm text-muted-foreground">
-            <Shield className="h-4 w-4 text-primary/70" />
+            <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary/10 ring-1 ring-primary/20">
+              <Shield className="h-3.5 w-3.5 text-primary" strokeWidth={2.5} />
+            </span>
             SOC2 · GDPR compliant
           </span>
           <span className="hidden sm:inline-flex h-4 w-px bg-border" aria-hidden />

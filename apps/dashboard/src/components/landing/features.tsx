@@ -1,4 +1,4 @@
-import { CheckCircle } from "lucide-react";
+import { CheckCircle, Gauge, FileSearch, Terminal } from "lucide-react";
 
 export function Features() {
     return (
@@ -20,7 +20,9 @@ export function Features() {
                         <div className="md:col-span-2 bento-card border-luminescent flex flex-col justify-between items-center md:items-start p-8 md:p-10">
                             <div className="w-full">
                                 <h3 className="text-2xl font-bold mb-4 flex items-center gap-2">
-                                    <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+                                    <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-primary/25 to-primary/5 ring-1 ring-primary/20">
+                                        <Terminal className="h-4 w-4 text-primary" strokeWidth={2} />
+                                    </span>
                                     Execute in CI
                                 </h3>
                                 <p className="text-muted-foreground leading-relaxed md:max-w-md mx-auto md:mx-0">
@@ -37,7 +39,7 @@ export function Features() {
                                         <span className="h-1 w-1 rounded-full bg-primary animate-thought-pulse" />
                                     </div>
                                     <div className="text-emerald-500/90 flex items-center gap-2">
-                                        <CheckCircle className="h-3 w-3" />
+                                        <CheckCircle className="h-3.5 w-3.5" strokeWidth={2.5} />
                                         <span>Parsed AGENTS.md successfully</span>
                                     </div>
                                     <div className="text-blue-400 font-medium animate-pulse ml-5">Executing reasoning chain... [10s]</div>
@@ -47,6 +49,9 @@ export function Features() {
 
                         {/* Smaller Card 1 */}
                         <div className="bento-card border-luminescent flex flex-col justify-center items-center p-6 sm:p-8 md:p-10 text-center">
+                            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-primary/25 to-primary/5 ring-1 ring-primary/15 shadow-[0_0_20px_-4px_hsl(var(--primary)/0.2)] mb-4">
+                                <Gauge className="h-6 w-6 text-primary" strokeWidth={1.75} />
+                            </div>
                             <h3 className="font-bold text-2xl mb-4">Readiness score</h3>
                             <p className="text-sm leading-relaxed text-muted-foreground">
                                 Get a 0–100 score on how agent-ready your repository is.

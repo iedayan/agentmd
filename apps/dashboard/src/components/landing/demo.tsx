@@ -320,8 +320,8 @@ export function LandingDemo() {
 function EmptyState() {
   return (
     <div className="flex flex-col items-center justify-center py-12 text-center">
-      <div className="flex h-14 w-14 items-center justify-center rounded-full bg-muted/80 text-muted-foreground mb-4">
-        <FileSearch className="h-7 w-7" aria-hidden />
+      <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-primary/15 to-primary/5 ring-1 ring-primary/20 shadow-sm mb-4">
+        <FileSearch className="h-8 w-8 text-primary" strokeWidth={1.75} aria-hidden />
       </div>
       <p className="text-sm font-medium text-foreground">Ready to validate</p>
       <p className="mt-1 text-sm text-muted-foreground max-w-[240px]">
