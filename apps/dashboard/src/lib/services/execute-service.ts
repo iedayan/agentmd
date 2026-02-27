@@ -72,7 +72,7 @@ export async function evaluatePreflight(input: {
 
 export async function queueExecution(input: ExecuteInput): Promise<ExecuteResult> {
   const resolvedAgentsMdUrl =
-    input.agentsMdUrl ?? `https://marketplace.agentmd.io/agents/${input.agentId}/AGENTS.md`;
+    input.agentsMdUrl ?? `https://marketplace.agentmd.online/agents/${input.agentId}/AGENTS.md`;
 
   const { apiExecution, dashboardExecution, idempotentReplay } = await createQueuedExecution(
     input.userId,

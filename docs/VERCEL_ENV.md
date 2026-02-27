@@ -6,8 +6,8 @@ Copy these into your Vercel project: **Settings → Environment Variables**.
 
 | Name | Value | Environment |
 |------|-------|-------------|
-| `NEXT_PUBLIC_APP_URL` | `https://your-app.vercel.app` | Production, Preview |
-| `NEXTAUTH_URL` | `https://your-app.vercel.app` | Production, Preview |
+| `NEXT_PUBLIC_APP_URL` | `https://agentmd.online` | Production, Preview |
+| `NEXTAUTH_URL` | `https://agentmd.online` | Production, Preview |
 | `NEXTAUTH_SECRET` | *(see below)* | Production, Preview |
 | `GITHUB_ID` | From [GitHub OAuth App](https://github.com/settings/developers) | Production, Preview |
 | `GITHUB_SECRET` | From GitHub OAuth App | Production, Preview |
@@ -50,11 +50,11 @@ openssl rand -hex 32
 
 ## Bulk import format
 
-For Vercel CLI or bulk paste, use this format (replace placeholders):
+For Vercel CLI or bulk paste, use this format (replace placeholders). Production domain: `https://agentmd.online`.
 
 ```
-NEXT_PUBLIC_APP_URL=https://your-app.vercel.app
-NEXTAUTH_URL=https://your-app.vercel.app
+NEXT_PUBLIC_APP_URL=https://agentmd.online
+NEXTAUTH_URL=https://agentmd.online
 NEXTAUTH_SECRET=<paste output of: openssl rand -base64 32>
 GITHUB_ID=<from GitHub OAuth App>
 GITHUB_SECRET=<from GitHub OAuth App>
@@ -63,6 +63,6 @@ DATABASE_URL=<from Neon - use pooled URL>
 
 ## After deploy
 
-1. Update `NEXT_PUBLIC_APP_URL` and `NEXTAUTH_URL` to your custom domain if you add one.
-2. Update GitHub OAuth callback URL to `https://your-domain.com/api/auth/callback/github`.
-3. If using GitHub App, set webhook URL to `https://your-domain.com/api/github/webhooks`.
+1. For production, use `https://agentmd.online` as `NEXT_PUBLIC_APP_URL` and `NEXTAUTH_URL`.
+2. Update GitHub OAuth callback URL to `https://agentmd.online/api/auth/callback/github`.
+3. If using GitHub App, set webhook URL to `https://agentmd.online/api/github/webhooks`.

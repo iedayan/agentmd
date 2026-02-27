@@ -37,7 +37,7 @@ docker compose -f deploy/docker-compose.yml up -d
 
 ### 4. License Activation
 
-Enterprise requires a license key. Contact sales@agentmd.io for air-gapped license activation. Options:
+Enterprise requires a license key. Contact sales@agentmd.online for air-gapped license activation. Options:
 
 - Offline license file (JSON with signature)
 - License server on internal network (Enterprise only)

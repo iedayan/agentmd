@@ -60,7 +60,7 @@ const PLANS = [
       "Dedicated support",
     ],
     cta: "Contact Sales",
-    href: "mailto:sales@agentmd.io",
+    href: "mailto:sales@agentmd.online",
     highlighted: false,
     note: "Custom contracts, volume discounts, invoicing.",
   },

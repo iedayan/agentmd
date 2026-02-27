@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 # Smoke tests for AgentMD dashboard
-# Usage: DEPLOY_URL=https://agentmd.io ./deploy/scripts/smoke-test.sh
+# Usage: DEPLOY_URL=https://agentmd.online ./deploy/scripts/smoke-test.sh
 
 set -e
 
 URL="${DEPLOY_URL:-}"
 if [ -z "$URL" ]; then
-  echo "Error: DEPLOY_URL is required (e.g. https://agentmd.io)"
+  echo "Error: DEPLOY_URL is required (e.g. https://agentmd.online)"
   exit 1
 fi
 

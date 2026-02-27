@@ -116,7 +116,7 @@ export function UpgradeCard() {
             className="w-full"
             asChild
           >
-            <Link href="mailto:sales@agentmd.io?subject=Enterprise%20Inquiry">
+            <Link href="mailto:sales@agentmd.online?subject=Enterprise%20Inquiry">
               Contact Sales
             </Link>
           </Button>

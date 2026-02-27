@@ -29,8 +29,8 @@ Create `.env.production` (or use Vercel env UI) with:
 
 ```bash
 # Required (soft launch)
-NEXT_PUBLIC_APP_URL=https://your-domain.com
-NEXTAUTH_URL=https://your-domain.com
+NEXT_PUBLIC_APP_URL=https://agentmd.online
+NEXTAUTH_URL=https://agentmd.online
 NEXTAUTH_SECRET=<openssl rand -base64 32>
 GITHUB_ID=<GitHub OAuth Client ID>
 GITHUB_SECRET=<GitHub OAuth Client Secret>

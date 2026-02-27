@@ -18,7 +18,7 @@ export function BadgeShareModal({ isOpen, onClose, repoFullName, repoName }: Bad
 
     if (!isOpen) return null;
 
-    const baseUrl = typeof window !== "undefined" ? window.location.origin : "https://agentmd.io";
+    const baseUrl = typeof window !== "undefined" ? window.location.origin : "https://agentmd.online";
     const badgeUrl = `${baseUrl}/api/badge/score?repo=${repoFullName}`;
     const linkUrl = `${baseUrl}/share?repo=${repoFullName}`;
 

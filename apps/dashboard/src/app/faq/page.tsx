@@ -127,7 +127,7 @@ export default function FaqPage() {
                 </Link>{" "}
                 or{" "}
                 <a
-                  href="mailto:support@agentmd.dev"
+                  href="mailto:support@agentmd.online"
                   className="text-primary hover:underline"
                 >
                   contact us

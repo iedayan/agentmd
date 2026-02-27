@@ -16,7 +16,7 @@ rules:
     match: "deploy:*"
     approval: always
     escalateTo:
-      - sre@agentmd.io
+      - sre@agentmd.online
     budgetMinutes: 15
 `);
 

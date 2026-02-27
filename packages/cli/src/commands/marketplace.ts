@@ -10,7 +10,7 @@ export async function listAgents(options: { category?: string; certified?: boole
   if (options.certified) params.set("certified", "true");
 
   const res = await fetch(
-    `https://api.agentmd.io/marketplace/agents?${params}`,
+    `https://api.agentmd.online/marketplace/agents?${params}`,
     { headers: { "User-Agent": "agentmd-cli/0.1" } }
   );
   const data = await res.json();
@@ -22,7 +22,7 @@ export async function executeAgent(
   repositoryId: string,
   apiKey: string
 ) {
-  const res = await fetch("https://api.agentmd.io/execute", {
+  const res = await fetch("https://api.agentmd.online/execute", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

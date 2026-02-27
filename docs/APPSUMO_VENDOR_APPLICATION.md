@@ -2,8 +2,8 @@
 
 **Prepared for:** AppSumo Vendor Review  
 **Product:** AgentMD — Make AGENTS.md Executable  
-**Website:** https://agentmd.io  
-**Contact:** [your-email@agentmd.io]
+**Website:** https://agentmd.online  
+**Contact:** [your-email@agentmd.online]
 
 ---
 
@@ -82,7 +82,7 @@ AgentMD is a **CI/CD platform for AI agents** that makes the [AGENTS.md](https:/
 | Criterion | Status |
 |-----------|--------|
 | **No critical bugs** | ✅ Tested; 100+ tests passing |
-| **Clear documentation** | ✅ Docs at agentmd.io/docs, quickstart, API reference |
+| **Clear documentation** | ✅ Docs at agentmd.online/docs, quickstart, API reference |
 | **Support capacity** | ✅ Dedicated support during campaign; <24h response target |
 | **Scalable infrastructure** | ✅ Vercel + Neon; built for production |
 | **Refund handling** | ✅ Plan for <15% refund rate; will iterate on feedback |
@@ -113,11 +113,11 @@ AgentMD is a **CI/CD platform for AI agents** that makes the [AGENTS.md](https:/
 
 ## 9. Contact & Links
 
-- **Website:** https://agentmd.io  
-- **Docs:** https://agentmd.io/docs  
-- **Pricing:** https://agentmd.io/pricing  
+- **Website:** https://agentmd.online  
+- **Docs:** https://agentmd.online/docs  
+- **Pricing:** https://agentmd.online/pricing  
 - **GitHub:** https://github.com/iedayan/agentmd  
-- **Email:** [your-email@agentmd.io]  
+- **Email:** [your-email@agentmd.online]  
 - **Demo:** Available on request  
 
 ---
@@ -152,7 +152,7 @@ AgentMD is a **CI/CD platform for AI agents** that makes the [AGENTS.md](https:/
 - Badge API (live score badges for READMEs)
 
 **Links:**
-- Roadmap: https://agentmd.io/roadmap
+- Roadmap: https://agentmd.online/roadmap
 - Changelog: [Add link if you have one, e.g. GitHub Releases or changelog page]
 
 ---

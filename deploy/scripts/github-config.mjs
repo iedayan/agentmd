@@ -2,9 +2,9 @@
 /**
  * Generate GitHub OAuth App and GitHub App configuration.
  * Usage: node deploy/scripts/github-config.mjs [base-url]
- * Example: node deploy/scripts/github-config.mjs https://agentmd.io
+ * Example: node deploy/scripts/github-config.mjs https://agentmd.online
  */
-const baseUrl = (process.argv[2] || "https://agentmd.io").replace(/\/$/, "");
+const baseUrl = (process.argv[2] || "https://agentmd.online").replace(/\/$/, "");
 
 const config = {
   oauth: {

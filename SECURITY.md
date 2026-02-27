@@ -32,7 +32,7 @@ Current security controls:
 
 Do not open public issues for vulnerabilities.
 
-- Contact: `security@agentmd.io`
+- Contact: `security@agentmd.online`
 - Include:
   - Affected version(s)
   - Reproduction steps

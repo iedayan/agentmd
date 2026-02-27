@@ -20,7 +20,7 @@ export default function StatusPage() {
       <main className="container mx-auto px-4 py-16 max-w-2xl">
         <h1 className="text-3xl font-bold">System Status</h1>
         <p className="text-muted-foreground mt-2">
-          status.agentmd.com — Real-time uptime monitoring
+          status.agentmd.online — Real-time uptime monitoring
         </p>
 
         <div className="mt-12 space-y-4">
@@ -45,7 +45,7 @@ export default function StatusPage() {
         </div>
 
         <p className="mt-12 text-sm text-muted-foreground">
-          Subscribe to updates at status.agentmd.com
+          Subscribe to updates at status.agentmd.online
         </p>
       </main>
     </div>

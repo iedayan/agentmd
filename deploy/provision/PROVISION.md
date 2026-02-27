@@ -144,7 +144,7 @@ Copy to Vercel (and worker if applicable):
 
 | Variable | Required | Description |
 |----------|----------|-------------|
-| `NEXT_PUBLIC_APP_URL` | Yes | Public URL (e.g. `https://agentmd.io`) |
+| `NEXT_PUBLIC_APP_URL` | Yes | Public URL (e.g. `https://agentmd.online`) |
 | `NEXTAUTH_URL` | Yes | Same as `NEXT_PUBLIC_APP_URL` |
 | `NEXTAUTH_SECRET` | Yes | `openssl rand -base64 32` |
 | `GITHUB_ID` | Yes | GitHub OAuth Client ID |

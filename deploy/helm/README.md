@@ -12,7 +12,7 @@ Deploy AgentMD to Kubernetes for scaling and high availability.
 ## Install
 
 ```bash
-helm repo add agentmd https://charts.agentmd.io
+helm repo add agentmd https://charts.agentmd.online
 helm install agentmd agentmd/agentmd -f values.yaml
 ```
 

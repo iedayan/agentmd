@@ -52,7 +52,7 @@ export default function VerifyPage() {
               </div>
             </div>
             <Button className="w-full mt-4" asChild>
-              <a href="mailto:enterprise@agentmd.dev?subject=AGENTS.md%20Certification%20Application">
+              <a href="mailto:enterprise@agentmd.online?subject=AGENTS.md%20Certification%20Application">
                 Apply for Certification
               </a>
             </Button>

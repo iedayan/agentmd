@@ -101,7 +101,7 @@ export default function CookiePolicyPage() {
       <h2>7. Contact</h2>
       <p>
         For questions about our use of cookies, contact us at{" "}
-        <a href="mailto:privacy@agentmd.dev">privacy@agentmd.dev</a>.
+        <a href="mailto:privacy@agentmd.online">privacy@agentmd.online</a>.
       </p>
 
       <p className="text-sm text-muted-foreground mt-12">

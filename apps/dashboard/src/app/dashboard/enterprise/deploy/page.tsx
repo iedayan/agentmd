@@ -55,7 +55,7 @@ export default function DeployPage() {
           </CardHeader>
           <CardContent>
             <p className="text-sm text-muted-foreground">
-              Contact sales@agentmd.io for air-gapped license.
+              Contact sales@agentmd.online for air-gapped license.
             </p>
           </CardContent>
         </Card>

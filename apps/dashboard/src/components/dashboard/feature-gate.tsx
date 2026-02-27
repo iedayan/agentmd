@@ -71,7 +71,7 @@ export function FeatureGate({ children, feature, planRequired, className }: Feat
                                 </Link>
                             </Button>
                             <Button variant="ghost" className="w-full rounded-[1.25rem] h-12 font-black text-[11px] uppercase tracking-widest text-muted-foreground hover:text-foreground" asChild>
-                                <Link href="mailto:sales@agentmd.io">Contact Sales</Link>
+                                <Link href="mailto:sales@agentmd.online">Contact Sales</Link>
                             </Button>
                         </div>
                     </div>

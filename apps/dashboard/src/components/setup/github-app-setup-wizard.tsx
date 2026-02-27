@@ -42,7 +42,7 @@ function ConfigRow({ label, value, description }: { label: string; value: string
 }
 
 export function GithubAppSetupWizard() {
-  const [baseUrl, setBaseUrl] = useState("https://agentmd.io");
+  const [baseUrl, setBaseUrl] = useState("https://agentmd.online");
   const [webhookSecret, setWebhookSecret] = useState("");
 
   useEffect(() => {
@@ -87,7 +87,7 @@ GITHUB_WEBHOOK_SECRET=${webhookSecret || "your_webhook_secret"}
         <CardHeader>
           <CardTitle>1. Base URL</CardTitle>
           <CardDescription>
-            Your app URL (e.g. https://agentmd.io for production, http://localhost:3001 for local dev)
+            Your app URL (e.g. https://agentmd.online for production, http://localhost:3001 for local dev)
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -98,7 +98,7 @@ GITHUB_WEBHOOK_SECRET=${webhookSecret || "your_webhook_secret"}
             <Input
               id="base-url"
               type="url"
-              placeholder="https://agentmd.io"
+              placeholder="https://agentmd.online"
               value={baseUrl}
               onChange={(e) => setBaseUrl(e.target.value)}
             />

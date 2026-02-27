@@ -10,7 +10,7 @@
 2. **New OAuth App**.
 3. Fill in:
    - **Application name**: `AgentMD` (or your app name)
-   - **Homepage URL**: `https://your-domain.com` (e.g. `https://agentmd.io`)
+   - **Homepage URL**: `https://your-domain.com` (e.g. `https://agentmd.online`)
    - **Authorization callback URL**: `https://your-domain.com/api/auth/callback/github`
 4. **Register application**.
 5. Copy **Client ID** → set as `GITHUB_ID`.

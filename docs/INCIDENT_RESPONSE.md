@@ -4,8 +4,8 @@ Contact and escalation for security incidents and production outages.
 
 ## Contact
 
-- **Security issues**: [security@agentmd.dev](mailto:security@agentmd.dev)
-- **Production incidents**: [ops@agentmd.dev](mailto:ops@agentmd.dev)
+- **Security issues**: [security@agentmd.online](mailto:security@agentmd.online)
+- **Production incidents**: [ops@agentmd.online](mailto:ops@agentmd.online)
 - **Responsible disclosure**: See [SECURITY.md](../SECURITY.md)
 
 ## Severity Levels
