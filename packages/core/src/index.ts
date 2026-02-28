@@ -54,3 +54,12 @@ export {
   getTemplateById,
   type GovernanceTemplate,
 } from "./templates.js";
+export {
+  analytics,
+  initializeAnalytics,
+  getAnalytics,
+  track,
+  type AnalyticsEvent,
+  type ProductMetrics,
+  AnalyticsClient,
+} from "./analytics.js";

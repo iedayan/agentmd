@@ -8,6 +8,9 @@ const AUTH_PATHS = ["/register", "/login"];
 /** Marketplace paths that are public (no auth required). */
 const PUBLIC_MARKETPLACE_PATHS = ["/marketplace/developers/generator"];
 
+/** Dashboard-style paths that are public (e.g. "See it live" landing CTA). */
+const PUBLIC_PATHS = ["/ops"];
+
 function isDashboardPath(pathname: string): boolean {
   return DASHBOARD_PATHS.some((p) => pathname === p || pathname.startsWith(`${p}/`));
 }
@@ -16,6 +19,10 @@ function isPublicMarketplacePath(pathname: string): boolean {
   return PUBLIC_MARKETPLACE_PATHS.some(
     (p) => pathname === p || pathname.startsWith(`${p}/`)
   );
+}
+
+function isPublicPath(pathname: string): boolean {
+  return PUBLIC_PATHS.some((p) => pathname === p || pathname.startsWith(`${p}/`));
 }
 
 function isAuthPath(pathname: string): boolean {
@@ -35,6 +42,7 @@ export async function middleware(req: NextRequest) {
   if (
     isDashboardPath(pathname) &&
     !isPublicMarketplacePath(pathname) &&
+    !isPublicPath(pathname) &&
     !isSignedIn
   ) {
     const url = req.nextUrl.clone();

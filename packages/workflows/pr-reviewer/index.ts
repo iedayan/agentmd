@@ -3,7 +3,7 @@
  * Automated pull request review using AI agents with AGENTS.md configuration.
  */
 
-import type { ParsedAgentsMd, ExtractedCommand } from "@agentmd-dev/core";
+import type { ParsedAgentsMd } from "@agentmd-dev/core";
 
 export interface PRReviewerConfig {
   /** Repository to analyze */

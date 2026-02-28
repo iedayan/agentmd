@@ -75,4 +75,14 @@ describe("Auth middleware", () => {
     expect(res.status).toBe(307);
     expect(res.headers.get("location")).toContain("/register");
   });
+
+  it("allows unauthenticated users to access /ops (See it live)", async () => {
+    vi.mocked(getToken).mockResolvedValue(null);
+
+    const middleware = await loadMiddleware();
+    const req = createNextRequest("http://localhost/ops");
+
+    const res = await middleware(req);
+    expect(res.status).toBe(200);
+  });
 });

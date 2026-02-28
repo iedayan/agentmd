@@ -6,6 +6,7 @@ import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 const TABS = [
   { id: "pipelines", label: "Pipelines" },
+  { id: "pr-reviewer", label: "PR Reviewer" },
   { id: "policies", label: "Policies" },
   { id: "audit", label: "Audit Log" },
   { id: "analytics", label: "Analytics" },

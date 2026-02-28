@@ -3,13 +3,18 @@
 import { useState, useRef, useEffect } from "react";
 import dynamic from "next/dynamic";
 import { OpsNav } from "@/components/ops/OpsNav";
-import { PipelineSidebar } from "@/components/ops/PipelineSidebar";
-import { PipelineDiagram } from "@/components/ops/PipelineDiagram";
+import { EnhancedPipelineSidebar } from "@/components/ops/EnhancedPipelineSidebar";
+import { EnhancedPipelineDiagram } from "@/components/ops/EnhancedPipelineDiagram";
 import { AgentsMdPreview } from "@/components/ops/AgentsMdPreview";
 import { PolicyValidation } from "@/components/ops/PolicyValidation";
 import { ApprovalGate } from "@/components/ops/ApprovalGate";
 import { ExecutionLog } from "@/components/ops/ExecutionLog";
 import { useOpsData } from "@/lib/ops/use-ops-data";
+
+const PRReviewerTab = dynamic(
+  () => import("@/components/ops/PRReviewerTab").then((mod) => mod.PRReviewerTab),
+  { loading: () => <div className="p-6 font-mono text-sm">Loading PR reviewer…</div> }
+);
 
 const PoliciesTab = dynamic(
   () => import("@/components/ops/PoliciesTab").then((mod) => mod.PoliciesTab),
@@ -21,8 +26,8 @@ const AuditTab = dynamic(
   { loading: () => <div className="p-6 font-mono text-sm">Loading audit log…</div> }
 );
 
-const AnalyticsTab = dynamic(
-  () => import("@/components/ops/AnalyticsTab").then((mod) => mod.AnalyticsTab),
+const EnhancedAnalyticsTab = dynamic(
+  () => import("@/components/ops/EnhancedAnalyticsTab").then((mod) => mod.EnhancedAnalyticsTab),
   { loading: () => <div className="p-6 font-mono text-sm">Loading analytics…</div> }
 );
 
@@ -64,7 +69,7 @@ export default function OpsPage() {
 
       {activeTab === "pipelines" && (
         <div className="flex">
-          <PipelineSidebar
+          <EnhancedPipelineSidebar
             pipelines={pipelines}
             selectedId={selectedPipelineId}
             onSelect={setSelectedPipelineId}
@@ -92,7 +97,7 @@ export default function OpsPage() {
                   </div>
 
                   <div className="mt-8">
-                    <PipelineDiagram
+                    <EnhancedPipelineDiagram
                       stages={selectedPipeline.stages}
                       onStageClick={handleStageClick}
                     />
@@ -134,10 +139,10 @@ export default function OpsPage() {
         </div>
       )}
 
+      {activeTab === "pr-reviewer" && <PRReviewerTab />}
       {activeTab === "policies" && <PoliciesTab policies={policies} />}
       {activeTab === "audit" && <AuditTab entries={audit} />}
-      {activeTab === "analytics" && <AnalyticsTab analytics={analytics} />}
-
+      {activeTab === "analytics" && <EnhancedAnalyticsTab analytics={analytics} />}
       {activeTab === "settings" && <OpsSettingsTab />}
     </div>
   );

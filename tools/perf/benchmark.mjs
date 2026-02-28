@@ -16,16 +16,15 @@ const { parseAgentsMd, validateAgentsMd, computeAgentReadinessScore } = await im
 
 /**
  * Benchmark result interface
+ * @typedef {Object} BenchmarkResult
+ * @property {string} name
+ * @property {number} iterations
+ * @property {number} totalTime
+ * @property {number} avgTime
+ * @property {number} minTime
+ * @property {number} maxTime
+ * @property {number} opsPerSecond
  */
-interface BenchmarkResult {
-  name: string;
-  iterations: number;
-  totalTime: number;
-  avgTime: number;
-  minTime: number;
-  maxTime: number;
-  opsPerSecond: number;
-}
 
 /**
  * Run a single benchmark

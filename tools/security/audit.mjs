@@ -329,14 +329,15 @@ async function runSecurityAudit() {
   console.log('\n📊 Security Issues Found');
   console.log('─'.repeat(50));
   
+  // Filter issues by severity
+  const criticalIssues = allIssues.filter(i => i.severity === 'critical');
+  const highIssues = allIssues.filter(i => i.severity === 'high');
+  const mediumIssues = allIssues.filter(i => i.severity === 'medium');
+  const lowIssues = allIssues.filter(i => i.severity === 'low');
+
   if (allIssues.length === 0) {
     console.log('✅ No security issues found!');
   } else {
-    const criticalIssues = allIssues.filter(i => i.severity === 'critical');
-    const highIssues = allIssues.filter(i => i.severity === 'high');
-    const mediumIssues = allIssues.filter(i => i.severity === 'medium');
-    const lowIssues = allIssues.filter(i => i.severity === 'low');
-    
     console.log(`🚨 Critical: ${criticalIssues.length}`);
     console.log(`⚠️  High: ${highIssues.length}`);
     console.log(`⚡ Medium: ${mediumIssues.length}`);

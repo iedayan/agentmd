@@ -1,0 +1,29 @@
+{
+  "name": "@agentmd/cursor",
+  "version": "0.1.0",
+  "description": "AgentMD integration for Cursor editor",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup index.ts --format esm --dts",
+    "dev": "tsup index.ts --format esm --dts --watch"
+  },
+  "dependencies": {
+    "@agentmd-dev/core": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "tsup": "^8.3.5",
+    "typescript": "^5.7.2"
+  }
+}
