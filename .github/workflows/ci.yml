@@ -11,14 +11,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 9
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'pnpm'
-      - uses: pnpm/action-setup@v3
-        with:
-          version: 9
-      - run: pnpm install
+      - run: pnpm install --frozen-lockfile
       - run: pnpm -w run build
 
   lint:
@@ -26,14 +26,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 9
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'pnpm'
-      - uses: pnpm/action-setup@v3
-        with:
-          version: 9
-      - run: pnpm install
+      - run: pnpm install --frozen-lockfile
       - run: pnpm -w run lint
 
   test:
@@ -41,12 +41,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 9
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'pnpm'
-      - uses: pnpm/action-setup@v3
-        with:
-          version: 9
-      - run: pnpm install
+      - run: pnpm install --frozen-lockfile
       - run: pnpm -w run test
