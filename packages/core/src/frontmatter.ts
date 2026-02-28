@@ -118,6 +118,46 @@ function normalizeFrontmatter(data: Record<string, unknown>): AgentFrontmatter {
     result.output_contract = normalized;
   }
 
+  // Enhanced properties for production-ready agents
+  if (raw.environment && typeof raw.environment === 'object' && !Array.isArray(raw.environment)) {
+    result.environment = {};
+    for (const [k, v] of Object.entries(raw.environment)) {
+      if (typeof v === 'string') result.environment[k] = v;
+    }
+  }
+
+  if (Array.isArray(raw.dependencies)) {
+    result.dependencies = raw.dependencies.filter((d): d is string => typeof d === 'string');
+  }
+
+  if (raw.resources && typeof raw.resources === 'object' && !Array.isArray(raw.resources)) {
+    result.resources = {};
+    for (const [k, v] of Object.entries(raw.resources)) {
+      if (typeof v === 'string') result.resources[k] = v;
+    }
+  }
+
+  if (raw.limits && typeof raw.limits === 'object' && !Array.isArray(raw.limits)) {
+    result.limits = {};
+    for (const [k, v] of Object.entries(raw.limits)) {
+      if (typeof v === 'string') result.limits[k] = v;
+    }
+  }
+
+  if (raw.monitoring && typeof raw.monitoring === 'object' && !Array.isArray(raw.monitoring)) {
+    result.monitoring = {};
+    for (const [k, v] of Object.entries(raw.monitoring)) {
+      if (typeof v === 'string') result.monitoring[k] = v;
+    }
+  }
+
+  if (raw.observability && typeof raw.observability === 'object' && !Array.isArray(raw.observability)) {
+    result.observability = {};
+    for (const [k, v] of Object.entries(raw.observability)) {
+      if (typeof v === 'string') result.observability[k] = v;
+    }
+  }
+
   return result;
 }
 

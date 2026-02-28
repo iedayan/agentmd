@@ -193,20 +193,29 @@ export async function validateAgentsMd(
  * Calibrated for typical AGENTS.md best practices.
  */
 const SCORE_WEIGHTS = {
-  hasContent: 8,
-  hasSections: 18,
-  hasCommands: 22,
-  hasFrontmatter: 12,
-  hasFrontmatterDetail: 3,
+  hasContent: 5,
+  hasSections: 10,
+  hasCommands: 15,
+  hasFrontmatter: 8,
+  hasFrontmatterDetail: 2,
   hasTestingSection: 5,
   hasBuildSection: 5,
-  hasPRSection: 4,
+  hasPRSection: 3,
   hasDeploySection: 3,
   hasInstallSection: 3,
-  hasSecurityOrArchSection: 4,
-  hasMultipleCommandTypes: 6,
-  hasGuardrails: 4,
-  allCommandsSafe: 12,
+  hasSecurityOrArchSection: 3,
+  hasMultipleCommandTypes: 5,
+  hasGuardrails: 3,
+  allCommandsSafe: 10,
+  // Enhanced scoring (reduced weights to fit in 100-point scale)
+  hasOutputContract: 3,
+  hasEnvironmentConfig: 2,
+  hasErrorHandling: 3,
+  hasPerformanceMetrics: 2,
+  hasCommandDependencies: 3,
+  hasResourceLimits: 2,
+  hasRollbackPlan: 3,
+  hasMonitoringIntegration: 2,
 } as const;
 
 /**
@@ -258,6 +267,47 @@ export async function computeAgentReadinessScore(parsed: ParsedAgentsMd): Promis
   const allSafe = safetyResults.every((r) => r.safe);
   if (parsed.commands.length === 0 || allSafe) score += SCORE_WEIGHTS.allCommandsSafe;
 
+  // Enhanced scoring: Output contract validation
+  const hasOutputContract = parsed.frontmatter?.output_contract && 
+    Object.keys(parsed.frontmatter.output_contract).length > 0;
+  if (hasOutputContract) score += SCORE_WEIGHTS.hasOutputContract;
+
+  // Enhanced scoring: Environment configuration
+  const hasEnvironmentConfig = parsed.frontmatter?.environment && 
+    Object.keys(parsed.frontmatter.environment).length > 0;
+  if (hasEnvironmentConfig) score += SCORE_WEIGHTS.hasEnvironmentConfig;
+
+  // Enhanced scoring: Error handling section
+  const hasErrorHandling = sectionTitles.some((t) => 
+    t.includes('error') || t.includes('failure') || t.includes('troubleshoot'));
+  if (hasErrorHandling) score += SCORE_WEIGHTS.hasErrorHandling;
+
+  // Enhanced scoring: Performance metrics section
+  const hasPerformanceMetrics = sectionTitles.some((t) => 
+    t.includes('performance') || t.includes('metrics') || t.includes('monitoring'));
+  if (hasPerformanceMetrics) score += SCORE_WEIGHTS.hasPerformanceMetrics;
+
+  // Enhanced scoring: Command dependencies
+  const hasCommandDependencies = parsed.frontmatter?.dependencies && 
+    Array.isArray(parsed.frontmatter.dependencies) && 
+    parsed.frontmatter.dependencies.length > 0;
+  if (hasCommandDependencies) score += SCORE_WEIGHTS.hasCommandDependencies;
+
+  // Enhanced scoring: Resource limits
+  const hasResourceLimits = parsed.frontmatter?.resources || 
+    parsed.frontmatter?.limits;
+  if (hasResourceLimits) score += SCORE_WEIGHTS.hasResourceLimits;
+
+  // Enhanced scoring: Rollback plan
+  const hasRollbackPlan = sectionTitles.some((t) => 
+    t.includes('rollback') || t.includes('revert') || t.includes('backup'));
+  if (hasRollbackPlan) score += SCORE_WEIGHTS.hasRollbackPlan;
+
+  // Enhanced scoring: Monitoring integration
+  const hasMonitoringIntegration = parsed.frontmatter?.monitoring || 
+    parsed.frontmatter?.observability;
+  if (hasMonitoringIntegration) score += SCORE_WEIGHTS.hasMonitoringIntegration;
+
   // Penalty: unsafe commands (already blocked, but deduct from score)
   const unsafeCount = safetyResults.filter((r) => !r.safe).length;
   if (unsafeCount > 0) score -= Math.min(unsafeCount * 10, 25);
@@ -267,6 +317,12 @@ export async function computeAgentReadinessScore(parsed: ParsedAgentsMd): Promis
 
   // Penalty: very long files (recommended under 150 lines)
   if (parsed.lineCount > MAX_LINES_RECOMMENDED) score -= 5;
+
+  // Enhanced penalty: Missing critical sections for production agents
+  if (parsed.commands.length > 0) {
+    const hasCriticalSections = hasBuild && hasTesting;
+    if (!hasCriticalSections) score -= 3; // Missing core CI/CD sections
+  }
 
   return Math.max(0, Math.min(score, max));
 }

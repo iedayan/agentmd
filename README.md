@@ -254,9 +254,10 @@ Discover, purchase, and execute agents through AGENTS.md:
 - **Installation & CLI reference**: [docs/INSTALL.md](docs/INSTALL.md)
 - **Core API contract**: [docs/CORE_PUBLIC_API.md](docs/CORE_PUBLIC_API.md)
 - **Infrastructure & deployment**: [docs/INFRASTRUCTURE.md](docs/INFRASTRUCTURE.md)
-- **Security policy**: [SECURITY.md](SECURITY.md)
-- **Contribution guide**: [CONTRIBUTING.md](CONTRIBUTING.md)
-- **Release history**: [CHANGELOG.md](CHANGELOG.md)
+- **Security policy**: [docs/SECURITY.md](docs/SECURITY.md)
+- **Contribution guide**: [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)
+- **Enhanced scoring**: [docs/ENHANCED_SCORING.md](docs/ENHANCED_SCORING.md)
+- **Release history**: [docs/CHANGELOG.md](docs/CHANGELOG.md)
 
 Notes:
 

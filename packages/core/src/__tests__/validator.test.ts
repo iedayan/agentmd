@@ -188,6 +188,76 @@ purpose: Run tests and builds
       await computeAgentReadinessScore(short),
     );
   });
+
+  // Enhanced scoring tests
+  it('rewards output contract in frontmatter', async () => {
+    const withoutContract = parseAgentsMd('## Build\n`pnpm build`');
+    const withContract = parseAgentsMd(`---
+output_contract:
+  format: json
+  schema:
+    status: string
+---
+## Build
+\`pnpm build\``);
+    expect(await computeAgentReadinessScore(withContract)).toBeGreaterThan(
+      await computeAgentReadinessScore(withoutContract),
+    );
+  });
+
+  it('rewards environment configuration', async () => {
+    const withoutEnv = parseAgentsMd('## Build\n`pnpm build`');
+    const withEnv = parseAgentsMd(`---
+environment:
+  NODE_ENV: production
+  API_URL: https://api.example.com
+---
+## Build
+\`pnpm build\``);
+    expect(await computeAgentReadinessScore(withEnv)).toBeGreaterThan(
+      await computeAgentReadinessScore(withoutEnv),
+    );
+  });
+
+  it('rewards error handling section', async () => {
+    const withoutError = parseAgentsMd('## Build\n`pnpm build`');
+    const withError = parseAgentsMd(`## Build
+\`pnpm build\`
+
+## Error Handling
+If build fails, check logs and notify team
+\`echo "Build failed, check logs"\``);
+    expect(await computeAgentReadinessScore(withError)).toBeGreaterThan(
+      await computeAgentReadinessScore(withoutError),
+    );
+  });
+
+  it('rewards monitoring integration', async () => {
+    const withoutMonitoring = parseAgentsMd('## Build\n`pnpm build`');
+    const withMonitoring = parseAgentsMd(`---
+monitoring:
+  metrics: prometheus
+  logs: elk
+---
+## Build
+\`pnpm build\``);
+    expect(await computeAgentReadinessScore(withMonitoring)).toBeGreaterThan(
+      await computeAgentReadinessScore(withoutMonitoring),
+    );
+  });
+
+  it('rewards rollback plan section', async () => {
+    const withoutRollback = parseAgentsMd('## Deploy\n`pnpm deploy`');
+    const withRollback = parseAgentsMd(`## Deploy
+\`pnpm deploy\`
+
+## Rollback
+If deployment fails, revert to previous version
+\`git revert HEAD\``);
+    expect(await computeAgentReadinessScore(withRollback)).toBeGreaterThan(
+      await computeAgentReadinessScore(withoutRollback),
+    );
+  });
 });
 
 describe('validateAgentsMd additional', () => {
