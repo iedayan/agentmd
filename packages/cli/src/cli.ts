@@ -772,7 +772,7 @@ async function cmdRun(opts: { target: string; json: boolean; extra: string[] }) 
               section: i.section,
               line: i.line,
               reasons: i.reasons,
-              reasonDetails: (i as any).reasonDetails,
+              reasonDetails: (i as { reasonDetails?: string }).reasonDetails,
               requiresShell: i.requiresShell,
               requiresApproval: i.requiresApproval,
             })),
@@ -825,7 +825,7 @@ async function cmdRun(opts: { target: string; json: boolean; extra: string[] }) 
           section: i.section,
           line: i.line,
           reasons: i.reasons,
-          reasonDetails: (i as any).reasonDetails,
+          reasonDetails: (i as { reasonDetails?: string }).reasonDetails,
           requiresShell: i.requiresShell,
           requiresApproval: i.requiresApproval,
         })),
@@ -961,7 +961,7 @@ async function cmdImprove(opts: { target: string; apply: boolean; json: boolean 
 
   const content = readFileSync(filePath, "utf-8");
   const parsed = parseAgentsMd(content, filePath);
-  const validation = await validateAgentsMd(parsed);
+  await validateAgentsMd(parsed);
   const scoreBefore = await computeAgentReadinessScore(parsed);
 
   const { frontmatter, body, hasFrontmatter } = parseFrontmatter(content);

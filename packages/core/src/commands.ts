@@ -83,7 +83,7 @@ export function extractCommands(
             seen.add(normalizeCommand(trimmed));
             const lineNum = blockStartLine + lineInBlock - 1;
             const section = sectionByLine.get(lineNum) ?? "General";
-            const context = extractContext(sectionContentByLine.get(lineNum) ?? "", lineNum, section);
+            const context = extractContext(sectionContentByLine.get(lineNum) ?? "");
             commands.push({
               command: trimmed,
               section,
@@ -102,7 +102,7 @@ export function extractCommands(
           if (isLikelyCommand(trimmed) && !seen.has(normalizeCommand(trimmed))) {
             seen.add(normalizeCommand(trimmed));
             const section = sectionByLine.get(lineNum) ?? "General";
-            const context = extractContext(sectionContentByLine.get(lineNum) ?? "", lineNum, section);
+            const context = extractContext(sectionContentByLine.get(lineNum) ?? "");
             commands.push({
               command: trimmed,
               section,
@@ -128,7 +128,7 @@ export function extractCommands(
       if (extracted && !seen.has(normalizeCommand(extracted))) {
         seen.add(normalizeCommand(extracted));
         const section = sectionByLine.get(i + 1) ?? "General";
-        const context = extractContext(sectionContentByLine.get(i + 1) ?? "", i + 1, section);
+        const context = extractContext(sectionContentByLine.get(i + 1) ?? "");
         commands.push({
           command: extracted,
           section,
@@ -263,7 +263,7 @@ function extractCommandFromLine(line: string): string | null {
 }
 
 /** Extract cwd/context hints from section content (e.g. "in packages/core", "from apps/web"). */
-function extractContext(sectionContent: string, _lineNum: number, _sectionTitle: string): string | null {
+function extractContext(sectionContent: string): string | null {
   // "in packages/core", "from packages/core directory", "under apps/web"
   const inDir = /\b(?:in|from|under|inside|within)\s+[`']?([a-zA-Z0-9_./-]+)[`']?(?:\s+directory)?\b/i.exec(sectionContent);
   if (inDir) return inDir[1];

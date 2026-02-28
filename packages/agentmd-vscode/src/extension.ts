@@ -60,7 +60,7 @@ export function activate(context: ExtensionContext): void {
         return;
       }
       try {
-        const result = await client!.sendRequest<{ score: number } | null>(
+        const result = await client?.sendRequest<{ score: number } | null>(
           "agentmd/getScore",
           { uri: doc.uri.toString() }
         );
@@ -113,7 +113,7 @@ export function activate(context: ExtensionContext): void {
           return;
         }
         try {
-          const result = await client!.sendRequest<{ score: number } | null>(
+          const result = await client?.sendRequest<{ score: number } | null>(
             "agentmd/getScore",
             { uri: doc.uri.toString() }
           );

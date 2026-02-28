@@ -47,7 +47,7 @@ export async function exportToGitHubActions(
     commands = safetyResults.filter(r => r.safe).map(r => r.cmd);
   }
 
-  const steps = commands.map((cmd, i) => toActionStep(cmd, i + 1));
+  const steps = commands.map((cmd) => toActionStep(cmd));
   const stepsYaml = steps.map((s) => indent(s, 6)).join("\n");
 
   return `name: ${name}
@@ -63,7 +63,7 @@ ${stepsYaml}
 `;
 }
 
-function toActionStep(cmd: ExtractedCommand, _stepNum: number): string {
+function toActionStep(cmd: ExtractedCommand): string {
   const lines: string[] = [
     `- name: ${escapeYaml(cmd.section)} (${cmd.type})`,
     `  run: ${escapeYaml(cmd.command)}`,
