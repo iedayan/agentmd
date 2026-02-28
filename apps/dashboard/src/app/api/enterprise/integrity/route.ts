@@ -17,7 +17,7 @@ export async function GET(req: NextRequest) {
                 integrity: [
                     {
                         id: "dev-cli",
-                        packageName: "@agentmd/cli",
+                        packageName: "@agentmd-dev/cli",
                         version: "v1.4.2-dev",
                         sha256: "ea33c94a565d7890b1d1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1",
                         lastHardened: new Date().toISOString(),

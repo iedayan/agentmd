@@ -12,7 +12,7 @@ export default function QuickstartPage() {
 
       <h2>1. Install & create AGENTS.md</h2>
       <p>From your repo root, install the CLI and create a sample file:</p>
-      <CodeBlock>{`pnpm add -D @agentmd/cli
+      <CodeBlock>{`pnpm add -D @agentmd-dev/cli
 pnpm exec agentmd init`}</CodeBlock>
       <p>
         Or use the{" "}

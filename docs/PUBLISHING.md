@@ -1,5 +1,7 @@
 # Publishing AgentMD to npm and VS Code Marketplace
 
+**Current status:** `@agentmd-dev/core` and `@agentmd-dev/cli` are published on npm. VS Code extension publishing is optional.
+
 ## Prerequisites
 
 - [npm](https://www.npmjs.com/) account
@@ -41,12 +43,35 @@ The `--access public` flag is required for scoped packages (`@agentmd-dev/...`) 
 ### 1.5 Verify
 
 ```bash
+# Run from outside the monorepo (e.g. cd ~ or cd /tmp) to avoid workspace conflicts
 npm view @agentmd-dev/core
 ```
 
 ---
 
-## Part 2: Publish VS Code Extension to Marketplace
+## Part 1b: Publish @agentmd-dev/cli to npm
+
+### Build and publish
+
+```bash
+cd packages/cli
+pnpm run build
+npm publish --access public
+```
+
+### Verify
+
+```bash
+# From outside the monorepo
+npm view @agentmd-dev/cli
+npx @agentmd-dev/cli --help
+```
+
+---
+
+## Part 2: Publish VS Code Extension to Marketplace (Optional)
+
+Publish the extension when ready. Skip this section if you're not publishing yet.
 
 ### 2.1 Publish @agentmd-dev/core first
 
@@ -120,5 +145,7 @@ Search for "AgentMD" in the [VS Code Marketplace](https://marketplace.visualstud
 ## Updating published packages
 
 **@agentmd-dev/core:** Bump `version` in `packages/core/package.json`, then `npm publish`.
+
+**@agentmd-dev/cli:** Bump `version` in `packages/cli/package.json`, then `npm publish`.
 
 **VS Code extension:** Bump `version` in `packages/agentmd-vscode/package.json`, run `vsce package`, then `vsce publish`.

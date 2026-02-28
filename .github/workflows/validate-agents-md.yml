@@ -47,7 +47,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Build
-        run: pnpm run build -w @agentmd-dev/core && pnpm run build -w @agentmd/cli
+        run: pnpm run build -w @agentmd-dev/core && pnpm run build -w @agentmd-dev/cli
 
       - name: Validate and score
         id: validate
@@ -149,7 +149,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Build
-        run: pnpm run build -w @agentmd-dev/core && pnpm run build -w @agentmd/cli
+        run: pnpm run build -w @agentmd-dev/core && pnpm run build -w @agentmd-dev/cli
 
       - name: Run AGENTS.md test commands
         run: pnpm run agentmd -- run . test

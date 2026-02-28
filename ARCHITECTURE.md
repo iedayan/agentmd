@@ -4,7 +4,7 @@ Overview
 - A PNPM monorepo hosting core parsing/validation logic, a dashboard UI, a CLI, and a dashboard app.
 - Packages:
   - @agentmd/core: Core parsing, validation, discovery, composition, and execution logic for AGENTS.md.
-  - @agentmd/cli: Command-line interface to interact with AgentMD features.
+  - @agentmd-dev/cli: Command-line interface to interact with AgentMD features.
   - @agentmd/sdk: Client SDK exposing core capabilities for external tools.
   - @agentmd/dashboard (apps/dashboard): Next.js dashboard UI for visibility into agent health and runs.
 

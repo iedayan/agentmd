@@ -1,9 +1,21 @@
 {
-  "name": "@agentmd/cli",
+  "name": "@agentmd-dev/cli",
   "version": "0.1.0",
+  "description": "AgentMD CLI — validate, score, and run AGENTS.md",
   "type": "module",
   "bin": {
     "agentmd": "./dist/cli.js"
+  },
+  "files": ["dist"],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iedayan/agentmd.git",
+    "directory": "packages/cli"
+  },
+  "keywords": ["agents.md", "agents-md", "ai-agents", "cli", "validation"],
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
   },
   "scripts": {
     "build": "tsup src/cli.ts --format esm",
@@ -12,7 +24,7 @@
     "lint": "tsc --noEmit"
   },
   "dependencies": {
-    "@agentmd-dev/core": "workspace:*"
+    "@agentmd-dev/core": "^0.1.1"
   },
   "devDependencies": {
     "@types/node": "^22.10.0",

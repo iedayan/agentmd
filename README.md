@@ -56,7 +56,7 @@ pnpm run agentmd -- init .
 
 **Dashboard** — `pnpm run dev:dashboard` (Next.js on port 3001).
 
-**npm** — `@agentmd/cli` is not yet published. Use from source until first release. See [docs/INSTALL.md](docs/INSTALL.md) for full options.
+**npm** — Core and CLI are published: `pnpm add @agentmd-dev/core`, `npx @agentmd-dev/cli init`. VS Code extension: use from source. See [docs/INSTALL.md](docs/INSTALL.md) for full options.
 
 ## Quick Start
 
@@ -199,7 +199,7 @@ Discover, purchase, and execute agents through AGENTS.md:
 
 Notes:
 
-- `@agentmd/core` enterprise and marketplace modules are currently experimental.
+- `@agentmd-dev/core` enterprise and marketplace modules are currently experimental.
 - Dashboard demo endpoints (for example under `/api/demo/*`) are for product UX and not treated as stable SDK/API contracts.
 
 ## License

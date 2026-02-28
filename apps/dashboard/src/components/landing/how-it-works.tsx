@@ -44,7 +44,7 @@ export function HowItWorks() {
                             <div className="pb-10">
                                 <h3 className="font-semibold mb-1">Create AGENTS.md</h3>
                                 <p className="text-sm text-muted-foreground">
-                                    Run <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-xs">npx @agentmd/cli init</code> — auto-detects Node, Python, Rust, or Go. No install.
+                                    Run <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-xs">npx @agentmd-dev/cli init</code> — auto-detects Node, Python, Rust, or Go. No install.
                                 </p>
                             </div>
                         </div>

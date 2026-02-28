@@ -25,7 +25,7 @@ AgentMD reframes from **spec + validator** into a **full platform**: the place w
 |------------|--------|-------|
 | AGENTS.md parsing & validation | ✅ | `@agentmd/core`, validator.ts |
 | Agent-readiness score | ✅ | 0–100 with actionable feedback |
-| CLI (check, run, score, init) | ✅ | `@agentmd/cli` |
+| CLI (check, run, score, init) | ✅ | `@agentmd-dev/cli` |
 | GitHub Action | ✅ | `.github/actions/agentmd`, validate-agents-md.yml |
 | Templates (Node, Python, Rust) | ✅ | docs/AGENTS_MD_TEMPLATES.md |
 | Dashboard (repos, runs) | ✅ | apps/dashboard |

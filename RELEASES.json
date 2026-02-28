@@ -4,7 +4,7 @@
     "artifacts": [
         {
             "id": "1",
-            "packageName": "@agentmd/cli",
+            "packageName": "@agentmd-dev/cli",
             "version": "v1.4.2",
             "sha256": "ea33c94a565d7890b1d1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1",
             "platform": "npm / multi-arch",

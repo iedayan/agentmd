@@ -14,7 +14,7 @@ const COMMANDS: {
     {
       label: "Get started in 60 seconds",
       desc: "One command, no install",
-      cmd: "npx @agentmd/cli init",
+      cmd: "npx @agentmd-dev/cli init",
       icon: Terminal,
       primary: true,
     },

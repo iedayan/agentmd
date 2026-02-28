@@ -8,7 +8,7 @@ Installation options and full CLI reference for AgentMD.
 |--------|--------|-------|
 | From source | ✅ Available | Clone, build, run via `pnpm run agentmd --` |
 | GitHub Action | ✅ Available | No install in CI; action builds and runs |
-| npx / npm | 🔜 Not yet published | `@agentmd/cli` will be published at first release |
+| npx / npm | ✅ Published | `npx @agentmd-dev/cli init` |
 
 ## Installation
 
@@ -50,19 +50,19 @@ The action checks out AgentMD, runs `pnpm install`, builds core + CLI, then exec
 
 ### Option 3: npx (when published)
 
-Once `@agentmd/cli` is published to npm:
+With `@agentmd-dev/cli` on npm:
 
 ```bash
-npx @agentmd/cli validate .
-npx @agentmd/cli init .
+npx @agentmd-dev/cli validate .
+npx @agentmd-dev/cli init .
 ```
 
 ### Option 4: Global install (when published)
 
 ```bash
-npm install -g @agentmd/cli
+npm install -g @agentmd-dev/cli
 # or
-pnpm add -g @agentmd/cli
+pnpm add -g @agentmd-dev/cli
 ```
 
 Then run directly: `agentmd check . --contract`

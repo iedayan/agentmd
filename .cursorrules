@@ -4,14 +4,14 @@ You are an expert full-stack engineer working on AgentMD (agentmd.online) — a 
 
 ## Product Context
 
-AgentMD parses, validates, and executes AGENTS.md files. It gives repositories an **agent-readiness score (0–100)**, integrates with GitHub Actions, and provides governance guardrails for AI agent workflows. The CLI is `npx @agentmd/cli init`. The GitHub Action is pinned at `iedayan/agentmd`.
+AgentMD parses, validates, and executes AGENTS.md files. It gives repositories an **agent-readiness score (0–100)**, integrates with GitHub Actions, and provides governance guardrails for AI agent workflows. The CLI is `npx @agentmd-dev/cli init`. The GitHub Action is pinned at `iedayan/agentmd`.
 
 ## Tech Stack
 
 - Next.js / React frontend
 - Node.js / TypeScript backend
 - GitHub App integration (webhooks, OAuth)
-- npm package: @agentmd/core, @agentmd/cli
+- npm package: @agentmd-dev/core, @agentmd-dev/cli
 - CI/CD via GitHub Actions
 
 ## Priorities

@@ -33,8 +33,8 @@ Core (`@agentmd/core`):
 - Single test file: `pnpm --filter @agentmd/core run test -- packages/core/src/__tests__/parser.test.ts`
 - Single test by name: `pnpm --filter @agentmd/core run test -- -t "parseAgentsMd"`
 
-CLI (`@agentmd/cli`):
-- Build: `pnpm --filter @agentmd/cli run build`
+pCLI (`@agentmd-dev/cli`):
+- Build: `pnpm --filter @agentmd-dev/cli run build`
 
 Dashboard (`@agentmd/dashboard`):
 - Dev: `pnpm --filter @agentmd/dashboard run dev` (http://localhost:3001)
