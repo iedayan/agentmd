@@ -4,6 +4,12 @@
 
 **🚀 CI/CD for AI Agents** — Make AGENTS.md files executable in 10 minutes, not just readable.
 
+<!-- TODO: Add demo GIF here -->
+<!-- 
+![AgentMD Demo](./assets/demo.gif)
+*AgentMD in action: Parse, validate, and execute AGENTS.md files in seconds*
+-->
+
 [▶️ **Quick Start**](#quick-start) • [📖 **Docs**](https://agentsmd.io) • [💬 **Discussions**](https://github.com/iedayan/agentmd/discussions) • [🎯 **Live Demo**](https://demo.agentmd.io)
 
 ```bash
