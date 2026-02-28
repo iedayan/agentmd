@@ -1,5 +1,7 @@
 # AgentMD
 
+[![npm](https://img.shields.io/npm/v/@agentmd-dev/core.svg)](https://www.npmjs.com/package/@agentmd-dev/core) [![npm](https://img.shields.io/npm/dw/@agentmd-dev/core.svg)](https://www.npmjs.com/package/@agentmd-dev/core)
+
 **CI/CD for AI Agents** — The platform that makes AGENTS.md files executable, not just readable.
 
 AgentMD deeply integrates with the [AGENTS.md standard](https://agents.md) to orchestrate and execute setup commands, tests, and workflows defined in your repository. While observability tools watch what agents do, AgentMD actually **runs** what they're supposed to do—with **agentic AI governance** and **risk management** built in.
