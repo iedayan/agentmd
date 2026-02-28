@@ -4,7 +4,7 @@
  * Runs .rollback.sql files in reverse order.
  * Usage: DATABASE_URL=... pnpm run migrate:rollback
  */
-import { readdir, readFile } from 'fs/promises';
+import { readdir } from 'fs/promises';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { execSync } from 'child_process';

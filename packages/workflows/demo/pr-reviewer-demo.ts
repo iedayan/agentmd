@@ -4,8 +4,15 @@
  * Demonstrates the PR Reviewer workflow with sample data
  */
 
-import { PRReviewerWorkflow } from '../pr-reviewer/index.js';
+import { PRReviewerWorkflow, type ReviewResult } from '../pr-reviewer/index.js';
 import type { ParsedAgentsMd } from '@agentmd-dev/core';
+
+/** Cast for injecting mocks onto workflow (avoids intersecting with class private methods). */
+type WorkflowMocks = {
+  fetchPRData: () => Promise<Record<string, unknown>>;
+  fetchFileChanges: () => Promise<unknown[]>;
+  loadAgentsMd: () => Promise<ParsedAgentsMd | undefined>;
+};
 
 // Sample AGENTS.md data
 const sampleAgentsMd: ParsedAgentsMd = {
@@ -73,7 +80,8 @@ async function createDemoWorkflow() {
   });
 
   // Override the private methods with mocked implementations
-  (workflow as any).fetchPRData = async () => {
+  const w = workflow as unknown as WorkflowMocks;
+  w.fetchPRData = async () => {
     return {
       title: 'Add new authentication feature',
       description: 'Implements OAuth2 authentication with JWT tokens',
@@ -84,7 +92,7 @@ async function createDemoWorkflow() {
     };
   };
 
-  (workflow as any).fetchFileChanges = async () => {
+  w.fetchFileChanges = async () => {
     return [
       {
         path: 'src/auth/oauth.ts',
@@ -117,9 +125,7 @@ async function createDemoWorkflow() {
     ];
   };
 
-  (workflow as any).loadAgentsMd = async () => {
-    return sampleAgentsMd;
-  };
+  w.loadAgentsMd = async () => sampleAgentsMd;
 
   return workflow;
 }
@@ -141,7 +147,7 @@ async function runDemo() {
 
     console.log('Detailed Results:');
     console.log('-----------------');
-    result.results.forEach((review: any, index: number) => {
+    result.results.forEach((review: ReviewResult, index: number) => {
       console.log(`${index + 1}. Test Coverage`);
       console.log(`   Score: ${review.score}/100`);
       console.log(`   Status: ${review.passed ? '✅ PASSED' : '❌ FAILED'}`);

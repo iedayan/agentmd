@@ -22,11 +22,9 @@ interface EnhancedDashboardLayoutProps {
 
 export function EnhancedDashboardLayout({
   children,
-  widgets = [],
-  onWidgetUpdate,
 }: EnhancedDashboardLayoutProps) {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
+  const [, setIsMobile] = useState(false);
 
   useEffect(() => {
     const checkMobile = () => {

@@ -15,7 +15,6 @@ import {
   Zap,
   ChevronLeft,
   ChevronRight,
-  Menu,
   Search,
   HelpCircle,
 } from 'lucide-react';

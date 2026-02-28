@@ -158,7 +158,7 @@ export function PRReviewerTab() {
           repo: 'agentmd/demo-repo',
           overallScore: data.result.overallScore,
           status: data.result.status as 'approved' | 'needs_attention' | 'blocked',
-          criteria: data.result.results.map((r: any, i: number) => ({
+          criteria: data.result.results.map((r: { score: number; passed: boolean; feedback: string; suggestions?: string[] }, i: number) => ({
             name: [
               'Test Coverage',
               'Build Success',

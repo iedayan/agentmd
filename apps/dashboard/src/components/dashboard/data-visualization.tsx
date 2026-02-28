@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { BarChart3, TrendingUp, Activity, PieChart } from 'lucide-react';
+import { BarChart3, TrendingUp, Activity } from 'lucide-react';
 
 interface ChartData {
   labels: string[];
@@ -228,10 +228,8 @@ export function RepositoryHealth({ className }: RepositoryHealthProps) {
           <div className="relative h-32 w-32 mx-auto">
             <svg className="transform -rotate-90 w-32 h-32">
               {healthData.map((repo, index) => {
-                const percentage = repo.health / 100;
                 const circumference = 2 * Math.PI * 56;
                 const strokeDasharray = circumference;
-                const strokeDashoffset = circumference * (1 - percentage);
                 const previousPercentage =
                   healthData.slice(0, index).reduce((sum, r) => sum + r.health, 0) / 100;
                 const offset = circumference * previousPercentage;

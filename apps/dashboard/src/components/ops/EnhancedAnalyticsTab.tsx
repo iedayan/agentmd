@@ -116,12 +116,6 @@ export function EnhancedAnalyticsTab({ analytics }: EnhancedAnalyticsTabProps) {
     return 'text-green-600 bg-green-100';
   };
 
-  const getScoreColor = (score: number) => {
-    if (score >= 90) return 'text-green-600';
-    if (score >= 70) return 'text-yellow-600';
-    return 'text-red-600';
-  };
-
   return (
     <div className="space-y-6 p-6">
       <div>

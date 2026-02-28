@@ -336,9 +336,9 @@ export class PRReviewerWorkflow {
   }
 
   // Placeholder methods for GitHub API integration
-  private async fetchPRData(): Promise<any> {
+  private async fetchPRData(): Promise<PRContext['pr']> {
     // Implement GitHub API call
-    return {};
+    return {} as PRContext['pr'];
   }
 
   private async fetchFileChanges(): Promise<FileChange[]> {

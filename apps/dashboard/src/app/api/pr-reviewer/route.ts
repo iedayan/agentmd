@@ -3,7 +3,8 @@ import { PRReviewerWorkflow } from '@agentmd-dev/workflows';
 import type { ParsedAgentsMd } from '@agentmd-dev/core';
 
 // Mock GitHub API data - in production, this would call real GitHub API
-async function fetchGitHubPR(owner: string, repo: string, prNumber: number) {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars -- params reserved for real API
+async function fetchGitHubPR(_owner: string, _repo: string, _prNumber: number) {
   // Simulate API delay
   await new Promise((resolve) => setTimeout(resolve, 1000));
 
@@ -47,7 +48,8 @@ async function fetchGitHubPR(owner: string, repo: string, prNumber: number) {
 }
 
 // Mock AGENTS.md content - in production, this would fetch from the repo
-async function fetchAgentsMd(owner: string, repo: string): Promise<ParsedAgentsMd | undefined> {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars -- params reserved for real API
+async function fetchAgentsMd(_owner: string, _repo: string): Promise<ParsedAgentsMd | undefined> {
   // Simulate API delay
   await new Promise((resolve) => setTimeout(resolve, 500));
 
@@ -133,10 +135,16 @@ export async function POST(request: NextRequest) {
       prNumber,
     });
 
-    // Mock the private methods with real data
-    (workflow as any).fetchPRData = async () => prData;
-    (workflow as any).fetchFileChanges = async () => prData.changedFiles;
-    (workflow as any).loadAgentsMd = async () => agentsMd;
+    // Mock the private methods with real data (cast via unknown to avoid private-member intersection)
+    type WorkflowMocks = {
+      fetchPRData: () => Promise<typeof prData>;
+      fetchFileChanges: () => Promise<typeof prData.changedFiles>;
+      loadAgentsMd: () => Promise<typeof agentsMd>;
+    };
+    const w = workflow as unknown as WorkflowMocks;
+    w.fetchPRData = async () => prData;
+    w.fetchFileChanges = async () => prData.changedFiles;
+    w.loadAgentsMd = async () => agentsMd;
 
     // Execute the review
     const result = await workflow.execute();

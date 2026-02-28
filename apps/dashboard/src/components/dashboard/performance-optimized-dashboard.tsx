@@ -155,9 +155,12 @@ export function usePerformanceMonitoring() {
 
     observer.observe({ entryTypes: ['measure'] });
 
-    // Measure memory usage (if available)
-    if ('memory' in performance) {
-      const memoryUsage = (performance as any).memory.usedJSHeapSize / 1024 / 1024;
+    // Measure memory usage (if available, e.g. Chrome)
+    const perfWithMemory = performance as Performance & {
+      memory?: { usedJSHeapSize: number };
+    };
+    if (perfWithMemory.memory) {
+      const memoryUsage = perfWithMemory.memory.usedJSHeapSize / 1024 / 1024;
       setMetrics((prev) => ({ ...prev, memoryUsage }));
     }
 

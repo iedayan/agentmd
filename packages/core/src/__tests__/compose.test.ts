@@ -156,7 +156,7 @@ Low content
 High content
 `,
       );
-      const result = composeAgentsMd(dir);
+      composeAgentsMd(dir);
       const outPath = join(dir, 'agents-md', 'AGENTS.md');
       const content = readFileSync(outPath, 'utf-8');
       const highPos = content.indexOf('High content');

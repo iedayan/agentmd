@@ -4,7 +4,7 @@
  * Runs SQL migrations in deploy/migrations/ against DATABASE_URL.
  * Usage: DATABASE_URL=... pnpm run migrate
  */
-import { readdir, readFile } from 'fs/promises';
+import { readdir } from 'fs/promises';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { execSync } from 'child_process';
@@ -24,7 +24,6 @@ async function main() {
 
   for (const file of sqlFiles) {
     const path = join(migrationsDir, file);
-    const sql = await readFile(path, 'utf-8');
     console.log(`Running ${file}...`);
     try {
       execSync(`psql "${dbUrl}" -f "${path}"`, { stdio: 'inherit' });
