@@ -11,6 +11,10 @@ import { parseAgentsMd } from "./parser.js";
 
 const AGENTS_MD_FILENAME = "AGENTS.md";
 
+// Simple cache for parsed results to avoid re-parsing same files
+const parseCache = new Map<string, import("./types.js").ParsedAgentsMd>();
+const MAX_CACHE_SIZE = 100;
+
 /**
  * Discover all AGENTS.md files under a directory.
  * Returns paths sorted by depth (root first), then alphabetically.
@@ -19,6 +23,27 @@ export function discoverAgentsMd(
   rootDir: string,
   options?: { parse?: boolean; maxDepth?: number }
 ): DiscoveredAgentsMd[] {
+  // Input validation
+  if (typeof rootDir !== 'string') {
+    throw new Error('Root directory must be a string');
+  }
+  
+  if (options) {
+    if (typeof options !== 'object' || options === null) {
+      throw new Error('Options must be an object');
+    }
+    
+    if (options.parse !== undefined && typeof options.parse !== 'boolean') {
+      throw new Error('Options.parse must be a boolean');
+    }
+    
+    if (options.maxDepth !== undefined) {
+      if (typeof options.maxDepth !== 'number' || options.maxDepth < 0) {
+        throw new Error('Options.maxDepth must be a non-negative number');
+      }
+    }
+  }
+
   const absoluteRoot = resolve(rootDir);
   const parse = options?.parse ?? false;
   const maxDepth = options?.maxDepth ?? 20;
@@ -39,8 +64,23 @@ export function discoverAgentsMd(
       };
       if (parse) {
         try {
-          const content = readFileSync(agentsPath, "utf-8");
-          item.parsed = parseAgentsMd(content, agentsPath);
+          // Check cache first
+          const cached = parseCache.get(agentsPath);
+          if (cached) {
+            item.parsed = cached;
+          } else {
+            const content = readFileSync(agentsPath, "utf-8");
+            item.parsed = parseAgentsMd(content, agentsPath);
+            
+            // Cache management - simple LRU
+            if (parseCache.size >= MAX_CACHE_SIZE) {
+              const firstKey = parseCache.keys().next().value;
+              if (firstKey) {
+                parseCache.delete(firstKey);
+              }
+            }
+            parseCache.set(agentsPath, item.parsed);
+          }
         } catch {
           // Skip parse errors
         }

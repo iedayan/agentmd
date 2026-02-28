@@ -5,7 +5,7 @@
  * @see https://agents.md
  */
 
-import type { AgentsMdSection, ExtractedCommand, ParsedAgentsMd } from "./types.js";
+import type { AgentsMdSection, ParsedAgentsMd } from "./types.js";
 import { extractCommands } from "./commands.js";
 import { parseFrontmatter } from "./frontmatter.js";
 import { parseDirectives } from "./directives.js";
@@ -17,6 +17,25 @@ const HEADING_REGEX = /^(#{1,6})\s+(.+)$/;
  * Extracts YAML frontmatter (agent config) and agents-md directives.
  */
 export function parseAgentsMd(content: string, filePath?: string): ParsedAgentsMd {
+  // Input validation
+  if (typeof content !== 'string') {
+    throw new Error('Content must be a string');
+  }
+  
+  if (content.length === 0) {
+    return {
+      raw: content,
+      sections: [],
+      commands: [],
+      lineCount: 0,
+      filePath,
+    };
+  }
+  
+  if (filePath && typeof filePath !== 'string') {
+    throw new Error('File path must be a string');
+  }
+
   const { frontmatter, body, hasFrontmatter } = parseFrontmatter(content);
   const contentToParse = body ?? content;
   const lines = contentToParse.split("\n");
@@ -75,7 +94,6 @@ function parseSectionsTree(lines: string[]): AgentsMdSection[] {
       // Collect content until next heading of same or higher level
       const contentLines: string[] = [];
       let j = i + 1;
-      const childStart = j;
 
       while (j < lines.length) {
         const nextMatch = lines[j].match(HEADING_REGEX);
@@ -89,7 +107,6 @@ function parseSectionsTree(lines: string[]): AgentsMdSection[] {
         j++;
       }
 
-      const content = contentLines.join("\n").trim();
       const lineEnd = j;
 
       // Recursively parse child sections (headings with higher level)

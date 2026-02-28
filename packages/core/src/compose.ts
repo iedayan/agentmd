@@ -60,7 +60,6 @@ export function loadComposeConfig(rootDir: string): ComposeConfig | undefined {
   return undefined;
 }
 import fg from "fast-glob";
-import { parseAgentsMd } from "./parser.js";
 import { parseDirectives, getDirectiveTarget, getDirectivePriority } from "./directives.js";
 
 export interface ComposeConfig {

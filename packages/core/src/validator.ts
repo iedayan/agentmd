@@ -66,6 +66,7 @@ export async function validateAgentsMd(
     errors.push({
       code: "EMPTY",
       message: "AGENTS.md must not be empty",
+      line: 1,
       severity: "error",
     });
   }
@@ -137,6 +138,7 @@ export async function validateAgentsMd(
       code: "MISSING_OUTPUT_CONTRACT",
       message:
         "frontmatter.output_contract is required (fields: format, schema, quality_gates, artifacts, exit_criteria)",
+      line: 1,
       severity: "error",
     });
   }

@@ -64,6 +64,24 @@ export async function checkCommandIntent(
         };
     }
 
+    // 6. System modification detection
+    if (detectSystemModification(normalized)) {
+        return {
+            safe: false,
+            reason: "Attempted system configuration modification detected.",
+            confidence: 0.9,
+        };
+    }
+
+    // 7. Cryptocurrency mining detection
+    if (detectCryptoMining(normalized)) {
+        return {
+            safe: false,
+            reason: "Potential cryptocurrency mining or unauthorized resource usage detected.",
+            confidence: 0.95,
+        };
+    }
+
     void context; // reserved for future context-aware checks
     return { safe: true, confidence: 1.0 };
 }
@@ -160,4 +178,39 @@ function detectEnvVarInjection(cmd: string): boolean {
     }
 
     return false;
+}
+
+/**
+ * Detect commands that attempt to modify system configuration or persistence.
+ * Examples: modifying system files, creating startup services, registry edits
+ */
+function detectSystemModification(cmd: string): boolean {
+    const systemPaths = [
+        "/etc/", "/usr/bin/", "/usr/sbin/", "/bin/", "/sbin/",
+        "/system/", "/boot/", "/lib/", "/lib64/",
+        "C:\\Windows\\", "C:\\Program Files\\", "C:\\ProgramData\\"
+    ];
+    
+    const dangerousWriteOps = /\b(chmod|chown|mount|umount|systemctl|service|launchctl|defaults|reg|sc|powershell)\b/;
+    
+    // Check if command writes to system paths with dangerous operations
+    if (systemPaths.some(path => cmd.includes(path)) && 
+        (cmd.includes(">") || cmd.includes(">>") || dangerousWriteOps.test(cmd))) {
+        return true;
+    }
+    
+    return false;
+}
+
+/**
+ * Detect potential cryptocurrency mining or unauthorized resource usage.
+ */
+function detectCryptoMining(cmd: string): boolean {
+    const miningPatterns = [
+        /\b(cryptonight|ethash|equihash|xmrig|ccminer|t-rex|nbminer)\b/i,
+        /\b(stratum|pool|mining|hashrate|wallet)\b/i,
+        /\b(cpu|gpu).*\b(mining|mine)\b/i
+    ];
+    
+    return miningPatterns.some(pattern => pattern.test(cmd));
 }

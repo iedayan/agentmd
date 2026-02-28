@@ -4,7 +4,7 @@
  * @see https://agents.md
  */
 
-import type { AgentFrontmatter, AgentsMdDirective } from "./schema.js";
+import type { AgentsMdDirective } from "./schema.js";
 
 /** A section extracted from AGENTS.md (heading + content) */
 export interface AgentsMdSection {

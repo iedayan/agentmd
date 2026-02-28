@@ -677,7 +677,7 @@ export async function executeCommandsParallel(
 /**
  * Send a notification to a webhook.
  */
-async function notifyWebhook(url: string, payload: any, secret?: string): Promise<void> {
+async function notifyWebhook(url: string, payload: Record<string, unknown>, secret?: string): Promise<void> {
   return new Promise((resolve, reject) => {
     const data = JSON.stringify(payload);
     const options = {

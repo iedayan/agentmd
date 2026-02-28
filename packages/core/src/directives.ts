@@ -6,8 +6,6 @@
 
 import type { AgentsMdDirective } from "./schema.js";
 
-const DIRECTIVE_REGEX = /<!--\s*agents-md:\s*([^>]+)\s*-->/gi;
-
 /**
  * Parse all agents-md directives from content.
  */

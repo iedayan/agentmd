@@ -7,8 +7,6 @@ import {
   createConnection,
   TextDocuments,
   ProposedFeatures,
-  InitializeParams,
-  InitializeResult,
   TextDocumentSyncKind,
   CompletionItemKind,
 } from "vscode-languageserver/node";
@@ -19,10 +17,10 @@ import { computeAgentReadinessScore } from "@agentmd-dev/core";
 const connection = createConnection(ProposedFeatures.all);
 const documents = new TextDocuments(TextDocument);
 
-let debounceTimers = new Map<string, ReturnType<typeof setTimeout>>();
+const debounceTimers = new Map<string, ReturnType<typeof setTimeout>>();
 const DEBOUNCE_MS = 300;
 
-connection.onInitialize((_params: InitializeParams): InitializeResult => {
+connection.onInitialize(() => {
   return {
     capabilities: {
       textDocumentSync: TextDocumentSyncKind.Incremental,
@@ -88,7 +86,6 @@ connection.onRequest(
 connection.onHover((params) => {
   const doc = documents.get(params.textDocument.uri);
   if (!doc) return null;
-  const text = doc.getText();
   const line = doc.getText().split("\n")[params.position.line];
   if (line?.includes("## Build")) {
     return { contents: { kind: "markdown", value: "**Build section** (AMD001)\n\nRequired. Describe how to build the project." } };
