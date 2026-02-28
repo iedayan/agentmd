@@ -25,7 +25,7 @@ export function HowItWorks() {
           <div className="mb-8 sm:mb-12">
             <span className="inline-block h-1 w-12 rounded-full bg-primary/60 mb-4" aria-hidden />
             <h2 className="text-xl sm:text-2xl font-bold tracking-tight mb-2">
-              How to get started
+              What you get
             </h2>
             <p className="text-muted-foreground text-sm sm:text-base">
               Agent-ready in three steps. Under a minute.
@@ -39,7 +39,7 @@ export function HowItWorks() {
             />
             <div className="relative flex gap-6">
               <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-primary/25 to-primary/10 ring-1 ring-primary/20 font-mono text-sm font-semibold text-primary shadow-sm">
-                1
+                01
               </span>
               <div className="pb-10">
                 <h3 className="font-semibold mb-1">Create AGENTS.md</h3>
@@ -53,8 +53,8 @@ export function HowItWorks() {
               </div>
             </div>
             <div className="relative flex gap-6">
-              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/15 font-mono text-sm font-medium text-primary">
-                2
+              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-2xl bg-primary/15 ring-1 ring-primary/10 font-mono text-sm font-medium text-primary">
+                02
               </span>
               <div className="pb-10">
                 <h3 className="font-semibold mb-1">Add to CI</h3>
@@ -65,7 +65,7 @@ export function HowItWorks() {
             </div>
             <div className="relative flex gap-6">
               <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-primary/25 to-primary/10 ring-1 ring-primary/20 font-mono text-sm font-semibold text-primary shadow-sm">
-                3
+                03
               </span>
               <div>
                 <h3 className="font-semibold mb-1">Ship with confidence</h3>

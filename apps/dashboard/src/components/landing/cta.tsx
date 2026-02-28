@@ -11,9 +11,12 @@ export function CTA() {
             <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-4">
               Ready to ship with AI?
             </h2>
-            <p className="text-muted-foreground mb-6 sm:mb-8 text-sm sm:text-base">
+            <p className="text-muted-foreground mb-2 text-sm sm:text-base">
               Get your score, add AGENTS.md, connect the GitHub App. Free for 3 repos—no credit
               card.
+            </p>
+            <p className="text-foreground/90 font-semibold mb-6 sm:mb-8 text-sm sm:text-base">
+              Ship with confidence. No drift, no surprises.
             </p>
             <div className="flex flex-wrap justify-center gap-3">
               <Link href="/register">
