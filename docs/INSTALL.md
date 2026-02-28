@@ -4,11 +4,11 @@ Installation options and full CLI reference for AgentMD.
 
 ## Installation status
 
-| Method | Status | Notes |
-|--------|--------|-------|
-| From source | ✅ Available | Clone, build, run via `pnpm run agentmd --` |
-| GitHub Action | ✅ Available | No install in CI; action builds and runs |
-| npx / npm | ✅ Published | `npx @agentmd-dev/cli init` |
+| Method        | Status       | Notes                                       |
+| ------------- | ------------ | ------------------------------------------- |
+| From source   | ✅ Available | Clone, build, run via `pnpm run agentmd --` |
+| GitHub Action | ✅ Available | No install in CI; action builds and runs    |
+| npx / npm     | ✅ Published | `npx @agentmd-dev/cli init`                 |
 
 ## Installation
 
@@ -42,7 +42,7 @@ Use the composite action in your workflow — no manual install required:
 - uses: iedayan/agentmd/.github/actions/agentmd@7f23caa9a688230815368fc07716828884479cad
   with:
     command: check
-    contract: "true"
+    contract: 'true'
     path: .
 ```
 
@@ -71,20 +71,20 @@ Then run directly: `agentmd check . --contract`
 
 ## CLI Reference
 
-| Command | Description |
-|---------|-------------|
-| `init [path]` | Create AGENTS.md (auto-detects Node.js, Python, Rust, Go). Use `--template` to override. |
-| `doctor [path]` | Diagnose AGENTS.md quality, runnable commands, and next steps. |
-| `check [path]` | Validate AGENTS.md. Flags: `--contract`, `--output <file>`, `--json`. |
-| `validate [path]` | Alias for `check [path]`. |
-| `improve [path]` | Self-improve AGENTS.md from validation feedback. Use `--apply` to write changes. |
-| `discover [path]` | Find all AGENTS.md files in the repo. |
-| `parse [path]` | Parse and show structure (sections, commands). |
-| `compose [path]` | Build AGENTS.md from fragments (`**/agents-md/**/*.md`, `**/*.agents.md`). |
-| `run [path] [types]` | Execute commands. Flags: `--dry-run`, `--use-shell`, `--json`. |
-| `score [path]` | Agent-readiness score (0–100). Use `--json` for machine output. |
-| `export [path]` | Generate GitHub Actions workflow YAML. |
-| `help` | Show help. |
+| Command              | Description                                                                              |
+| -------------------- | ---------------------------------------------------------------------------------------- |
+| `init [path]`        | Create AGENTS.md (auto-detects Node.js, Python, Rust, Go). Use `--template` to override. |
+| `doctor [path]`      | Diagnose AGENTS.md quality, runnable commands, and next steps.                           |
+| `check [path]`       | Validate AGENTS.md. Flags: `--contract`, `--output <file>`, `--json`.                    |
+| `validate [path]`    | Alias for `check [path]`.                                                                |
+| `improve [path]`     | Self-improve AGENTS.md from validation feedback. Use `--apply` to write changes.         |
+| `discover [path]`    | Find all AGENTS.md files in the repo.                                                    |
+| `parse [path]`       | Parse and show structure (sections, commands).                                           |
+| `compose [path]`     | Build AGENTS.md from fragments (`**/agents-md/**/*.md`, `**/*.agents.md`).               |
+| `run [path] [types]` | Execute commands. Flags: `--dry-run`, `--use-shell`, `--json`.                           |
+| `score [path]`       | Agent-readiness score (0–100). Use `--json` for machine output.                          |
+| `export [path]`      | Generate GitHub Actions workflow YAML.                                                   |
+| `help`               | Show help.                                                                               |
 
 ### Common options
 

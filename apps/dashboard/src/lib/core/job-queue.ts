@@ -1,7 +1,7 @@
-import { randomUUID } from "crypto";
-import { getPool, hasDatabase } from "../data/db";
+import { randomUUID } from 'crypto';
+import { getPool, hasDatabase } from '../data/db';
 
-type TriggerType = "push" | "pull_request" | "schedule" | "manual";
+type TriggerType = 'push' | 'pull_request' | 'schedule' | 'manual';
 
 interface Job {
   id: string;
@@ -10,7 +10,7 @@ interface Job {
   repositoryId: string;
   repositoryName: string;
   trigger: TriggerType;
-  status: "queued" | "running" | "completed" | "failed";
+  status: 'queued' | 'running' | 'completed' | 'failed';
   attempts: number;
   maxAttempts: number;
   error?: string;
@@ -33,7 +33,7 @@ const jobs = new Map<string, Job>();
 function toDate(value: unknown): Date | undefined {
   if (!value) return undefined;
   if (value instanceof Date) return value;
-  if (typeof value === "string" || typeof value === "number") {
+  if (typeof value === 'string' || typeof value === 'number') {
     const parsed = new Date(value);
     return Number.isNaN(parsed.getTime()) ? undefined : parsed;
   }
@@ -47,17 +47,15 @@ function rowToJob(row: Record<string, unknown>): Job {
     executionId: String(row.execution_id),
     repositoryId: String(row.repository_id),
     repositoryName: String(row.repository_name),
-    trigger: (row.trigger_type as TriggerType) ?? "manual",
-    status: (row.status as Job["status"]) ?? "queued",
+    trigger: (row.trigger_type as TriggerType) ?? 'manual',
+    status: (row.status as Job['status']) ?? 'queued',
     attempts: Number(row.attempts ?? 0),
     maxAttempts: Number(row.max_attempts ?? 3),
-    error: typeof row.error === "string" ? row.error : undefined,
+    error: typeof row.error === 'string' ? row.error : undefined,
     createdAt: toDate(row.created_at) ?? new Date(),
     startedAt: toDate(row.locked_at),
     completedAt:
-      row.status === "completed" || row.status === "failed"
-        ? toDate(row.updated_at)
-        : undefined,
+      row.status === 'completed' || row.status === 'failed' ? toDate(row.updated_at) : undefined,
   };
 }
 
@@ -71,7 +69,7 @@ export async function createJob(input: CreateJobInput): Promise<Job> {
       repositoryId: input.repositoryId,
       repositoryName: input.repositoryName,
       trigger: input.trigger,
-      status: "queued",
+      status: 'queued',
       attempts: 0,
       maxAttempts: input.maxAttempts ?? 3,
       createdAt: new Date(),
@@ -82,7 +80,7 @@ export async function createJob(input: CreateJobInput): Promise<Job> {
 
   const pool = getPool();
   if (!pool) {
-    throw new Error("Database not configured");
+    throw new Error('Database not configured');
   }
 
   const id = randomUUID();
@@ -100,7 +98,7 @@ export async function createJob(input: CreateJobInput): Promise<Job> {
       input.repositoryName,
       input.trigger,
       input.maxAttempts ?? 3,
-    ]
+    ],
   );
   return rowToJob(res.rows[0]);
 }
@@ -116,7 +114,7 @@ export async function listJobs(limit = 50, userId?: string): Promise<Job[]> {
   const pool = getPool();
   if (!pool) return [];
   const params: unknown[] = [];
-  let whereClause = "";
+  let whereClause = '';
   if (userId) {
     params.push(userId);
     whereClause = `WHERE user_id = $1`;
@@ -129,9 +127,7 @@ export async function listJobs(limit = 50, userId?: string): Promise<Job[]> {
      ${whereClause}
      ORDER BY created_at DESC
      LIMIT $${limitIndex}`,
-    params
+    params,
   );
   return res.rows.map((row) => rowToJob(row));
 }
-
-

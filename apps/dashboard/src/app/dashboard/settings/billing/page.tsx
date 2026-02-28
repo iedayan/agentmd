@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { BillingDashboard } from "@/components/dashboard/billing-dashboard";
-import { BillingPaymentMethods } from "@/components/settings/billing-payment-methods";
-import { BillingInvoiceHistory } from "@/components/settings/billing-invoice-history";
-import Link from "next/link";
-import { ChevronLeft } from "lucide-react";
+import { BillingDashboard } from '@/components/dashboard/billing-dashboard';
+import { BillingPaymentMethods } from '@/components/settings/billing-payment-methods';
+import { BillingInvoiceHistory } from '@/components/settings/billing-invoice-history';
+import Link from 'next/link';
+import { ChevronLeft } from 'lucide-react';
 
 export default function BillingPage() {
   return (

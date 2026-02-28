@@ -6,6 +6,4 @@
 
 export const PLATFORM_FEE_PERCENT = 15;
 
-export type MonetizationModel = "one-time" | "subscription" | "usage-based" | "free";
-
-
+export type MonetizationModel = 'one-time' | 'subscription' | 'usage-based' | 'free';

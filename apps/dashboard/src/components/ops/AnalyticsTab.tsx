@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   BarChart,
@@ -13,8 +13,8 @@ import {
   Legend,
   Area,
   AreaChart,
-} from "recharts";
-import type { OpsAnalytics } from "@/lib/ops/use-ops-data";
+} from 'recharts';
+import type { OpsAnalytics } from '@/lib/ops/use-ops-data';
 
 export function AnalyticsTab({ analytics }: { analytics: OpsAnalytics }) {
   const a = analytics;
@@ -23,9 +23,7 @@ export function AnalyticsTab({ analytics }: { analytics: OpsAnalytics }) {
     <div className="w-full min-w-0 overflow-x-auto p-6">
       <div className="mb-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="rounded-[var(--radius-md)] border border-border bg-card p-4">
-          <div className="font-mono text-xs text-muted-foreground">
-            Pipelines run (this week)
-          </div>
+          <div className="font-mono text-xs text-muted-foreground">Pipelines run (this week)</div>
           <div className="mt-1 font-mono text-2xl font-bold">{a.pipelinesRun}</div>
           <div className="mt-2 h-8">
             <ResponsiveContainer width="100%" height="100%">
@@ -43,41 +41,36 @@ export function AnalyticsTab({ analytics }: { analytics: OpsAnalytics }) {
           </div>
         </div>
         <div className="rounded-[var(--radius-md)] border border-border bg-card p-4">
-          <div className="font-mono text-xs text-muted-foreground">
-            Policy violation rate
-          </div>
+          <div className="font-mono text-xs text-muted-foreground">Policy violation rate</div>
           <div className="mt-1 flex items-baseline gap-2">
             <span className="font-mono text-2xl font-bold">{a.policyViolationRate}%</span>
             <span
               className="font-mono text-sm"
               style={{
-                color: a.policyViolationTrend === "down" ? "var(--ops-passed)" : "var(--ops-failed)",
+                color:
+                  a.policyViolationTrend === 'down' ? 'var(--ops-passed)' : 'var(--ops-failed)',
               }}
             >
-              {a.policyViolationTrend === "down" ? "↓" : "↑"}
+              {a.policyViolationTrend === 'down' ? '↓' : '↑'}
             </span>
           </div>
         </div>
         <div className="rounded-[var(--radius-md)] border border-border bg-card p-4">
-          <div className="font-mono text-xs text-muted-foreground">
-            Avg time in approval gate
-          </div>
+          <div className="font-mono text-xs text-muted-foreground">Avg time in approval gate</div>
           <div className="mt-1 flex items-baseline gap-2">
             <span className="font-mono text-2xl font-bold">{a.avgApprovalTimeHours}h</span>
             <span
               className="font-mono text-sm"
               style={{
-                color: a.approvalTimeTrend === "down" ? "var(--ops-passed)" : "var(--ops-failed)",
+                color: a.approvalTimeTrend === 'down' ? 'var(--ops-passed)' : 'var(--ops-failed)',
               }}
             >
-              {a.approvalTimeTrend === "down" ? "↓" : "↑"}
+              {a.approvalTimeTrend === 'down' ? '↓' : '↑'}
             </span>
           </div>
         </div>
         <div className="rounded-[var(--radius-md)] border border-border bg-card p-4">
-          <div className="font-mono text-xs text-muted-foreground">
-            Agent success rate
-          </div>
+          <div className="font-mono text-xs text-muted-foreground">Agent success rate</div>
           <div className="mt-1 font-mono text-2xl font-bold">{a.agentSuccessRate}%</div>
         </div>
       </div>
@@ -93,14 +86,14 @@ export function AnalyticsTab({ analytics }: { analytics: OpsAnalytics }) {
                 <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
                 <XAxis
                   dataKey="rule"
-                  tick={{ fontFamily: "var(--font-mono)", fontSize: 10 }}
-                  tickFormatter={(v) => v.slice(0, 20) + (v.length > 20 ? "…" : "")}
+                  tick={{ fontFamily: 'var(--font-mono)', fontSize: 10 }}
+                  tickFormatter={(v) => v.slice(0, 20) + (v.length > 20 ? '…' : '')}
                 />
-                <YAxis tick={{ fontFamily: "var(--font-mono)", fontSize: 10 }} />
+                <YAxis tick={{ fontFamily: 'var(--font-mono)', fontSize: 10 }} />
                 <Tooltip
                   contentStyle={{
-                    fontFamily: "var(--font-mono)",
-                    border: "1px solid hsl(var(--border))",
+                    fontFamily: 'var(--font-mono)',
+                    border: '1px solid hsl(var(--border))',
                   }}
                 />
                 <Bar dataKey="count" fill="hsl(var(--destructive))" radius={0} />
@@ -109,27 +102,20 @@ export function AnalyticsTab({ analytics }: { analytics: OpsAnalytics }) {
           </div>
         </div>
         <div className="rounded-[var(--radius-md)] border border-border bg-card p-6">
-          <h3 className="mb-4 font-mono text-sm font-semibold">
-            Pipeline volume over time
-          </h3>
+          <h3 className="mb-4 font-mono text-sm font-semibold">Pipeline volume over time</h3>
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={a.pipelineVolume} margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
-                <XAxis
-                  dataKey="date"
-                  tick={{ fontFamily: "var(--font-mono)", fontSize: 10 }}
-                />
-                <YAxis tick={{ fontFamily: "var(--font-mono)", fontSize: 10 }} />
+                <XAxis dataKey="date" tick={{ fontFamily: 'var(--font-mono)', fontSize: 10 }} />
+                <YAxis tick={{ fontFamily: 'var(--font-mono)', fontSize: 10 }} />
                 <Tooltip
                   contentStyle={{
-                    fontFamily: "var(--font-mono)",
-                    border: "1px solid hsl(var(--border))",
+                    fontFamily: 'var(--font-mono)',
+                    border: '1px solid hsl(var(--border))',
                   }}
                 />
-                <Legend
-                  wrapperStyle={{ fontFamily: "var(--font-mono)", fontSize: 10 }}
-                />
+                <Legend wrapperStyle={{ fontFamily: 'var(--font-mono)', fontSize: 10 }} />
                 <Line
                   type="monotone"
                   dataKey="running"

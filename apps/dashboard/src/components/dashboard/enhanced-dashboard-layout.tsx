@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
-import { EnhancedDashboardHeader } from "./enhanced-dashboard-header";
-import { EnhancedSidebar } from "./enhanced-sidebar";
-import { cn } from "@/lib/core/utils";
+import { useState, useEffect } from 'react';
+import { EnhancedDashboardHeader } from './enhanced-dashboard-header';
+import { EnhancedSidebar } from './enhanced-sidebar';
+import { cn } from '@/lib/core/utils';
 
 interface DashboardWidget {
   id: string;
   title: string;
-  type: "stats" | "chart" | "activity" | "list";
-  size: "small" | "medium" | "large";
+  type: 'stats' | 'chart' | 'activity' | 'list';
+  size: 'small' | 'medium' | 'large';
   position: { x: number; y: number };
   content: React.ReactNode;
 }
@@ -20,10 +20,10 @@ interface EnhancedDashboardLayoutProps {
   onWidgetUpdate?: (widgets: DashboardWidget[]) => void;
 }
 
-export function EnhancedDashboardLayout({ 
-  children, 
-  widgets = [], 
-  onWidgetUpdate 
+export function EnhancedDashboardLayout({
+  children,
+  widgets = [],
+  onWidgetUpdate,
 }: EnhancedDashboardLayoutProps) {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -45,18 +45,18 @@ export function EnhancedDashboardLayout({
     <div className="min-h-screen bg-background">
       <EnhancedDashboardHeader />
       <div className="flex">
-        <EnhancedSidebar 
+        <EnhancedSidebar
           collapsed={sidebarCollapsed}
           onToggle={() => setSidebarCollapsed(!sidebarCollapsed)}
         />
-        <main className={cn(
-          "flex-1 transition-all duration-300 ease-in-out",
-          sidebarCollapsed ? "ml-16" : "ml-64",
-          "pt-0" // No padding top since header is fixed
-        )}>
-          <div className="p-6 md:p-8">
-            {children}
-          </div>
+        <main
+          className={cn(
+            'flex-1 transition-all duration-300 ease-in-out',
+            sidebarCollapsed ? 'ml-16' : 'ml-64',
+            'pt-0', // No padding top since header is fixed
+          )}
+        >
+          <div className="p-6 md:p-8">{children}</div>
         </main>
       </div>
     </div>

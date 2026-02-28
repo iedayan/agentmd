@@ -1,23 +1,32 @@
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
-import { Bell, Search, Settings, User, HelpCircle, Zap, TrendingUp, AlertTriangle } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
-import { 
-  DropdownMenu, 
-  DropdownMenuContent, 
-  DropdownMenuItem, 
+import { useState, useEffect } from 'react';
+import {
+  Bell,
+  Search,
+  Settings,
+  User,
+  HelpCircle,
+  Zap,
+  TrendingUp,
+  AlertTriangle,
+} from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Badge } from '@/components/ui/badge';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
   DropdownMenuTrigger,
-  DropdownMenuSeparator 
-} from "@/components/ui/dropdown-menu";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { ThemeToggle } from "@/components/ui/theme-toggle";
+  DropdownMenuSeparator,
+} from '@/components/ui/dropdown-menu';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { ThemeToggle } from '@/components/ui/theme-toggle';
 
 interface Notification {
   id: string;
-  type: "success" | "warning" | "error" | "info";
+  type: 'success' | 'warning' | 'error' | 'info';
   title: string;
   message: string;
   timestamp: Date;
@@ -30,37 +39,37 @@ interface Notification {
 
 const mockNotifications: Notification[] = [
   {
-    id: "1",
-    type: "success",
-    title: "Pipeline Completed",
-    message: "agentmd/core pipeline completed successfully in 2.3s",
+    id: '1',
+    type: 'success',
+    title: 'Pipeline Completed',
+    message: 'agentmd/core pipeline completed successfully in 2.3s',
     timestamp: new Date(Date.now() - 5 * 60 * 1000),
     read: false,
-    action: { label: "View Results", href: "/ops" }
+    action: { label: 'View Results', href: '/ops' },
   },
   {
-    id: "2", 
-    type: "warning",
-    title: "Health Score Drop",
-    message: "agentmd/analytics repository health dropped to 72%",
+    id: '2',
+    type: 'warning',
+    title: 'Health Score Drop',
+    message: 'agentmd/analytics repository health dropped to 72%',
     timestamp: new Date(Date.now() - 15 * 60 * 1000),
     read: false,
-    action: { label: "Investigate", href: "/dashboard" }
+    action: { label: 'Investigate', href: '/dashboard' },
   },
   {
-    id: "3",
-    type: "error", 
-    title: "Execution Failed",
-    message: "Pipeline execution failed due to timeout",
+    id: '3',
+    type: 'error',
+    title: 'Execution Failed',
+    message: 'Pipeline execution failed due to timeout',
     timestamp: new Date(Date.now() - 30 * 60 * 1000),
     read: true,
-    action: { label: "View Logs", href: "/dashboard/executions" }
-  }
+    action: { label: 'View Logs', href: '/dashboard/executions' },
+  },
 ];
 
 export function EnhancedDashboardHeader() {
   const [notifications, setNotifications] = useState<Notification[]>(mockNotifications);
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState('');
   const [showNotifications, setShowNotifications] = useState(false);
   const [currentTime, setCurrentTime] = useState(new Date());
 
@@ -76,52 +85,50 @@ export function EnhancedDashboardHeader() {
     const timer = setInterval(() => {
       const newNotification: Notification = {
         id: Date.now().toString(),
-        type: Math.random() > 0.7 ? "warning" : "info",
-        title: "System Update",
-        message: "Background sync completed successfully",
+        type: Math.random() > 0.7 ? 'warning' : 'info',
+        title: 'System Update',
+        message: 'Background sync completed successfully',
         timestamp: new Date(),
-        read: false
+        read: false,
       };
-      setNotifications(prev => [newNotification, ...prev.slice(0, 4)]);
+      setNotifications((prev) => [newNotification, ...prev.slice(0, 4)]);
     }, 30000);
     return () => clearInterval(timer);
   }, []);
 
-  const unreadCount = notifications.filter(n => !n.read).length;
+  const unreadCount = notifications.filter((n) => !n.read).length;
 
   const markAsRead = (id: string) => {
-    setNotifications(prev => prev.map(n => 
-      n.id === id ? { ...n, read: true } : n
-    ));
+    setNotifications((prev) => prev.map((n) => (n.id === id ? { ...n, read: true } : n)));
   };
 
   const markAllAsRead = () => {
-    setNotifications(prev => prev.map(n => ({ ...n, read: true })));
+    setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
   };
 
-  const getNotificationIcon = (type: Notification["type"]) => {
+  const getNotificationIcon = (type: Notification['type']) => {
     switch (type) {
-      case "success":
+      case 'success':
         return <TrendingUp className="h-4 w-4 text-green-500" />;
-      case "warning":
+      case 'warning':
         return <AlertTriangle className="h-4 w-4 text-yellow-500" />;
-      case "error":
+      case 'error':
         return <AlertTriangle className="h-4 w-4 text-red-500" />;
       default:
         return <Bell className="h-4 w-4 text-blue-500" />;
     }
   };
 
-  const getNotificationColor = (type: Notification["type"]) => {
+  const getNotificationColor = (type: Notification['type']) => {
     switch (type) {
-      case "success":
-        return "border-green-200 bg-green-50 dark:border-green-800 dark:bg-green-900/20";
-      case "warning":
-        return "border-yellow-200 bg-yellow-50 dark:border-yellow-800 dark:bg-yellow-900/20";
-      case "error":
-        return "border-red-200 bg-red-50 dark:border-red-800 dark:bg-red-900/20";
+      case 'success':
+        return 'border-green-200 bg-green-50 dark:border-green-800 dark:bg-green-900/20';
+      case 'warning':
+        return 'border-yellow-200 bg-yellow-50 dark:border-yellow-800 dark:bg-yellow-900/20';
+      case 'error':
+        return 'border-red-200 bg-red-50 dark:border-red-800 dark:bg-red-900/20';
       default:
-        return "border-blue-200 bg-blue-50 dark:border-blue-800 dark:bg-blue-900/20";
+        return 'border-blue-200 bg-blue-50 dark:border-blue-800 dark:bg-blue-900/20';
     }
   };
 
@@ -130,8 +137,8 @@ export function EnhancedDashboardHeader() {
     const diff = now.getTime() - date.getTime();
     const minutes = Math.floor(diff / 60000);
     const hours = Math.floor(diff / 3600000);
-    
-    if (minutes < 1) return "Just now";
+
+    if (minutes < 1) return 'Just now';
     if (minutes < 60) return `${minutes}m ago`;
     if (hours < 24) return `${hours}h ago`;
     return date.toLocaleDateString();
@@ -171,8 +178,8 @@ export function EnhancedDashboardHeader() {
               <Button variant="ghost" size="sm" className="relative">
                 <Bell className="h-4 w-4" />
                 {unreadCount > 0 && (
-                  <Badge 
-                    variant="destructive" 
+                  <Badge
+                    variant="destructive"
                     className="absolute -top-1 -right-1 h-5 w-5 rounded-full p-0 text-xs flex items-center justify-center"
                   >
                     {unreadCount}
@@ -192,9 +199,7 @@ export function EnhancedDashboardHeader() {
               <DropdownMenuSeparator />
               <div className="max-h-96 overflow-y-auto">
                 {notifications.length === 0 ? (
-                  <div className="p-4 text-center text-muted-foreground">
-                    No notifications
-                  </div>
+                  <div className="p-4 text-center text-muted-foreground">No notifications</div>
                 ) : (
                   notifications.map((notification) => (
                     <div
@@ -211,7 +216,9 @@ export function EnhancedDashboardHeader() {
                               {formatTimestamp(notification.timestamp)}
                             </span>
                           </div>
-                          <p className="text-xs text-muted-foreground mt-1">{notification.message}</p>
+                          <p className="text-xs text-muted-foreground mt-1">
+                            {notification.message}
+                          </p>
                           {notification.action && (
                             <Button variant="link" size="sm" className="p-0 h-auto text-xs mt-2">
                               {notification.action.label} →

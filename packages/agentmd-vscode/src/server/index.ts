@@ -9,10 +9,10 @@ import {
   ProposedFeatures,
   TextDocumentSyncKind,
   CompletionItemKind,
-} from "vscode-languageserver/node";
-import { TextDocument } from "vscode-languageserver-textdocument";
-import { getDiagnostics, isAgentsMd } from "./diagnostics.js";
-import { computeAgentReadinessScore } from "@agentmd-dev/core";
+} from 'vscode-languageserver/node';
+import { TextDocument } from 'vscode-languageserver-textdocument';
+import { getDiagnostics, isAgentsMd } from './diagnostics.js';
+import { computeAgentReadinessScore } from '@agentmd-dev/core';
 
 const connection = createConnection(ProposedFeatures.all);
 const documents = new TextDocuments(TextDocument);
@@ -24,7 +24,7 @@ connection.onInitialize(() => {
   return {
     capabilities: {
       textDocumentSync: TextDocumentSyncKind.Incremental,
-      completionProvider: { triggerCharacters: ["-", " "] },
+      completionProvider: { triggerCharacters: ['-', ' '] },
       hoverProvider: true,
     },
   };
@@ -65,33 +65,40 @@ documents.onDidClose((e) => {
 
 connection.onCompletion(() => {
   return [
-    { label: "## Build", kind: CompletionItemKind.Snippet, detail: "Required section" },
-    { label: "## Test", kind: CompletionItemKind.Snippet, detail: "Required section" },
-    { label: "## Lint", kind: CompletionItemKind.Snippet, detail: "Recommended section" },
+    { label: '## Build', kind: CompletionItemKind.Snippet, detail: 'Required section' },
+    { label: '## Test', kind: CompletionItemKind.Snippet, detail: 'Required section' },
+    { label: '## Lint', kind: CompletionItemKind.Snippet, detail: 'Recommended section' },
   ];
 });
 
-connection.onRequest(
-  "agentmd/getScore",
-  async (params: { uri: string }) => {
-    const doc = documents.get(params.uri);
-    if (!doc || !isAgentsMd(params.uri)) return null;
-    const { parsed } = await getDiagnostics(doc.getText(), params.uri);
-    if (!parsed) return null;
-    const score = await computeAgentReadinessScore(parsed);
-    return { score };
-  }
-);
+connection.onRequest('agentmd/getScore', async (params: { uri: string }) => {
+  const doc = documents.get(params.uri);
+  if (!doc || !isAgentsMd(params.uri)) return null;
+  const { parsed } = await getDiagnostics(doc.getText(), params.uri);
+  if (!parsed) return null;
+  const score = await computeAgentReadinessScore(parsed);
+  return { score };
+});
 
 connection.onHover((params) => {
   const doc = documents.get(params.textDocument.uri);
   if (!doc) return null;
-  const line = doc.getText().split("\n")[params.position.line];
-  if (line?.includes("## Build")) {
-    return { contents: { kind: "markdown", value: "**Build section** (AMD001)\n\nRequired. Describe how to build the project." } };
+  const line = doc.getText().split('\n')[params.position.line];
+  if (line?.includes('## Build')) {
+    return {
+      contents: {
+        kind: 'markdown',
+        value: '**Build section** (AMD001)\n\nRequired. Describe how to build the project.',
+      },
+    };
   }
-  if (line?.includes("## Test")) {
-    return { contents: { kind: "markdown", value: "**Test section** (AMD002)\n\nRequired. Describe how to run tests." } };
+  if (line?.includes('## Test')) {
+    return {
+      contents: {
+        kind: 'markdown',
+        value: '**Test section** (AMD002)\n\nRequired. Describe how to run tests.',
+      },
+    };
   }
   return null;
 });

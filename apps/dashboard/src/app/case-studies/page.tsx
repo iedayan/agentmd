@@ -1,49 +1,49 @@
-import Link from "next/link";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { ArrowRight, Zap, Shield, TrendingUp } from "lucide-react";
+import Link from 'next/link';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { ArrowRight, Zap, Shield, TrendingUp } from 'lucide-react';
 
 const CASE_STUDIES = [
   {
-    id: "fintech-squad",
-    title: "Fintech Squad",
-    industry: "Financial Services",
-    metric: "40% fewer failed deployments",
+    id: 'fintech-squad',
+    title: 'Fintech Squad',
+    industry: 'Financial Services',
+    metric: '40% fewer failed deployments',
     icon: Shield,
     summary:
-      "A 12-person fintech team reduced deployment failures by 40% after adopting AgentMD. AGENTS.md enforces deterministic build and test flows, with human approval for production deploys.",
+      'A 12-person fintech team reduced deployment failures by 40% after adopting AgentMD. AGENTS.md enforces deterministic build and test flows, with human approval for production deploys.',
     highlights: [
-      "Guardrails prevent direct production changes",
-      "Slack approval for deploy steps",
-      "Audit trail for compliance reviews",
+      'Guardrails prevent direct production changes',
+      'Slack approval for deploy steps',
+      'Audit trail for compliance reviews',
     ],
   },
   {
-    id: "saas-platform",
-    title: "SaaS Platform Team",
-    industry: "SaaS",
-    metric: "12 hrs/month saved on CI triage",
+    id: 'saas-platform',
+    title: 'SaaS Platform Team',
+    industry: 'SaaS',
+    metric: '12 hrs/month saved on CI triage',
     icon: Zap,
     summary:
-      "A platform team running 200+ repos cut manual CI triage from 15 hours to 3 hours per month. AgentMD executes AGENTS.md commands with permission boundaries, surfacing success rates and ROI metrics.",
+      'A platform team running 200+ repos cut manual CI triage from 15 hours to 3 hours per month. AgentMD executes AGENTS.md commands with permission boundaries, surfacing success rates and ROI metrics.',
     highlights: [
-      "Execution success rate dashboard",
-      "ROI calculator with labor value",
-      "Deterministic workflows for reproducibility",
+      'Execution success rate dashboard',
+      'ROI calculator with labor value',
+      'Deterministic workflows for reproducibility',
     ],
   },
   {
-    id: "agency-multi-repo",
-    title: "Agency Multi-Repo",
-    industry: "Agency",
-    metric: "3x faster onboarding",
+    id: 'agency-multi-repo',
+    title: 'Agency Multi-Repo',
+    industry: 'Agency',
+    metric: '3x faster onboarding',
     icon: TrendingUp,
     summary:
-      "An agency managing 30+ client repos standardized on AGENTS.md. New developers get a single source of truth for build, test, and lint. AgentMD validates and runs across all repos.",
+      'An agency managing 30+ client repos standardized on AGENTS.md. New developers get a single source of truth for build, test, and lint. AgentMD validates and runs across all repos.',
     highlights: [
-      "Template gallery for React, Next.js, Python",
-      "Agent-readiness score per repo",
-      "Unified execution history",
+      'Template gallery for React, Next.js, Python',
+      'Agent-readiness score per repo',
+      'Unified execution history',
     ],
   },
 ];
@@ -68,10 +68,12 @@ export default function CaseStudiesPage() {
             Case Studies
           </h1>
           <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
-            Illustrative scenarios showing how teams use AgentMD for governed agent execution. Outcomes are based on typical adoption patterns.
+            Illustrative scenarios showing how teams use AgentMD for governed agent execution.
+            Outcomes are based on typical adoption patterns.
           </p>
           <p className="mt-2 text-sm text-muted-foreground/80 max-w-xl mx-auto">
-            Real customer case studies with named organizations will be added as we grow. Contact us if you&apos;d like to share your story.
+            Real customer case studies with named organizations will be added as we grow. Contact us
+            if you&apos;d like to share your story.
           </p>
         </div>
 
@@ -89,7 +91,9 @@ export default function CaseStudiesPage() {
                     <div className="bento-icon-wrap">
                       <cs.icon className="h-5 w-5" />
                     </div>
-                    <span className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground/60">{cs.industry}</span>
+                    <span className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground/60">
+                      {cs.industry}
+                    </span>
                   </div>
                   <CardTitle className="text-xl leading-tight group-hover:text-primary transition-colors">
                     {cs.title}
@@ -99,12 +103,12 @@ export default function CaseStudiesPage() {
                   </div>
                 </CardHeader>
                 <CardContent className="flex-grow space-y-5">
-                  <p className="text-sm leading-relaxed text-muted-foreground/90">
-                    {cs.summary}
-                  </p>
+                  <p className="text-sm leading-relaxed text-muted-foreground/90">{cs.summary}</p>
 
                   <div className="space-y-3 pt-2">
-                    <p className="text-[10px] uppercase tracking-wider font-bold text-muted-foreground/50">Key Outcomes</p>
+                    <p className="text-[10px] uppercase tracking-wider font-bold text-muted-foreground/50">
+                      Key Outcomes
+                    </p>
                     <ul className="space-y-2">
                       {cs.highlights.map((h, i) => (
                         <li key={i} className="flex items-start gap-2 text-sm text-foreground/80">
@@ -125,13 +129,20 @@ export default function CaseStudiesPage() {
           <div className="h-px w-24 bg-gradient-to-r from-transparent via-border to-transparent" />
           <div className="flex flex-wrap items-center justify-center gap-4">
             <Link href="/dashboard/analytics">
-              <Button size="lg" className="rounded-full px-8 shadow-lg shadow-primary/20 hover:shadow-primary/30 active:scale-95 transition-all">
+              <Button
+                size="lg"
+                className="rounded-full px-8 shadow-lg shadow-primary/20 hover:shadow-primary/30 active:scale-95 transition-all"
+              >
                 View ROI Calculator
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </Link>
             <Link href="/docs/best-practices">
-              <Button variant="outline" size="lg" className="rounded-full px-8 border-white/10 bg-white/5 backdrop-blur-sm hover:bg-white/10 transition-all">
+              <Button
+                variant="outline"
+                size="lg"
+                className="rounded-full px-8 border-white/10 bg-white/5 backdrop-blur-sm hover:bg-white/10 transition-all"
+              >
                 Best Practices
               </Button>
             </Link>

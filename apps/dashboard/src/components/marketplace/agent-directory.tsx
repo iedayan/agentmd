@@ -1,35 +1,35 @@
-"use client";
+'use client';
 
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Star, Shield, Search, ShoppingCart } from "lucide-react";
-import Link from "next/link";
-import { toast } from "sonner";
-import type { AgentListing } from "@agentmd-dev/core";
+} from '@/components/ui/select';
+import { Star, Shield, Search, ShoppingCart } from 'lucide-react';
+import Link from 'next/link';
+import { toast } from 'sonner';
+import type { AgentListing } from '@agentmd-dev/core';
 
 const CATEGORIES = [
-  { value: "all", label: "All" },
-  { value: "pr-labeler", label: "PR Labeler" },
-  { value: "testing", label: "Testing" },
-  { value: "code-review", label: "Code Review" },
-  { value: "template", label: "Templates" },
-  { value: "security", label: "Security" },
+  { value: 'all', label: 'All' },
+  { value: 'pr-labeler', label: 'PR Labeler' },
+  { value: 'testing', label: 'Testing' },
+  { value: 'code-review', label: 'Code Review' },
+  { value: 'template', label: 'Templates' },
+  { value: 'security', label: 'Security' },
 ];
 
 export function AgentDirectory() {
   const [agents, setAgents] = useState<AgentListing[]>([]);
-  const [search, setSearch] = useState("");
-  const [category, setCategory] = useState("all");
+  const [search, setSearch] = useState('');
+  const [category, setCategory] = useState('all');
   const [certifiedOnly, setCertifiedOnly] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -37,22 +37,20 @@ export function AgentDirectory() {
   const loadAgents = useCallback(async () => {
     try {
       setError(null);
-      const res = await fetch("/api/marketplace/agents", { cache: "no-store" });
+      const res = await fetch('/api/marketplace/agents', { cache: 'no-store' });
       const data = (await res.json()) as {
         ok?: boolean;
         agents?: AgentListing[];
         error?: string;
       };
       if (!res.ok || data.ok === false) {
-        throw new Error(data.error ?? "Failed to load marketplace agents.");
+        throw new Error(data.error ?? 'Failed to load marketplace agents.');
       }
       setAgents(data.agents ?? []);
     } catch (loadError) {
       setAgents([]);
       setError(
-        loadError instanceof Error
-          ? loadError.message
-          : "Failed to load marketplace agents."
+        loadError instanceof Error ? loadError.message : 'Failed to load marketplace agents.',
       );
     } finally {
       setLoading(false);
@@ -71,21 +69,21 @@ export function AgentDirectory() {
             !search ||
             a.name.toLowerCase().includes(search.toLowerCase()) ||
             a.description.toLowerCase().includes(search.toLowerCase());
-          const matchCategory = category === "all" || a.category === category;
+          const matchCategory = category === 'all' || a.category === category;
           const matchCertified = !certifiedOnly || a.certified;
           return matchSearch && matchCategory && matchCertified;
         })
         .sort((a, b) => b.trustScore - a.trustScore || b.rating - a.rating),
-    [agents, category, certifiedOnly, search]
+    [agents, category, certifiedOnly, search],
   );
 
   const formatPrice = (a: AgentListing) => {
     const p = a.pricing;
-    if (p.model === "free") return "Free";
+    if (p.model === 'free') return 'Free';
     if (p.subscriptionPrice) return `$${(p.subscriptionPrice / 100).toFixed(2)}/mo`;
     if (p.oneTimePrice) return `$${(p.oneTimePrice / 100).toFixed(2)}`;
     if (p.usagePrice) return `$${(p.usagePrice / 100).toFixed(2)}/run`;
-    return "—";
+    return '—';
   };
 
   return (
@@ -121,7 +119,7 @@ export function AgentDirectory() {
             </SelectContent>
           </Select>
           <Button
-            variant={certifiedOnly ? "default" : "outline"}
+            variant={certifiedOnly ? 'default' : 'outline'}
             size="sm"
             onClick={() => setCertifiedOnly(!certifiedOnly)}
           >
@@ -168,8 +166,11 @@ export function AgentDirectory() {
                 <CardHeader className="flex flex-row items-start justify-between space-y-0">
                   <CardTitle className="text-base">{agent.name}</CardTitle>
                   <div className="flex items-center gap-1">
-                    {"license" in agent && agent.license && (
-                      <Badge variant="outline" className="text-[10px] font-black uppercase text-muted-foreground/60 border-border/40">
+                    {'license' in agent && agent.license && (
+                      <Badge
+                        variant="outline"
+                        className="text-[10px] font-black uppercase text-muted-foreground/60 border-border/40"
+                      >
                         {String(agent.license)}
                       </Badge>
                     )}
@@ -182,23 +183,26 @@ export function AgentDirectory() {
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-3 flex-1">
-                  <CardDescription className="line-clamp-2">
-                    {agent.description}
-                  </CardDescription>
+                  <CardDescription className="line-clamp-2">{agent.description}</CardDescription>
                   <div className="flex items-center gap-2 text-sm">
                     <Star className="h-4 w-4 fill-amber-400 text-amber-400" />
                     <span>{agent.rating}</span>
-                    <span className="text-muted-foreground">
-                      ({agent.reviewCount} reviews)
-                    </span>
+                    <span className="text-muted-foreground">({agent.reviewCount} reviews)</span>
                   </div>
                   <div className="flex items-center justify-between mt-auto pt-4">
                     <div className="flex flex-col">
-                      <span className="text-[10px] uppercase font-black text-muted-foreground/60 tracking-wider">Starting at</span>
+                      <span className="text-[10px] uppercase font-black text-muted-foreground/60 tracking-wider">
+                        Starting at
+                      </span>
                       <span className="font-bold text-lg">{formatPrice(agent)}</span>
                     </div>
-                    {agent.pricing.model === "free" ? (
-                      <Button variant="outline" size="sm" className="rounded-xl border-border/40 font-bold" asChild>
+                    {agent.pricing.model === 'free' ? (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="rounded-xl border-border/40 font-bold"
+                        asChild
+                      >
                         <Link href={`/marketplace/${agent.slug}`}>Install Free</Link>
                       </Button>
                     ) : (

@@ -1,7 +1,7 @@
-import Link from "next/link";
-import { Nav } from "@/components/landing/nav";
-import { Button } from "@/components/ui/button";
-import { Check, FileCheck, Lock, BarChart3 } from "lucide-react";
+import Link from 'next/link';
+import { Nav } from '@/components/landing/nav';
+import { Button } from '@/components/ui/button';
+import { Check, FileCheck, Lock, BarChart3 } from 'lucide-react';
 
 export default function ForEnterprisesPage() {
   return (
@@ -12,9 +12,7 @@ export default function ForEnterprisesPage() {
           <p className="font-mono text-xs tracking-widest uppercase text-primary mb-2">
             For Enterprises
           </p>
-          <h1 className="text-4xl font-bold tracking-tight">
-            Governed agent execution
-          </h1>
+          <h1 className="text-4xl font-bold tracking-tight">Governed agent execution</h1>
           <p className="mt-4 text-lg text-muted-foreground">
             Deterministic workflows, audit trails, and compliance-ready execution for AI agents.
           </p>
@@ -28,7 +26,8 @@ export default function ForEnterprisesPage() {
             <div>
               <h2 className="font-semibold">Deterministic workflows</h2>
               <p className="text-sm text-muted-foreground mt-1">
-                Commands are explicit and version-controlled in AGENTS.md. No opaque autonomous behavior. Same input, same outcome—auditable and reproducible.
+                Commands are explicit and version-controlled in AGENTS.md. No opaque autonomous
+                behavior. Same input, same outcome—auditable and reproducible.
               </p>
             </div>
           </div>
@@ -40,7 +39,8 @@ export default function ForEnterprisesPage() {
             <div>
               <h2 className="font-semibold">EU AI Act alignment</h2>
               <p className="text-sm text-muted-foreground mt-1">
-                Risk classification, human-in-the-loop, guardrails, and kill switch. Built for evolving regulations.
+                Risk classification, human-in-the-loop, guardrails, and kill switch. Built for
+                evolving regulations.
               </p>
             </div>
           </div>
@@ -52,7 +52,8 @@ export default function ForEnterprisesPage() {
             <div>
               <h2 className="font-semibold">Full traceability</h2>
               <p className="text-sm text-muted-foreground mt-1">
-                Execution history, audit logs, success rates, and ROI metrics. Export traces via OpenTelemetry for your observability stack.
+                Execution history, audit logs, success rates, and ROI metrics. Export traces via
+                OpenTelemetry for your observability stack.
               </p>
             </div>
           </div>
@@ -60,10 +61,10 @@ export default function ForEnterprisesPage() {
 
         <ul className="mt-10 space-y-2 text-sm">
           {[
-            "Self-hosted option",
-            "SSO/SAML, RBAC",
-            "Slack approvals for sensitive ops",
-            "Jira integration for execution status",
+            'Self-hosted option',
+            'SSO/SAML, RBAC',
+            'Slack approvals for sensitive ops',
+            'Jira integration for execution status',
           ].map((item) => (
             <li key={item} className="flex items-center gap-2">
               <Check className="h-4 w-4 text-primary shrink-0" />
@@ -77,7 +78,9 @@ export default function ForEnterprisesPage() {
             <Button size="lg">Enterprise</Button>
           </Link>
           <Link href="/docs/eu-ai-act">
-            <Button variant="outline" size="lg">EU AI Act</Button>
+            <Button variant="outline" size="lg">
+              EU AI Act
+            </Button>
           </Link>
         </div>
       </main>

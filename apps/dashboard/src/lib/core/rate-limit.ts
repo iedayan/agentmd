@@ -1,4 +1,4 @@
-import { getPool, hasDatabase } from "../data/db";
+import { getPool, hasDatabase } from '../data/db';
 
 const store = new Map<string, { count: number; resetAt: number }>();
 const DEFAULT_WINDOW_MS = 60_000;
@@ -12,11 +12,11 @@ export interface RateLimitOptions {
 
 export async function rateLimit(
   key: string,
-  options: RateLimitOptions = {}
+  options: RateLimitOptions = {},
 ): Promise<{ allowed: boolean; remaining: number }> {
   const windowMs = options.windowMs ?? DEFAULT_WINDOW_MS;
   const maxRequests = options.maxRequests ?? DEFAULT_MAX_REQUESTS;
-  const scope = options.scope ?? "default";
+  const scope = options.scope ?? 'default';
   const now = Date.now();
 
   if (hasDatabase()) {
@@ -33,7 +33,7 @@ export async function rateLimit(
            ON CONFLICT (scope, client_key, window_start)
            DO UPDATE SET count = rate_limits.count + 1, updated_at = NOW()
            RETURNING count`,
-          [scope, dbKey, windowStart]
+          [scope, dbKey, windowStart],
         );
 
         const count = Number(res.rows[0]?.count ?? 1);

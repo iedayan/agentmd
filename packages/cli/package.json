@@ -6,13 +6,21 @@
   "bin": {
     "agentmd": "./dist/cli.js"
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/iedayan/agentmd.git",
     "directory": "packages/cli"
   },
-  "keywords": ["agents.md", "agents-md", "ai-agents", "cli", "validation"],
+  "keywords": [
+    "agents.md",
+    "agents-md",
+    "ai-agents",
+    "cli",
+    "validation"
+  ],
   "license": "MIT",
   "publishConfig": {
     "access": "public"

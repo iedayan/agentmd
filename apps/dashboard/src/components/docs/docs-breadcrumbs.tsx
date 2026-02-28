@@ -1,23 +1,23 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { ChevronRight } from "lucide-react";
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { ChevronRight } from 'lucide-react';
 
 const LABELS: Record<string, string> = {
-  docs: "Docs",
-  quickstart: "Quickstart",
-  parse: "Parse & Validate",
-  cli: "CLI Reference",
-  frontmatter: "YAML Frontmatter",
-  compose: "Composition",
-  execution: "Execution & Safety",
+  docs: 'Docs',
+  quickstart: 'Quickstart',
+  parse: 'Parse & Validate',
+  cli: 'CLI Reference',
+  frontmatter: 'YAML Frontmatter',
+  compose: 'Composition',
+  execution: 'Execution & Safety',
 };
 
 export function DocsBreadcrumbs() {
-  const pathname = usePathname() ?? "";
-  if (!pathname.startsWith("/docs")) return null;
-  const segments = pathname.split("/").filter(Boolean);
+  const pathname = usePathname() ?? '';
+  if (!pathname.startsWith('/docs')) return null;
+  const segments = pathname.split('/').filter(Boolean);
   if (segments.length < 2) return null;
 
   return (
@@ -26,7 +26,7 @@ export function DocsBreadcrumbs() {
         Docs
       </Link>
       {segments.slice(1).map((seg, i) => {
-        const href = "/" + segments.slice(0, i + 2).join("/");
+        const href = '/' + segments.slice(0, i + 2).join('/');
         const label = LABELS[seg] ?? seg;
         const isLast = i === segments.length - 2;
         return (

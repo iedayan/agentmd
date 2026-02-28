@@ -6,12 +6,12 @@ AgentMD deeply integrates with the [AGENTS.md standard](https://agents.md) to or
 
 ## Market Position
 
-| | Observability (AgentOps, LangFuse, Helicone) | **AgentMD** |
-|---|---|---|
-| **Focus** | Watch what agents do | **Execute** what agents should do |
-| **AGENTS.md** | Read for context | Parse, validate, **run** commands |
-| **Governance** | Post-hoc monitoring | Guardrails, permissions, policies at runtime |
-| **Value** | Telemetry & debugging | Orchestration, CI/CD & governed execution |
+|                | Observability (AgentOps, LangFuse, Helicone) | **AgentMD**                                  |
+| -------------- | -------------------------------------------- | -------------------------------------------- |
+| **Focus**      | Watch what agents do                         | **Execute** what agents should do            |
+| **AGENTS.md**  | Read for context                             | Parse, validate, **run** commands            |
+| **Governance** | Post-hoc monitoring                          | Guardrails, permissions, policies at runtime |
+| **Value**      | Telemetry & debugging                        | Orchestration, CI/CD & governed execution    |
 
 ## Strategic Priorities
 
@@ -82,35 +82,42 @@ pnpm run agentmd -- improve . --apply
 If you are new to AgentMD, use this path:
 
 1. Create a starter file (auto-detects Node.js, Python, Rust, Go):
+
 ```bash
 pnpm run agentmd -- init .
 ```
-   Or force a template: `pnpm run agentmd -- init . --template python`
+
+Or force a template: `pnpm run agentmd -- init . --template python`
 
 2. Diagnose and improve:
+
 ```bash
 pnpm run agentmd -- doctor .
 pnpm run agentmd -- improve . --apply
 ```
 
 3. Validate and score:
+
 ```bash
 pnpm run agentmd -- check . --contract
 pnpm run agentmd -- score .
 ```
 
 4. Preview safely, then run tests:
+
 ```bash
 pnpm run agentmd -- run . --dry-run
 pnpm run agentmd -- run . test
 ```
 
 5. Install local pre-commit hook (runs lint):
+
 ```bash
 pnpm run hooks:install
 ```
 
 If a command needs shell operators like `|` or redirects, opt in explicitly:
+
 ```bash
 pnpm run agentmd -- run . --use-shell
 ```
@@ -121,20 +128,20 @@ pnpm run agentmd -- run . --use-shell
 ---
 agent:
   name: pr-labeler
-  purpose: "Apply size labels to PRs"
+  purpose: 'Apply size labels to PRs'
   model: gpt-4o-mini
   triggers: [pull_request.opened]
   permissions:
     pull_requests: write
     shell:
-      allow: ["pnpm test", "pnpm lint"]
+      allow: ['pnpm test', 'pnpm lint']
       default: deny
   guardrails:
-    - "Never modify code, never merge"
+    - 'Never modify code, never merge'
   commands:
-    "pnpm run deploy":
+    'pnpm run deploy':
       risk_level: dangerous
-      preconditions: ["tests pass", "approval"]
+      preconditions: ['tests pass', 'approval']
       audit_tags: [deploy, production]
   output_contract:
     format: json

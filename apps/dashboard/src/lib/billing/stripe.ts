@@ -4,6 +4,6 @@
  */
 
 export const STRIPE = {
-  proPriceId: process.env.STRIPE_PRO_PRICE_ID ?? "price_pro_monthly",
-  enterprisePriceId: process.env.STRIPE_ENTERPRISE_PRICE_ID ?? "price_enterprise_monthly",
+  proPriceId: process.env.STRIPE_PRO_PRICE_ID ?? 'price_pro_monthly',
+  enterprisePriceId: process.env.STRIPE_ENTERPRISE_PRICE_ID ?? 'price_enterprise_monthly',
 };

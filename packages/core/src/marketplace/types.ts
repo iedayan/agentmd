@@ -3,18 +3,18 @@
  * Directory of certified agents that use AGENTS.md
  */
 
-export type PricingModel = "one-time" | "subscription" | "usage-based" | "free";
+export type PricingModel = 'one-time' | 'subscription' | 'usage-based' | 'free';
 
 export type AgentCategory =
-  | "code-review"
-  | "testing"
-  | "documentation"
-  | "refactoring"
-  | "security"
-  | "devops"
-  | "pr-labeler"
-  | "template"
-  | "other";
+  | 'code-review'
+  | 'testing'
+  | 'documentation'
+  | 'refactoring'
+  | 'security'
+  | 'devops'
+  | 'pr-labeler'
+  | 'template'
+  | 'other';
 
 export interface AgentListing {
   id: string;

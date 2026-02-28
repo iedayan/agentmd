@@ -3,7 +3,7 @@
  * Automated pull request review using AI agents with AGENTS.md configuration.
  */
 
-import type { ParsedAgentsMd } from "@agentmd-dev/core";
+import type { ParsedAgentsMd } from '@agentmd-dev/core';
 
 export interface PRReviewerConfig {
   /** Repository to analyze */
@@ -72,7 +72,7 @@ export class PRReviewerWorkflow {
   async execute(): Promise<ReviewSummary> {
     const context = await this.buildContext();
     const criteria = [...this.defaultCriteria, ...(this.config.criteria || [])];
-    
+
     const results: ReviewResult[] = [];
     for (const criterion of criteria) {
       const result = await criterion.check(context);
@@ -104,32 +104,32 @@ export class PRReviewerWorkflow {
   private getDefaultCriteria(): ReviewCriteria[] {
     return [
       {
-        name: "Test Coverage",
-        description: "Ensures adequate test coverage for changes",
+        name: 'Test Coverage',
+        description: 'Ensures adequate test coverage for changes',
         weight: 9,
         check: async (context) => this.checkTestCoverage(context),
       },
       {
-        name: "Build Success",
-        description: "Verifies that build commands pass",
+        name: 'Build Success',
+        description: 'Verifies that build commands pass',
         weight: 10,
         check: async (context) => this.checkBuildSuccess(context),
       },
       {
-        name: "Security Review",
-        description: "Security policy compliance",
+        name: 'Security Review',
+        description: 'Security policy compliance',
         weight: 8,
         check: async (context) => this.checkSecurity(context),
       },
       {
-        name: "Documentation",
-        description: "Documentation updates for new features",
+        name: 'Documentation',
+        description: 'Documentation updates for new features',
         weight: 6,
         check: async (context) => this.checkDocumentation(context),
       },
       {
-        name: "Code Style",
-        description: "Code formatting and style consistency",
+        name: 'Code Style',
+        description: 'Code formatting and style consistency',
         weight: 5,
         check: async (context) => this.checkCodeStyle(context),
       },
@@ -140,23 +140,24 @@ export class PRReviewerWorkflow {
    * Check if tests are included and passing for relevant changes.
    */
   private async checkTestCoverage(context: PRContext): Promise<ReviewResult> {
-    const testFiles = context.changes.filter(f => 
-      f.path.includes('/test/') || f.path.includes('/__tests__/') || f.path.endsWith('.test.ts')
+    const testFiles = context.changes.filter(
+      (f) =>
+        f.path.includes('/test/') || f.path.includes('/__tests__/') || f.path.endsWith('.test.ts'),
     );
-    
-    const sourceFiles = context.changes.filter(f => 
-      f.path.includes('/src/') && (f.path.endsWith('.ts') || f.path.endsWith('.js'))
+
+    const sourceFiles = context.changes.filter(
+      (f) => f.path.includes('/src/') && (f.path.endsWith('.ts') || f.path.endsWith('.js')),
     );
 
     if (sourceFiles.length > 0 && testFiles.length === 0) {
       return {
         passed: false,
         score: 30,
-        feedback: "Source code changes detected but no test files were modified",
+        feedback: 'Source code changes detected but no test files were modified',
         suggestions: [
-          "Add unit tests for new functionality",
-          "Update existing tests to cover changed code",
-          "Consider integration tests for API changes"
+          'Add unit tests for new functionality',
+          'Update existing tests to cover changed code',
+          'Consider integration tests for API changes',
         ],
         blocked: false,
       };
@@ -165,7 +166,7 @@ export class PRReviewerWorkflow {
     return {
       passed: true,
       score: 90,
-      feedback: "Test coverage looks adequate",
+      feedback: 'Test coverage looks adequate',
       suggestions: [],
       blocked: false,
     };
@@ -179,25 +180,22 @@ export class PRReviewerWorkflow {
       return {
         passed: true,
         score: 70,
-        feedback: "No AGENTS.md found to validate build",
-        suggestions: ["Add AGENTS.md with build commands"],
+        feedback: 'No AGENTS.md found to validate build',
+        suggestions: ['Add AGENTS.md with build commands'],
         blocked: false,
       };
     }
 
-    const buildCommands = context.agentsMd.commands.filter(cmd => 
-      cmd.type === 'build' || cmd.command.includes('build')
+    const buildCommands = context.agentsMd.commands.filter(
+      (cmd) => cmd.type === 'build' || cmd.command.includes('build'),
     );
 
     if (buildCommands.length === 0) {
       return {
         passed: false,
         score: 40,
-        feedback: "No build commands found in AGENTS.md",
-        suggestions: [
-          "Add build commands to AGENTS.md",
-          "Include `npm run build` or equivalent"
-        ],
+        feedback: 'No build commands found in AGENTS.md',
+        suggestions: ['Add build commands to AGENTS.md', 'Include `npm run build` or equivalent'],
         blocked: false,
       };
     }
@@ -216,22 +214,23 @@ export class PRReviewerWorkflow {
    * Check security compliance based on AGENTS.md policies.
    */
   private async checkSecurity(context: PRContext): Promise<ReviewResult> {
-    const sensitiveFiles = context.changes.filter(f => 
-      f.path.includes('/config/') || 
-      f.path.includes('.env') || 
-      f.path.includes('secret') ||
-      f.path.includes('key')
+    const sensitiveFiles = context.changes.filter(
+      (f) =>
+        f.path.includes('/config/') ||
+        f.path.includes('.env') ||
+        f.path.includes('secret') ||
+        f.path.includes('key'),
     );
 
     if (sensitiveFiles.length > 0) {
       return {
         passed: false,
         score: 20,
-        feedback: "Changes to sensitive configuration files detected",
+        feedback: 'Changes to sensitive configuration files detected',
         suggestions: [
-          "Review changes for exposed secrets",
-          "Ensure no hardcoded credentials",
-          "Consider using environment variables"
+          'Review changes for exposed secrets',
+          'Ensure no hardcoded credentials',
+          'Consider using environment variables',
         ],
         blocked: true,
       };
@@ -240,7 +239,7 @@ export class PRReviewerWorkflow {
     return {
       passed: true,
       score: 100,
-      feedback: "No security concerns detected",
+      feedback: 'No security concerns detected',
       suggestions: [],
       blocked: false,
     };
@@ -250,23 +249,23 @@ export class PRReviewerWorkflow {
    * Check documentation updates.
    */
   private async checkDocumentation(context: PRContext): Promise<ReviewResult> {
-    const docsChanged = context.changes.filter(f => 
-      f.path.includes('/docs/') || f.path.includes('README.md') || f.path.includes('.md')
+    const docsChanged = context.changes.filter(
+      (f) => f.path.includes('/docs/') || f.path.includes('README.md') || f.path.includes('.md'),
     );
 
-    const hasNewFeatures = context.changes.some(f => 
-      f.type === 'added' && f.path.includes('/src/')
+    const hasNewFeatures = context.changes.some(
+      (f) => f.type === 'added' && f.path.includes('/src/'),
     );
 
     if (hasNewFeatures && docsChanged.length === 0) {
       return {
         passed: false,
         score: 60,
-        feedback: "New features detected but no documentation updates",
+        feedback: 'New features detected but no documentation updates',
         suggestions: [
-          "Update README for new features",
-          "Add API documentation",
-          "Update AGENTS.md if needed"
+          'Update README for new features',
+          'Add API documentation',
+          'Update AGENTS.md if needed',
         ],
         blocked: false,
       };
@@ -275,7 +274,7 @@ export class PRReviewerWorkflow {
     return {
       passed: true,
       score: 85,
-      feedback: docsChanged.length > 0 ? "Documentation updated" : "No documentation needed",
+      feedback: docsChanged.length > 0 ? 'Documentation updated' : 'No documentation needed',
       suggestions: [],
       blocked: false,
     };
@@ -286,17 +285,17 @@ export class PRReviewerWorkflow {
    */
   private async checkCodeStyle(context: PRContext): Promise<ReviewResult> {
     // In real implementation, this would run linting commands from AGENTS.md
-    const lintCommands = context.agentsMd?.commands.filter(cmd => 
-      cmd.type === 'lint' || cmd.command.includes('lint')
+    const lintCommands = context.agentsMd?.commands.filter(
+      (cmd) => cmd.type === 'lint' || cmd.command.includes('lint'),
     );
 
     return {
       passed: true,
       score: 80,
-      feedback: lintCommands?.length 
+      feedback: lintCommands?.length
         ? `Found ${lintCommands.length} linting command(s) in AGENTS.md`
-        : "Consider adding linting commands to AGENTS.md",
-      suggestions: lintCommands?.length === 0 ? ["Add `npm run lint` to AGENTS.md"] : [],
+        : 'Consider adding linting commands to AGENTS.md',
+      suggestions: lintCommands?.length === 0 ? ['Add `npm run lint` to AGENTS.md'] : [],
       blocked: false,
     };
   }
@@ -306,12 +305,11 @@ export class PRReviewerWorkflow {
    */
   private summarizeResults(results: ReviewResult[]): ReviewSummary {
     const totalWeight = results.reduce((sum, _, i) => sum + (i + 1), 0);
-    const weightedScore = results.reduce((sum, result, i) => 
-      sum + (result.score * (i + 1)), 0
-    ) / totalWeight;
+    const weightedScore =
+      results.reduce((sum, result, i) => sum + result.score * (i + 1), 0) / totalWeight;
 
-    const blocked = results.some(r => r.blocked);
-    const failed = results.some(r => !r.passed);
+    const blocked = results.some((r) => r.blocked);
+    const failed = results.some((r) => !r.passed);
 
     return {
       overallScore: Math.round(weightedScore),
@@ -323,8 +321,8 @@ export class PRReviewerWorkflow {
   }
 
   private generateSummary(results: ReviewResult[]): string {
-    const issues = results.filter(r => !r.passed);
-    const blockers = results.filter(r => r.blocked);
+    const issues = results.filter((r) => !r.passed);
+    const blockers = results.filter((r) => r.blocked);
 
     if (blockers.length > 0) {
       return `🚫 **BLOCKED** - ${blockers.length} critical issue(s) must be resolved`;

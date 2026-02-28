@@ -1,16 +1,16 @@
-import Link from "next/link";
-import type { Metadata } from "next";
-import { Button } from "@/components/ui/button";
-import { BackLink } from "@/components/ui/back-link";
-import { Logo } from "@/components/brand/logo";
-import { MarkdownContent } from "@/components/blog/markdown-content";
-import { buildOgUrl } from "@/lib/og";
-import { notFound } from "next/navigation";
+import Link from 'next/link';
+import type { Metadata } from 'next';
+import { Button } from '@/components/ui/button';
+import { BackLink } from '@/components/ui/back-link';
+import { Logo } from '@/components/brand/logo';
+import { MarkdownContent } from '@/components/blog/markdown-content';
+import { buildOgUrl } from '@/lib/og';
+import { notFound } from 'next/navigation';
 
 const POSTS: Record<string, { title: string; date: string; content: string }> = {
-  "agentmd-and-ai-governance": {
-    title: "AgentMD and AI Governance",
-    date: "2025-02-21",
+  'agentmd-and-ai-governance': {
+    title: 'AgentMD and AI Governance',
+    date: '2025-02-21',
     content: `
 ## Why governance matters for agentic AI
 
@@ -43,9 +43,9 @@ We're planning features to support evolving regulations: EU AI Act risk classifi
 - [AgentOps (IBM)](https://www.ibm.com/think/topics/agentops) — Lifecycle management for AI agents; includes the IDC whitepaper on AI governance and agentic AI
     `.trim(),
   },
-  "agents-md-best-practices": {
-    title: "AGENTS.md Best Practices",
-    date: "2024-02-20",
+  'agents-md-best-practices': {
+    title: 'AGENTS.md Best Practices',
+    date: '2024-02-20',
     content: `
 ## Structure your AGENTS.md for clarity
 
@@ -78,9 +78,9 @@ guardrails:
 Aim for under 150 lines. Link to detailed docs for complex instructions.
     `.trim(),
   },
-  "migrating-from-claude-md": {
-    title: "Migrating from CLAUDE.md to AGENTS.md",
-    date: "2024-02-18",
+  'migrating-from-claude-md': {
+    title: 'Migrating from CLAUDE.md to AGENTS.md',
+    date: '2024-02-18',
     content: `
 ## Why migrate?
 
@@ -105,9 +105,9 @@ Before (CLAUDE.md): "To run tests, use pnpm test"
 After (AGENTS.md): \`\`\`## Test\n\`pnpm test\`\`\`\`
     `.trim(),
   },
-  "case-study-monorepo": {
-    title: "Case Study: Scaling AGENTS.md in a Monorepo",
-    date: "2024-02-15",
+  'case-study-monorepo': {
+    title: 'Case Study: Scaling AGENTS.md in a Monorepo',
+    date: '2024-02-15',
     content: `
 ## The challenge
 
@@ -144,8 +144,8 @@ export async function generateMetadata({
   const post = POSTS[slug];
   if (!post) return {};
   const title = `${post.title} | AgentMD Blog`;
-  const description = post.content.slice(0, 160).replace(/\n/g, " ").trim() + "...";
-  const ogUrl = buildOgUrl({ title: post.title, description, site: "agentmd.online" });
+  const description = post.content.slice(0, 160).replace(/\n/g, ' ').trim() + '...';
+  const ogUrl = buildOgUrl({ title: post.title, description, site: 'agentmd.online' });
   return {
     title,
     description,
@@ -155,7 +155,7 @@ export async function generateMetadata({
       images: [{ url: ogUrl, width: 1200, height: 630 }],
     },
     twitter: {
-      card: "summary_large_image",
+      card: 'summary_large_image',
       title,
       description,
       images: [ogUrl],
@@ -163,11 +163,7 @@ export async function generateMetadata({
   };
 }
 
-export default async function BlogPostPage({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
+export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const post = POSTS[slug];
   if (!post) notFound();
@@ -181,8 +177,12 @@ export default async function BlogPostPage({
             AgentMD
           </Link>
           <nav className="flex items-center gap-4">
-            <Link href="/docs"><Button variant="ghost">Docs</Button></Link>
-            <Link href="/dashboard"><Button>Dashboard</Button></Link>
+            <Link href="/docs">
+              <Button variant="ghost">Docs</Button>
+            </Link>
+            <Link href="/dashboard">
+              <Button>Dashboard</Button>
+            </Link>
           </nav>
         </div>
       </header>

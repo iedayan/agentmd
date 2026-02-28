@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { CheckCircle, XCircle, Clock, Play } from "lucide-react";
-import type { Execution } from "@/types";
-import { getPlan } from "@/lib/billing/plans";
+import Link from 'next/link';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { Card, CardContent } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { CheckCircle, XCircle, Clock, Play } from 'lucide-react';
+import type { Execution } from '@/types';
+import { getPlan } from '@/lib/billing/plans';
 export function ExecutionHistory() {
   const [executions, setExecutions] = useState<Execution[]>([]);
   const [executionMinutesUsed, setExecutionMinutesUsed] = useState(0);
@@ -19,12 +19,12 @@ export function ExecutionHistory() {
   const [queuing, setQueuing] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const executionLimit = getPlan("free").executionMinutes;
+  const executionLimit = getPlan('free').executionMinutes;
 
   const loadExecutions = useCallback(async () => {
     setLoading(true);
     try {
-      const res = await fetch("/api/executions", { cache: "no-store" });
+      const res = await fetch('/api/executions', { cache: 'no-store' });
       const data = (await res.json()) as {
         ok?: boolean;
         executions?: Execution[];
@@ -36,7 +36,7 @@ export function ExecutionHistory() {
         error?: string;
       };
       if (!res.ok || data.ok === false) {
-        throw new Error(data.error ?? "Unable to load executions right now.");
+        throw new Error(data.error ?? 'Unable to load executions right now.');
       }
       setExecutions(data.executions ?? []);
       setExecutionMinutesUsed(data.meta?.executionMinutesUsed ?? 0);
@@ -47,9 +47,7 @@ export function ExecutionHistory() {
       setExecutionMinutesUsed(0);
       setMeta({});
       setError(
-        loadError instanceof Error
-          ? loadError.message
-          : "Unable to load executions right now."
+        loadError instanceof Error ? loadError.message : 'Unable to load executions right now.',
       );
     } finally {
       setLoading(false);
@@ -61,8 +59,8 @@ export function ExecutionHistory() {
   }, [loadExecutions]);
 
   const hasActiveExecutions = useMemo(
-    () => executions.some((ex) => ex.status === "pending" || ex.status === "running"),
-    [executions]
+    () => executions.some((ex) => ex.status === 'pending' || ex.status === 'running'),
+    [executions],
   );
 
   useEffect(() => {
@@ -77,15 +75,15 @@ export function ExecutionHistory() {
     setQueuing(true);
     setError(null);
     try {
-      const response = await fetch("/api/execute", {
-        method: "POST",
+      const response = await fetch('/api/execute', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
-          "Idempotency-Key": crypto.randomUUID(),
+          'Content-Type': 'application/json',
+          'Idempotency-Key': crypto.randomUUID(),
         },
         body: JSON.stringify({
-          trigger: "manual",
-          agentId: "pr-labeler",
+          trigger: 'manual',
+          agentId: 'pr-labeler',
         }),
       });
       const data = (await response.json().catch(() => ({}))) as {
@@ -94,7 +92,7 @@ export function ExecutionHistory() {
         dashboardExecution?: Execution;
       };
       if (!response.ok || data.ok === false) {
-        setError(data.error ?? "Failed to queue execution");
+        setError(data.error ?? 'Failed to queue execution');
         return;
       }
       if (data.dashboardExecution) {
@@ -102,29 +100,29 @@ export function ExecutionHistory() {
       }
       await loadExecutions();
     } catch {
-      setError("Failed to queue execution");
+      setError('Failed to queue execution');
     } finally {
       setQueuing(false);
     }
   };
 
-  const statusIcon = (status: Execution["status"]) => {
+  const statusIcon = (status: Execution['status']) => {
     switch (status) {
-      case "success":
+      case 'success':
         return <CheckCircle className="h-4 w-4 text-emerald-500" />;
-      case "failed":
+      case 'failed':
         return <XCircle className="h-4 w-4 text-red-500" />;
-      case "cancelled":
+      case 'cancelled':
         return <XCircle className="h-4 w-4 text-amber-500" />;
-      case "running":
+      case 'running':
         return <Play className="h-4 w-4 text-primary animate-pulse" />;
       default:
         return <Clock className="h-4 w-4 text-muted-foreground" />;
     }
   };
 
-  const triggerLabel = (t: Execution["trigger"]) =>
-    t === "pull_request" ? "PR" : t.charAt(0).toUpperCase() + t.slice(1);
+  const triggerLabel = (t: Execution['trigger']) =>
+    t === 'pull_request' ? 'PR' : t.charAt(0).toUpperCase() + t.slice(1);
   const statusCounts = executions.reduce(
     (acc, execution) => {
       const s = execution.status;
@@ -132,7 +130,7 @@ export function ExecutionHistory() {
       else (acc as Record<string, number>)[s] = 1;
       return acc;
     },
-    { pending: 0, running: 0, success: 0, failed: 0, cancelled: 0 } as Record<string, number>
+    { pending: 0, running: 0, success: 0, failed: 0, cancelled: 0 } as Record<string, number>,
   );
 
   const completedWithOutcome = statusCounts.success + statusCounts.failed;
@@ -176,22 +174,18 @@ export function ExecutionHistory() {
                 </Badge>
               )}
               {commandSuccessRate != null && (
-                <Badge variant="outline">
-                  Command success {commandSuccessRate.toFixed(0)}%
-                </Badge>
+                <Badge variant="outline">Command success {commandSuccessRate.toFixed(0)}%</Badge>
               )}
             </div>
             <Button onClick={() => void queueManualExecution()} disabled={queuing}>
               <Play className="mr-2 h-4 w-4" />
-              {queuing ? "Queuing..." : "Run Manually"}
+              {queuing ? 'Queuing...' : 'Run Manually'}
             </Button>
           </div>
         </CardContent>
       </Card>
       <div className="flex items-center justify-between">
-        <p className="text-sm text-muted-foreground">
-          {executions.length} total execution records
-        </p>
+        <p className="text-sm text-muted-foreground">{executions.length} total execution records</p>
         <Button
           variant="outline"
           size="sm"
@@ -231,7 +225,7 @@ export function ExecutionHistory() {
             </p>
             <Button onClick={() => void queueManualExecution()} disabled={queuing}>
               <Play className="mr-2 h-4 w-4" />
-              {queuing ? "Queuing..." : "Run your first execution"}
+              {queuing ? 'Queuing...' : 'Run your first execution'}
             </Button>
           </CardContent>
         </Card>
@@ -246,27 +240,27 @@ export function ExecutionHistory() {
                 <div className="flex-1 min-w-0">
                   <p className="font-medium truncate">{ex.repositoryName}</p>
                   <p className="text-sm text-muted-foreground">
-                    {triggerLabel(ex.trigger)} ·{" "}
+                    {triggerLabel(ex.trigger)} ·{' '}
                     {ex.commandsRun > 0
                       ? `${ex.commandsPassed}/${ex.commandsRun} passed`
-                      : ex.status === "running"
-                      ? "Running..."
-                      : "—"}
+                      : ex.status === 'running'
+                        ? 'Running...'
+                        : '—'}
                     {ex.durationMs && ` · ${(ex.durationMs / 1000).toFixed(1)}s`}
                   </p>
                 </div>
                 <div className="flex items-center gap-2">
                   <Badge
                     variant={
-                      ex.status === "success"
-                        ? "success"
-                        : ex.status === "failed"
-                        ? "destructive"
-                        : ex.status === "cancelled"
-                        ? "secondary"
-                        : ex.status === "running"
-                        ? "default"
-                        : "secondary"
+                      ex.status === 'success'
+                        ? 'success'
+                        : ex.status === 'failed'
+                          ? 'destructive'
+                          : ex.status === 'cancelled'
+                            ? 'secondary'
+                            : ex.status === 'running'
+                              ? 'default'
+                              : 'secondary'
                     }
                   >
                     {ex.status}

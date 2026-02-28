@@ -1,16 +1,16 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import type { PolicyRule } from "@/lib/ops/mock-data";
+import { useState } from 'react';
+import type { PolicyRule } from '@/lib/ops/mock-data';
 
 export function PoliciesTab({ policies }: { policies: PolicyRule[] }) {
   const [editing, setEditing] = useState<string | null>(null);
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState('');
 
   const filtered = policies.filter(
     (p) =>
       p.id.toLowerCase().includes(search.toLowerCase()) ||
-      p.description.toLowerCase().includes(search.toLowerCase())
+      p.description.toLowerCase().includes(search.toLowerCase()),
   );
 
   return (
@@ -51,42 +51,35 @@ export function PoliciesTab({ policies }: { policies: PolicyRule[] }) {
           </thead>
           <tbody>
             {filtered.map((p) => (
-              <tr
-                key={p.id}
-                className="border-b border-border hover:bg-muted/30"
-              >
+              <tr key={p.id} className="border-b border-border hover:bg-muted/30">
                 <td className="px-4 py-3 font-mono text-sm">{p.id}</td>
-                <td className="px-4 py-3 font-mono text-sm text-foreground/90">
-                  {p.description}
-                </td>
+                <td className="px-4 py-3 font-mono text-sm text-foreground/90">{p.description}</td>
                 <td className="px-4 py-3">
                   <span
                     className="rounded-[2px] px-2 py-0.5 font-mono text-xs"
                     style={{
                       backgroundColor:
-                        p.enforcement === "block"
-                          ? "rgba(220,38,38,0.1)"
-                          : p.enforcement === "require_approval"
-                          ? "rgba(217,119,6,0.1)"
-                          : "rgba(22,163,74,0.1)",
+                        p.enforcement === 'block'
+                          ? 'rgba(220,38,38,0.1)'
+                          : p.enforcement === 'require_approval'
+                            ? 'rgba(217,119,6,0.1)'
+                            : 'rgba(22,163,74,0.1)',
                       color:
-                        p.enforcement === "block"
-                          ? "var(--ops-failed)"
-                          : p.enforcement === "require_approval"
-                          ? "var(--ops-pending)"
-                          : "var(--ops-passed)",
+                        p.enforcement === 'block'
+                          ? 'var(--ops-failed)'
+                          : p.enforcement === 'require_approval'
+                            ? 'var(--ops-pending)'
+                            : 'var(--ops-passed)',
                     }}
                   >
-                    {p.enforcement === "block"
-                      ? "Block"
-                      : p.enforcement === "require_approval"
-                      ? "Require Approval"
-                      : "Warn"}
+                    {p.enforcement === 'block'
+                      ? 'Block'
+                      : p.enforcement === 'require_approval'
+                        ? 'Require Approval'
+                        : 'Warn'}
                   </span>
                 </td>
-                <td className="px-4 py-3 font-mono text-sm text-muted-foreground">
-                  {p.scope}
-                </td>
+                <td className="px-4 py-3 font-mono text-sm text-muted-foreground">{p.scope}</td>
                 <td className="px-4 py-3 font-mono text-sm text-muted-foreground">
                   {p.lastTriggered}
                 </td>

@@ -3,7 +3,7 @@
  */
 
 export const FRAMEWORK_TEMPLATES: Record<string, string> = {
-  "React + Vite": `---
+  'React + Vite': `---
 # Agent instructions for AI coding tools (React + Vite)
 ---
 
@@ -31,7 +31,7 @@ pnpm run test
 pnpm run lint
 \`\`\`
 `,
-  "Next.js": `---
+  'Next.js': `---
 # Agent instructions for AI coding tools (Next.js)
 ---
 
@@ -59,7 +59,7 @@ pnpm run test
 pnpm run lint
 \`\`\`
 `,
-  "Python / pytest": `---
+  'Python / pytest': `---
 # Agent instructions for AI coding tools (Python)
 ---
 
@@ -87,7 +87,7 @@ uv run ruff check .
 uv run ruff format .
 \`\`\`
 `,
-  "Rust / Cargo": `---
+  'Rust / Cargo': `---
 # Agent instructions for AI coding tools (Rust)
 ---
 
@@ -115,7 +115,7 @@ cargo clippy
 cargo fmt
 \`\`\`
 `,
-  "Node.js / pnpm": `---
+  'Node.js / pnpm': `---
 # Agent instructions for AI coding tools (Node.js)
 ---
 
@@ -143,7 +143,7 @@ pnpm run test
 pnpm run lint
 \`\`\`
 `,
-  "Go": `---
+  Go: `---
 # Agent instructions for AI coding tools (Go)
 ---
 
@@ -171,7 +171,7 @@ go vet ./...
 go fmt ./...
 \`\`\`
 `,
-  "Java / Maven": `---
+  'Java / Maven': `---
 # Agent instructions for AI coding tools (Java)
 ---
 

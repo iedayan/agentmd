@@ -1,13 +1,9 @@
-import {
-  parseAgentsMd,
-  validateAgentsMd,
-  computeAgentReadinessScore,
-} from "@agentmd-dev/core";
-import { convertToAgentsMd } from "@/lib/agents/migrate-to-agents-md";
-import { rateLimit } from "@/lib/core/rate-limit";
-import { getClientKey } from "@/lib/core/request-context";
-import { apiError, apiOk, getRequestId } from "@/lib/core/api-response";
-import { parseAndValidate, demoParseBodySchema } from "@/lib/core/validate";
+import { parseAgentsMd, validateAgentsMd, computeAgentReadinessScore } from '@agentmd-dev/core';
+import { convertToAgentsMd } from '@/lib/agents/migrate-to-agents-md';
+import { rateLimit } from '@/lib/core/rate-limit';
+import { getClientKey } from '@/lib/core/request-context';
+import { apiError, apiOk, getRequestId } from '@/lib/core/api-response';
+import { parseAndValidate, demoParseBodySchema } from '@/lib/core/validate';
 
 /**
  * Demo-only endpoint for interactive product UX.
@@ -17,16 +13,16 @@ export async function POST(request: Request) {
   const requestId = getRequestId(request);
   const key = getClientKey(request);
   const { allowed, remaining } = await rateLimit(key, {
-    scope: "demo-parse",
+    scope: 'demo-parse',
     maxRequests: 30,
     windowMs: 60_000,
   });
   if (!allowed) {
-    return apiError("Rate limit exceeded. Try again in a minute.", {
+    return apiError('Rate limit exceeded. Try again in a minute.', {
       status: 429,
       requestId,
-      headers: { "X-RateLimit-Remaining": "0" },
-      code: "RATE_LIMITED",
+      headers: { 'X-RateLimit-Remaining': '0' },
+      code: 'RATE_LIMITED',
     });
   }
 
@@ -39,8 +35,8 @@ export async function POST(request: Request) {
     const { content, sourceType } = validated.data;
 
     let parseContent = content;
-    if (sourceType === "readme") {
-      parseContent = convertToAgentsMd(content, "generic") || content;
+    if (sourceType === 'readme') {
+      parseContent = convertToAgentsMd(content, 'generic') || content;
     }
 
     const parsed = parseAgentsMd(parseContent);
@@ -76,15 +72,15 @@ export async function POST(request: Request) {
       },
       {
         requestId,
-        headers: { "X-RateLimit-Remaining": String(remaining) },
+        headers: { 'X-RateLimit-Remaining': String(remaining) },
       },
     );
   } catch (err) {
-    console.error("Demo parse error:", err);
-    return apiError("Failed to parse AGENTS.md", {
+    console.error('Demo parse error:', err);
+    return apiError('Failed to parse AGENTS.md', {
       status: 500,
       requestId,
-      headers: { "X-RateLimit-Remaining": String(remaining) },
+      headers: { 'X-RateLimit-Remaining': String(remaining) },
     });
   }
 }

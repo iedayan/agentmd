@@ -1,5 +1,5 @@
-import { MarketplaceHeader } from "@/components/marketplace/marketplace-header";
-import { AgentDirectory } from "@/components/marketplace/agent-directory";
+import { MarketplaceHeader } from '@/components/marketplace/marketplace-header';
+import { AgentDirectory } from '@/components/marketplace/agent-directory';
 
 export default function MarketplacePage() {
   return (

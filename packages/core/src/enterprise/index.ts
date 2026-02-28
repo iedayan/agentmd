@@ -6,8 +6,8 @@
  * Semver guarantees are limited until 1.0 for these exports.
  */
 
-export * from "./license.js";
-export * from "./rbac.js";
-export * from "./audit.js";
-export * from "./policy.js";
-export * from "./approval.js";
+export * from './license.js';
+export * from './rbac.js';
+export * from './audit.js';
+export * from './policy.js';
+export * from './approval.js';

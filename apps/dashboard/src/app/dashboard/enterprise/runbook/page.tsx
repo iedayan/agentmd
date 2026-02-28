@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { useEffect, useState } from 'react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 
 type RunbookResponse = {
   service: string;
@@ -12,7 +12,7 @@ type RunbookResponse = {
   checks: Array<{
     id: string;
     label: string;
-    status: "ok" | "warn" | "info";
+    status: 'ok' | 'warn' | 'info';
     detail: string;
   }>;
   governance: {
@@ -56,18 +56,18 @@ export default function OpsRunbookPage() {
   const load = async () => {
     setLoading(true);
     try {
-      const res = await fetch("/api/ops/runbook", { cache: "no-store" });
+      const res = await fetch('/api/ops/runbook', { cache: 'no-store' });
       const body = (await res.json()) as {
         ok?: boolean;
         error?: string;
       } & Partial<RunbookResponse>;
       if (!res.ok || body.ok === false) {
-        throw new Error(body.error ?? "Failed to load runbook.");
+        throw new Error(body.error ?? 'Failed to load runbook.');
       }
       setData(body as RunbookResponse);
       setError(null);
     } catch (loadError) {
-      setError(loadError instanceof Error ? loadError.message : "Failed to load runbook.");
+      setError(loadError instanceof Error ? loadError.message : 'Failed to load runbook.');
     } finally {
       setLoading(false);
     }
@@ -101,7 +101,10 @@ export default function OpsRunbookPage() {
         <Metric label="Webhook Success" value={`${data?.governance.webhookSuccessRate ?? 0}%`} />
         <Metric label="Pending Approvals" value={String(data?.governance.pendingApprovals ?? 0)} />
         <Metric label="Blocked by Policy" value={String(data?.governance.blockedByPolicy ?? 0)} />
-        <Metric label="Unread Notifications" value={String(data?.governance.unreadNotifications ?? 0)} />
+        <Metric
+          label="Unread Notifications"
+          value={String(data?.governance.unreadNotifications ?? 0)}
+        />
       </div>
 
       <Card>
@@ -118,11 +121,11 @@ export default function OpsRunbookPage() {
                 <p className="font-medium">{check.label}</p>
                 <Badge
                   variant={
-                    check.status === "ok"
-                      ? "success"
-                      : check.status === "warn"
-                      ? "destructive"
-                      : "secondary"
+                    check.status === 'ok'
+                      ? 'success'
+                      : check.status === 'warn'
+                        ? 'destructive'
+                        : 'secondary'
                   }
                 >
                   {check.status}
@@ -166,14 +169,14 @@ export default function OpsRunbookPage() {
             <p>Signature failures: {data?.governance.webhookSignatureFailures ?? 0}</p>
             <p>Errors: {data?.governance.webhookErrors ?? 0}</p>
             <p>
-              Last event:{" "}
+              Last event:{' '}
               {data?.governance.lastWebhookEvent
                 ? `${data.governance.lastWebhookEvent} @ ${
                     data.governance.lastWebhookAt
                       ? new Date(data.governance.lastWebhookAt).toLocaleString()
-                      : "unknown"
+                      : 'unknown'
                   }`
-                : "None"}
+                : 'None'}
             </p>
             {data?.governance.lastWebhookError ? (
               <p className="text-destructive">Last error: {data.governance.lastWebhookError}</p>

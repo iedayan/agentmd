@@ -1,6 +1,6 @@
-import { NextRequest } from "next/server";
-import { apiOk, getRequestId } from "@/lib/core/api-response";
-import { listComplianceArtifacts } from "@/lib/analytics/governance-data";
+import { NextRequest } from 'next/server';
+import { apiOk, getRequestId } from '@/lib/core/api-response';
+import { listComplianceArtifacts } from '@/lib/analytics/governance-data';
 
 export async function GET(req: NextRequest) {
   const requestId = getRequestId(req);
@@ -8,12 +8,12 @@ export async function GET(req: NextRequest) {
     {
       artifacts: listComplianceArtifacts(),
       controls: [
-        "Audit logging",
-        "Approval trail",
-        "RBAC with role assignment history",
-        "Policy-as-code snapshots",
+        'Audit logging',
+        'Approval trail',
+        'RBAC with role assignment history',
+        'Policy-as-code snapshots',
       ],
     },
-    { requestId }
+    { requestId },
   );
 }

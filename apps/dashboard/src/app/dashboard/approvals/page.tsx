@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { useCallback, useEffect, useState } from "react";
-import Link from "next/link";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { CheckCircle, XCircle, Clock, AlertCircle } from "lucide-react";
+import { useCallback, useEffect, useState } from 'react';
+import Link from 'next/link';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { CheckCircle, XCircle, Clock, AlertCircle } from 'lucide-react';
 
 type ApprovalRequest = {
   id: string;
@@ -13,7 +13,7 @@ type ApprovalRequest = {
   repositoryName: string;
   requestedBy: string;
   reason: string;
-  status: "pending" | "approved" | "rejected";
+  status: 'pending' | 'approved' | 'rejected';
   createdAt: string;
   decidedAt?: string;
   decidedBy?: string;
@@ -29,14 +29,18 @@ export default function ApprovalsPage() {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch("/api/workflows/approvals", { cache: "no-store" });
-      const data = (await res.json()) as { ok?: boolean; approvals?: ApprovalRequest[]; error?: string };
+      const res = await fetch('/api/workflows/approvals', { cache: 'no-store' });
+      const data = (await res.json()) as {
+        ok?: boolean;
+        approvals?: ApprovalRequest[];
+        error?: string;
+      };
       if (!res.ok || data.ok === false) {
-        throw new Error(data.error ?? "Failed to load approvals");
+        throw new Error(data.error ?? 'Failed to load approvals');
       }
       setApprovals(data.approvals ?? []);
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Failed to load approvals");
+      setError(e instanceof Error ? e.message : 'Failed to load approvals');
       setApprovals([]);
     } finally {
       setLoading(false);
@@ -47,38 +51,39 @@ export default function ApprovalsPage() {
     void loadApprovals();
   }, [loadApprovals]);
 
-  const decide = async (approvalId: string, decision: "approved" | "rejected") => {
+  const decide = async (approvalId: string, decision: 'approved' | 'rejected') => {
     setDeciding(approvalId);
     try {
-      const res = await fetch("/api/workflows/approvals", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+      const res = await fetch('/api/workflows/approvals', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           approvalId,
           decision,
-          decidedBy: "current_user",
+          decidedBy: 'current_user',
         }),
       });
       const data = (await res.json()) as { ok?: boolean; error?: string };
       if (!res.ok || data.ok === false) {
-        throw new Error(data.error ?? "Failed to update approval");
+        throw new Error(data.error ?? 'Failed to update approval');
       }
       await loadApprovals();
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Failed to update approval");
+      setError(e instanceof Error ? e.message : 'Failed to update approval');
     } finally {
       setDeciding(null);
     }
   };
 
-  const pending = approvals.filter((a) => a.status === "pending");
+  const pending = approvals.filter((a) => a.status === 'pending');
 
   return (
     <div className="space-y-8 max-w-4xl mx-auto">
       <div>
         <h1 className="text-2xl font-bold">Approvals</h1>
         <p className="text-muted-foreground mt-1">
-          Human-in-the-loop approval requests. Approve or reject commands that require policy approval.
+          Human-in-the-loop approval requests. Approve or reject commands that require policy
+          approval.
         </p>
       </div>
 
@@ -130,10 +135,12 @@ export default function ApprovalsPage() {
                       <Button
                         size="sm"
                         variant="default"
-                        onClick={() => void decide(a.id, "approved")}
+                        onClick={() => void decide(a.id, 'approved')}
                         disabled={deciding === a.id}
                       >
-                        {deciding === a.id ? "..." : (
+                        {deciding === a.id ? (
+                          '...'
+                        ) : (
                           <>
                             <CheckCircle className="h-4 w-4 mr-2" />
                             Approve
@@ -143,7 +150,7 @@ export default function ApprovalsPage() {
                       <Button
                         size="sm"
                         variant="destructive"
-                        onClick={() => void decide(a.id, "rejected")}
+                        onClick={() => void decide(a.id, 'rejected')}
                         disabled={deciding === a.id}
                       >
                         <XCircle className="h-4 w-4 mr-2" />
@@ -159,18 +166,20 @@ export default function ApprovalsPage() {
           <Card className="bento-card">
             <CardHeader>
               <CardTitle className="text-lg">All approvals</CardTitle>
-              <CardDescription>
-                Recent approval requests and decisions.
-              </CardDescription>
+              <CardDescription>Recent approval requests and decisions.</CardDescription>
             </CardHeader>
             <CardContent>
               {approvals.length === 0 ? (
                 <div className="rounded-2xl border-2 border-dashed border-border/60 p-12 text-center text-sm text-muted-foreground">
                   <p>No approval requests yet.</p>
                   <p className="mt-2">
-                    Approvals are created when an execution hits a policy that requires human approval.
+                    Approvals are created when an execution hits a policy that requires human
+                    approval.
                   </p>
-                  <Link href="/dashboard/enterprise/policies" className="text-primary hover:underline mt-2 inline-block">
+                  <Link
+                    href="/dashboard/enterprise/policies"
+                    className="text-primary hover:underline mt-2 inline-block"
+                  >
                     Configure policies →
                   </Link>
                 </div>
@@ -186,11 +195,11 @@ export default function ApprovalsPage() {
                           <span className="font-medium text-foreground">{a.repositoryName}</span>
                           <Badge
                             variant={
-                              a.status === "pending"
-                                ? "secondary"
-                                : a.status === "approved"
-                                  ? "default"
-                                  : "destructive"
+                              a.status === 'pending'
+                                ? 'secondary'
+                                : a.status === 'approved'
+                                  ? 'default'
+                                  : 'destructive'
                             }
                           >
                             {a.status}
@@ -200,16 +209,19 @@ export default function ApprovalsPage() {
                         <p className="text-xs text-muted-foreground mt-1">
                           {a.requestedBy} · {new Date(a.createdAt).toLocaleString()}
                           {a.decidedBy && a.decidedAt && (
-                            <> · Decided by {a.decidedBy} at {new Date(a.decidedAt).toLocaleString()}</>
+                            <>
+                              {' '}
+                              · Decided by {a.decidedBy} at {new Date(a.decidedAt).toLocaleString()}
+                            </>
                           )}
                         </p>
                       </div>
-                      {a.status === "pending" && (
+                      {a.status === 'pending' && (
                         <div className="flex gap-2 shrink-0">
                           <Button
                             size="sm"
                             variant="outline"
-                            onClick={() => void decide(a.id, "approved")}
+                            onClick={() => void decide(a.id, 'approved')}
                             disabled={deciding === a.id}
                           >
                             Approve
@@ -218,7 +230,7 @@ export default function ApprovalsPage() {
                             size="sm"
                             variant="outline"
                             className="text-destructive hover:text-destructive"
-                            onClick={() => void decide(a.id, "rejected")}
+                            onClick={() => void decide(a.id, 'rejected')}
                             disabled={deciding === a.id}
                           >
                             Reject

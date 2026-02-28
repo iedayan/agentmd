@@ -1,20 +1,7 @@
-import Link from "next/link";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
-  Code2,
-  FileCode,
-  Shield,
-  BarChart3,
-  Zap,
-  ArrowRight,
-} from "lucide-react";
-import { MarketplaceHeader } from "@/components/marketplace/marketplace-header";
+import Link from 'next/link';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Code2, FileCode, Shield, BarChart3, Zap, ArrowRight } from 'lucide-react';
+import { MarketplaceHeader } from '@/components/marketplace/marketplace-header';
 
 export default function DevelopersPage() {
   return (
@@ -70,7 +57,8 @@ export default function DevelopersPage() {
         <div className="mt-16 rounded-lg border bg-card p-8">
           <h2 className="text-2xl font-bold">Skills for Agent Authors</h2>
           <p className="text-muted-foreground mt-2">
-            AI assistant skills that help you author and improve AGENTS.md. Install via Cursor, Codex, or Claude Code.
+            AI assistant skills that help you author and improve AGENTS.md. Install via Cursor,
+            Codex, or Claude Code.
           </p>
           <ul className="mt-4 space-y-2 text-sm">
             <li>
@@ -82,7 +70,7 @@ export default function DevelopersPage() {
               >
                 getsentry/skills (agents-md)
               </a>
-              {" — "}
+              {' — '}
               Generate and manage AGENTS.md files
             </li>
             <li>
@@ -94,8 +82,9 @@ export default function DevelopersPage() {
               >
                 awesome-agent-skills
               </a>
-              {" — "}
-              Curated list of 380+ skills: skill-creator, next-best-practices, stripe-best-practices, using-neon, and more
+              {' — '}
+              Curated list of 380+ skills: skill-creator, next-best-practices,
+              stripe-best-practices, using-neon, and more
             </li>
           </ul>
           <p className="mt-4 text-xs text-muted-foreground">

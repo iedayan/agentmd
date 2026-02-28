@@ -1,16 +1,15 @@
-"use client";
+'use client';
 
-import type { AuditEntry } from "@/lib/ops/mock-data";
+import type { AuditEntry } from '@/lib/ops/mock-data';
 
 const RESULT_COLORS = {
-  pass: "var(--ops-passed)",
-  fail: "var(--ops-failed)",
-  approved: "var(--ops-passed)",
-  rejected: "var(--ops-failed)",
+  pass: 'var(--ops-passed)',
+  fail: 'var(--ops-failed)',
+  approved: 'var(--ops-passed)',
+  rejected: 'var(--ops-failed)',
 };
 
 export function AuditTab({ entries }: { entries: AuditEntry[] }) {
-
   return (
     <div className="p-6">
       <div className="mb-6 flex items-center justify-between">
@@ -64,22 +63,13 @@ export function AuditTab({ entries }: { entries: AuditEntry[] }) {
           </thead>
           <tbody>
             {entries.map((e, i) => (
-              <tr
-                key={i}
-                className="border-b border-border hover:bg-muted/30"
-              >
-                <td className="px-4 py-3 font-mono text-sm text-muted-foreground">
-                  {e.timestamp}
-                </td>
+              <tr key={i} className="border-b border-border hover:bg-muted/30">
+                <td className="px-4 py-3 font-mono text-sm text-muted-foreground">{e.timestamp}</td>
                 <td className="px-4 py-3 font-mono text-sm">{e.pipeline}</td>
-                <td className="px-4 py-3 font-mono text-sm text-foreground/80">
-                  {e.stage}
-                </td>
+                <td className="px-4 py-3 font-mono text-sm text-foreground/80">{e.stage}</td>
                 <td className="px-4 py-3 font-mono text-sm">
                   {e.actor}
-                  <span className="ml-1 text-muted-foreground">
-                    ({e.actorType})
-                  </span>
+                  <span className="ml-1 text-muted-foreground">({e.actorType})</span>
                 </td>
                 <td className="px-4 py-3 font-mono text-sm">{e.action}</td>
                 <td className="px-4 py-3">

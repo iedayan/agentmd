@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { ChevronDown } from "lucide-react";
-import { cn } from "@/lib/core/utils";
+import { useState } from 'react';
+import { ChevronDown } from 'lucide-react';
+import { cn } from '@/lib/core/utils';
 
 export function FaqItem({
   question,
@@ -18,8 +18,8 @@ export function FaqItem({
   return (
     <details
       className={cn(
-        "group rounded-[var(--radius-md)] border border-border bg-card transition-colors",
-        "open:border-primary/30 open:bg-primary/[0.02]"
+        'group rounded-[var(--radius-md)] border border-border bg-card transition-colors',
+        'open:border-primary/30 open:bg-primary/[0.02]',
       )}
       open={open}
     >
@@ -33,8 +33,8 @@ export function FaqItem({
         <span>{question}</span>
         <ChevronDown
           className={cn(
-            "h-5 w-5 shrink-0 text-muted-foreground transition-transform duration-200",
-            open && "rotate-180"
+            'h-5 w-5 shrink-0 text-muted-foreground transition-transform duration-200',
+            open && 'rotate-180',
           )}
         />
       </summary>

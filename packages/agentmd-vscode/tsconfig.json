@@ -6,7 +6,6 @@
     "moduleResolution": "bundler",
     "strict": true,
     "outDir": "./dist",
-    "rootDir": ".",
     "skipLibCheck": true,
     "lib": ["ES2022"]
   },

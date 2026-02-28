@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Moon, Sun, Sparkles, Sunset } from "lucide-react";
+import { useTheme } from 'next-themes';
+import { useEffect, useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Moon, Sun, Sparkles, Sunset } from 'lucide-react';
 
 const THEMES = [
-  { id: "light", label: "Light", icon: Sun },
-  { id: "dark", label: "Dark", icon: Moon },
-  { id: "theme-focus", label: "Focus", icon: Sparkles },
-  { id: "theme-evening", label: "Evening", icon: Sunset },
+  { id: 'light', label: 'Light', icon: Sun },
+  { id: 'dark', label: 'Dark', icon: Moon },
+  { id: 'theme-focus', label: 'Focus', icon: Sparkles },
+  { id: 'theme-evening', label: 'Evening', icon: Sunset },
 ] as const;
 
 export function ThemeToggle() {

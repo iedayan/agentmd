@@ -1,28 +1,28 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { MarketplaceHeader } from "@/components/marketplace/marketplace-header";
-import { convertToAgentsMd } from "@/lib/agents/migrate-to-agents-md";
+import { useState } from 'react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { MarketplaceHeader } from '@/components/marketplace/marketplace-header';
+import { convertToAgentsMd } from '@/lib/agents/migrate-to-agents-md';
 
 const SOURCES = [
-  { id: "claude", name: "CLAUDE.md", desc: "Claude Code / Cursor" },
-  { id: "cursorrules", name: ".cursorrules", desc: "Cursor rules file" },
-  { id: "aider", name: ".aider.conf.yml", desc: "Aider conventions" },
-  { id: "gemini", name: ".gemini/settings.json", desc: "Gemini CLI" },
+  { id: 'claude', name: 'CLAUDE.md', desc: 'Claude Code / Cursor' },
+  { id: 'cursorrules', name: '.cursorrules', desc: 'Cursor rules file' },
+  { id: 'aider', name: '.aider.conf.yml', desc: 'Aider conventions' },
+  { id: 'gemini', name: '.gemini/settings.json', desc: 'Gemini CLI' },
 ];
 
 export default function MigratePage() {
   const [sourceId, setSourceId] = useState<string | null>(null);
-  const [input, setInput] = useState("");
-  const [output, setOutput] = useState("");
+  const [input, setInput] = useState('');
+  const [output, setOutput] = useState('');
   const [converting, setConverting] = useState(false);
 
   const handleConvert = async (id: string) => {
     setSourceId(id);
     if (!input.trim()) {
-      setOutput("");
+      setOutput('');
       return;
     }
     setConverting(true);
@@ -45,7 +45,7 @@ export default function MigratePage() {
 
         <div className="mt-6 rounded-lg border border-primary/20 bg-primary/5 px-4 py-3">
           <p className="text-sm">
-            <strong>Tip:</strong> Use the{" "}
+            <strong>Tip:</strong> Use the{' '}
             <a
               href="https://github.com/getsentry/skills"
               target="_blank"
@@ -53,8 +53,7 @@ export default function MigratePage() {
               className="text-primary hover:underline"
             >
               agents-md skill
-            </a>
-            {" "}
+            </a>{' '}
             in Cursor or Claude to help generate and manage AGENTS.md files.
           </p>
         </div>
@@ -83,7 +82,7 @@ export default function MigratePage() {
                   onClick={() => handleConvert(s.id)}
                   disabled={converting || !input.trim()}
                 >
-                  {converting && sourceId === s.id ? "Converting..." : `From ${s.name}`}
+                  {converting && sourceId === s.id ? 'Converting...' : `From ${s.name}`}
                 </Button>
               ))}
             </div>
@@ -94,9 +93,7 @@ export default function MigratePage() {
           <Card className="mt-6">
             <CardHeader>
               <CardTitle>AGENTS.md output</CardTitle>
-              <CardDescription>
-                Copy and save as AGENTS.md in your repo root
-              </CardDescription>
+              <CardDescription>Copy and save as AGENTS.md in your repo root</CardDescription>
             </CardHeader>
             <CardContent>
               <pre className="rounded-lg bg-muted p-4 text-sm overflow-x-auto max-h-[400px] overflow-y-auto whitespace-pre-wrap">

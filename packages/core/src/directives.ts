@@ -4,14 +4,14 @@
  * @see https://github.com/ivawzh/agents-md
  */
 
-import type { AgentsMdDirective } from "./schema.js";
+import type { AgentsMdDirective } from './schema.js';
 
 /**
  * Parse all agents-md directives from content.
  */
 export function parseDirectives(content: string): AgentsMdDirective[] {
   const directives: AgentsMdDirective[] = [];
-  const lines = content.split("\n");
+  const lines = content.split('\n');
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
@@ -37,10 +37,13 @@ function parseDirectiveParams(content: string): Record<string, string> {
   const parts = content.split(/[\s,]+/).filter(Boolean);
 
   for (const part of parts) {
-    const eq = part.indexOf("=");
+    const eq = part.indexOf('=');
     if (eq > 0) {
       const key = part.slice(0, eq).trim();
-      const value = part.slice(eq + 1).trim().replace(/^["']|["']$/g, "");
+      const value = part
+        .slice(eq + 1)
+        .trim()
+        .replace(/^["']|["']$/g, '');
       params[key] = value;
     }
   }

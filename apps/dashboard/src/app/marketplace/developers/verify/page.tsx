@@ -1,7 +1,7 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Shield, CheckCircle } from "lucide-react";
-import { MarketplaceHeader } from "@/components/marketplace/marketplace-header";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Shield, CheckCircle } from 'lucide-react';
+import { MarketplaceHeader } from '@/components/marketplace/marketplace-header';
 
 export default function VerifyPage() {
   return (
@@ -19,9 +19,7 @@ export default function VerifyPage() {
         <Card className="mt-8">
           <CardHeader>
             <CardTitle>Verification Process</CardTitle>
-            <CardDescription>
-              Regular re-verification to maintain badge
-            </CardDescription>
+            <CardDescription>Regular re-verification to maintain badge</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="flex items-start gap-3">

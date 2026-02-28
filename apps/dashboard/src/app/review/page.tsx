@@ -1,18 +1,18 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import Link from "next/link";
-import { Star, Send, ArrowLeft } from "lucide-react";
-import { Nav } from "@/components/landing/nav";
-import { Footer } from "@/components/ui/footer";
-import { Button } from "@/components/ui/button";
-import { toast } from "sonner";
+import { useState } from 'react';
+import Link from 'next/link';
+import { Star, Send, ArrowLeft } from 'lucide-react';
+import { Nav } from '@/components/landing/nav';
+import { Footer } from '@/components/ui/footer';
+import { Button } from '@/components/ui/button';
+import { toast } from 'sonner';
 
 export default function ReviewPage() {
   const [rating, setRating] = useState<number | null>(null);
   const [hoverRating, setHoverRating] = useState<number | null>(null);
-  const [comment, setComment] = useState("");
-  const [displayName, setDisplayName] = useState("");
+  const [comment, setComment] = useState('');
+  const [displayName, setDisplayName] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
@@ -21,14 +21,14 @@ export default function ReviewPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (rating == null) {
-      toast.error("Please select a star rating.");
+      toast.error('Please select a star rating.');
       return;
     }
     setSubmitting(true);
     try {
-      const res = await fetch("/api/reviews", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+      const res = await fetch('/api/reviews', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           rating,
           comment: comment.trim() || undefined,
@@ -39,14 +39,14 @@ export default function ReviewPage() {
       if (res.ok && data.ok) {
         setSubmitted(true);
         setRating(null);
-        setComment("");
-        setDisplayName("");
-        toast.success("Thank you for your review!");
+        setComment('');
+        setDisplayName('');
+        toast.success('Thank you for your review!');
       } else {
-        toast.error(data.error ?? "Failed to submit. Please try again.");
+        toast.error(data.error ?? 'Failed to submit. Please try again.');
       }
     } catch {
-      toast.error("Failed to submit. Please try again.");
+      toast.error('Failed to submit. Please try again.');
     } finally {
       setSubmitting(false);
     }
@@ -117,14 +117,14 @@ export default function ReviewPage() {
                   onMouseEnter={() => setHoverRating(value)}
                   onMouseLeave={() => setHoverRating(null)}
                   className="p-1 rounded transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                  aria-label={`${value} star${value > 1 ? "s" : ""}`}
+                  aria-label={`${value} star${value > 1 ? 's' : ''}`}
                   aria-pressed={rating === value}
                 >
                   <Star
                     className={`h-10 w-10 transition-colors ${
                       (displayValue ?? 0) >= value
-                        ? "text-amber-500 fill-amber-500"
-                        : "text-muted-foreground/40"
+                        ? 'text-amber-500 fill-amber-500'
+                        : 'text-muted-foreground/40'
                     }`}
                   />
                 </button>
@@ -132,8 +132,8 @@ export default function ReviewPage() {
             </div>
             <p className="text-xs text-muted-foreground mt-1">
               {displayValue == null
-                ? "Click to select"
-                : `${displayValue} star${displayValue > 1 ? "s" : ""}`}
+                ? 'Click to select'
+                : `${displayValue} star${displayValue > 1 ? 's' : ''}`}
             </p>
           </div>
 
@@ -168,9 +168,13 @@ export default function ReviewPage() {
             <p className="text-xs text-muted-foreground mt-1">{comment.length}/2000</p>
           </div>
 
-          <Button type="submit" disabled={submitting || rating == null} className="w-full sm:w-auto">
+          <Button
+            type="submit"
+            disabled={submitting || rating == null}
+            className="w-full sm:w-auto"
+          >
             {submitting ? (
-              "Submitting..."
+              'Submitting...'
             ) : (
               <>
                 <Send className="h-4 w-4 mr-2" />
@@ -181,11 +185,11 @@ export default function ReviewPage() {
         </form>
 
         <p className="mt-8 text-sm text-muted-foreground">
-          Reviews may be displayed on our website. By submitting, you agree to our{" "}
+          Reviews may be displayed on our website. By submitting, you agree to our{' '}
           <Link href="/terms" className="text-primary hover:underline">
             Terms
-          </Link>{" "}
-          and{" "}
+          </Link>{' '}
+          and{' '}
           <Link href="/privacy" className="text-primary hover:underline">
             Privacy Policy
           </Link>

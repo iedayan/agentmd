@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { DocsBreadcrumbs } from "./docs-breadcrumbs";
+import { DocsBreadcrumbs } from './docs-breadcrumbs';
 
 export function DocsContent({ children }: { children: React.ReactNode }) {
   return (

@@ -1,24 +1,22 @@
-import { getToken } from "next-auth/jwt";
-import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
+import { getToken } from 'next-auth/jwt';
+import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
 
-const DASHBOARD_PATHS = ["/dashboard", "/marketplace", "/ops"];
-const AUTH_PATHS = ["/register", "/login"];
+const DASHBOARD_PATHS = ['/dashboard', '/marketplace', '/ops'];
+const AUTH_PATHS = ['/register', '/login'];
 
 /** Marketplace paths that are public (no auth required). */
-const PUBLIC_MARKETPLACE_PATHS = ["/marketplace/developers/generator"];
+const PUBLIC_MARKETPLACE_PATHS = ['/marketplace/developers/generator'];
 
 /** Dashboard-style paths that are public (e.g. "See it live" landing CTA). */
-const PUBLIC_PATHS = ["/ops"];
+const PUBLIC_PATHS = ['/ops'];
 
 function isDashboardPath(pathname: string): boolean {
   return DASHBOARD_PATHS.some((p) => pathname === p || pathname.startsWith(`${p}/`));
 }
 
 function isPublicMarketplacePath(pathname: string): boolean {
-  return PUBLIC_MARKETPLACE_PATHS.some(
-    (p) => pathname === p || pathname.startsWith(`${p}/`)
-  );
+  return PUBLIC_MARKETPLACE_PATHS.some((p) => pathname === p || pathname.startsWith(`${p}/`));
 }
 
 function isPublicPath(pathname: string): boolean {
@@ -46,14 +44,14 @@ export async function middleware(req: NextRequest) {
     !isSignedIn
   ) {
     const url = req.nextUrl.clone();
-    url.pathname = "/register";
-    url.searchParams.set("callbackUrl", pathname);
+    url.pathname = '/register';
+    url.searchParams.set('callbackUrl', pathname);
     return NextResponse.redirect(url);
   }
 
   if (isAuthPath(pathname) && isSignedIn) {
     const url = req.nextUrl.clone();
-    url.pathname = "/dashboard";
+    url.pathname = '/dashboard';
     return NextResponse.redirect(url);
   }
 
@@ -61,11 +59,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: [
-    "/dashboard/:path*",
-    "/marketplace/:path*",
-    "/ops/:path*",
-    "/register",
-    "/login",
-  ],
+  matcher: ['/dashboard/:path*', '/marketplace/:path*', '/ops/:path*', '/register', '/login'],
 };

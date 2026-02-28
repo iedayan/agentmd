@@ -1,68 +1,68 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import Link from "next/link";
-import { Check } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/core/utils";
+import { useState } from 'react';
+import Link from 'next/link';
+import { Check } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/core/utils';
 
 const PRO_TRIAL_DAYS = 7;
 
 const PLANS = [
   {
-    name: "Free",
+    name: 'Free',
     priceMonthly: 0,
     priceYearly: 0,
-    desc: "Solo developers & open source",
+    desc: 'Solo developers & open source',
     features: [
-      "3 repositories",
-      "100 execution min/month",
-      "7-day log retention",
-      "Basic validation",
-      "Community support",
+      '3 repositories',
+      '100 execution min/month',
+      '7-day log retention',
+      'Basic validation',
+      'Community support',
     ],
-    cta: "Create Free Account",
-    href: "/register",
+    cta: 'Create Free Account',
+    href: '/register',
     highlighted: false,
-    note: "No credit card required. Upgrade anytime.",
+    note: 'No credit card required. Upgrade anytime.',
   },
   {
-    name: "Pro",
+    name: 'Pro',
     priceMonthly: 49,
     priceYearly: 39,
-    desc: "Production teams",
+    desc: 'Production teams',
     features: [
-      "Unlimited repositories",
-      "1000 execution min/month",
-      "30-day log retention",
-      "Parallel execution",
-      "5 team seats",
-      "Slack/Discord notifications",
-      "Priority support",
+      'Unlimited repositories',
+      '1000 execution min/month',
+      '30-day log retention',
+      'Parallel execution',
+      '5 team seats',
+      'Slack/Discord notifications',
+      'Priority support',
     ],
     cta: `Start ${PRO_TRIAL_DAYS}-Day Free Trial`,
-    href: "/register?plan=pro",
+    href: '/register?plan=pro',
     highlighted: true,
-    note: "No credit card required during trial.",
+    note: 'No credit card required during trial.',
   },
   {
-    name: "Enterprise",
+    name: 'Enterprise',
     priceMonthly: 249,
     priceYearly: 199,
-    desc: "Large teams & compliance",
+    desc: 'Large teams & compliance',
     features: [
-      "Everything in Pro",
-      "Self-hosted option",
-      "SSO/SAML",
-      "RBAC",
-      "Audit logs",
-      "99.9% SLA",
-      "Dedicated support",
+      'Everything in Pro',
+      'Self-hosted option',
+      'SSO/SAML',
+      'RBAC',
+      'Audit logs',
+      '99.9% SLA',
+      'Dedicated support',
     ],
-    cta: "Contact Sales",
-    href: "mailto:sales@agentmd.online",
+    cta: 'Contact Sales',
+    href: 'mailto:sales@agentmd.online',
     highlighted: false,
-    note: "Custom contracts, volume discounts, invoicing.",
+    note: 'Custom contracts, volume discounts, invoicing.',
   },
 ];
 
@@ -75,8 +75,8 @@ export function PricingCards() {
       <div className="flex items-center justify-center gap-3 mb-12">
         <span
           className={cn(
-            "text-sm font-medium transition-colors",
-            !yearly ? "text-foreground" : "text-muted-foreground"
+            'text-sm font-medium transition-colors',
+            !yearly ? 'text-foreground' : 'text-muted-foreground',
           )}
         >
           Monthly
@@ -91,15 +91,15 @@ export function PricingCards() {
         >
           <span
             className={cn(
-              "absolute top-1 left-1 h-5 w-5 rounded-full bg-primary transition-transform",
-              yearly && "translate-x-5"
+              'absolute top-1 left-1 h-5 w-5 rounded-full bg-primary transition-transform',
+              yearly && 'translate-x-5',
             )}
           />
         </button>
         <span
           className={cn(
-            "text-sm font-medium transition-colors",
-            yearly ? "text-foreground" : "text-muted-foreground"
+            'text-sm font-medium transition-colors',
+            yearly ? 'text-foreground' : 'text-muted-foreground',
           )}
         >
           Yearly
@@ -115,15 +115,15 @@ export function PricingCards() {
           const priceMonthly = plan.priceMonthly;
           const priceYearlyPerMonth = plan.priceYearly;
           const priceYearlyTotal = plan.priceYearly * 12;
-          const isExternal = plan.href.startsWith("http") || plan.href.startsWith("mailto:");
+          const isExternal = plan.href.startsWith('http') || plan.href.startsWith('mailto:');
           return (
             <div
               key={plan.name}
               className={cn(
-                "rounded-xl border p-8 transition-all duration-200 flex flex-col",
+                'rounded-xl border p-8 transition-all duration-200 flex flex-col',
                 plan.highlighted
-                  ? "border-primary shadow-lg shadow-primary/10 md:scale-[1.02] hover:shadow-xl hover:shadow-primary/15 relative"
-                  : "border-border hover:border-primary/30 hover:shadow-lg"
+                  ? 'border-primary shadow-lg shadow-primary/10 md:scale-[1.02] hover:shadow-xl hover:shadow-primary/15 relative'
+                  : 'border-border hover:border-primary/30 hover:shadow-lg',
               )}
             >
               {plan.highlighted && (
@@ -166,7 +166,7 @@ export function PricingCards() {
                   <a href={plan.href}>
                     <Button
                       className="w-full btn-tactile"
-                      variant={plan.highlighted ? "default" : "outline"}
+                      variant={plan.highlighted ? 'default' : 'outline'}
                     >
                       {plan.cta}
                     </Button>
@@ -175,16 +175,14 @@ export function PricingCards() {
                   <Link href={plan.href}>
                     <Button
                       className="w-full btn-tactile"
-                      variant={plan.highlighted ? "default" : "outline"}
+                      variant={plan.highlighted ? 'default' : 'outline'}
                     >
                       {plan.cta}
                     </Button>
                   </Link>
                 )}
                 {plan.note && (
-                  <p className="text-center text-xs text-muted-foreground">
-                    {plan.note}
-                  </p>
+                  <p className="text-center text-xs text-muted-foreground">{plan.note}</p>
                 )}
               </div>
             </div>

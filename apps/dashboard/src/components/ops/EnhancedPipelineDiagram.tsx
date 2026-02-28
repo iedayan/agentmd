@@ -1,21 +1,21 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import type { PipelineStage } from "@/lib/ops/mock-data";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { useState } from 'react';
+import type { PipelineStage } from '@/lib/ops/mock-data';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 const STAGE_COLORS = {
-  passed: "hsl(var(--primary))",
-  failed: "hsl(var(--destructive))",
-  pending: "hsl(var(--muted-foreground))",
-  running: "hsl(var(--primary))",
+  passed: 'hsl(var(--primary))',
+  failed: 'hsl(var(--destructive))',
+  pending: 'hsl(var(--muted-foreground))',
+  running: 'hsl(var(--primary))',
 };
 
 const STAGE_DESCRIPTIONS = {
-  passed: "Stage completed successfully",
-  failed: "Stage failed - check logs for details",
-  pending: "Stage waiting to run",
-  running: "Stage currently executing",
+  passed: 'Stage completed successfully',
+  failed: 'Stage failed - check logs for details',
+  pending: 'Stage waiting to run',
+  running: 'Stage currently executing',
 };
 
 interface EnhancedPipelineDiagramProps {
@@ -44,30 +44,30 @@ export function EnhancedPipelineDiagram({ stages, onStageClick }: EnhancedPipeli
             >
               <polygon points="0 0, 10 3.5, 0 7" fill="hsl(var(--foreground))" />
             </marker>
-            
+
             {/* Gradient for running stages */}
             <linearGradient id="runningGradient" x1="0%" y1="0%" x2="100%" y2="0%">
               <stop offset="0%" stopColor="hsl(var(--primary))" stopOpacity="0.3" />
               <stop offset="50%" stopColor="hsl(var(--primary))" stopOpacity="1" />
               <stop offset="100%" stopColor="hsl(var(--primary))" stopOpacity="0.3" />
             </linearGradient>
-            
+
             {/* Glow filter for hovered stages */}
             <filter id="glow">
-              <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+              <feGaussianBlur stdDeviation="3" result="coloredBlur" />
               <feMerge>
-                <feMergeNode in="coloredBlur"/>
-                <feMergeNode in="SourceGraphic"/>
+                <feMergeNode in="coloredBlur" />
+                <feMergeNode in="SourceGraphic" />
               </feMerge>
             </filter>
           </defs>
-          
+
           {stages.map((stage, i) => {
             const x = 20 + i * (width + gap);
             const color = STAGE_COLORS[stage.status];
-            const isRunning = stage.status === "running";
+            const isRunning = stage.status === 'running';
             const isHovered = hoveredStage === stage.id;
-            
+
             return (
               <g key={stage.id}>
                 {/* Connection lines */}
@@ -83,7 +83,7 @@ export function EnhancedPipelineDiagram({ stages, onStageClick }: EnhancedPipeli
                     className="ops-connector"
                   />
                 )}
-                
+
                 {/* Stage rectangle with enhanced styling */}
                 <Tooltip>
                   <TooltipTrigger asChild>
@@ -106,7 +106,7 @@ export function EnhancedPipelineDiagram({ stages, onStageClick }: EnhancedPipeli
                           rx="8"
                         />
                       )}
-                      
+
                       {/* Main rectangle */}
                       <rect
                         x={x}
@@ -115,13 +115,13 @@ export function EnhancedPipelineDiagram({ stages, onStageClick }: EnhancedPipeli
                         height={64}
                         fill="hsl(var(--card))"
                         stroke={color}
-                        strokeWidth={stage.status === "failed" ? 2 : 1}
+                        strokeWidth={stage.status === 'failed' ? 2 : 1}
                         rx="6"
                         className={`transition-all duration-300 ${
-                          isHovered ? "filter brightness-110" : ""
-                        } ${isRunning ? "animate-pulse" : ""}`}
+                          isHovered ? 'filter brightness-110' : ''
+                        } ${isRunning ? 'animate-pulse' : ''}`}
                       />
-                      
+
                       {/* Running indicator bar */}
                       {isRunning && (
                         <rect
@@ -133,25 +133,25 @@ export function EnhancedPipelineDiagram({ stages, onStageClick }: EnhancedPipeli
                           rx="6"
                         />
                       )}
-                      
+
                       {/* Status icon and name */}
                       <text
                         x={x + width / 2}
                         y={32}
                         textAnchor="middle"
                         className={`font-mono text-xs font-medium transition-all duration-300 ${
-                          isHovered ? "fill-primary" : "fill-foreground"
+                          isHovered ? 'fill-primary' : 'fill-foreground'
                         }`}
                       >
-                        {stage.status === "passed" && "✓ "}
-                        {stage.status === "failed" && "✕ "}
-                        {stage.status === "running" && (
-                          <tspan className={isRunning ? "ops-pulse-running" : ""}>▶ </tspan>
+                        {stage.status === 'passed' && '✓ '}
+                        {stage.status === 'failed' && '✕ '}
+                        {stage.status === 'running' && (
+                          <tspan className={isRunning ? 'ops-pulse-running' : ''}>▶ </tspan>
                         )}
-                        {stage.status === "pending" && "⏳ "}
+                        {stage.status === 'pending' && '⏳ '}
                         {stage.name}
                       </text>
-                      
+
                       {/* Duration */}
                       <text
                         x={x + width / 2}
@@ -159,11 +159,11 @@ export function EnhancedPipelineDiagram({ stages, onStageClick }: EnhancedPipeli
                         textAnchor="middle"
                         className="font-mono text-[10px] fill-muted-foreground"
                       >
-                        {stage.duration ?? "—"}
+                        {stage.duration ?? '—'}
                       </text>
-                      
+
                       {/* Additional info for hovered stage */}
-                      {isHovered && stage.status === "failed" && (
+                      {isHovered && stage.status === 'failed' && (
                         <text
                           x={x + width / 2}
                           y={65}
@@ -180,13 +180,13 @@ export function EnhancedPipelineDiagram({ stages, onStageClick }: EnhancedPipeli
                       <div className="flex items-center gap-2">
                         <div
                           className={`w-2 h-2 rounded-full ${
-                            stage.status === "passed"
-                              ? "bg-green-500"
-                              : stage.status === "failed"
-                              ? "bg-red-500"
-                              : stage.status === "running"
-                              ? "bg-blue-500 animate-pulse"
-                              : "bg-gray-500"
+                            stage.status === 'passed'
+                              ? 'bg-green-500'
+                              : stage.status === 'failed'
+                                ? 'bg-red-500'
+                                : stage.status === 'running'
+                                  ? 'bg-blue-500 animate-pulse'
+                                  : 'bg-gray-500'
                           }`}
                         />
                         <span className="font-medium">{stage.name}</span>
@@ -195,19 +195,15 @@ export function EnhancedPipelineDiagram({ stages, onStageClick }: EnhancedPipeli
                         {STAGE_DESCRIPTIONS[stage.status]}
                       </p>
                       {stage.duration && (
-                        <p className="text-xs text-muted-foreground">
-                          Duration: {stage.duration}
-                        </p>
+                        <p className="text-xs text-muted-foreground">Duration: {stage.duration}</p>
                       )}
-                      {stage.status === "failed" && (
-                        <p className="text-xs text-destructive">
-                          Click to view error details
-                        </p>
+                      {stage.status === 'failed' && (
+                        <p className="text-xs text-destructive">Click to view error details</p>
                       )}
                     </div>
                   </TooltipContent>
                 </Tooltip>
-                
+
                 {/* Arrow to next stage */}
                 {i < stages.length - 1 && (
                   <line

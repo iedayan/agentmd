@@ -1,13 +1,23 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { Logo } from "@/components/brand/logo";
+import { useState } from 'react';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import { Logo } from '@/components/brand/logo';
 
 const ITEMS = [
-  { id: "github-app", title: "GitHub App Integration", desc: "Auto-validate on push, PR status checks", votes: 127 },
-  { id: "datadog", title: "Datadog Integration", desc: "Send execution metrics to Datadog", votes: 89 },
+  {
+    id: 'github-app',
+    title: 'GitHub App Integration',
+    desc: 'Auto-validate on push, PR status checks',
+    votes: 127,
+  },
+  {
+    id: 'datadog',
+    title: 'Datadog Integration',
+    desc: 'Send execution metrics to Datadog',
+    votes: 89,
+  },
 ];
 
 export default function RoadmapPage() {
@@ -16,7 +26,7 @@ export default function RoadmapPage() {
 
   const handleVote = (id: string) => {
     setVoted((prev) => new Set(prev).add(id));
-    setFeedback("Vote recorded! Join Discord to suggest more.");
+    setFeedback('Vote recorded! Join Discord to suggest more.');
     setTimeout(() => setFeedback(null), 3000);
   };
 
@@ -29,7 +39,9 @@ export default function RoadmapPage() {
             AgentMD
           </Link>
           <nav className="flex items-center gap-4">
-            <Link href="/dashboard"><Button>Dashboard</Button></Link>
+            <Link href="/dashboard">
+              <Button>Dashboard</Button>
+            </Link>
           </nav>
         </div>
       </header>
@@ -60,7 +72,7 @@ export default function RoadmapPage() {
                   onClick={() => handleVote(item.id)}
                   disabled={voted.has(item.id)}
                 >
-                  {voted.has(item.id) ? "Voted" : "Vote"}
+                  {voted.has(item.id) ? 'Voted' : 'Vote'}
                 </Button>
               </div>
               <p className="text-xs text-muted-foreground mt-4">
@@ -73,7 +85,8 @@ export default function RoadmapPage() {
         <p className="mt-12 text-muted-foreground">
           <a href="https://discord.gg/agentmd" className="text-primary hover:underline">
             Join our Discord
-          </a> to suggest features and vote.
+          </a>{' '}
+          to suggest features and vote.
         </p>
       </main>
     </div>

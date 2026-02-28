@@ -2,13 +2,21 @@
   "compilerOptions": {
     "target": "ES2020",
     "module": "ESNext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "strict": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "baseUrl": ".",
+    "paths": {
+      "@agentmd-dev/core": ["packages/core/src"],
+      "@agentmd-dev/cli": ["packages/cli/src"],
+      "@agentmd-dev/sdk": ["packages/sdk/src"],
+      "@agentmd-dev/workflows": ["packages/workflows/src"],
+      "@agentmd/vscode": ["packages/agentmd-vscode/src"]
+    }
   }
 }

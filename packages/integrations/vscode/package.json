@@ -20,9 +20,16 @@
     "languages": [
       {
         "id": "agentmd",
-        "aliases": ["AGENTS.md", "agentmd"],
-        "extensions": [".agents.md"],
-        "filenamePatterns": ["**/AGENTS.md"],
+        "aliases": [
+          "AGENTS.md",
+          "agentmd"
+        ],
+        "extensions": [
+          ".agents.md"
+        ],
+        "filenamePatterns": [
+          "**/AGENTS.md"
+        ],
         "configuration": "./language-configuration.json"
       }
     ],

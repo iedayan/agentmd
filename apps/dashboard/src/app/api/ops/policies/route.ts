@@ -1,8 +1,8 @@
-import { apiOk, getRequestId } from "@/lib/core/api-response";
-import { listPolicyRules } from "@/lib/analytics/governance-data";
-import { requireSessionUserId } from "@/lib/auth/session";
+import { apiOk, getRequestId } from '@/lib/core/api-response';
+import { listPolicyRules } from '@/lib/analytics/governance-data';
+import { requireSessionUserId } from '@/lib/auth/session';
 
-export const dynamic = "force-dynamic";
+export const dynamic = 'force-dynamic';
 
 export async function GET() {
   const requestId = getRequestId();
@@ -16,16 +16,13 @@ export async function GET() {
     description: rule.name,
     enforcement:
       rule.blockPatterns.length > 0
-        ? ("block" as const)
+        ? ('block' as const)
         : rule.requireApprovalForPatterns.length > 0
-          ? ("require_approval" as const)
-          : ("warn" as const),
-    scope: "global" as const,
-    lastTriggered: "recently",
+          ? ('require_approval' as const)
+          : ('warn' as const),
+    scope: 'global' as const,
+    lastTriggered: 'recently',
   }));
 
-  return apiOk(
-    { policies },
-    { requestId }
-  );
+  return apiOk({ policies }, { requestId });
 }

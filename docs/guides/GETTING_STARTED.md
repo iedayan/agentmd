@@ -41,7 +41,7 @@ touch AGENTS.md
 
 Create a simple `AGENTS.md` file:
 
-```markdown
+````markdown
 # My Project
 
 AI agent configuration for my project.
@@ -49,11 +49,14 @@ AI agent configuration for my project.
 ## Development Setup
 
 ### Install dependencies
+
 ```bash
 npm install
 ```
+````
 
 ### Start development server
+
 ```bash
 npm run dev
 ```
@@ -61,6 +64,7 @@ npm run dev
 ## Testing
 
 ### Run tests
+
 ```bash
 npm test
 ```
@@ -68,6 +72,7 @@ npm test
 ## Build
 
 ### Build for production
+
 ```bash
 npm run build
 ```
@@ -75,16 +80,19 @@ npm run build
 ## Agent Guidelines
 
 ### What agents can do:
+
 - ✅ Run tests and analyze results
 - ✅ Build and validate the application
 - ✅ Review code for best practices
 - ✅ Generate documentation
 
 ### Security restrictions:
+
 - 🚫 Never access environment variables directly
 - 🚫 Never modify production database
 - 🚫 Always use dry-run mode for destructive operations
-```
+
+````
 
 ### 4. Validate Your Configuration
 
@@ -97,16 +105,18 @@ agentmd check --contract
 
 # See your agent-readiness score
 agentmd score
-```
+````
 
 ### 5. IDE Integration
 
 #### VS Code
+
 1. Install the AgentMD extension
 2. Open your project
 3. See real-time validation and suggestions
 
 #### Cursor
+
 1. Enable AgentMD integration
 2. Get AI-powered configuration suggestions
 3. Use enhanced autocomplete for AGENTS.md
@@ -116,16 +126,19 @@ agentmd score
 AgentMD provides templates for popular frameworks:
 
 ### Next.js Template
+
 ```bash
 agentmd template nextjs
 ```
 
 ### Python Template
+
 ```bash
 agentmd template python
 ```
 
 ### Custom Templates
+
 ```bash
 # List available templates
 agentmd template list
@@ -139,6 +152,7 @@ agentmd template custom-template-name
 AgentMD includes pre-built workflows for common tasks:
 
 ### PR Reviewer
+
 Automated pull request review with AI agents:
 
 ```bash
@@ -146,6 +160,7 @@ agentmd workflow pr-reviewer --owner your-org --repo your-repo --pr-number 123
 ```
 
 ### Test Triage
+
 Automated test failure analysis:
 
 ```bash
@@ -160,14 +175,14 @@ Add YAML frontmatter to your AGENTS.md:
 
 ```yaml
 ---
-name: "My Project"
-version: "1.0.0"
-risk_level: "medium"
+name: 'My Project'
+version: '1.0.0'
+risk_level: 'medium'
 permissions:
   - read
   - write
 output_contract:
-  format: "json"
+  format: 'json'
   quality_gates:
     - test_coverage > 80
     - build_success = true
@@ -216,24 +231,31 @@ agentmd security check path/to/file
 ## Best Practices
 
 ### 1. Start Simple
+
 Begin with basic commands and gradually add complexity.
 
 ### 2. Be Specific
+
 Use clear, specific commands instead of vague instructions.
 
 ### 3. Test Commands
+
 Ensure all commands in AGENTS.md actually work.
 
 ### 4. Document Everything
+
 Explain why commands are needed and what they do.
 
 ### 5. Review Regularly
+
 Keep AGENTS.md updated as your project evolves.
 
 ### 6. Use Templates
+
 Leverage existing templates for your framework.
 
 ### 7. Monitor Usage
+
 Track how agents interact with your project.
 
 ## Troubleshooting
@@ -241,6 +263,7 @@ Track how agents interact with your project.
 ### Common Issues
 
 #### Validation Failures
+
 ```bash
 # Get detailed error messages
 agentmd check --verbose
@@ -250,6 +273,7 @@ agentmd check --section build
 ```
 
 #### Permission Errors
+
 ```bash
 # Check permissions
 agentmd permissions list
@@ -259,6 +283,7 @@ agentmd permissions add deploy
 ```
 
 #### Security Blocks
+
 ```bash
 # Check why command was blocked
 agentmd security explain "rm -rf /"

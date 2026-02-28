@@ -2,55 +2,55 @@
  * Postgres-backed data layer for AgentMD dashboard.
  * Used when DATABASE_URL is set.
  */
-import type { Execution, ExecutionStep, Repository, TriggerType } from "@/types";
-import { normalizeBlockedCommands } from "@/lib/execution/blocked-commands";
-import type { ApiExecutionRecord, AuditLog } from "./dashboard-data";
-import { getPool } from "./db";
-import { randomUUID } from "crypto";
+import type { Execution, ExecutionStep, Repository, TriggerType } from '@/types';
+import { normalizeBlockedCommands } from '@/lib/execution/blocked-commands';
+import type { ApiExecutionRecord, AuditLog } from './dashboard-data';
+import { getPool } from './db';
+import { randomUUID } from 'crypto';
 
 function pool() {
   const p = getPool();
-  if (!p) throw new Error("Database not configured");
+  if (!p) throw new Error('Database not configured');
   return p;
 }
 
 const dbExecutionTimers = new Map<string, ReturnType<typeof setTimeout>[]>();
 
 function toResultMap(value: unknown): Record<string, unknown> {
-  return value && typeof value === "object" && !Array.isArray(value)
+  return value && typeof value === 'object' && !Array.isArray(value)
     ? (value as Record<string, unknown>)
     : {};
 }
 
 function mapTriggerType(value: string): TriggerType {
-  if (value === "push" || value === "pull_request" || value === "schedule" || value === "manual") {
+  if (value === 'push' || value === 'pull_request' || value === 'schedule' || value === 'manual') {
     return value;
   }
-  return "manual";
+  return 'manual';
 }
 
-function mapExecutionStatus(value: string): Execution["status"] {
+function mapExecutionStatus(value: string): Execution['status'] {
   if (
-    value === "pending" ||
-    value === "running" ||
-    value === "success" ||
-    value === "failed" ||
-    value === "cancelled"
+    value === 'pending' ||
+    value === 'running' ||
+    value === 'success' ||
+    value === 'failed' ||
+    value === 'cancelled'
   ) {
     return value;
   }
-  return "pending";
+  return 'pending';
 }
 
 function mapExecutionRow(row: Record<string, unknown>): Execution {
   const result = toResultMap(row.result);
-  const executionMode = result.executionMode as "real" | "mock" | undefined;
-  const agentsMdUrl = typeof result.agentsMdUrl === "string" ? result.agentsMdUrl.trim() : "";
+  const executionMode = result.executionMode as 'real' | 'mock' | undefined;
+  const agentsMdUrl = typeof result.agentsMdUrl === 'string' ? result.agentsMdUrl.trim() : '';
   const preflightPlan = result.preflightPlan;
   const storedBlocked = result.blockedCommands;
   const normalized = Array.isArray(storedBlocked)
     ? {
-        blockedCommands: storedBlocked as Execution["blockedCommands"],
+        blockedCommands: storedBlocked as Execution['blockedCommands'],
         runnableCount: (result.preflightRunnableCount as number) ?? 0,
         blockedCount: (result.preflightBlockedCount as number) ?? storedBlocked.length,
       }
@@ -62,19 +62,18 @@ function mapExecutionRow(row: Record<string, unknown>): Execution {
     trigger: mapTriggerType(String(row.trigger_type)),
     status: mapExecutionStatus(String(row.status)),
     startedAt:
-      ((row.started_at as { toISOString?: () => string } | null)?.toISOString?.() ??
-        (row.created_at as { toISOString?: () => string } | null)?.toISOString?.() ??
-        new Date().toISOString()),
-    completedAt: (row.completed_at as { toISOString?: () => string } | null)?.toISOString?.() ?? undefined,
+      (row.started_at as { toISOString?: () => string } | null)?.toISOString?.() ??
+      (row.created_at as { toISOString?: () => string } | null)?.toISOString?.() ??
+      new Date().toISOString(),
+    completedAt:
+      (row.completed_at as { toISOString?: () => string } | null)?.toISOString?.() ?? undefined,
     durationMs: (result.durationMs as number) ?? undefined,
     commandsRun: (result.commandsRun as number) ?? 0,
     commandsPassed: (result.commandsPassed as number) ?? 0,
     commandsFailed: (result.commandsFailed as number) ?? 0,
-    executionMode:
-      executionMode === "real" || executionMode === "mock" ? executionMode : undefined,
+    executionMode: executionMode === 'real' || executionMode === 'mock' ? executionMode : undefined,
     agentsMdUrl: agentsMdUrl.length > 0 ? agentsMdUrl : undefined,
-    preflightPlan:
-      preflightPlan && typeof preflightPlan === "object" ? preflightPlan : undefined,
+    preflightPlan: preflightPlan && typeof preflightPlan === 'object' ? preflightPlan : undefined,
     blockedCommands: normalized?.blockedCommands,
     preflightRunnableCount: normalized?.runnableCount,
     preflightBlockedCount: normalized?.blockedCount,
@@ -83,18 +82,18 @@ function mapExecutionRow(row: Record<string, unknown>): Execution {
 
 function mapApiExecutionFromRow(
   row: Record<string, unknown>,
-  fallbackAgentsMdUrl: string
+  fallbackAgentsMdUrl: string,
 ): ApiExecutionRecord {
   const result = toResultMap(row.result);
   const repositoryId = String(row.repository_id);
   return {
     id: `exec_${String(row.id)}`,
     agentsMdUrl:
-      typeof result.agentsMdUrl === "string" && result.agentsMdUrl.trim().length > 0
+      typeof result.agentsMdUrl === 'string' && result.agentsMdUrl.trim().length > 0
         ? result.agentsMdUrl
         : fallbackAgentsMdUrl,
-    repositoryId: repositoryId === "external" ? null : repositoryId,
-    status: "queued",
+    repositoryId: repositoryId === 'external' ? null : repositoryId,
+    status: 'queued',
     createdAt:
       (row.created_at as { toISOString?: () => string } | null)?.toISOString?.() ??
       new Date().toISOString(),
@@ -109,7 +108,7 @@ async function markExecutionRunningDb(executionId: string): Promise<void> {
      SET status = 'running',
          started_at = COALESCE(started_at, NOW())
      WHERE id = $1 AND status = 'pending'`,
-    [executionId]
+    [executionId],
   );
   if (res.rowCount === 0) return;
 
@@ -118,7 +117,7 @@ async function markExecutionRunningDb(executionId: string): Promise<void> {
      SET status = 'running',
          output = 'Installing dependencies...'
      WHERE execution_id = $1 AND id = $2`,
-    [executionId, `${executionId}-1`]
+    [executionId, `${executionId}-1`],
   );
 }
 
@@ -136,15 +135,15 @@ async function markExecutionSucceededDb(executionId: string): Promise<void> {
          completed_at = NOW(),
          result = result || $2::jsonb
      WHERE id = $1 AND status IN ('pending', 'running')`,
-    [executionId, JSON.stringify(resultPayload)]
+    [executionId, JSON.stringify(resultPayload)],
   );
   if (res.rowCount === 0) return;
 
   const stepUpdates = [
-    { id: `${executionId}-1`, durationMs: 950, output: "Dependencies installed" },
-    { id: `${executionId}-2`, durationMs: 1600, output: "Build completed successfully" },
-    { id: `${executionId}-3`, durationMs: 1100, output: "All tests passed" },
-    { id: `${executionId}-4`, durationMs: 550, output: "No lint issues found" },
+    { id: `${executionId}-1`, durationMs: 950, output: 'Dependencies installed' },
+    { id: `${executionId}-2`, durationMs: 1600, output: 'Build completed successfully' },
+    { id: `${executionId}-3`, durationMs: 1100, output: 'All tests passed' },
+    { id: `${executionId}-4`, durationMs: 550, output: 'No lint issues found' },
   ];
 
   for (const step of stepUpdates) {
@@ -155,7 +154,7 @@ async function markExecutionSucceededDb(executionId: string): Promise<void> {
            output = $3,
            error = NULL
        WHERE execution_id = $1 AND id = $4`,
-      [executionId, step.durationMs, step.output, step.id]
+      [executionId, step.durationMs, step.output, step.id],
     );
   }
 }
@@ -177,7 +176,10 @@ function scheduleExecutionLifecycleDb(executionId: string): void {
   dbExecutionTimers.set(executionId, [startTimer, completeTimer]);
 }
 
-export async function ensureUser(userId: string, data?: { email?: string; name?: string; image?: string }) {
+export async function ensureUser(
+  userId: string,
+  data?: { email?: string; name?: string; image?: string },
+) {
   const p = pool();
   await p.query(
     `INSERT INTO users (id, email, name, image, updated_at)
@@ -187,13 +189,13 @@ export async function ensureUser(userId: string, data?: { email?: string; name?:
        name = COALESCE(EXCLUDED.name, users.name),
        image = COALESCE(EXCLUDED.image, users.image),
        updated_at = NOW()`,
-    [userId, data?.email ?? null, data?.name ?? null, data?.image ?? null]
+    [userId, data?.email ?? null, data?.name ?? null, data?.image ?? null],
   );
 }
 
 export async function updateUserProfile(
   userId: string,
-  data: { name?: string; email?: string }
+  data: { name?: string; email?: string },
 ): Promise<void> {
   const p = pool();
   const updates: string[] = [];
@@ -210,16 +212,13 @@ export async function updateUserProfile(
     idx++;
   }
   if (updates.length === 0) return;
-  updates.push("updated_at = NOW()");
-  await p.query(
-    `UPDATE users SET ${updates.join(", ")} WHERE id = $1`,
-    values
-  );
+  updates.push('updated_at = NOW()');
+  await p.query(`UPDATE users SET ${updates.join(', ')} WHERE id = $1`, values);
 }
 
 export async function listRepositoriesDb(
   userId: string,
-  options?: { owner?: string; search?: string }
+  options?: { owner?: string; search?: string },
 ): Promise<Repository[]> {
   const p = pool();
   let query = `
@@ -252,12 +251,15 @@ export async function listRepositoriesDb(
   }));
 }
 
-export async function getRepositoryByIdDb(id: string, userId: string): Promise<Repository | undefined> {
+export async function getRepositoryByIdDb(
+  id: string,
+  userId: string,
+): Promise<Repository | undefined> {
   const p = pool();
   const res = await p.query(
     `SELECT id, owner, name, full_name, health_score, agents_md_count, last_validated
      FROM repositories WHERE id = $1 AND user_id = $2`,
-    [id, userId]
+    [id, userId],
   );
   const r = res.rows[0];
   if (!r) return undefined;
@@ -274,7 +276,13 @@ export async function getRepositoryByIdDb(id: string, userId: string): Promise<R
 
 export async function addRepositoryDb(
   userId: string,
-  input: { name: string; fullName: string; owner: string; healthScore?: number; agentsMdCount?: number }
+  input: {
+    name: string;
+    fullName: string;
+    owner: string;
+    healthScore?: number;
+    agentsMdCount?: number;
+  },
 ): Promise<Repository> {
   const p = pool();
   await ensureUser(userId);
@@ -290,7 +298,7 @@ export async function addRepositoryDb(
       input.fullName,
       input.healthScore ?? 70,
       input.agentsMdCount ?? 1,
-    ]
+    ],
   );
   return {
     id,
@@ -308,7 +316,7 @@ export async function getRepositoryByFullNameDb(fullName: string): Promise<Repos
   const res = await p.query(
     `SELECT id, owner, name, full_name, health_score, agents_md_count, last_validated
      FROM repositories WHERE LOWER(full_name) = LOWER($1) LIMIT 1`,
-    [fullName.trim()]
+    [fullName.trim()],
   );
   const r = res.rows[0];
   if (!r) return undefined;
@@ -327,14 +335,14 @@ export async function hasRepositoryFullNameDb(userId: string, fullName: string):
   const p = pool();
   const res = await p.query(
     `SELECT 1 FROM repositories WHERE user_id = $1 AND LOWER(full_name) = LOWER($2) LIMIT 1`,
-    [userId, fullName.trim()]
+    [userId, fullName.trim()],
   );
   return res.rows.length > 0;
 }
 
 export async function listExecutionsDb(
   userId: string,
-  options?: { repositoryId?: string; status?: Execution["status"]; limit?: number }
+  options?: { repositoryId?: string; status?: Execution['status']; limit?: number },
 ): Promise<Execution[]> {
   const p = pool();
   let query = `
@@ -364,14 +372,17 @@ export async function listExecutionsDb(
   return res.rows.map((row) => mapExecutionRow(row));
 }
 
-export async function getExecutionByIdDb(id: string, userId: string): Promise<Execution | undefined> {
+export async function getExecutionByIdDb(
+  id: string,
+  userId: string,
+): Promise<Execution | undefined> {
   const p = pool();
   const res = await p.query(
     `SELECT e.id, e.repository_id, e.repository_name, e.trigger_type, e.status,
             e.created_at, e.started_at, e.completed_at, e.result
      FROM executions e
      WHERE e.id = $1 AND e.user_id = $2`,
-    [id, userId]
+    [id, userId],
   );
   const row = res.rows[0];
   if (!row) return undefined;
@@ -387,14 +398,17 @@ export async function cancelExecutionDb(id: string, userId: string): Promise<Exe
          result = COALESCE(result, '{}'::jsonb) || $3::jsonb
      WHERE id = $1 AND user_id = $2 AND status IN ('pending', 'running')
      RETURNING *`,
-    [id, userId, JSON.stringify({ cancelledAt: new Date().toISOString() })]
+    [id, userId, JSON.stringify({ cancelledAt: new Date().toISOString() })],
   );
   const row = res.rows[0];
   if (!row) return null;
   return mapExecutionRow(row);
 }
 
-export async function listExecutionStepsDb(executionId: string, userId: string): Promise<ExecutionStep[]> {
+export async function listExecutionStepsDb(
+  executionId: string,
+  userId: string,
+): Promise<ExecutionStep[]> {
   const exec = await getExecutionByIdDb(executionId, userId);
   if (!exec) return [];
 
@@ -405,14 +419,14 @@ export async function listExecutionStepsDb(executionId: string, userId: string):
     p.query(
       `SELECT id, command, type, status, duration_ms, output, error, details
        FROM execution_steps WHERE execution_id = $1 ORDER BY created_at`,
-      [executionId]
+      [executionId],
     );
 
   const queryWithoutDetails = async () =>
     p.query(
       `SELECT id, command, type, status, duration_ms, output, error
        FROM execution_steps WHERE execution_id = $1 ORDER BY created_at`,
-      [executionId]
+      [executionId],
     );
 
   let res;
@@ -425,13 +439,13 @@ export async function listExecutionStepsDb(executionId: string, userId: string):
   return res.rows.map((r) => {
     const details = toResultMap((r as Record<string, unknown>).details);
     const reasons = Array.isArray(details.reasons)
-      ? (details.reasons.filter((v) => typeof v === "string") as string[])
+      ? (details.reasons.filter((v) => typeof v === 'string') as string[])
       : undefined;
     const reasonDetails = Array.isArray(details.reasonDetails)
       ? (details.reasonDetails
-          .filter((v) => v && typeof v === "object")
+          .filter((v) => v && typeof v === 'object')
           .map((v) => v as { code?: unknown; message?: unknown })
-          .filter((v) => typeof v.code === "string" && typeof v.message === "string")
+          .filter((v) => typeof v.code === 'string' && typeof v.message === 'string')
           .map((v) => ({ code: v.code as string, message: v.message as string })) as Array<{
           code: string;
           message: string;
@@ -439,14 +453,14 @@ export async function listExecutionStepsDb(executionId: string, userId: string):
       : undefined;
 
     const status = String(r.status);
-    const normalizedStatus: ExecutionStep["status"] =
-      status === "pending" ||
-      status === "running" ||
-      status === "success" ||
-      status === "failed" ||
-      status === "blocked"
-        ? (status as ExecutionStep["status"])
-        : "pending";
+    const normalizedStatus: ExecutionStep['status'] =
+      status === 'pending' ||
+      status === 'running' ||
+      status === 'success' ||
+      status === 'failed' ||
+      status === 'blocked'
+        ? (status as ExecutionStep['status'])
+        : 'pending';
 
     return {
       id: r.id,
@@ -470,7 +484,7 @@ export async function createQueuedExecutionDb(
     trigger: TriggerType;
     agentsMdUrl: string;
     idempotencyKey?: string;
-  }
+  },
 ): Promise<{
   apiExecution: ApiExecutionRecord;
   dashboardExecution: Execution;
@@ -486,7 +500,7 @@ export async function createQueuedExecutionDb(
        WHERE user_id = $1 AND result->>'idempotencyKey' = $2
        ORDER BY created_at DESC
        LIMIT 1`,
-      [userId, idempotencyKey]
+      [userId, idempotencyKey],
     );
     const existingRow = existing.rows[0];
     if (existingRow) {
@@ -498,7 +512,7 @@ export async function createQueuedExecutionDb(
     }
   }
 
-  let repositoryName = input.repositoryName ?? "external/agent";
+  let repositoryName = input.repositoryName ?? 'external/agent';
   if (input.repositoryId) {
     const repo = await getRepositoryByIdDb(input.repositoryId, userId);
     if (repo) repositoryName = repo.fullName;
@@ -522,35 +536,35 @@ export async function createQueuedExecutionDb(
     [
       id,
       userId,
-      input.repositoryId ?? "external",
+      input.repositoryId ?? 'external',
       repositoryName,
       input.trigger,
       now,
       JSON.stringify(resultPayload),
-    ]
+    ],
   );
 
   const defaultSteps = [
-    { command: "pnpm install", type: "install", status: "pending" },
-    { command: "pnpm run build", type: "build", status: "pending" },
-    { command: "pnpm test", type: "test", status: "pending" },
-    { command: "pnpm run lint", type: "lint", status: "pending" },
+    { command: 'pnpm install', type: 'install', status: 'pending' },
+    { command: 'pnpm run build', type: 'build', status: 'pending' },
+    { command: 'pnpm test', type: 'test', status: 'pending' },
+    { command: 'pnpm run lint', type: 'lint', status: 'pending' },
   ];
   for (let i = 0; i < defaultSteps.length; i++) {
     const step = defaultSteps[i];
     await p.query(
       `INSERT INTO execution_steps (id, execution_id, command, type, status)
        VALUES ($1, $2, $3, $4, $5)`,
-      [`${id}-${i + 1}`, id, step.command, step.type, step.status]
+      [`${id}-${i + 1}`, id, step.command, step.type, step.status],
     );
   }
 
   const dashboardExecution: Execution = {
     id,
-    repositoryId: input.repositoryId ?? "external",
+    repositoryId: input.repositoryId ?? 'external',
     repositoryName,
     trigger: input.trigger,
-    status: "pending",
+    status: 'pending',
     startedAt: now,
     commandsRun: 0,
     commandsPassed: 0,
@@ -562,7 +576,7 @@ export async function createQueuedExecutionDb(
       id: `exec_${id}`,
       agentsMdUrl: input.agentsMdUrl,
       repositoryId: input.repositoryId ?? null,
-      status: "queued",
+      status: 'queued',
       createdAt: now,
       platformFeePercent: 15,
     },
@@ -580,7 +594,7 @@ export async function getUserSubscriptionPlanDb(userId: string): Promise<string 
        AND status IN ('active', 'trialing')
      ORDER BY updated_at DESC
      LIMIT 1`,
-    [userId]
+    [userId],
   );
   const row = res.rows[0];
   return row?.plan_id ?? null;
@@ -613,11 +627,11 @@ export async function upsertUserSubscriptionPlanDb(input: {
       input.stripeCustomerId ?? null,
       input.stripeSubscriptionId ?? null,
       input.currentPeriodEnd ?? null,
-    ]
+    ],
   );
 }
 
-export async function addAuditLogDb(log: Omit<AuditLog, "id" | "timestamp">): Promise<AuditLog> {
+export async function addAuditLogDb(log: Omit<AuditLog, 'id' | 'timestamp'>): Promise<AuditLog> {
   const p = pool();
   const id = randomUUID();
   const timestamp = new Date().toISOString();
@@ -632,7 +646,7 @@ export async function addAuditLogDb(log: Omit<AuditLog, "id" | "timestamp">): Pr
       log.resourceType,
       log.resourceId,
       log.details ? JSON.stringify(log.details) : null,
-    ]
+    ],
   );
   return { id, timestamp, ...log };
 }
@@ -646,7 +660,7 @@ export async function getDashboardCountsDb(userId: string): Promise<{
   const res = await p.query(
     `SELECT result FROM executions
      WHERE user_id = $1 AND status IN ('success', 'failed')`,
-    [userId]
+    [userId],
   );
   let totalDurationMs = 0;
   let totalCommandsRun = 0;
@@ -667,7 +681,7 @@ export async function getDashboardCountsDb(userId: string): Promise<{
 export async function upsertGitHubInstallation(
   userId: string,
   installationId: string,
-  accountLogin?: string
+  accountLogin?: string,
 ): Promise<void> {
   const p = pool();
   const id = randomUUID();
@@ -677,16 +691,17 @@ export async function upsertGitHubInstallation(
      ON CONFLICT (user_id) DO UPDATE SET
        installation_id = EXCLUDED.installation_id,
        account_login = COALESCE(EXCLUDED.account_login, github_installations.account_login)`,
-    [id, userId, installationId, accountLogin ?? null]
+    [id, userId, installationId, accountLogin ?? null],
   );
 }
 
-export async function getGitHubInstallation(userId: string): Promise<{ installationId: string } | null> {
+export async function getGitHubInstallation(
+  userId: string,
+): Promise<{ installationId: string } | null> {
   const p = pool();
-  const res = await p.query(
-    `SELECT installation_id FROM github_installations WHERE user_id = $1`,
-    [userId]
-  );
+  const res = await p.query(`SELECT installation_id FROM github_installations WHERE user_id = $1`, [
+    userId,
+  ]);
   const row = res.rows[0];
   return row ? { installationId: row.installation_id } : null;
 }
@@ -696,7 +711,7 @@ export async function listAuditLogsDb(userId: string, limit = 100): Promise<Audi
   const res = await p.query(
     `SELECT id, user_id, user_email, action, resource_type, resource_id, details, created_at
      FROM audit_logs WHERE user_id = $1 ORDER BY created_at DESC LIMIT $2`,
-    [userId, limit]
+    [userId, limit],
   );
   return res.rows.map((r) => ({
     id: r.id,

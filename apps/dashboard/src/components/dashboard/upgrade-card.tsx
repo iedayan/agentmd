@@ -1,30 +1,30 @@
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
-import Link from "next/link";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { getPlan } from "@/lib/billing/plans";
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { getPlan } from '@/lib/billing/plans';
 
 export function UpgradeCard() {
   const [billingConfigured, setBillingConfigured] = useState<boolean | null>(null);
-  const [loadingPlan, setLoadingPlan] = useState<"pro" | "enterprise" | null>(null);
+  const [loadingPlan, setLoadingPlan] = useState<'pro' | 'enterprise' | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    fetch("/api/billing/status")
+    fetch('/api/billing/status')
       .then((r) => r.json())
       .then((d: { configured?: boolean }) => setBillingConfigured(d.configured ?? false))
       .catch(() => setBillingConfigured(false));
   }, []);
 
-  const handleUpgrade = async (planId: "pro" | "enterprise") => {
+  const handleUpgrade = async (planId: 'pro' | 'enterprise') => {
     setLoadingPlan(planId);
     setError(null);
     try {
-      const res = await fetch("/api/stripe/checkout", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+      const res = await fetch('/api/stripe/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ planId }),
       });
       const data = (await res.json().catch(() => ({}))) as {
@@ -33,21 +33,21 @@ export function UpgradeCard() {
         error?: string;
       };
       if (!res.ok || data.ok === false) {
-        setError(data.error ?? "Unable to start checkout. Please try again.");
+        setError(data.error ?? 'Unable to start checkout. Please try again.');
         return;
       }
       const { url } = data;
       if (url) window.location.href = url;
-      else setError("Checkout URL was not returned. Please try again.");
+      else setError('Checkout URL was not returned. Please try again.');
     } catch (err) {
-      setError("Unable to start checkout. Please try again.");
+      setError('Unable to start checkout. Please try again.');
     } finally {
       setLoadingPlan(null);
     }
   };
 
-  const proPlan = getPlan("pro");
-  const enterprisePlan = getPlan("enterprise");
+  const proPlan = getPlan('pro');
+  const enterprisePlan = getPlan('enterprise');
   const billingDisabled = billingConfigured === false;
 
   return (
@@ -81,14 +81,14 @@ export function UpgradeCard() {
           </ul>
           <Button
             className="w-full"
-            onClick={() => handleUpgrade("pro")}
+            onClick={() => handleUpgrade('pro')}
             disabled={loadingPlan !== null || billingDisabled}
           >
             {billingDisabled
-              ? "Billing unavailable"
-              : loadingPlan === "pro"
-                ? "Redirecting..."
-                : "Upgrade to Pro"}
+              ? 'Billing unavailable'
+              : loadingPlan === 'pro'
+                ? 'Redirecting...'
+                : 'Upgrade to Pro'}
           </Button>
         </CardContent>
       </Card>
@@ -96,9 +96,7 @@ export function UpgradeCard() {
       <Card className="border-primary/30">
         <CardHeader>
           <CardTitle>Enterprise — ${enterprisePlan.price}/month</CardTitle>
-          <CardDescription>
-            Self-hosted, SSO, RBAC, audit logs, 99.9% SLA
-          </CardDescription>
+          <CardDescription>Self-hosted, SSO, RBAC, audit logs, 99.9% SLA</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <ul className="list-disc list-inside space-y-1 text-sm text-muted-foreground">
@@ -111,11 +109,7 @@ export function UpgradeCard() {
             <li>99.9% uptime SLA</li>
             <li>Dedicated support engineer</li>
           </ul>
-          <Button
-            variant="outline"
-            className="w-full"
-            asChild
-          >
+          <Button variant="outline" className="w-full" asChild>
             <Link href="mailto:sales@agentmd.online?subject=Enterprise%20Inquiry">
               Contact Sales
             </Link>

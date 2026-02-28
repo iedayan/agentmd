@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { useEffect, useState } from 'react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 
 type PaymentMethod = { id: string; brand: string; last4: string; expiry: string };
 
@@ -12,7 +12,7 @@ export function BillingPaymentMethods() {
   const [adding, setAdding] = useState(false);
 
   useEffect(() => {
-    fetch("/api/billing/payment-methods", { cache: "no-store" })
+    fetch('/api/billing/payment-methods', { cache: 'no-store' })
       .then((r) => r.json())
       .then((d: { ok?: boolean; methods?: PaymentMethod[] }) => {
         setMethods(d.methods ?? []);
@@ -23,15 +23,15 @@ export function BillingPaymentMethods() {
   const handleAdd = async () => {
     setAdding(true);
     try {
-      const res = await fetch("/api/billing/portal", { method: "POST" });
+      const res = await fetch('/api/billing/portal', { method: 'POST' });
       const data = (await res.json()) as { ok?: boolean; url?: string; error?: string };
       if (res.ok && data.url) {
         window.location.href = data.url;
         return;
       }
-      alert(data.error ?? "Could not open billing portal.");
+      alert(data.error ?? 'Could not open billing portal.');
     } catch {
-      alert("Could not open billing portal.");
+      alert('Could not open billing portal.');
     } finally {
       setAdding(false);
     }
@@ -41,9 +41,7 @@ export function BillingPaymentMethods() {
     <Card>
       <CardHeader>
         <CardTitle>Payment Methods</CardTitle>
-        <CardDescription>
-          Cards on file for subscription billing
-        </CardDescription>
+        <CardDescription>Cards on file for subscription billing</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         {loading ? (
@@ -55,12 +53,11 @@ export function BillingPaymentMethods() {
         ) : (
           <div className="space-y-3">
             {methods.map((m) => (
-              <div
-                key={m.id}
-                className="flex items-center justify-between rounded-lg border p-4"
-              >
+              <div key={m.id} className="flex items-center justify-between rounded-lg border p-4">
                 <div>
-                  <p className="font-medium capitalize">{m.brand} •••• {m.last4}</p>
+                  <p className="font-medium capitalize">
+                    {m.brand} •••• {m.last4}
+                  </p>
                   <p className="text-xs text-muted-foreground">Expires {m.expiry}</p>
                 </div>
                 <Button variant="ghost" size="sm" disabled>
@@ -71,7 +68,7 @@ export function BillingPaymentMethods() {
           </div>
         )}
         <Button variant="outline" onClick={handleAdd} disabled={adding}>
-          {adding ? "Opening..." : "Add payment method"}
+          {adding ? 'Opening...' : 'Add payment method'}
         </Button>
       </CardContent>
     </Card>

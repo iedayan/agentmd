@@ -5,7 +5,7 @@ Use these steps to verify Stripe checkout and webhooks work end-to-end.
 ## Prerequisites
 
 - Stripe account in **Test mode** (toggle in Stripe Dashboard)
-- Test keys in Vercel: `STRIPE_SECRET_KEY` (sk_test_...), `STRIPE_WEBHOOK_SECRET` (whsec_...)
+- Test keys in Vercel: `STRIPE_SECRET_KEY` (sk*test*...), `STRIPE_WEBHOOK_SECRET` (whsec\_...)
 - Logged-in user on agentmd.online
 
 ---
@@ -65,9 +65,9 @@ Note: Test events have placeholder data. Your DB may not update correctly (e.g. 
 
 ## Troubleshooting
 
-| Issue | Check |
-|-------|-------|
+| Issue                | Check                                                                                  |
+| -------------------- | -------------------------------------------------------------------------------------- |
 | Checkout returns 503 | `STRIPE_SECRET_KEY`, `STRIPE_PRO_PRICE_ID`, `STRIPE_ENTERPRISE_PRICE_ID` set in Vercel |
-| Webhook returns 400 | `STRIPE_WEBHOOK_SECRET` matches the signing secret from Stripe |
-| Plan not updating | Webhook endpoint URL correct; check Stripe webhook delivery logs |
-| Billing portal fails | Webhook must run first to sync `stripe_customer_id` to DB |
+| Webhook returns 400  | `STRIPE_WEBHOOK_SECRET` matches the signing secret from Stripe                         |
+| Plan not updating    | Webhook endpoint URL correct; check Stripe webhook delivery logs                       |
+| Billing portal fails | Webhook must run first to sync `stripe_customer_id` to DB                              |

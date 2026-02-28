@@ -1,10 +1,10 @@
-export type PipelineStatus = "running" | "awaiting_approval" | "failed" | "completed";
+export type PipelineStatus = 'running' | 'awaiting_approval' | 'failed' | 'completed';
 
 export interface Pipeline {
   id: string;
   name: string;
   sourceRef: string;
-  trigger: "push" | "schedule" | "manual";
+  trigger: 'push' | 'schedule' | 'manual';
   status: PipelineStatus;
   timestamp: string;
   stages: PipelineStage[];
@@ -17,7 +17,7 @@ export interface Pipeline {
 export interface PipelineStage {
   id: string;
   name: string;
-  status: "passed" | "failed" | "pending" | "running";
+  status: 'passed' | 'failed' | 'pending' | 'running';
   duration?: string;
 }
 
@@ -26,7 +26,7 @@ export interface PolicyResult {
   ruleId: string;
   description: string;
   passed: boolean;
-  enforcement: "block" | "warn" | "require_approval";
+  enforcement: 'block' | 'warn' | 'require_approval';
 }
 
 export interface ApprovalGate {
@@ -46,8 +46,8 @@ export interface LogLine {
 export interface PolicyRule {
   id: string;
   description: string;
-  enforcement: "block" | "warn" | "require_approval";
-  scope: "global" | "per_agent_tag";
+  enforcement: 'block' | 'warn' | 'require_approval';
+  scope: 'global' | 'per_agent_tag';
   lastTriggered: string;
 }
 
@@ -56,8 +56,8 @@ export interface AuditEntry {
   pipeline: string;
   stage: string;
   actor: string;
-  actorType: "human" | "agent";
+  actorType: 'human' | 'agent';
   action: string;
-  result: "pass" | "fail" | "approved" | "rejected";
+  result: 'pass' | 'fail' | 'approved' | 'rejected';
   details?: string;
 }

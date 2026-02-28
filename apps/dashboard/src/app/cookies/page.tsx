@@ -1,28 +1,26 @@
-import Link from "next/link";
-import { LegalLayout } from "@/components/legal/legal-layout";
+import Link from 'next/link';
+import { LegalLayout } from '@/components/legal/legal-layout';
 
 export const metadata = {
-  title: "Cookie Policy — AgentMD",
-  description: "Cookie Policy for AgentMD. How we use cookies and similar technologies.",
+  title: 'Cookie Policy — AgentMD',
+  description: 'Cookie Policy for AgentMD. How we use cookies and similar technologies.',
 };
 
 export default function CookiePolicyPage() {
   return (
     <LegalLayout title="Cookie Policy">
-      <p className="lead text-muted-foreground">
-        Last updated: February 2025
-      </p>
+      <p className="lead text-muted-foreground">Last updated: February 2025</p>
 
       <p>
-        This Cookie Policy explains how AgentMD (&quot;we,&quot; &quot;us,&quot; or &quot;our&quot;) uses cookies
-        and similar technologies when you use our website and Service.
+        This Cookie Policy explains how AgentMD (&quot;we,&quot; &quot;us,&quot; or &quot;our&quot;)
+        uses cookies and similar technologies when you use our website and Service.
       </p>
 
       <h2>1. What Are Cookies?</h2>
       <p>
         Cookies are small text files stored on your device when you visit a website. They help
-        websites remember your preferences, keep you signed in, and understand how you use the
-        site. We also use similar technologies such as local storage and session storage.
+        websites remember your preferences, keep you signed in, and understand how you use the site.
+        We also use similar technologies such as local storage and session storage.
       </p>
 
       <h2>2. Types of Cookies We Use</h2>
@@ -43,9 +41,7 @@ export default function CookiePolicyPage() {
       </ul>
 
       <h3>2.2 Functional</h3>
-      <p>
-        These cookies remember your preferences and improve your experience.
-      </p>
+      <p>These cookies remember your preferences and improve your experience.</p>
       <ul>
         <li>
           <strong>Theme preference:</strong> Remembers your light/dark mode choice
@@ -64,9 +60,7 @@ export default function CookiePolicyPage() {
       </p>
 
       <h2>3. Local Storage and Session Storage</h2>
-      <p>
-        In addition to cookies, we use browser storage (localStorage and sessionStorage) for:
-      </p>
+      <p>In addition to cookies, we use browser storage (localStorage and sessionStorage) for:</p>
       <ul>
         <li>Storing theme and UI preferences</li>
         <li>Onboarding wizard state (e.g., whether you have completed setup)</li>
@@ -100,7 +94,7 @@ export default function CookiePolicyPage() {
 
       <h2>7. Contact</h2>
       <p>
-        For questions about our use of cookies, contact us at{" "}
+        For questions about our use of cookies, contact us at{' '}
         <a href="mailto:privacy@agentmd.online">privacy@agentmd.online</a>.
       </p>
 
@@ -108,15 +102,15 @@ export default function CookiePolicyPage() {
         <Link href="/privacy" className="underline hover:text-foreground">
           Privacy Policy
         </Link>
-        {" · "}
+        {' · '}
         <Link href="/terms" className="underline hover:text-foreground">
           Terms of Service
         </Link>
-        {" · "}
+        {' · '}
         <Link href="/gdpr" className="underline hover:text-foreground">
           GDPR
         </Link>
-        {" · "}
+        {' · '}
         <Link href="/" className="underline hover:text-foreground">
           Home
         </Link>

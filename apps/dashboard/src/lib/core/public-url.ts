@@ -1,7 +1,7 @@
-export const DEFAULT_APP_URL = "http://localhost:3001";
+export const DEFAULT_APP_URL = 'http://localhost:3001';
 
 function normalizeUrl(raw: string): string {
-  return raw.endsWith("/") ? raw.slice(0, -1) : raw;
+  return raw.endsWith('/') ? raw.slice(0, -1) : raw;
 }
 
 export function getPublicAppUrl(fallback = DEFAULT_APP_URL): string {

@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
 export function AgentsMdPreview({ content }: { content: string }) {
-  const lines = content.split("\n");
+  const lines = content.split('\n');
   const sectionRegex = /^\[([^\]]+)\]/;
 
   return (
@@ -13,7 +13,7 @@ export function AgentsMdPreview({ content }: { content: string }) {
         {lines.map((line, i) => {
           const sectionMatch = line.match(sectionRegex);
           const isSection = sectionMatch !== null;
-          const isComment = line.trim().startsWith("#");
+          const isComment = line.trim().startsWith('#');
           return (
             <div key={i} className="flex">
               <span className="w-8 shrink-0 select-none pr-4 text-right text-muted-foreground">
@@ -22,13 +22,13 @@ export function AgentsMdPreview({ content }: { content: string }) {
               <code
                 className={
                   isSection
-                    ? "text-primary font-bold"
+                    ? 'text-primary font-bold'
                     : isComment
-                      ? "text-muted-foreground italic"
-                      : ""
+                      ? 'text-muted-foreground italic'
+                      : ''
                 }
               >
-                {line || " "}
+                {line || ' '}
               </code>
             </div>
           );

@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
-import Link from "next/link";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 
 interface SettingsUsageProps {
   planId: string;
@@ -30,7 +30,7 @@ export function SettingsUsage({
 
   useEffect(() => {
     let cancelled = false;
-    fetch("/api/account/usage", { cache: "no-store" })
+    fetch('/api/account/usage', { cache: 'no-store' })
       .then((res) => res.json())
       .then((data) => {
         if (!cancelled && data.repositories !== undefined) {
@@ -60,11 +60,11 @@ export function SettingsUsage({
   const minutes = usage?.executionMinutesUsed ?? 0;
   const currentPlanId = usage?.planId ?? planId;
   const repoLimit =
-    typeof (usage?.repositoryLimit ?? repositoryLimit) === "number"
+    typeof (usage?.repositoryLimit ?? repositoryLimit) === 'number'
       ? (usage?.repositoryLimit ?? repositoryLimit)
       : Infinity;
   const minLimit =
-    typeof (usage?.executionMinutesLimit ?? executionMinutesLimit) === "number"
+    typeof (usage?.executionMinutesLimit ?? executionMinutesLimit) === 'number'
       ? (usage?.executionMinutesLimit ?? executionMinutesLimit)
       : Infinity;
   const retentionDays = usage?.logRetentionDays ?? logRetentionDays;
@@ -74,20 +74,19 @@ export function SettingsUsage({
       <CardHeader>
         <CardTitle>Current Plan</CardTitle>
         <CardDescription>
-          {currentPlanId === "free"
-            ? "Free tier — 3 repos, 100 min/month"
+          {currentPlanId === 'free'
+            ? 'Free tier — 3 repos, 100 min/month'
             : `${currentPlanId} plan`}
         </CardDescription>
       </CardHeader>
       <CardContent>
         <div className="space-y-2 text-sm">
           <p>
-            Repositories: {loading ? "…" : repos} /{" "}
-            {repoLimit === Infinity ? "∞" : repoLimit}
+            Repositories: {loading ? '…' : repos} / {repoLimit === Infinity ? '∞' : repoLimit}
           </p>
           <p>
-            Execution minutes: {loading ? "…" : minutes.toFixed(1)} /{" "}
-            {minLimit === Infinity ? "∞" : minLimit} this month
+            Execution minutes: {loading ? '…' : minutes.toFixed(1)} /{' '}
+            {minLimit === Infinity ? '∞' : minLimit} this month
           </p>
           <p>Log retention: {retentionDays} days</p>
         </div>

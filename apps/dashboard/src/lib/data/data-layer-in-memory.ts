@@ -4,8 +4,8 @@ import {
   listExecutions,
   getExecutionById,
   getDashboardCounts,
-} from "./dashboard-data";
-import type { DataLayer } from "./data-layer";
+} from './dashboard-data';
+import type { DataLayer } from './data-layer';
 
 export const inMemoryDataLayer: DataLayer = {
   listRepositories,

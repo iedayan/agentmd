@@ -3,9 +3,9 @@
  * Guardrails enforcement at runtime.
  */
 
-import matter from "gray-matter";
+import matter from 'gray-matter';
 
-export type ApprovalRequirement = "always" | "on_failure" | "high_risk" | "never";
+export type ApprovalRequirement = 'always' | 'on_failure' | 'high_risk' | 'never';
 
 export interface PolicyRule {
   id: string;
@@ -22,17 +22,17 @@ export interface PolicyRule {
 }
 
 export interface PolicyConfig {
-  version: "1";
+  version: '1';
   rules: PolicyRule[];
   /** Default approval for unmatched commands */
   defaultApproval?: ApprovalRequirement;
 }
 
 const APPROVAL_REQUIREMENTS: readonly ApprovalRequirement[] = [
-  "always",
-  "on_failure",
-  "high_risk",
-  "never",
+  'always',
+  'on_failure',
+  'high_risk',
+  'never',
 ];
 
 /**
@@ -43,46 +43,39 @@ const APPROVAL_REQUIREMENTS: readonly ApprovalRequirement[] = [
 export function parsePolicyConfig(yaml: string): PolicyConfig {
   const wrapped = `---\n${yaml.trim()}\n---\n`;
   const raw = matter(wrapped).data;
-  if (!raw || typeof raw !== "object" || Array.isArray(raw)) {
-    throw new Error("Invalid policy: expected a YAML object");
+  if (!raw || typeof raw !== 'object' || Array.isArray(raw)) {
+    throw new Error('Invalid policy: expected a YAML object');
   }
 
   const parsed = raw as Record<string, unknown>;
-  if (parsed.version !== "1") {
-    throw new Error("Invalid policy: version must be \"1\"");
+  if (parsed.version !== '1') {
+    throw new Error('Invalid policy: version must be "1"');
   }
 
-  if (
-    parsed.defaultApproval !== undefined &&
-    !isApprovalRequirement(parsed.defaultApproval)
-  ) {
+  if (parsed.defaultApproval !== undefined && !isApprovalRequirement(parsed.defaultApproval)) {
     throw new Error(
-      "Invalid policy: defaultApproval must be always, on_failure, high_risk, or never"
+      'Invalid policy: defaultApproval must be always, on_failure, high_risk, or never',
     );
   }
 
   if (!Array.isArray(parsed.rules) || parsed.rules.length === 0) {
-    throw new Error("Invalid policy: rules array required");
+    throw new Error('Invalid policy: rules array required');
   }
 
   const ids = new Set<string>();
   const rules: PolicyRule[] = parsed.rules.map((item, index) =>
-    validatePolicyRule(item, index, ids)
+    validatePolicyRule(item, index, ids),
   );
 
   return {
-    version: "1",
+    version: '1',
     rules,
     defaultApproval: parsed.defaultApproval as ApprovalRequirement | undefined,
   };
 }
 
-function validatePolicyRule(
-  raw: unknown,
-  index: number,
-  ids: Set<string>
-): PolicyRule {
-  if (!raw || typeof raw !== "object" || Array.isArray(raw)) {
+function validatePolicyRule(raw: unknown, index: number, ids: Set<string>): PolicyRule {
+  if (!raw || typeof raw !== 'object' || Array.isArray(raw)) {
     throw new Error(`Invalid policy rule at index ${index}: expected object`);
   }
 
@@ -98,7 +91,7 @@ function validatePolicyRule(
 
   if (!isApprovalRequirement(rule.approval)) {
     throw new Error(
-      `Invalid policy rule "${id}": approval must be always, on_failure, high_risk, or never`
+      `Invalid policy rule "${id}": approval must be always, on_failure, high_risk, or never`,
     );
   }
 
@@ -108,7 +101,7 @@ function validatePolicyRule(
       throw new Error(`Invalid policy rule "${id}": escalateTo must be an array of strings`);
     }
     const validated = rule.escalateTo.map((v, i) =>
-      requireNonEmptyString(v, `rules[${index}].escalateTo[${i}]`)
+      requireNonEmptyString(v, `rules[${index}].escalateTo[${i}]`),
     );
     if (validated.length === 0) {
       throw new Error(`Invalid policy rule "${id}": escalateTo must not be empty`);
@@ -119,14 +112,12 @@ function validatePolicyRule(
   let budgetMinutes: number | undefined;
   if (rule.budgetMinutes !== undefined) {
     if (
-      typeof rule.budgetMinutes !== "number" ||
+      typeof rule.budgetMinutes !== 'number' ||
       !Number.isFinite(rule.budgetMinutes) ||
       !Number.isInteger(rule.budgetMinutes) ||
       rule.budgetMinutes <= 0
     ) {
-      throw new Error(
-        `Invalid policy rule "${id}": budgetMinutes must be a positive integer`
-      );
+      throw new Error(`Invalid policy rule "${id}": budgetMinutes must be a positive integer`);
     }
     budgetMinutes = rule.budgetMinutes;
   }
@@ -148,17 +139,14 @@ function validatePolicyRule(
 }
 
 function requireNonEmptyString(value: unknown, field: string): string {
-  if (typeof value !== "string" || value.trim().length === 0) {
+  if (typeof value !== 'string' || value.trim().length === 0) {
     throw new Error(`Invalid policy: ${field} must be a non-empty string`);
   }
   return value.trim();
 }
 
 function isApprovalRequirement(value: unknown): value is ApprovalRequirement {
-  return (
-    typeof value === "string" &&
-    APPROVAL_REQUIREMENTS.includes(value as ApprovalRequirement)
-  );
+  return typeof value === 'string' && APPROVAL_REQUIREMENTS.includes(value as ApprovalRequirement);
 }
 
 /**
@@ -170,10 +158,10 @@ function matchesPattern(command: string, pattern: string): boolean {
   const normalized = command.toLowerCase().trim();
   const patternTrimmed = pattern.trim();
 
-  if (patternTrimmed.startsWith("regex:") || patternTrimmed.startsWith("re:")) {
-    const reStr = patternTrimmed.replace(/^(?:regex|re):/i, "").trim();
+  if (patternTrimmed.startsWith('regex:') || patternTrimmed.startsWith('re:')) {
+    const reStr = patternTrimmed.replace(/^(?:regex|re):/i, '').trim();
     try {
-      const re = new RegExp(reStr, "i");
+      const re = new RegExp(reStr, 'i');
       return re.test(normalized);
     } catch {
       return false;
@@ -182,11 +170,11 @@ function matchesPattern(command: string, pattern: string): boolean {
 
   // Glob: escape regex special chars, then * -> .*, ? -> .
   const globRe = patternTrimmed
-    .replace(/[.+^${}()|[\]\\]/g, "\\$&")
-    .replace(/\*/g, ".*")
-    .replace(/\?/g, ".");
+    .replace(/[.+^${}()|[\]\\]/g, '\\$&')
+    .replace(/\*/g, '.*')
+    .replace(/\?/g, '.');
   try {
-    return new RegExp(`^${globRe}$`, "i").test(normalized);
+    return new RegExp(`^${globRe}$`, 'i').test(normalized);
   } catch {
     return false;
   }
@@ -196,10 +184,7 @@ function matchesPattern(command: string, pattern: string): boolean {
  * Find the first policy rule that matches a command.
  * Rules are checked in order; first match wins.
  */
-export function matchCommandToRule(
-  command: string,
-  config: PolicyConfig
-): PolicyRule | undefined {
+export function matchCommandToRule(command: string, config: PolicyConfig): PolicyRule | undefined {
   for (const rule of config.rules) {
     if (matchesPattern(command, rule.match)) {
       return rule;
@@ -214,13 +199,13 @@ export function matchCommandToRule(
  */
 export function getApprovalRequirement(
   command: string,
-  config: PolicyConfig
+  config: PolicyConfig,
 ): { requirement: ApprovalRequirement; rule?: PolicyRule } {
   const rule = matchCommandToRule(command, config);
   if (rule) {
     return { requirement: rule.approval, rule };
   }
   return {
-    requirement: config.defaultApproval ?? "never",
+    requirement: config.defaultApproval ?? 'never',
   };
 }

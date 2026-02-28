@@ -13,14 +13,14 @@ Next.js 14 dashboard for the AgentMD platform — GitHub Actions for agent instr
 
 ## Plans
 
-| | Free | Pro ($49/mo) |
-|---|---|---|
-| Repositories | 3 | Unlimited |
-| Execution min/mo | 100 | 1000 |
-| Log retention | 7 days | 30 days |
-| Parallel execution | No | Yes |
-| Team seats | 1 | 5 |
-| Notifications | — | Slack/Discord |
+|                    | Free   | Pro ($49/mo)  |
+| ------------------ | ------ | ------------- |
+| Repositories       | 3      | Unlimited     |
+| Execution min/mo   | 100    | 1000          |
+| Log retention      | 7 days | 30 days       |
+| Parallel execution | No     | Yes           |
+| Team seats         | 1      | 5             |
+| Notifications      | —      | Slack/Discord |
 
 ## Setup
 

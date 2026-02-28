@@ -1,21 +1,21 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { MarketplaceHeader } from "@/components/marketplace/marketplace-header";
-import { FRAMEWORK_TEMPLATES } from "@/lib/agents/agents-md-templates";
+import { useState } from 'react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { MarketplaceHeader } from '@/components/marketplace/marketplace-header';
+import { FRAMEWORK_TEMPLATES } from '@/lib/agents/agents-md-templates';
 
 const FRAMEWORKS = Object.keys(FRAMEWORK_TEMPLATES);
 
 export default function GeneratorPage() {
   const [selected, setSelected] = useState<string | null>(null);
-  const [output, setOutput] = useState("");
+  const [output, setOutput] = useState('');
 
   const handleGenerate = () => {
     const template = selected
       ? FRAMEWORK_TEMPLATES[selected]
-      : FRAMEWORK_TEMPLATES["Node.js / pnpm"];
+      : FRAMEWORK_TEMPLATES['Node.js / pnpm'];
     setOutput(template);
   };
 
@@ -24,9 +24,7 @@ export default function GeneratorPage() {
       <MarketplaceHeader />
       <main className="container mx-auto px-4 py-12 max-w-2xl">
         <h1 className="text-3xl font-bold">AGENTS.md Generator</h1>
-        <p className="text-muted-foreground mt-2">
-          Generate AGENTS.md for popular frameworks
-        </p>
+        <p className="text-muted-foreground mt-2">Generate AGENTS.md for popular frameworks</p>
 
         <Card className="mt-8">
           <CardHeader>
@@ -39,17 +37,14 @@ export default function GeneratorPage() {
             {FRAMEWORKS.map((fw) => (
               <Button
                 key={fw}
-                variant={selected === fw ? "default" : "outline"}
+                variant={selected === fw ? 'default' : 'outline'}
                 className="w-full justify-start"
                 onClick={() => setSelected(fw)}
               >
                 {fw}
               </Button>
             ))}
-            <Button
-              className="w-full mt-4"
-              onClick={handleGenerate}
-            >
+            <Button className="w-full mt-4" onClick={handleGenerate}>
               Generate AGENTS.md
             </Button>
           </CardContent>
@@ -59,9 +54,7 @@ export default function GeneratorPage() {
           <Card className="mt-6">
             <CardHeader>
               <CardTitle>Generated AGENTS.md</CardTitle>
-              <CardDescription>
-                Copy and save as AGENTS.md in your repo root
-              </CardDescription>
+              <CardDescription>Copy and save as AGENTS.md in your repo root</CardDescription>
             </CardHeader>
             <CardContent>
               <pre className="rounded-lg bg-muted p-4 text-sm overflow-x-auto max-h-[400px] overflow-y-auto whitespace-pre-wrap">

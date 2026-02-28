@@ -3,19 +3,15 @@
  * Usage: /api/badge/score?score=87 or ?repo=owner/repo
  * For repo: fetches AGENTS.md from GitHub raw and computes score.
  */
-import { NextRequest } from "next/server";
-import {
-  parseAgentsMd,
-  validateAgentsMd,
-  computeAgentReadinessScore,
-} from "@agentmd-dev/core";
+import { NextRequest } from 'next/server';
+import { parseAgentsMd, validateAgentsMd, computeAgentReadinessScore } from '@agentmd-dev/core';
 function scoreToColor(score: number): string {
-  if (score >= 80) return "#16a34a";
-  if (score >= 50) return "#d97706";
-  return "#dc2626";
+  if (score >= 80) return '#16a34a';
+  if (score >= 50) return '#d97706';
+  return '#dc2626';
 }
 
-function renderBadgeSvg(score: number, label = "AgentMD Score"): string {
+function renderBadgeSvg(score: number, label = 'AgentMD Score'): string {
   const color = scoreToColor(score);
   const text = `${score}/100`;
   const labelWidth = 90;
@@ -37,17 +33,17 @@ function renderBadgeSvg(score: number, label = "AgentMD Score"): string {
 
 function escapeXml(s: string): string {
   return s
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&apos;");
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;');
 }
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
-  const scoreParam = searchParams.get("score");
-  const repo = searchParams.get("repo");
+  const scoreParam = searchParams.get('score');
+  const repo = searchParams.get('repo');
 
   let score: number;
 
@@ -55,11 +51,11 @@ export async function GET(req: NextRequest) {
     score = Math.min(100, Math.max(0, parseInt(scoreParam, 10) || 0));
   } else if (repo && /^[\w.-]+\/[\w.-]+$/.test(repo.trim())) {
     try {
-      const [owner, name] = repo.trim().split("/");
-      const branch = searchParams.get("branch") || "main";
+      const [owner, name] = repo.trim().split('/');
+      const branch = searchParams.get('branch') || 'main';
       const url = `https://raw.githubusercontent.com/${owner}/${name}/${branch}/AGENTS.md`;
       const res = await fetch(url, {
-        headers: { "User-Agent": "AgentMD-Badge/1.0" },
+        headers: { 'User-Agent': 'AgentMD-Badge/1.0' },
         signal: AbortSignal.timeout(5000),
       });
       if (!res.ok) {
@@ -80,8 +76,8 @@ export async function GET(req: NextRequest) {
   const svg = renderBadgeSvg(score);
   return new Response(svg, {
     headers: {
-      "Content-Type": "image/svg+xml",
-      "Cache-Control": "public, max-age=300, s-maxage=300",
+      'Content-Type': 'image/svg+xml',
+      'Cache-Control': 'public, max-age=300, s-maxage=300',
     },
   });
 }

@@ -13,13 +13,13 @@ interface FaqSchemaProps {
 
 export function FaqSchema({ items }: FaqSchemaProps) {
   const schema = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
     mainEntity: items.map((item) => ({
-      "@type": "Question",
+      '@type': 'Question',
       name: item.question,
       acceptedAnswer: {
-        "@type": "Answer",
+        '@type': 'Answer',
         text: item.answer,
       },
     })),

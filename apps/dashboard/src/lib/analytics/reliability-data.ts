@@ -1,7 +1,7 @@
-import { join } from "path";
-import { readJsonFile, writeJsonFile } from "@/lib/data/server-persistence";
+import { join } from 'path';
+import { readJsonFile, writeJsonFile } from '@/lib/data/server-persistence';
 
-export type DeliveryStatus = "received" | "processed" | "failed";
+export type DeliveryStatus = 'received' | 'processed' | 'failed';
 
 type DeliveryRecord = {
   id: string;
@@ -16,7 +16,7 @@ type DeliveryRecord = {
 type Incident = {
   id: string;
   source: string;
-  severity: "low" | "medium" | "high";
+  severity: 'low' | 'medium' | 'high';
   summary: string;
   openedAt: string;
   resolvedAt?: string;
@@ -33,7 +33,7 @@ type PersistedReliabilityState = {
   };
 };
 
-const RELIABILITY_STATE_PATH = join(process.cwd(), "apps/dashboard/.data/reliability-state.json");
+const RELIABILITY_STATE_PATH = join(process.cwd(), 'apps/dashboard/.data/reliability-state.json');
 const MAX_DELIVERY_RECORDS = 1000;
 
 const deliveries = new Map<string, DeliveryRecord>();
@@ -69,17 +69,17 @@ function load() {
     deliveries.set(delivery.id, delivery);
   }
   incidents = Array.isArray(state.incidents) ? state.incidents : [];
-  if (typeof state.nextIncidentId === "number") nextIncidentId = state.nextIncidentId;
+  if (typeof state.nextIncidentId === 'number') nextIncidentId = state.nextIncidentId;
   if (state.metrics) {
     metrics = {
       totalDeliveries:
-        typeof state.metrics.totalDeliveries === "number" ? state.metrics.totalDeliveries : 0,
+        typeof state.metrics.totalDeliveries === 'number' ? state.metrics.totalDeliveries : 0,
       duplicateDeliveries:
-        typeof state.metrics.duplicateDeliveries === "number"
+        typeof state.metrics.duplicateDeliveries === 'number'
           ? state.metrics.duplicateDeliveries
           : 0,
       retryAttempts:
-        typeof state.metrics.retryAttempts === "number" ? state.metrics.retryAttempts : 0,
+        typeof state.metrics.retryAttempts === 'number' ? state.metrics.retryAttempts : 0,
     };
   }
 }
@@ -89,7 +89,7 @@ load();
 function trimDeliveriesIfNeeded() {
   if (deliveries.size <= MAX_DELIVERY_RECORDS) return;
   const sorted = Array.from(deliveries.values()).sort(
-    (a, b) => Date.parse(a.lastSeenAt) - Date.parse(b.lastSeenAt)
+    (a, b) => Date.parse(a.lastSeenAt) - Date.parse(b.lastSeenAt),
   );
   for (let i = 0; i < sorted.length - MAX_DELIVERY_RECORDS; i += 1) {
     const id = sorted[i]?.id;
@@ -109,7 +109,7 @@ export function registerWebhookDelivery(deliveryId: string, event: string) {
     persist();
     return {
       duplicate: true,
-      alreadyProcessed: existing.status === "processed",
+      alreadyProcessed: existing.status === 'processed',
       attempts: existing.attempts,
     };
   }
@@ -117,7 +117,7 @@ export function registerWebhookDelivery(deliveryId: string, event: string) {
   deliveries.set(deliveryId, {
     id: deliveryId,
     event,
-    status: "received",
+    status: 'received',
     attempts: 1,
     firstSeenAt: now,
     lastSeenAt: now,
@@ -130,14 +130,14 @@ export function registerWebhookDelivery(deliveryId: string, event: string) {
 export function markWebhookDeliveryStatus(
   deliveryId: string,
   status: DeliveryStatus,
-  error?: string
+  error?: string,
 ) {
   const existing = deliveries.get(deliveryId);
   const now = new Date().toISOString();
   if (!existing) {
     deliveries.set(deliveryId, {
       id: deliveryId,
-      event: "unknown",
+      event: 'unknown',
       status,
       attempts: 1,
       firstSeenAt: now,
@@ -156,14 +156,14 @@ export function markWebhookDeliveryStatus(
 
 export function openIncident(input: {
   source: string;
-  severity: "low" | "medium" | "high";
+  severity: 'low' | 'medium' | 'high';
   summary: string;
 }) {
   const duplicateOpen = incidents.find(
     (incident) =>
       !incident.resolvedAt &&
       incident.source === input.source &&
-      incident.summary.toLowerCase() === input.summary.toLowerCase()
+      incident.summary.toLowerCase() === input.summary.toLowerCase(),
   );
   if (duplicateOpen) return duplicateOpen;
   const incident: Incident = {
@@ -199,7 +199,7 @@ export function getReliabilityStats() {
           }, 0) /
             resolved.length /
             60000) *
-            10
+            10,
         ) / 10
       : 0;
 

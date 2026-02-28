@@ -1,25 +1,33 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { User } from "lucide-react";
-import { ThemeToggle } from "@/components/ui/theme-toggle";
+import Link from 'next/link';
+import { User } from 'lucide-react';
+import { ThemeToggle } from '@/components/ui/theme-toggle';
 
 const TABS = [
-  { id: "pipelines", label: "Pipelines" },
-  { id: "pr-reviewer", label: "PR Reviewer" },
-  { id: "policies", label: "Policies" },
-  { id: "audit", label: "Audit Log" },
-  { id: "analytics", label: "Analytics" },
-  { id: "settings", label: "Settings" },
+  { id: 'pipelines', label: 'Pipelines' },
+  { id: 'pr-reviewer', label: 'PR Reviewer' },
+  { id: 'policies', label: 'Policies' },
+  { id: 'audit', label: 'Audit Log' },
+  { id: 'analytics', label: 'Analytics' },
+  { id: 'settings', label: 'Settings' },
 ] as const;
 
-export function OpsNav({ activeTab, onTabChange }: { activeTab: string; onTabChange: (id: string) => void }) {
+export function OpsNav({
+  activeTab,
+  onTabChange,
+}: {
+  activeTab: string;
+  onTabChange: (id: string) => void;
+}) {
   return (
     <header className="border-b border-border bg-card/80 backdrop-blur-md sticky top-0 z-10">
       <div className="flex h-14 items-center justify-between px-6">
         <Link href="/" className="font-bold text-lg tracking-tight text-foreground group">
           Agent<span className="text-primary">MD</span>
-          <span className="ml-2 inline-flex items-center rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-primary">Live Demo</span>
+          <span className="ml-2 inline-flex items-center rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-primary">
+            Live Demo
+          </span>
         </Link>
         <nav className="flex items-center gap-1">
           {TABS.map((tab) => {
@@ -28,10 +36,9 @@ export function OpsNav({ activeTab, onTabChange }: { activeTab: string; onTabCha
               <button
                 key={tab.id}
                 onClick={() => onTabChange(tab.id)}
-                className={`relative px-4 py-2 font-mono text-xs font-bold transition-all duration-base ${isActive
-                    ? "text-foreground"
-                    : "text-muted-foreground hover:text-foreground"
-                  }`}
+                className={`relative px-4 py-2 font-mono text-xs font-bold transition-all duration-base ${
+                  isActive ? 'text-foreground' : 'text-muted-foreground hover:text-foreground'
+                }`}
               >
                 {tab.label}
                 {isActive && (

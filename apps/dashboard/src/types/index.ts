@@ -2,9 +2,9 @@
  * Dashboard types
  */
 
-export type ExecutionStatus = "pending" | "running" | "success" | "failed" | "cancelled";
+export type ExecutionStatus = 'pending' | 'running' | 'success' | 'failed' | 'cancelled';
 
-export type TriggerType = "push" | "pull_request" | "schedule" | "manual";
+export type TriggerType = 'push' | 'pull_request' | 'schedule' | 'manual';
 
 export interface Repository {
   id: string;
@@ -33,7 +33,7 @@ export interface Execution {
   commandsFailed: number;
   logs?: string;
   /** "real" = commands run in worker; "mock" = simulated (default when AGENTMD_REAL_EXECUTION not set) */
-  executionMode?: "real" | "mock";
+  executionMode?: 'real' | 'mock';
   /** Source AGENTS.md URL that this execution ran (if known). */
   agentsMdUrl?: string;
   /** Optional preflight plan from @agentmd/core (useful for UI explainability/debug). */
@@ -58,7 +58,7 @@ export interface ExecutionStep {
   id: string;
   command: string;
   type: string;
-  status: "pending" | "running" | "success" | "failed" | "blocked";
+  status: 'pending' | 'running' | 'success' | 'failed' | 'blocked';
   /** Optional structured reasons explaining why a step failed/was blocked. */
   reasons?: string[];
   /** Optional structured reason details (stable codes for UI grouping). */
@@ -68,4 +68,4 @@ export interface ExecutionStep {
   error?: string;
 }
 
-export * from "./enterprise";
+export * from './enterprise';

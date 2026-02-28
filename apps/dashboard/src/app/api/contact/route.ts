@@ -1,83 +1,83 @@
 /**
  * Contact form API — sends submissions to iedayan03@gmail.com via Resend.
  */
-import { NextRequest } from "next/server";
-import { Resend } from "resend";
-import { apiError, apiOk, getRequestId } from "@/lib/core/api-response";
-import { rateLimit } from "@/lib/core/rate-limit";
-import { getClientKey } from "@/lib/core/request-context";
+import { NextRequest } from 'next/server';
+import { Resend } from 'resend';
+import { apiError, apiOk, getRequestId } from '@/lib/core/api-response';
+import { rateLimit } from '@/lib/core/rate-limit';
+import { getClientKey } from '@/lib/core/request-context';
 
-const CONTACT_EMAIL = "iedayan03@gmail.com";
+const CONTACT_EMAIL = 'iedayan03@gmail.com';
 
 export async function POST(req: NextRequest) {
   const requestId = getRequestId(req);
   const rate = await rateLimit(getClientKey(req), {
-    scope: "contact-form",
+    scope: 'contact-form',
     maxRequests: 5,
     windowMs: 60_000,
   });
   if (!rate.allowed) {
-    return apiError("Too many requests. Please try again later.", {
+    return apiError('Too many requests. Please try again later.', {
       status: 429,
       requestId,
-      headers: { "X-RateLimit-Remaining": String(rate.remaining) },
-      code: "RATE_LIMITED",
+      headers: { 'X-RateLimit-Remaining': String(rate.remaining) },
+      code: 'RATE_LIMITED',
     });
   }
 
   const apiKey = process.env.RESEND_API_KEY?.trim();
   if (!apiKey) {
-    return apiError("Contact form is not configured. Please email us directly.", {
+    return apiError('Contact form is not configured. Please email us directly.', {
       status: 503,
       requestId,
-      headers: { "X-RateLimit-Remaining": String(rate.remaining) },
-      code: "CONTACT_NOT_CONFIGURED",
+      headers: { 'X-RateLimit-Remaining': String(rate.remaining) },
+      code: 'CONTACT_NOT_CONFIGURED',
     });
   }
 
   try {
     const raw = (await req.json()) as unknown;
-    if (!raw || typeof raw !== "object" || Array.isArray(raw)) {
-      return apiError("Invalid request payload", {
+    if (!raw || typeof raw !== 'object' || Array.isArray(raw)) {
+      return apiError('Invalid request payload', {
         status: 400,
         requestId,
-        headers: { "X-RateLimit-Remaining": String(rate.remaining) },
-        code: "INVALID_PAYLOAD",
+        headers: { 'X-RateLimit-Remaining': String(rate.remaining) },
+        code: 'INVALID_PAYLOAD',
       });
     }
     const body = raw as Record<string, unknown>;
-    const name = typeof body.name === "string" ? body.name.trim() : "";
-    const email = typeof body.email === "string" ? body.email.trim() : "";
-    const message = typeof body.message === "string" ? body.message.trim() : "";
+    const name = typeof body.name === 'string' ? body.name.trim() : '';
+    const email = typeof body.email === 'string' ? body.email.trim() : '';
+    const message = typeof body.message === 'string' ? body.message.trim() : '';
 
     if (!name || name.length < 2) {
-      return apiError("Name is required (min 2 characters)", {
+      return apiError('Name is required (min 2 characters)', {
         status: 400,
         requestId,
-        headers: { "X-RateLimit-Remaining": String(rate.remaining) },
-        code: "INVALID_NAME",
+        headers: { 'X-RateLimit-Remaining': String(rate.remaining) },
+        code: 'INVALID_NAME',
       });
     }
-    if (!email || !email.includes("@") || email.length > 254) {
-      return apiError("Valid email is required", {
+    if (!email || !email.includes('@') || email.length > 254) {
+      return apiError('Valid email is required', {
         status: 400,
         requestId,
-        headers: { "X-RateLimit-Remaining": String(rate.remaining) },
-        code: "INVALID_EMAIL",
+        headers: { 'X-RateLimit-Remaining': String(rate.remaining) },
+        code: 'INVALID_EMAIL',
       });
     }
     if (!message || message.length < 10) {
-      return apiError("Message is required (min 10 characters)", {
+      return apiError('Message is required (min 10 characters)', {
         status: 400,
         requestId,
-        headers: { "X-RateLimit-Remaining": String(rate.remaining) },
-        code: "INVALID_MESSAGE",
+        headers: { 'X-RateLimit-Remaining': String(rate.remaining) },
+        code: 'INVALID_MESSAGE',
       });
     }
 
     const resend = new Resend(apiKey);
     const { data, error } = await resend.emails.send({
-      from: "AgentMD Contact <onboarding@resend.dev>",
+      from: 'AgentMD Contact <onboarding@resend.dev>',
       to: [CONTACT_EMAIL],
       replyTo: email,
       subject: `[AgentMD Contact] ${name}`,
@@ -93,35 +93,35 @@ export async function POST(req: NextRequest) {
     });
 
     if (error) {
-      console.error("Resend contact error:", error);
-      return apiError("Failed to send message. Please try again or email directly.", {
+      console.error('Resend contact error:', error);
+      return apiError('Failed to send message. Please try again or email directly.', {
         status: 500,
         requestId,
-        headers: { "X-RateLimit-Remaining": String(rate.remaining) },
-        code: "SEND_FAILED",
+        headers: { 'X-RateLimit-Remaining': String(rate.remaining) },
+        code: 'SEND_FAILED',
       });
     }
 
     return apiOk(
       { ok: true, id: data?.id },
-      { requestId, headers: { "X-RateLimit-Remaining": String(rate.remaining) } }
+      { requestId, headers: { 'X-RateLimit-Remaining': String(rate.remaining) } },
     );
   } catch (err) {
-    console.error("Contact form error:", err);
-    return apiError("Failed to send message. Please try again.", {
+    console.error('Contact form error:', err);
+    return apiError('Failed to send message. Please try again.', {
       status: 500,
       requestId,
-      headers: { "X-RateLimit-Remaining": String(rate.remaining) },
-      code: "CONTACT_ERROR",
+      headers: { 'X-RateLimit-Remaining': String(rate.remaining) },
+      code: 'CONTACT_ERROR',
     });
   }
 }
 
 function escapeHtml(s: string): string {
   return s
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
 }

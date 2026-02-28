@@ -1,56 +1,56 @@
-import { describe, it, expect } from "vitest";
-import { mkdtempSync, writeFileSync, mkdirSync, readFileSync, rmSync } from "fs";
-import { join } from "path";
-import { tmpdir } from "os";
-import { discoverFragments, composeAgentsMd, loadComposeConfig } from "../compose.js";
+import { describe, it, expect } from 'vitest';
+import { mkdtempSync, writeFileSync, mkdirSync, readFileSync, rmSync } from 'fs';
+import { join } from 'path';
+import { tmpdir } from 'os';
+import { discoverFragments, composeAgentsMd, loadComposeConfig } from '../compose.js';
 
-describe("discoverFragments", () => {
-  it("finds agents-md fragments by default patterns", () => {
-    const dir = mkdtempSync(join(tmpdir(), "agentmd-"));
+describe('discoverFragments', () => {
+  it('finds agents-md fragments by default patterns', () => {
+    const dir = mkdtempSync(join(tmpdir(), 'agentmd-'));
     try {
-      mkdirSync(join(dir, "agents-md"), { recursive: true });
+      mkdirSync(join(dir, 'agents-md'), { recursive: true });
       writeFileSync(
-        join(dir, "agents-md", "build.md"),
+        join(dir, 'agents-md', 'build.md'),
         `<!-- agents-md: target=nearest, priority=1 -->
 ## Build
 \`pnpm build\`
-`
+`,
       );
       const fragments = discoverFragments(dir);
       expect(fragments.length).toBeGreaterThanOrEqual(1);
-      const build = fragments.find((f) => f.path.includes("build"));
+      const build = fragments.find((f) => f.path.includes('build'));
       expect(build).toBeDefined();
-      expect(build?.targetDir).toBe(join(dir, "agents-md"));
+      expect(build?.targetDir).toBe(join(dir, 'agents-md'));
       expect(build?.priority).toBe(1);
     } finally {
       rmSync(dir, { recursive: true });
     }
   });
 
-  it("respects target=root directive", () => {
-    const dir = mkdtempSync(join(tmpdir(), "agentmd-"));
+  it('respects target=root directive', () => {
+    const dir = mkdtempSync(join(tmpdir(), 'agentmd-'));
     try {
-      mkdirSync(join(dir, "packages", "pkg", "agents-md"), { recursive: true });
+      mkdirSync(join(dir, 'packages', 'pkg', 'agents-md'), { recursive: true });
       writeFileSync(
-        join(dir, "packages", "pkg", "agents-md", "test.md"),
+        join(dir, 'packages', 'pkg', 'agents-md', 'test.md'),
         `<!-- agents-md: target=root -->
 ## Test
 \`pnpm test\`
-`
+`,
       );
       const fragments = discoverFragments(dir);
-      const testFrag = fragments.find((f) => f.path.includes("test"));
+      const testFrag = fragments.find((f) => f.path.includes('test'));
       expect(testFrag?.targetDir).toBe(dir);
     } finally {
       rmSync(dir, { recursive: true });
     }
   });
 
-  it("uses defaultTarget when no directive", () => {
-    const dir = mkdtempSync(join(tmpdir(), "agentmd-"));
+  it('uses defaultTarget when no directive', () => {
+    const dir = mkdtempSync(join(tmpdir(), 'agentmd-'));
     try {
-      writeFileSync(join(dir, "foo.agents.md"), "## Foo\n`echo foo`");
-      const fragments = discoverFragments(dir, { defaultTarget: "root" });
+      writeFileSync(join(dir, 'foo.agents.md'), '## Foo\n`echo foo`');
+      const fragments = discoverFragments(dir, { defaultTarget: 'root' });
       expect(fragments[0]?.targetDir).toBe(dir);
     } finally {
       rmSync(dir, { recursive: true });
@@ -58,9 +58,9 @@ describe("discoverFragments", () => {
   });
 });
 
-describe("loadComposeConfig", () => {
-  it("returns undefined when no config exists", () => {
-    const dir = mkdtempSync(join(tmpdir(), "agentmd-"));
+describe('loadComposeConfig', () => {
+  it('returns undefined when no config exists', () => {
+    const dir = mkdtempSync(join(tmpdir(), 'agentmd-'));
     try {
       expect(loadComposeConfig(dir)).toBeUndefined();
     } finally {
@@ -68,24 +68,24 @@ describe("loadComposeConfig", () => {
     }
   });
 
-  it("loads agentmd.config.json when present", () => {
-    const dir = mkdtempSync(join(tmpdir(), "agentmd-"));
+  it('loads agentmd.config.json when present', () => {
+    const dir = mkdtempSync(join(tmpdir(), 'agentmd-'));
     try {
       writeFileSync(
-        join(dir, "agentmd.config.json"),
+        join(dir, 'agentmd.config.json'),
         JSON.stringify({
-          include: ["**/custom/**/*.md"],
-          exclude: ["**/skip/**"],
-          defaultTarget: "root",
+          include: ['**/custom/**/*.md'],
+          exclude: ['**/skip/**'],
+          defaultTarget: 'root',
           annotateSources: false,
         }),
-        "utf-8"
+        'utf-8',
       );
       const cfg = loadComposeConfig(dir);
       expect(cfg).toBeDefined();
-      expect(cfg?.include).toEqual(["**/custom/**/*.md"]);
-      expect(cfg?.exclude).toEqual(["**/skip/**"]);
-      expect(cfg?.defaultTarget).toBe("root");
+      expect(cfg?.include).toEqual(['**/custom/**/*.md']);
+      expect(cfg?.exclude).toEqual(['**/skip/**']);
+      expect(cfg?.defaultTarget).toBe('root');
       expect(cfg?.annotateSources).toBe(false);
     } finally {
       rmSync(dir, { recursive: true });
@@ -93,89 +93,89 @@ describe("loadComposeConfig", () => {
   });
 });
 
-describe("composeAgentsMd with agentmd.config", () => {
-  it("uses agentmd.config.json when no config passed", () => {
-    const dir = mkdtempSync(join(tmpdir(), "agentmd-"));
+describe('composeAgentsMd with agentmd.config', () => {
+  it('uses agentmd.config.json when no config passed', () => {
+    const dir = mkdtempSync(join(tmpdir(), 'agentmd-'));
     try {
       writeFileSync(
-        join(dir, "agentmd.config.json"),
-        JSON.stringify({ defaultTarget: "root", annotateSources: false }),
-        "utf-8"
+        join(dir, 'agentmd.config.json'),
+        JSON.stringify({ defaultTarget: 'root', annotateSources: false }),
+        'utf-8',
       );
-      writeFileSync(join(dir, "foo.agents.md"), "## Foo\n`echo foo`");
+      writeFileSync(join(dir, 'foo.agents.md'), '## Foo\n`echo foo`');
       const result = composeAgentsMd(dir);
       expect(result.fragments.length).toBeGreaterThanOrEqual(1);
       expect(result.fragments[0]?.targetDir).toBe(dir);
-      const outPath = join(dir, "AGENTS.md");
-      const content = readFileSync(outPath, "utf-8");
-      expect(content).not.toContain("<!-- source:");
+      const outPath = join(dir, 'AGENTS.md');
+      const content = readFileSync(outPath, 'utf-8');
+      expect(content).not.toContain('<!-- source:');
     } finally {
       rmSync(dir, { recursive: true });
     }
   });
 });
 
-describe("composeAgentsMd", () => {
-  it("generates AGENTS.md from fragments", () => {
-    const dir = mkdtempSync(join(tmpdir(), "agentmd-"));
+describe('composeAgentsMd', () => {
+  it('generates AGENTS.md from fragments', () => {
+    const dir = mkdtempSync(join(tmpdir(), 'agentmd-'));
     try {
-      mkdirSync(join(dir, "agents-md"), { recursive: true });
+      mkdirSync(join(dir, 'agents-md'), { recursive: true });
       writeFileSync(
-        join(dir, "agents-md", "main.md"),
+        join(dir, 'agents-md', 'main.md'),
         `## Build
 \`pnpm build\`
-`
+`,
       );
       const result = composeAgentsMd(dir);
       expect(result.generated.length).toBeGreaterThanOrEqual(1);
       expect(result.fragments.length).toBeGreaterThanOrEqual(1);
-      const outPath = join(dir, "agents-md", "AGENTS.md");
-      const content = readFileSync(outPath, "utf-8");
-      expect(content).toContain("pnpm build");
-      expect(content).toContain("Generated by AgentMD compose");
+      const outPath = join(dir, 'agents-md', 'AGENTS.md');
+      const content = readFileSync(outPath, 'utf-8');
+      expect(content).toContain('pnpm build');
+      expect(content).toContain('Generated by AgentMD compose');
     } finally {
       rmSync(dir, { recursive: true });
     }
   });
 
-  it("sorts fragments by priority (higher first)", () => {
-    const dir = mkdtempSync(join(tmpdir(), "agentmd-"));
+  it('sorts fragments by priority (higher first)', () => {
+    const dir = mkdtempSync(join(tmpdir(), 'agentmd-'));
     try {
-      mkdirSync(join(dir, "agents-md"), { recursive: true });
+      mkdirSync(join(dir, 'agents-md'), { recursive: true });
       writeFileSync(
-        join(dir, "agents-md", "low.md"),
+        join(dir, 'agents-md', 'low.md'),
         `<!-- agents-md: priority=1 -->
 ## Low
 Low content
-`
+`,
       );
       writeFileSync(
-        join(dir, "agents-md", "high.md"),
+        join(dir, 'agents-md', 'high.md'),
         `<!-- agents-md: priority=10 -->
 ## High
 High content
-`
+`,
       );
       const result = composeAgentsMd(dir);
-      const outPath = join(dir, "agents-md", "AGENTS.md");
-      const content = readFileSync(outPath, "utf-8");
-      const highPos = content.indexOf("High content");
-      const lowPos = content.indexOf("Low content");
+      const outPath = join(dir, 'agents-md', 'AGENTS.md');
+      const content = readFileSync(outPath, 'utf-8');
+      const highPos = content.indexOf('High content');
+      const lowPos = content.indexOf('Low content');
       expect(highPos).toBeLessThan(lowPos);
     } finally {
       rmSync(dir, { recursive: true });
     }
   });
 
-  it("annotates sources when annotateSources=true", () => {
-    const dir = mkdtempSync(join(tmpdir(), "agentmd-"));
+  it('annotates sources when annotateSources=true', () => {
+    const dir = mkdtempSync(join(tmpdir(), 'agentmd-'));
     try {
-      mkdirSync(join(dir, "agents-md"), { recursive: true });
-      writeFileSync(join(dir, "agents-md", "x.md"), "## X\n`echo x`");
+      mkdirSync(join(dir, 'agents-md'), { recursive: true });
+      writeFileSync(join(dir, 'agents-md', 'x.md'), '## X\n`echo x`');
       composeAgentsMd(dir, { annotateSources: true });
-      const content = readFileSync(join(dir, "agents-md", "AGENTS.md"), "utf-8");
-      expect(content).toContain("<!-- source:");
-      expect(content).toContain("x.md");
+      const content = readFileSync(join(dir, 'agents-md', 'AGENTS.md'), 'utf-8');
+      expect(content).toContain('<!-- source:');
+      expect(content).toContain('x.md');
     } finally {
       rmSync(dir, { recursive: true });
     }

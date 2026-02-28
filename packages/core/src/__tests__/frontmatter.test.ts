@@ -1,6 +1,6 @@
-import { describe, it, expect } from "vitest";
-import { parseAgentsMd } from "../parser.js";
-import { parseFrontmatter, stringifyAgentsMd } from "../frontmatter.js";
+import { describe, it, expect } from 'vitest';
+import { parseAgentsMd } from '../parser.js';
+import { parseFrontmatter, stringifyAgentsMd } from '../frontmatter.js';
 
 const WITH_FRONTMATTER = `---
 agent:
@@ -21,24 +21,24 @@ agent:
 Run \`pnpm test\`.
 `;
 
-describe("frontmatter parsing", () => {
-  it("extracts agent frontmatter", () => {
+describe('frontmatter parsing', () => {
+  it('extracts agent frontmatter', () => {
     const parsed = parseAgentsMd(WITH_FRONTMATTER);
     expect(parsed.frontmatter).toBeDefined();
-    expect(parsed.frontmatter?.name).toBe("pr-labeler");
-    expect(parsed.frontmatter?.purpose).toContain("Apply size labels");
-    expect(parsed.frontmatter?.model).toBe("gpt-4o-mini");
-    expect(parsed.frontmatter?.triggers).toContain("pull_request.opened");
-    expect(parsed.frontmatter?.guardrails).toContain("Never modify code, never merge");
+    expect(parsed.frontmatter?.name).toBe('pr-labeler');
+    expect(parsed.frontmatter?.purpose).toContain('Apply size labels');
+    expect(parsed.frontmatter?.model).toBe('gpt-4o-mini');
+    expect(parsed.frontmatter?.triggers).toContain('pull_request.opened');
+    expect(parsed.frontmatter?.guardrails).toContain('Never modify code, never merge');
   });
 
-  it("parses body without frontmatter", () => {
+  it('parses body without frontmatter', () => {
     const parsed = parseAgentsMd(WITH_FRONTMATTER);
-    expect(parsed.body).toContain("# Project");
+    expect(parsed.body).toContain('# Project');
     expect(parsed.sections.length).toBeGreaterThanOrEqual(1);
   });
 
-  it("parses flat frontmatter without agent wrapper", () => {
+  it('parses flat frontmatter without agent wrapper', () => {
     const flat = `---
 name: flat-agent
 purpose: "Flat config"
@@ -48,12 +48,12 @@ model: gpt-4
 \`pnpm test\`
 `;
     const parsed = parseAgentsMd(flat);
-    expect(parsed.frontmatter?.name).toBe("flat-agent");
-    expect(parsed.frontmatter?.purpose).toBe("Flat config");
-    expect(parsed.frontmatter?.model).toBe("gpt-4");
+    expect(parsed.frontmatter?.name).toBe('flat-agent');
+    expect(parsed.frontmatter?.purpose).toBe('Flat config');
+    expect(parsed.frontmatter?.model).toBe('gpt-4');
   });
 
-  it("preserves metadata object", () => {
+  it('preserves metadata object', () => {
     const withMeta = `---
 agent:
   name: x
@@ -64,21 +64,21 @@ agent:
 ## Test
 `;
     const parsed = parseAgentsMd(withMeta);
-    expect(parsed.frontmatter?.metadata?.version).toBe("1.0");
-    expect(parsed.frontmatter?.metadata?.env).toBe("prod");
+    expect(parsed.frontmatter?.metadata?.version).toBe('1.0');
+    expect(parsed.frontmatter?.metadata?.env).toBe('prod');
   });
 
-  it("stringifyAgentsMd round-trips frontmatter and body", () => {
-    const body = "## Build\n`pnpm build`";
-    const frontmatter = { name: "my-agent", purpose: "Build and test" };
+  it('stringifyAgentsMd round-trips frontmatter and body', () => {
+    const body = '## Build\n`pnpm build`';
+    const frontmatter = { name: 'my-agent', purpose: 'Build and test' };
     const out = stringifyAgentsMd(body, frontmatter);
     const { frontmatter: fm, body: b } = parseFrontmatter(out);
-    expect(fm.name).toBe("my-agent");
-    expect(fm.purpose).toBe("Build and test");
+    expect(fm.name).toBe('my-agent');
+    expect(fm.purpose).toBe('Build and test');
     expect(b.trim()).toBe(body);
   });
 
-  it("parses commands schema with risk_level, preconditions, audit_tags", () => {
+  it('parses commands schema with risk_level, preconditions, audit_tags', () => {
     const withCommands = `---
 agent:
   name: deploy-agent
@@ -95,14 +95,14 @@ agent:
 `;
     const parsed = parseAgentsMd(withCommands);
     expect(parsed.frontmatter?.commands).toBeDefined();
-    const deployMeta = parsed.frontmatter?.commands?.["pnpm run deploy"];
-    expect(deployMeta?.risk_level).toBe("dangerous");
-    expect(deployMeta?.preconditions).toEqual(["tests pass", "approval"]);
-    expect(deployMeta?.audit_tags).toEqual(["deploy", "production"]);
-    expect(parsed.frontmatter?.commands?.["pnpm test"]?.risk_level).toBe("safe");
+    const deployMeta = parsed.frontmatter?.commands?.['pnpm run deploy'];
+    expect(deployMeta?.risk_level).toBe('dangerous');
+    expect(deployMeta?.preconditions).toEqual(['tests pass', 'approval']);
+    expect(deployMeta?.audit_tags).toEqual(['deploy', 'production']);
+    expect(parsed.frontmatter?.commands?.['pnpm test']?.risk_level).toBe('safe');
   });
 
-  it("parses output_contract in frontmatter", () => {
+  it('parses output_contract in frontmatter', () => {
     const withContract = `---
 output_contract:
   format: json
@@ -121,8 +121,8 @@ output_contract:
 `;
     const parsed = parseAgentsMd(withContract);
     expect(parsed.frontmatter?.output_contract).toBeDefined();
-    expect(parsed.frontmatter?.output_contract?.format).toBe("json");
-    expect(parsed.frontmatter?.output_contract?.schema.summary).toBe("string");
-    expect(parsed.frontmatter?.output_contract?.quality_gates).toContain("tests_pass");
+    expect(parsed.frontmatter?.output_contract?.format).toBe('json');
+    expect(parsed.frontmatter?.output_contract?.schema.summary).toBe('string');
+    expect(parsed.frontmatter?.output_contract?.quality_gates).toContain('tests_pass');
   });
 });

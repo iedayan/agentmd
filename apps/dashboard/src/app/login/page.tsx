@@ -1,17 +1,17 @@
-import { redirect } from "next/navigation";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth/auth";
-import { RegisterForm } from "@/components/auth/register-form";
-import { Nav } from "@/components/landing/nav";
+import { redirect } from 'next/navigation';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/auth/auth';
+import { RegisterForm } from '@/components/auth/register-form';
+import { Nav } from '@/components/landing/nav';
 
 export const metadata = {
-  title: "Sign in — AgentMD",
-  description: "Sign in to your AgentMD account.",
+  title: 'Sign in — AgentMD',
+  description: 'Sign in to your AgentMD account.',
 };
 
 export default async function LoginPage() {
   const session = await getServerSession(authOptions);
-  if (session) redirect("/dashboard");
+  if (session) redirect('/dashboard');
 
   return (
     <div className="min-h-screen bg-background">

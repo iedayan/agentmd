@@ -21,17 +21,15 @@ export interface NormalizedBlockedCommands {
 }
 
 function asStringArray(value: unknown): string[] {
-  return Array.isArray(value)
-    ? (value.filter((v) => typeof v === "string") as string[])
-    : [];
+  return Array.isArray(value) ? (value.filter((v) => typeof v === 'string') as string[]) : [];
 }
 
 function asReasonDetails(value: unknown): Array<{ code: string; message: string }> {
   if (!Array.isArray(value)) return [];
   return value
-    .filter((v) => v && typeof v === "object")
+    .filter((v) => v && typeof v === 'object')
     .map((v) => v as { code?: string; message?: string })
-    .filter((v) => typeof v.code === "string" && typeof v.message === "string")
+    .filter((v) => typeof v.code === 'string' && typeof v.message === 'string')
     .map((v) => ({ code: v.code as string, message: v.message as string }));
 }
 
@@ -40,7 +38,7 @@ function asReasonDetails(value: unknown): Array<{ code: string; message: string 
  * Use this when persisting executions so the UI doesn't depend on raw plan schema.
  */
 export function normalizeBlockedCommands(preflightPlan: unknown): NormalizedBlockedCommands | null {
-  if (!preflightPlan || typeof preflightPlan !== "object") return null;
+  if (!preflightPlan || typeof preflightPlan !== 'object') return null;
   const plan = preflightPlan as {
     items?: Array<{
       command?: unknown;
@@ -64,22 +62,22 @@ export function normalizeBlockedCommands(preflightPlan: unknown): NormalizedBloc
     const runnable = Boolean(item?.runnable);
     if (runnable) continue;
 
-    const command = typeof item?.command === "string" ? item.command : "";
-    const type = typeof item?.type === "string" ? item.type : "";
-    const section = typeof item?.section === "string" ? item.section : "";
-    const line = typeof item?.line === "number" ? item.line : undefined;
+    const command = typeof item?.command === 'string' ? item.command : '';
+    const type = typeof item?.type === 'string' ? item.type : '';
+    const section = typeof item?.section === 'string' ? item.section : '';
+    const line = typeof item?.line === 'number' ? item.line : undefined;
     const reasons = asStringArray(item?.reasons);
     const reasonDetails = asReasonDetails(item?.reasonDetails);
     const codes =
       reasonDetails.length > 0
         ? Array.from(new Set(reasonDetails.map((d) => d.code)))
-        : ["UNKNOWN"];
+        : ['UNKNOWN'];
     const messages =
       reasonDetails.length > 0
         ? reasonDetails.map((d) => d.message)
         : reasons.length > 0
           ? reasons
-          : ["Blocked"];
+          : ['Blocked'];
 
     blockedCommands.push({
       command,
@@ -94,13 +92,11 @@ export function normalizeBlockedCommands(preflightPlan: unknown): NormalizedBloc
   }
 
   const runnableCount =
-    typeof plan.runnableCount === "number"
+    typeof plan.runnableCount === 'number'
       ? plan.runnableCount
       : rawItems.filter((i) => Boolean(i?.runnable)).length;
   const blockedCount =
-    typeof plan.blockedCount === "number"
-      ? plan.blockedCount
-      : blockedCommands.length;
+    typeof plan.blockedCount === 'number' ? plan.blockedCount : blockedCommands.length;
 
   return { runnableCount, blockedCount, blockedCommands };
 }

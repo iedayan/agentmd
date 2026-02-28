@@ -2,22 +2,22 @@
  * Sync repositories from GitHub App installation.
  * Adds repos the user has access to via their GitHub App installation.
  */
-import { NextRequest } from "next/server";
+import { NextRequest } from 'next/server';
 import {
   getGitHubInstallation,
   hasRepositoryFullName,
   addRepository,
   listRepositories,
-} from "@/lib/data/dashboard-data-facade";
-import { listInstallationRepositories } from "@/lib/integrations/github-app";
-import { requireSessionUserId } from "@/lib/auth/session";
-import { apiError, apiOk, getRequestId } from "@/lib/core/api-response";
-import { recordGitHubSyncSummary, setGitHubRequiredChecks } from "@/lib/analytics/governance-data";
+} from '@/lib/data/dashboard-data-facade';
+import { listInstallationRepositories } from '@/lib/integrations/github-app';
+import { requireSessionUserId } from '@/lib/auth/session';
+import { apiError, apiOk, getRequestId } from '@/lib/core/api-response';
+import { recordGitHubSyncSummary, setGitHubRequiredChecks } from '@/lib/analytics/governance-data';
 
 const DEFAULT_GITHUB_APP_REQUIRED_CHECKS = [
-  "agentmd/parse",
-  "agentmd/policy-gate",
-  "agentmd/output-contract",
+  'agentmd/parse',
+  'agentmd/policy-gate',
+  'agentmd/output-contract',
 ];
 
 export async function POST(req: NextRequest) {
@@ -31,17 +31,18 @@ export async function POST(req: NextRequest) {
 
   const installation = await getGitHubInstallation(userId);
   if (!installation) {
-    return apiError(
-      "No GitHub App installation found. Connect with GitHub first.",
-      { status: 404, requestId, code: "NO_INSTALLATION" }
-    );
+    return apiError('No GitHub App installation found. Connect with GitHub first.', {
+      status: 404,
+      requestId,
+      code: 'NO_INSTALLATION',
+    });
   }
 
   try {
     const githubRepos = await listInstallationRepositories(installation.installationId);
     const existingRepositories = await listRepositories(userId);
     const existingByFullName = new Map(
-      existingRepositories.map((repo) => [repo.fullName.toLowerCase(), repo])
+      existingRepositories.map((repo) => [repo.fullName.toLowerCase(), repo]),
     );
     let added = 0;
     let skipped = 0;
@@ -90,13 +91,14 @@ export async function POST(req: NextRequest) {
         backfilledRepositories,
         total: githubRepos.length,
       },
-      { requestId }
+      { requestId },
     );
   } catch (err) {
-    const message = err instanceof Error ? err.message : "GitHub API error";
-    return apiError(
-      `Failed to sync repositories: ${message}`,
-      { status: 502, requestId, code: "GITHUB_SYNC_FAILED" }
-    );
+    const message = err instanceof Error ? err.message : 'GitHub API error';
+    return apiError(`Failed to sync repositories: ${message}`, {
+      status: 502,
+      requestId,
+      code: 'GITHUB_SYNC_FAILED',
+    });
   }
 }

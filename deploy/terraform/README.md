@@ -42,14 +42,14 @@ terraform apply
 
 ## Variables
 
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `project_name` | Resource name prefix | `agentmd` |
-| `neon_region` | Neon region | `us-east-1` |
-| `upstash_region` | Upstash region | `us-east-1` |
-| `aws_region` | AWS region | `us-east-1` |
-| `create_s3` | Create S3 bucket | `true` |
-| `create_redis` | Create Redis database | `true` |
+| Variable         | Description           | Default     |
+| ---------------- | --------------------- | ----------- |
+| `project_name`   | Resource name prefix  | `agentmd`   |
+| `neon_region`    | Neon region           | `us-east-1` |
+| `upstash_region` | Upstash region        | `us-east-1` |
+| `aws_region`     | AWS region            | `us-east-1` |
+| `create_s3`      | Create S3 bucket      | `true`      |
+| `create_redis`   | Create Redis database | `true`      |
 
 Override via `terraform.tfvars` or `-var`:
 

@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { LayoutDashboard } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Logo } from "@/components/brand/logo";
+import Link from 'next/link';
+import { LayoutDashboard } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Logo } from '@/components/brand/logo';
 
 export function MarketplaceHeader() {
   return (

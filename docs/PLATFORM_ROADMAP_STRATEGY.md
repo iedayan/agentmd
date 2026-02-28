@@ -27,24 +27,24 @@ Our wedge: **Governance-first execution**. We don't add observability as an afte
 
 #### Core Features to Build
 
-| Feature | Priority | Rationale |
-|---------|----------|-----------|
-| **Stable execution runtime** | P0 | Reliability is table stakes. Fix flakiness, improve sandboxing, deterministic runs. |
-| **Agent-readiness score as a badge** | P0 | Viral distribution. Every repo with a badge drives traffic. |
-| **GitHub App + PR checks** | P0 | Reduces friction. "Connect repo → get checks" in &lt;5 min. |
-| **Execution history & basic analytics** | P1 | Proves value. "You ran 47 workflows this month; 3 failed." |
-| **AppSumo launch** | P1 | Early revenue + user validation. 800K+ audience. |
-| **Stripe Pro/Enterprise checkout** | P1 | Revenue path. Already wired; needs polish. |
-| **Docs & quickstart** | P1 | Time-to-value. First governed run in &lt;10 min. |
-| **Marketplace (agent directory)** | P2 | Ecosystem play. Curated AGENTS.md templates. |
+| Feature                                 | Priority | Rationale                                                                           |
+| --------------------------------------- | -------- | ----------------------------------------------------------------------------------- |
+| **Stable execution runtime**            | P0       | Reliability is table stakes. Fix flakiness, improve sandboxing, deterministic runs. |
+| **Agent-readiness score as a badge**    | P0       | Viral distribution. Every repo with a badge drives traffic.                         |
+| **GitHub App + PR checks**              | P0       | Reduces friction. "Connect repo → get checks" in &lt;5 min.                         |
+| **Execution history & basic analytics** | P1       | Proves value. "You ran 47 workflows this month; 3 failed."                          |
+| **AppSumo launch**                      | P1       | Early revenue + user validation. 800K+ audience.                                    |
+| **Stripe Pro/Enterprise checkout**      | P1       | Revenue path. Already wired; needs polish.                                          |
+| **Docs & quickstart**                   | P1       | Time-to-value. First governed run in &lt;10 min.                                    |
+| **Marketplace (agent directory)**       | P2       | Ecosystem play. Curated AGENTS.md templates.                                        |
 
 #### Target Users & Pain Points
 
-| Segment | Pain Point | How We Solve |
-|---------|------------|--------------|
-| **Solo devs / indie hackers** | Agents run commands inconsistently; no audit trail | Deterministic execution, score, logs |
-| **Small teams (2–10)** | Need governance before scaling; can't afford enterprise tools | Pro tier ($49/mo), approval workflows |
-| **Early adopters** | Want to be "agent-ready" for Cursor, Claude, Copilot | AGENTS.md as universal spec; we execute it |
+| Segment                       | Pain Point                                                    | How We Solve                               |
+| ----------------------------- | ------------------------------------------------------------- | ------------------------------------------ |
+| **Solo devs / indie hackers** | Agents run commands inconsistently; no audit trail            | Deterministic execution, score, logs       |
+| **Small teams (2–10)**        | Need governance before scaling; can't afford enterprise tools | Pro tier ($49/mo), approval workflows      |
+| **Early adopters**            | Want to be "agent-ready" for Cursor, Claude, Copilot          | AGENTS.md as universal spec; we execute it |
 
 #### Key Metrics
 
@@ -63,23 +63,23 @@ Our wedge: **Governance-first execution**. We don't add observability as an afte
 
 #### Competitive Positioning
 
-| Competitor | Their Focus | Our Angle |
-|------------|--------------|-----------|
-| **AgentOps** | Observability, traces, costs | We execute; they observe. We're upstream. |
-| **LangFuse / Helicone** | LLM observability | We're workflow/execution; complementary. |
-| **Temporal / Inngest** | Durable workflows | We run AGENTS.md; they run arbitrary code. Different layer. |
-| **Cursor / Copilot** | AI coding | We're the runtime for their outputs. Integrate, don't compete. |
+| Competitor              | Their Focus                  | Our Angle                                                      |
+| ----------------------- | ---------------------------- | -------------------------------------------------------------- |
+| **AgentOps**            | Observability, traces, costs | We execute; they observe. We're upstream.                      |
+| **LangFuse / Helicone** | LLM observability            | We're workflow/execution; complementary.                       |
+| **Temporal / Inngest**  | Durable workflows            | We run AGENTS.md; they run arbitrary code. Different layer.    |
+| **Cursor / Copilot**    | AI coding                    | We're the runtime for their outputs. Integrate, don't compete. |
 
 **Differentiation:** We own the **AGENTS.md execution layer**. No one else executes the spec. That's the wedge.
 
 #### Revenue Model & Pricing (Phase 1)
 
-| Plan | Price | Target |
-|------|-------|--------|
-| Free | $0 | Acquisition, viral |
-| Pro | $49/mo | 50–200 paying |
-| Enterprise | $249/mo | 2–5 early |
-| AppSumo | $69–299 one-time | 100–500 lifetime |
+| Plan       | Price            | Target             |
+| ---------- | ---------------- | ------------------ |
+| Free       | $0               | Acquisition, viral |
+| Pro        | $49/mo           | 50–200 paying      |
+| Enterprise | $249/mo          | 2–5 early          |
+| AppSumo    | $69–299 one-time | 100–500 lifetime   |
 
 **Revenue (6 months):** $3K–15K MRR (conservative).
 
@@ -96,26 +96,26 @@ Our wedge: **Governance-first execution**. We don't add observability as an afte
 
 #### Core Features to Build
 
-| Feature | Priority | Rationale |
-|---------|----------|-----------|
-| **Orchestration layer** | P0 | Multi-step workflows, retries, dependencies. "Run agent A, then B, then deploy." |
-| **Observability & traces** | P0 | Execution → span/trace model. See what ran, latency, costs. |
-| **Agent testing framework** | P0 | "Eval as a service." Run evals against AGENTS.md; regression detection. |
-| **Webhooks & event stream** | P1 | Integrate with Slack, Jira, PagerDuty. Event-driven. |
-| **Cost attribution** | P1 | Per-repo, per-workflow LLM/execution costs. FinOps for agents. |
-| **Team collaboration** | P1 | Shared dashboards, roles, approval chains. |
-| **Self-hosted option** | P1 | Enterprise requirement. Air-gapped, on-prem. |
-| **SSO / RBAC** | P1 | Enterprise table stakes. |
-| **AgentOps / LangFuse integration** | P2 | Don't rebuild. Ingest our events; they visualize. |
+| Feature                             | Priority | Rationale                                                                        |
+| ----------------------------------- | -------- | -------------------------------------------------------------------------------- |
+| **Orchestration layer**             | P0       | Multi-step workflows, retries, dependencies. "Run agent A, then B, then deploy." |
+| **Observability & traces**          | P0       | Execution → span/trace model. See what ran, latency, costs.                      |
+| **Agent testing framework**         | P0       | "Eval as a service." Run evals against AGENTS.md; regression detection.          |
+| **Webhooks & event stream**         | P1       | Integrate with Slack, Jira, PagerDuty. Event-driven.                             |
+| **Cost attribution**                | P1       | Per-repo, per-workflow LLM/execution costs. FinOps for agents.                   |
+| **Team collaboration**              | P1       | Shared dashboards, roles, approval chains.                                       |
+| **Self-hosted option**              | P1       | Enterprise requirement. Air-gapped, on-prem.                                     |
+| **SSO / RBAC**                      | P1       | Enterprise table stakes.                                                         |
+| **AgentOps / LangFuse integration** | P2       | Don't rebuild. Ingest our events; they visualize.                                |
 
 #### Target Users & Pain Points
 
-| Segment | Pain Point | How We Solve |
-|---------|------------|--------------|
-| **Growth-stage startups** | Agents in prod; need observability + governance | Traces + policies + cost dashboards |
-| **Platform teams** | Building internal agent infrastructure | Orchestration API, webhooks, self-hosted |
-| **Compliance-heavy orgs** | Need audit trails, approval workflows | RBAC, SSO, immutable logs |
-| **Dev teams** | Agent regressions in CI | Eval framework, regression alerts |
+| Segment                   | Pain Point                                      | How We Solve                             |
+| ------------------------- | ----------------------------------------------- | ---------------------------------------- |
+| **Growth-stage startups** | Agents in prod; need observability + governance | Traces + policies + cost dashboards      |
+| **Platform teams**        | Building internal agent infrastructure          | Orchestration API, webhooks, self-hosted |
+| **Compliance-heavy orgs** | Need audit trails, approval workflows           | RBAC, SSO, immutable logs                |
+| **Dev teams**             | Agent regressions in CI                         | Eval framework, regression alerts        |
 
 #### Key Metrics
 
@@ -135,21 +135,21 @@ Our wedge: **Governance-first execution**. We don't add observability as an afte
 
 #### Competitive Positioning
 
-| Competitor | Threat Level | Strategy |
-|------------|--------------|----------|
-| **AgentOps** | Medium | They add execution? Unlikely. We add observability? Yes. Position as "execution + governance"; partner on traces. |
-| **Temporal** | Low | They're infra. We're product. Integrate for complex workflows. |
-| **Vercel** | Medium | They have `npx @next/codemod agents-md`. They could build execution. **Move fast.** Own the execution layer before they do. |
-| **Microsoft / Google** | High (long-term) | They'll enter. Moat = AGENTS.md standard + ecosystem. Be the default before they scale. |
+| Competitor             | Threat Level     | Strategy                                                                                                                    |
+| ---------------------- | ---------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| **AgentOps**           | Medium           | They add execution? Unlikely. We add observability? Yes. Position as "execution + governance"; partner on traces.           |
+| **Temporal**           | Low              | They're infra. We're product. Integrate for complex workflows.                                                              |
+| **Vercel**             | Medium           | They have `npx @next/codemod agents-md`. They could build execution. **Move fast.** Own the execution layer before they do. |
+| **Microsoft / Google** | High (long-term) | They'll enter. Moat = AGENTS.md standard + ecosystem. Be the default before they scale.                                     |
 
 #### Revenue Model & Pricing (Phase 2)
 
-| Plan | Price | Notes |
-|------|-------|-------|
-| Free | $0 | 3 repos, 100 min/mo |
-| Pro | $49/mo | Unlimited repos, 1K min, observability |
-| Team | $99/mo (new) | 5 seats, shared dashboards, eval framework |
-| Enterprise | $249–499/mo | SSO, RBAC, self-hosted, SLA |
+| Plan       | Price        | Notes                                      |
+| ---------- | ------------ | ------------------------------------------ |
+| Free       | $0           | 3 repos, 100 min/mo                        |
+| Pro        | $49/mo       | Unlimited repos, 1K min, observability     |
+| Team       | $99/mo (new) | 5 seats, shared dashboards, eval framework |
+| Enterprise | $249–499/mo  | SSO, RBAC, self-hosted, SLA                |
 
 **Usage-based add-ons:** Execution minutes overage ($0.05/min), eval runs ($0.10/run).
 
@@ -166,17 +166,17 @@ Our wedge: **Governance-first execution**. We don't add observability as an afte
 
 #### Core Features to Build
 
-| Feature | Priority | Rationale |
-|---------|----------|-----------|
-| **Agent deployment/hosting** | P0 | "Deploy your agent." Serverless or container. Like Vercel for agents. |
-| **Agent registry & marketplace** | P0 | Discover, install, compose agents. npm for agents. |
-| **Unified control plane** | P0 | One dashboard: repos, agents, executions, costs, policies. |
-| **Policy engine (advanced)** | P0 | Fine-grained: "Agent X can only call API Y during business hours." |
-| **Cost optimization** | P1 | Auto-scaling, caching, model routing. FinOps for agents. |
-| **Multi-cloud / hybrid** | P1 | Run on AWS, GCP, Azure, on-prem. |
-| **Compliance certifications** | P1 | SOC2, HIPAA, FedRAMP. Enterprise sales unlock. |
-| **Agent composition** | P1 | Multi-agent workflows. Agent A → Agent B → Agent C. |
-| **Developer experience** | P1 | SDK, local dev, preview environments. |
+| Feature                          | Priority | Rationale                                                             |
+| -------------------------------- | -------- | --------------------------------------------------------------------- |
+| **Agent deployment/hosting**     | P0       | "Deploy your agent." Serverless or container. Like Vercel for agents. |
+| **Agent registry & marketplace** | P0       | Discover, install, compose agents. npm for agents.                    |
+| **Unified control plane**        | P0       | One dashboard: repos, agents, executions, costs, policies.            |
+| **Policy engine (advanced)**     | P0       | Fine-grained: "Agent X can only call API Y during business hours."    |
+| **Cost optimization**            | P1       | Auto-scaling, caching, model routing. FinOps for agents.              |
+| **Multi-cloud / hybrid**         | P1       | Run on AWS, GCP, Azure, on-prem.                                      |
+| **Compliance certifications**    | P1       | SOC2, HIPAA, FedRAMP. Enterprise sales unlock.                        |
+| **Agent composition**            | P1       | Multi-agent workflows. Agent A → Agent B → Agent C.                   |
+| **Developer experience**         | P1       | SDK, local dev, preview environments.                                 |
 
 #### The "Killer Feature"
 
@@ -190,24 +190,24 @@ Our wedge: **Governance-first execution**. We don't add observability as an afte
 
 #### Competing with Big Tech
 
-| Risk | Mitigation |
-|------|------------|
-| **Microsoft integrates AGENTS.md into GitHub** | We're already the execution layer. Partner or acquire. Move upstack (deployment, marketplace). |
-| **Google builds agent platform** | Open standard (AGENTS.md) prevents lock-in. We're standard-compliant; they'd have to support us. |
-| **AWS launches AgentOps competitor** | We're multi-cloud. Don't depend on one vendor. |
-| **OpenAI builds execution** | Unlikely—they're model-focused. We're infra. Integrate deeply. |
+| Risk                                           | Mitigation                                                                                       |
+| ---------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| **Microsoft integrates AGENTS.md into GitHub** | We're already the execution layer. Partner or acquire. Move upstack (deployment, marketplace).   |
+| **Google builds agent platform**               | Open standard (AGENTS.md) prevents lock-in. We're standard-compliant; they'd have to support us. |
+| **AWS launches AgentOps competitor**           | We're multi-cloud. Don't depend on one vendor.                                                   |
+| **OpenAI builds execution**                    | Unlikely—they're model-focused. We're infra. Integrate deeply.                                   |
 
 **Moat:** Linux Foundation standard + 60K+ repos + first-mover in execution. Ecosystem lock-in.
 
 #### Revenue Model & Pricing (Phase 3)
 
-| Plan | Price | Target |
-|------|-------|--------|
-| Free | $0 | 3 repos, 100 min |
-| Pro | $79/mo | Individuals, small teams |
-| Team | $199/mo | 10 seats, shared everything |
-| Enterprise | $499–2,000/mo | Custom contracts, volume |
-| Platform (new) | % of usage | Marketplace, deployment fees |
+| Plan           | Price         | Target                       |
+| -------------- | ------------- | ---------------------------- |
+| Free           | $0            | 3 repos, 100 min             |
+| Pro            | $79/mo        | Individuals, small teams     |
+| Team           | $199/mo       | 10 seats, shared everything  |
+| Enterprise     | $499–2,000/mo | Custom contracts, volume     |
+| Platform (new) | % of usage    | Marketplace, deployment fees |
 
 **Revenue (36 months):** $1M–5M ARR (aspirational).
 
@@ -220,16 +220,16 @@ Our wedge: **Governance-first execution**. We don't add observability as an afte
 
 ## Part 2: Competitive Landscape Analysis
 
-| Company | Focus | Funding | Threat | Our Response |
-|---------|-------|---------|--------|--------------|
-| **AgentOps** | Observability, traces, costs | $2.6M | Medium | We execute; they observe. Partner on integration. Don't compete on observability alone. |
-| **WitnessAI** | Governance, compliance | $58M | High | They're governance-first. We're execution-first governance. Different wedge. |
-| **LangFuse** | LLM observability | OSS + cloud | Low | Complementary. We send them traces. |
-| **Temporal** | Durable workflows | $100M+ | Low | Infra layer. We integrate. |
-| **Inngest** | Serverless workflows | $3M | Low | Event-driven. We can use for orchestration. |
-| **Cursor** | AI coding | $1B ARR | Partner | We're the runtime for their outputs. Integrate. |
-| **Vercel** | Frontend deployment | $150M+ | Medium | They have AGENTS.md tooling. Could add execution. **Speed matters.** |
-| **Microsoft (GitHub Copilot)** | AI in dev | Big tech | High | Could own AGENTS.md. We need ecosystem before they scale. |
+| Company                        | Focus                        | Funding     | Threat  | Our Response                                                                            |
+| ------------------------------ | ---------------------------- | ----------- | ------- | --------------------------------------------------------------------------------------- |
+| **AgentOps**                   | Observability, traces, costs | $2.6M       | Medium  | We execute; they observe. Partner on integration. Don't compete on observability alone. |
+| **WitnessAI**                  | Governance, compliance       | $58M        | High    | They're governance-first. We're execution-first governance. Different wedge.            |
+| **LangFuse**                   | LLM observability            | OSS + cloud | Low     | Complementary. We send them traces.                                                     |
+| **Temporal**                   | Durable workflows            | $100M+      | Low     | Infra layer. We integrate.                                                              |
+| **Inngest**                    | Serverless workflows         | $3M         | Low     | Event-driven. We can use for orchestration.                                             |
+| **Cursor**                     | AI coding                    | $1B ARR     | Partner | We're the runtime for their outputs. Integrate.                                         |
+| **Vercel**                     | Frontend deployment          | $150M+      | Medium  | They have AGENTS.md tooling. Could add execution. **Speed matters.**                    |
+| **Microsoft (GitHub Copilot)** | AI in dev                    | Big tech    | High    | Could own AGENTS.md. We need ecosystem before they scale.                               |
 
 **Summary:** Our unique position is **AGENTS.md execution + governance**. No one else does both. Observability players watch; we run. Orchestration players run arbitrary code; we run the standard.
 
@@ -239,33 +239,33 @@ Our wedge: **Governance-first execution**. We don't add observability as an afte
 
 ### Phase 1 (6 months)
 
-| Metric | Conservative | Optimistic |
-|--------|--------------|------------|
-| MAU | 500 | 2,000 |
-| Paid (Pro + AppSumo) | 50 | 200 |
-| Enterprise | 1 | 5 |
-| MRR | $3K | $15K |
-| ARR | $36K | $180K |
+| Metric               | Conservative | Optimistic |
+| -------------------- | ------------ | ---------- |
+| MAU                  | 500          | 2,000      |
+| Paid (Pro + AppSumo) | 50           | 200        |
+| Enterprise           | 1            | 5          |
+| MRR                  | $3K          | $15K       |
+| ARR                  | $36K         | $180K      |
 
 ### Phase 2 (18 months)
 
-| Metric | Conservative | Optimistic |
-|--------|--------------|------------|
-| MAU | 2,000 | 10,000 |
-| Paid | 150 | 600 |
-| Enterprise | 5 | 15 |
-| MRR | $15K | $50K |
-| ARR | $180K | $600K |
+| Metric     | Conservative | Optimistic |
+| ---------- | ------------ | ---------- |
+| MAU        | 2,000        | 10,000     |
+| Paid       | 150          | 600        |
+| Enterprise | 5            | 15         |
+| MRR        | $15K         | $50K       |
+| ARR        | $180K        | $600K      |
 
 ### Phase 3 (36 months)
 
-| Metric | Conservative | Optimistic |
-|--------|--------------|------------|
-| MAU | 5,000 | 25,000 |
-| Paid | 400 | 2,000 |
-| Enterprise | 20 | 50 |
-| MRR | $50K | $200K |
-| ARR | $600K | $2.4M |
+| Metric     | Conservative | Optimistic |
+| ---------- | ------------ | ---------- |
+| MAU        | 5,000        | 25,000     |
+| Paid       | 400          | 2,000      |
+| Enterprise | 20           | 50         |
+| MRR        | $50K         | $200K      |
+| ARR        | $600K        | $2.4M      |
 
 **Caveats:** Assumes 2–5% conversion, $49–249 blended ASP. Enterprise can 2–3x ARR if deals are larger.
 
@@ -280,6 +280,7 @@ Our wedge: **Governance-first execution**. We don't add observability as an afte
 ### 2. Ecosystem: How do we leverage AGENTS.md as a moat?
 
 **Answer:**
+
 - **Standard compliance:** We're the reference implementation. Contribute to the spec.
 - **Distribution:** 60K+ repos. Every one is a potential user. Badge, templates, marketplace.
 - **Ecosystem lock-in:** Once teams standardize on AGENTS.md + AgentMD, switching means rewriting workflows.
@@ -287,31 +288,32 @@ Our wedge: **Governance-first execution**. We don't add observability as an afte
 
 ### 3. Go-to-market: Bottom-up or enterprise?
 
-**Answer:** **Bottom-up first.** 
+**Answer:** **Bottom-up first.**
+
 - Phase 1–2: Developers, small teams. Product-led growth. AppSumo, docs, GitHub.
 - Phase 2–3: Add enterprise sales when we have 5+ Enterprise logos and case studies.
 - Rationale: Enterprise sales require proof. Proof comes from usage. Usage comes from developers.
 
 ### 4. Integration vs. build: What to integrate vs. build ourselves?
 
-| Capability | Integrate | Build | Rationale |
-|------------|-----------|-------|-----------|
-| Orchestration | Inngest / Temporal | — | Mature, battle-tested. Don't reinvent. |
-| Observability | AgentOps, LangFuse (export) | Basic traces | They're better at viz. We send events. |
-| Testing/evals | — | Eval framework | No good agent-specific eval platform. Opportunity. |
-| Deployment | Vercel, Railway, Fly | — | Use existing. We're not a cloud. |
-| Auth | NextAuth, Auth0 | — | Standard. |
-| Billing | Stripe | — | Standard. |
+| Capability    | Integrate                   | Build          | Rationale                                          |
+| ------------- | --------------------------- | -------------- | -------------------------------------------------- |
+| Orchestration | Inngest / Temporal          | —              | Mature, battle-tested. Don't reinvent.             |
+| Observability | AgentOps, LangFuse (export) | Basic traces   | They're better at viz. We send events.             |
+| Testing/evals | —                           | Eval framework | No good agent-specific eval platform. Opportunity. |
+| Deployment    | Vercel, Railway, Fly        | —              | Use existing. We're not a cloud.                   |
+| Auth          | NextAuth, Auth0             | —              | Standard.                                          |
+| Billing       | Stripe                      | —              | Standard.                                          |
 
 ### 5. Technical foundation: What choices enable or limit future expansion?
 
-| Choice | Enable | Limit |
-|--------|--------|-------|
-| **AGENTS.md as source of truth** | Standard compliance, ecosystem | Must evolve with spec |
-| **Sandboxed execution** | Security, reproducibility | Performance overhead |
-| **REST API first** | Simplicity | Add webhooks/events for scale |
-| **Postgres + Neon** | Good for structured data | Add time-series DB for metrics |
-| **Next.js dashboard** | Fast iteration | May need separate admin at scale |
+| Choice                           | Enable                         | Limit                            |
+| -------------------------------- | ------------------------------ | -------------------------------- |
+| **AGENTS.md as source of truth** | Standard compliance, ecosystem | Must evolve with spec            |
+| **Sandboxed execution**          | Security, reproducibility      | Performance overhead             |
+| **REST API first**               | Simplicity                     | Add webhooks/events for scale    |
+| **Postgres + Neon**              | Good for structured data       | Add time-series DB for metrics   |
+| **Next.js dashboard**            | Fast iteration                 | May need separate admin at scale |
 
 **Recommendation:** Add OpenTelemetry early. Add webhook/event system in Phase 2. Keep execution engine modular for future orchestration integration.
 
@@ -319,14 +321,14 @@ Our wedge: **Governance-first execution**. We don't add observability as an afte
 
 ## Part 5: Key Risks & Mitigation
 
-| Risk | Likelihood | Impact | Mitigation |
-|------|------------|--------|------------|
-| **AGENTS.md adoption stalls** | Medium | High | Diversify: support other agent specs (Cursor skills, etc.). Don't bet everything on one standard. |
-| **Vercel builds execution** | Medium | High | Move fast. Own execution before they do. Partner if they're interested. |
-| **Enterprise sales cycle long** | High | Medium | Start with SMB/startup. Enterprise when we have proof. |
-| **Observability commoditized** | High | Low | We're not an observability company. Execution is the wedge. |
-| **Funding required before profitability** | Medium | High | Phase 1–2 should be capital-efficient. AppSumo + Pro can fund growth. Raise when we have traction. |
-| **Solo founder bottleneck** | High | Medium | Hire first key hire (eng or PM) by M6. |
+| Risk                                      | Likelihood | Impact | Mitigation                                                                                         |
+| ----------------------------------------- | ---------- | ------ | -------------------------------------------------------------------------------------------------- |
+| **AGENTS.md adoption stalls**             | Medium     | High   | Diversify: support other agent specs (Cursor skills, etc.). Don't bet everything on one standard.  |
+| **Vercel builds execution**               | Medium     | High   | Move fast. Own execution before they do. Partner if they're interested.                            |
+| **Enterprise sales cycle long**           | High       | Medium | Start with SMB/startup. Enterprise when we have proof.                                             |
+| **Observability commoditized**            | High       | Low    | We're not an observability company. Execution is the wedge.                                        |
+| **Funding required before profitability** | Medium     | High   | Phase 1–2 should be capital-efficient. AppSumo + Pro can fund growth. Raise when we have traction. |
+| **Solo founder bottleneck**               | High       | Medium | Hire first key hire (eng or PM) by M6.                                                             |
 
 ---
 
@@ -348,4 +350,4 @@ Our wedge: **Governance-first execution**. We don't add observability as an afte
 
 ---
 
-*Document ends. Use as living strategy; update quarterly.*
+_Document ends. Use as living strategy; update quarterly._

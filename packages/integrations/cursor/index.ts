@@ -3,7 +3,7 @@
  * Enhanced AI agent configuration for Cursor editor.
  */
 
-import { getAnalytics } from "@agentmd-dev/core";
+import { getAnalytics } from '@agentmd-dev/core';
 
 /**
  * Cursor-specific agent configuration and utilities.

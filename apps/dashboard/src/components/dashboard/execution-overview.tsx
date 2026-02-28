@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import Link from "next/link";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { History, ArrowRight } from "lucide-react";
+import { useEffect, useState } from 'react';
+import Link from 'next/link';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { History, ArrowRight } from 'lucide-react';
 
 type Execution = { id: string; status: string; repositoryName: string };
 
@@ -16,24 +16,34 @@ export function ExecutionOverview() {
 
   useEffect(() => {
     let cancelled = false;
-    fetch("/api/executions?limit=50", { cache: "no-store" })
+    fetch('/api/executions?limit=50', { cache: 'no-store' })
       .then((r) => r.json())
-      .then((d: { ok?: boolean; executions?: Execution[]; meta?: { executionMinutesUsed?: number } }) => {
-        if (!cancelled && d.ok) {
-          setExecutions(d.executions ?? []);
-          setMeta(d.meta ?? {});
-        }
-      })
+      .then(
+        (d: {
+          ok?: boolean;
+          executions?: Execution[];
+          meta?: { executionMinutesUsed?: number };
+        }) => {
+          if (!cancelled && d.ok) {
+            setExecutions(d.executions ?? []);
+            setMeta(d.meta ?? {});
+          }
+        },
+      )
       .catch(() => setExecutions([]))
       .finally(() => {
         if (!cancelled) setLoading(false);
       });
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
-  const successCount = executions.filter((e) => e.status === "success").length;
-  const failedCount = executions.filter((e) => e.status === "failed").length;
-  const runningCount = executions.filter((e) => e.status === "running" || e.status === "pending").length;
+  const successCount = executions.filter((e) => e.status === 'success').length;
+  const failedCount = executions.filter((e) => e.status === 'failed').length;
+  const runningCount = executions.filter(
+    (e) => e.status === 'running' || e.status === 'pending',
+  ).length;
   const completed = successCount + failedCount;
   const successRate = completed > 0 ? Math.round((successCount / completed) * 100) : null;
 
@@ -44,9 +54,7 @@ export function ExecutionOverview() {
           <History className="h-5 w-5 text-primary" />
           <CardTitle className="text-base">Executions</CardTitle>
         </div>
-        <CardDescription className="text-xs">
-          Recent runs and success rate
-        </CardDescription>
+        <CardDescription className="text-xs">Recent runs and success rate</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         {loading ? (
@@ -70,7 +78,11 @@ export function ExecutionOverview() {
             {successRate != null && (
               <div className="flex items-center justify-between text-sm">
                 <span className="text-muted-foreground">Success rate</span>
-                <Badge variant={successRate >= 80 ? "success" : successRate >= 50 ? "warning" : "destructive"}>
+                <Badge
+                  variant={
+                    successRate >= 80 ? 'success' : successRate >= 50 ? 'warning' : 'destructive'
+                  }
+                >
                   {successRate}%
                 </Badge>
               </div>

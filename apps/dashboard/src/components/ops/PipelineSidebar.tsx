@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import type { Pipeline, PipelineStatus } from "@/lib/ops/mock-data";
+import type { Pipeline, PipelineStatus } from '@/lib/ops/mock-data';
 
 const STATUS_GROUPS: { status: PipelineStatus; label: string }[] = [
-  { status: "running", label: "Running" },
-  { status: "awaiting_approval", label: "Awaiting Approval" },
-  { status: "failed", label: "Failed" },
-  { status: "completed", label: "Completed" },
+  { status: 'running', label: 'Running' },
+  { status: 'awaiting_approval', label: 'Awaiting Approval' },
+  { status: 'failed', label: 'Failed' },
+  { status: 'completed', label: 'Completed' },
 ];
 
 export function PipelineSidebar({
@@ -38,14 +38,13 @@ export function PipelineSidebar({
                 <li key={p.id}>
                   <button
                     onClick={() => onSelect(p.id)}
-                    className={`w-full group relative overflow-hidden rounded-[var(--radius-md)] px-4 py-3 text-left transition-all duration-base ${isActive
-                        ? "bg-[hsl(var(--primary-dim))] text-primary border border-primary/20"
-                        : "text-muted-foreground hover:bg-muted/50 hover:text-foreground"
-                      }`}
+                    className={`w-full group relative overflow-hidden rounded-[var(--radius-md)] px-4 py-3 text-left transition-all duration-base ${
+                      isActive
+                        ? 'bg-[hsl(var(--primary-dim))] text-primary border border-primary/20'
+                        : 'text-muted-foreground hover:bg-muted/50 hover:text-foreground'
+                    }`}
                   >
-                    <div className="font-bold text-sm tracking-tight truncate">
-                      {p.name}
-                    </div>
+                    <div className="font-bold text-sm tracking-tight truncate">{p.name}</div>
                     <div className="mt-1 flex items-center justify-between font-mono text-[9px] font-bold uppercase tracking-widest opacity-60">
                       <span>{p.sourceRef}</span>
                       <span>{p.timestamp}</span>

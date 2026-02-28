@@ -3,7 +3,7 @@
  * Extracts executable commands from AGENTS.md content for orchestration.
  */
 
-import type { AgentsMdSection, ExtractedCommand, CommandType } from "./types.js";
+import type { AgentsMdSection, ExtractedCommand, CommandType } from './types.js';
 
 // Patterns that suggest executable commands
 const COMMAND_PATTERNS = [
@@ -23,25 +23,58 @@ const COMMAND_PATTERNS = [
 
 // Keywords to infer command type
 const TYPE_KEYWORDS: Record<CommandType, string[]> = {
-  build: ["build", "compile", "make", "go build", "cargo build", "bun run build", "deno build"],
+  build: ['build', 'compile', 'make', 'go build', 'cargo build', 'bun run build', 'deno build'],
   test: [
-    "test", "pytest", "jest", "vitest", "cargo test", "pnpm test", "npm test",
-    "go test", "bun test", "deno test", "uv run pytest", "poetry run pytest",
+    'test',
+    'pytest',
+    'jest',
+    'vitest',
+    'cargo test',
+    'pnpm test',
+    'npm test',
+    'go test',
+    'bun test',
+    'deno test',
+    'uv run pytest',
+    'poetry run pytest',
   ],
-  lint: ["lint", "eslint", "ruff", "clippy", "golangci-lint", "flake8", "mypy"],
-  format: ["fmt", "format", "prettier", "rustfmt", "black", "dart format"],
+  lint: ['lint', 'eslint', 'ruff', 'clippy', 'golangci-lint', 'flake8', 'mypy'],
+  format: ['fmt', 'format', 'prettier', 'rustfmt', 'black', 'dart format'],
   install: [
-    "install", "uv sync", "pnpm install", "npm install", "yarn", "cargo fetch",
-    "bun install", "pip install", "pipenv install", "bundle install",
+    'install',
+    'uv sync',
+    'pnpm install',
+    'npm install',
+    'yarn',
+    'cargo fetch',
+    'bun install',
+    'pip install',
+    'pipenv install',
+    'bundle install',
   ],
-  setup: ["setup", "uv venv", "breeze", "poetry install", "venv", "nvm use"],
+  setup: ['setup', 'uv venv', 'breeze', 'poetry install', 'venv', 'nvm use'],
   deploy: [
-    "deploy", "release", "publish", "kubectl apply", "helm upgrade",
-    "docker compose up", "docker-compose up", "docker compose",
+    'deploy',
+    'release',
+    'publish',
+    'kubectl apply',
+    'helm upgrade',
+    'docker compose up',
+    'docker-compose up',
+    'docker compose',
   ],
   security: [
-    "audit", "npm audit", "pnpm audit", "yarn audit", "snyk", "trivy",
-    "grype", "dependency-check", "safety", "bandit", "semgrep",
+    'audit',
+    'npm audit',
+    'pnpm audit',
+    'yarn audit',
+    'snyk',
+    'trivy',
+    'grype',
+    'dependency-check',
+    'safety',
+    'bandit',
+    'semgrep',
   ],
   other: [],
 };
@@ -49,13 +82,10 @@ const TYPE_KEYWORDS: Record<CommandType, string[]> = {
 /**
  * Extract executable commands from AGENTS.md content and sections.
  */
-export function extractCommands(
-  content: string,
-  sections: AgentsMdSection[]
-): ExtractedCommand[] {
+export function extractCommands(content: string, sections: AgentsMdSection[]): ExtractedCommand[] {
   const commands: ExtractedCommand[] = [];
   const seen = new Set<string>();
-  const lines = content.split("\n");
+  const lines = content.split('\n');
 
   // Build section map by line number and section content
   const sectionByLine = buildSectionMap(sections);
@@ -68,8 +98,8 @@ export function extractCommands(
     while ((match = regex.exec(content)) !== null) {
       let raw = match[1].trim();
       // Strip leading $ or % from shell-prompt pattern
-      if (/^[$%]\s+/.test(raw)) raw = raw.replace(/^[$%]\s+/, "");
-      const isCodeBlock = pattern.source.includes("```");
+      if (/^[$%]\s+/.test(raw)) raw = raw.replace(/^[$%]\s+/, '');
+      const isCodeBlock = pattern.source.includes('```');
       const blockStartLine = isCodeBlock
         ? getLineNumber(content, match.index) + 1
         : getLineNumber(content, match.index);
@@ -78,12 +108,12 @@ export function extractCommands(
         const items = splitCodeBlockLinesWithLineNumbers(raw);
         for (const { command: candidate, lineInBlock } of items) {
           const trimmed = candidate.trim();
-          if (!trimmed || trimmed.startsWith("#")) continue;
+          if (!trimmed || trimmed.startsWith('#')) continue;
           if (isLikelyCommand(trimmed) && !seen.has(normalizeCommand(trimmed))) {
             seen.add(normalizeCommand(trimmed));
             const lineNum = blockStartLine + lineInBlock - 1;
-            const section = sectionByLine.get(lineNum) ?? "General";
-            const context = extractContext(sectionContentByLine.get(lineNum) ?? "");
+            const section = sectionByLine.get(lineNum) ?? 'General';
+            const context = extractContext(sectionContentByLine.get(lineNum) ?? '');
             commands.push({
               command: trimmed,
               section,
@@ -98,11 +128,11 @@ export function extractCommands(
         const lineNum = blockStartLine;
         for (const candidate of candidates) {
           const trimmed = candidate.trim();
-          if (!trimmed || trimmed.startsWith("#")) continue;
+          if (!trimmed || trimmed.startsWith('#')) continue;
           if (isLikelyCommand(trimmed) && !seen.has(normalizeCommand(trimmed))) {
             seen.add(normalizeCommand(trimmed));
-            const section = sectionByLine.get(lineNum) ?? "General";
-            const context = extractContext(sectionContentByLine.get(lineNum) ?? "");
+            const section = sectionByLine.get(lineNum) ?? 'General';
+            const context = extractContext(sectionContentByLine.get(lineNum) ?? '');
             commands.push({
               command: trimmed,
               section,
@@ -121,14 +151,14 @@ export function extractCommands(
     const line = lines[i];
     const trimmed = line.trim();
     if (
-      (trimmed.startsWith("- ") || trimmed.startsWith("* ")) &&
-      (trimmed.includes("`") || /^(run|execute)\s+/i.test(trimmed))
+      (trimmed.startsWith('- ') || trimmed.startsWith('* ')) &&
+      (trimmed.includes('`') || /^(run|execute)\s+/i.test(trimmed))
     ) {
       const extracted = extractCommandFromLine(trimmed);
       if (extracted && !seen.has(normalizeCommand(extracted))) {
         seen.add(normalizeCommand(extracted));
-        const section = sectionByLine.get(i + 1) ?? "General";
-        const context = extractContext(sectionContentByLine.get(i + 1) ?? "");
+        const section = sectionByLine.get(i + 1) ?? 'General';
+        const context = extractContext(sectionContentByLine.get(i + 1) ?? '');
         commands.push({
           command: extracted,
           section,
@@ -163,19 +193,19 @@ function buildSectionContentMap(sections: AgentsMdSection[]): Map<number, string
     }
     s.children.forEach((c) => visit(c, c.content || content));
   };
-  sections.forEach((s) => visit(s, s.content || ""));
+  sections.forEach((s) => visit(s, s.content || ''));
   return map;
 }
 
 function getLineNumber(content: string, index: number): number {
-  return content.slice(0, index).split("\n").length;
+  return content.slice(0, index).split('\n').length;
 }
 
 function isLikelyCommand(s: string): boolean {
   if (s.length < 4 || s.length > 150) return false;
   if (!/^[a-zA-Z0-9_./-]/.test(s)) return false;
-  if (s.startsWith("http") || s.startsWith("//")) return false;
-  if (s.endsWith(".md") || s.endsWith(".json")) return false;
+  if (s.startsWith('http') || s.startsWith('//')) return false;
+  if (s.endsWith('.md') || s.endsWith('.json')) return false;
   // Reject paths like "packages/core", "apps/web"
   if (/^[a-z]+\/[a-z-]+$/.test(s)) return false;
   // Accept: multi-word commands, or known runners
@@ -185,21 +215,23 @@ function isLikelyCommand(s: string): boolean {
 }
 
 function normalizeCommand(cmd: string): string {
-  return cmd.replace(/\s+/g, " ").trim().toLowerCase();
+  return cmd.replace(/\s+/g, ' ').trim().toLowerCase();
 }
 
 /** Split multi-line code block into commands with line numbers (1-based within block). */
-function splitCodeBlockLinesWithLineNumbers(block: string): Array<{ command: string; lineInBlock: number }> {
+function splitCodeBlockLinesWithLineNumbers(
+  block: string,
+): Array<{ command: string; lineInBlock: number }> {
   const trimmed = block.trim();
   // Skip plain blocks that look like JSON/config (avoid false positives)
-  if (/^[{[]/.test(trimmed) || trimmed.startsWith("<?xml")) return [];
+  if (/^[{[]/.test(trimmed) || trimmed.startsWith('<?xml')) return [];
 
-  const lines = block.split("\n");
+  const lines = block.split('\n');
   const result: Array<{ command: string; lineInBlock: number }> = [];
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i].trim();
-    if (line.length === 0 || line.startsWith("#")) continue;
+    if (line.length === 0 || line.startsWith('#')) continue;
     const lineNum = i + 1;
     const parts = splitCommandChain(line);
     for (const cmd of parts) {
@@ -212,37 +244,37 @@ function splitCodeBlockLinesWithLineNumbers(block: string): Array<{ command: str
 /** Split "cmd1 && cmd2" or "cmd1; cmd2" into individual commands. */
 function splitCommandChain(line: string): string[] {
   const parts: string[] = [];
-  let current = "";
+  let current = '';
   let i = 0;
   let inQuote = false;
-  let quoteChar = "";
+  let quoteChar = '';
 
   while (i < line.length) {
     const c = line[i];
     if (!inQuote) {
-      if (c === '"' || c === "'" || c === "`") {
+      if (c === '"' || c === "'" || c === '`') {
         inQuote = true;
         quoteChar = c;
         current += c;
         i++;
         continue;
       }
-      if (c === "&" && line[i + 1] === "&") {
+      if (c === '&' && line[i + 1] === '&') {
         const trimmed = current.trim();
         if (trimmed) parts.push(trimmed);
-        current = "";
+        current = '';
         i += 2;
         continue;
       }
-      if (c === ";" && !/^\s*$/.test(current)) {
+      if (c === ';' && !/^\s*$/.test(current)) {
         const trimmed = current.trim();
         if (trimmed) parts.push(trimmed);
-        current = "";
+        current = '';
         i++;
         continue;
       }
     } else {
-      if (c === quoteChar && (i === 0 || line[i - 1] !== "\\")) {
+      if (c === quoteChar && (i === 0 || line[i - 1] !== '\\')) {
         inQuote = false;
       }
     }
@@ -265,7 +297,10 @@ function extractCommandFromLine(line: string): string | null {
 /** Extract cwd/context hints from section content (e.g. "in packages/core", "from apps/web"). */
 function extractContext(sectionContent: string): string | null {
   // "in packages/core", "from packages/core directory", "under apps/web"
-  const inDir = /\b(?:in|from|under|inside|within)\s+[`']?([a-zA-Z0-9_./-]+)[`']?(?:\s+directory)?\b/i.exec(sectionContent);
+  const inDir =
+    /\b(?:in|from|under|inside|within)\s+[`']?([a-zA-Z0-9_./-]+)[`']?(?:\s+directory)?\b/i.exec(
+      sectionContent,
+    );
   if (inDir) return inDir[1];
 
   // "cd packages/core", "run from packages/core"
@@ -276,7 +311,9 @@ function extractContext(sectionContent: string): string | null {
   if (runFrom) return runFrom[1];
 
   // "working directory: packages/core", "cwd: packages/core", "cwd=packages/core"
-  const workingDir = /\b(?:working\s+directory|cwd)\s*[=:]\s*[`']?([a-zA-Z0-9_./-]+)[`']?/i.exec(sectionContent);
+  const workingDir = /\b(?:working\s+directory|cwd)\s*[=:]\s*[`']?([a-zA-Z0-9_./-]+)[`']?/i.exec(
+    sectionContent,
+  );
   if (workingDir) return workingDir[1];
 
   return null;
@@ -288,7 +325,7 @@ function inferCommandType(command: string): CommandType {
   let best: { type: CommandType; keywordLen: number; atSuffix: boolean } | null = null;
 
   for (const [type, keywords] of Object.entries(TYPE_KEYWORDS)) {
-    if (type === "other") continue;
+    if (type === 'other') continue;
     for (const k of keywords) {
       if (!lower.includes(k)) continue;
       const idx = lower.indexOf(k);
@@ -303,28 +340,26 @@ function inferCommandType(command: string): CommandType {
       }
     }
   }
-  return best?.type ?? "other";
+  return best?.type ?? 'other';
 }
 
 /** Suggested execution order: install -> setup -> build -> lint -> format -> test -> deploy -> other */
 const EXECUTION_ORDER: CommandType[] = [
-  "install",
-  "setup",
-  "build",
-  "lint",
-  "format",
-  "test",
-  "deploy",
-  "other",
+  'install',
+  'setup',
+  'build',
+  'lint',
+  'format',
+  'test',
+  'deploy',
+  'other',
 ];
 
 /**
  * Return commands in suggested execution order.
  * Use for CI pipelines: install deps, build, lint, test, deploy.
  */
-export function getSuggestedExecutionOrder(
-  commands: ExtractedCommand[]
-): ExtractedCommand[] {
+export function getSuggestedExecutionOrder(commands: ExtractedCommand[]): ExtractedCommand[] {
   const orderMap = new Map(EXECUTION_ORDER.map((t, i) => [t, i]));
   return [...commands].sort((a, b) => {
     const aOrder = orderMap.get(a.type) ?? 999;

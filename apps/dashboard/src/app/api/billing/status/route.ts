@@ -2,7 +2,7 @@
  * Returns whether billing (Stripe) is configured.
  * Used by the dashboard to show "Upgrade" vs "Coming soon".
  */
-import { apiOk, getRequestId } from "@/lib/core/api-response";
+import { apiOk, getRequestId } from '@/lib/core/api-response';
 
 export async function GET() {
   const requestId = getRequestId();
@@ -11,8 +11,5 @@ export async function GET() {
     !!process.env.STRIPE_PRO_PRICE_ID?.trim() &&
     !!process.env.STRIPE_ENTERPRISE_PRICE_ID?.trim();
 
-  return apiOk(
-    { configured },
-    { requestId, headers: { "Cache-Control": "private, max-age=60" } }
-  );
+  return apiOk({ configured }, { requestId, headers: { 'Cache-Control': 'private, max-age=60' } });
 }

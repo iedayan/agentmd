@@ -1,10 +1,10 @@
-import type { ValidationError, ValidationWarning } from "@agentmd-dev/core";
+import type { ValidationError, ValidationWarning } from '@agentmd-dev/core';
 
 export interface AgentMdDiagnostic {
   code: string;
   message: string;
   line?: number;
-  severity: "error" | "warning";
+  severity: 'error' | 'warning';
   range?: { start: number; end: number };
 }
 

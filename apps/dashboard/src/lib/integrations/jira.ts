@@ -6,7 +6,7 @@
 export interface ExecutionWebhookPayload {
   executionId: string;
   repositoryName: string;
-  status: "success" | "failed" | "cancelled";
+  status: 'success' | 'failed' | 'cancelled';
   trigger: string;
   durationMs?: number;
   commandsRun: number;
@@ -21,9 +21,7 @@ export interface ExecutionWebhookPayload {
  * Uses JIRA_WEBHOOK_URL if set (incoming webhook format).
  * Falls back to no-op if not configured.
  */
-export async function notifyJiraExecutionComplete(
-  payload: ExecutionWebhookPayload
-): Promise<void> {
+export async function notifyJiraExecutionComplete(payload: ExecutionWebhookPayload): Promise<void> {
   const webhookUrl = process.env.JIRA_WEBHOOK_URL?.trim();
   if (!webhookUrl) return;
 
@@ -40,14 +38,14 @@ export async function notifyJiraExecutionComplete(
       startedAt: payload.startedAt,
       completedAt: payload.completedAt,
       summary:
-        payload.status === "failed"
+        payload.status === 'failed'
           ? `AgentMD execution failed: ${payload.repositoryName} (${payload.commandsFailed} commands failed)`
           : `AgentMD execution completed: ${payload.repositoryName}`,
     };
 
     const res = await fetch(webhookUrl, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
     });
 
@@ -55,6 +53,6 @@ export async function notifyJiraExecutionComplete(
       console.warn(`[jira] webhook failed: ${res.status} ${res.statusText}`);
     }
   } catch (err) {
-    console.warn("[jira] webhook error:", err);
+    console.warn('[jira] webhook error:', err);
   }
 }

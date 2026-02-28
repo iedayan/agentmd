@@ -1,12 +1,20 @@
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { Logo } from "@/components/brand/logo";
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import { Logo } from '@/components/brand/logo';
 
 const POSTS = [
-  { slug: "agentmd-and-ai-governance", title: "AgentMD and AI Governance", date: "2025-02-21" },
-  { slug: "agents-md-best-practices", title: "AGENTS.md Best Practices", date: "2024-02-20" },
-  { slug: "migrating-from-claude-md", title: "Migrating from CLAUDE.md to AGENTS.md", date: "2024-02-18" },
-  { slug: "case-study-monorepo", title: "Case Study: Scaling AGENTS.md in a Monorepo", date: "2024-02-15" },
+  { slug: 'agentmd-and-ai-governance', title: 'AgentMD and AI Governance', date: '2025-02-21' },
+  { slug: 'agents-md-best-practices', title: 'AGENTS.md Best Practices', date: '2024-02-20' },
+  {
+    slug: 'migrating-from-claude-md',
+    title: 'Migrating from CLAUDE.md to AGENTS.md',
+    date: '2024-02-18',
+  },
+  {
+    slug: 'case-study-monorepo',
+    title: 'Case Study: Scaling AGENTS.md in a Monorepo',
+    date: '2024-02-15',
+  },
 ];
 
 export default function BlogPage() {
@@ -19,8 +27,12 @@ export default function BlogPage() {
             AgentMD
           </Link>
           <nav className="flex items-center gap-4">
-            <Link href="/docs"><Button variant="ghost">Docs</Button></Link>
-            <Link href="/dashboard"><Button>Dashboard</Button></Link>
+            <Link href="/docs">
+              <Button variant="ghost">Docs</Button>
+            </Link>
+            <Link href="/dashboard">
+              <Button>Dashboard</Button>
+            </Link>
           </nav>
         </div>
       </header>

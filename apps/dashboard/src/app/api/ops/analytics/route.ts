@@ -1,11 +1,11 @@
-import { apiOk, getRequestId } from "@/lib/core/api-response";
-import { listExecutions } from "@/lib/data/dashboard-data-facade";
-import { requireSessionUserId } from "@/lib/auth/session";
+import { apiOk, getRequestId } from '@/lib/core/api-response';
+import { listExecutions } from '@/lib/data/dashboard-data-facade';
+import { requireSessionUserId } from '@/lib/auth/session';
 
-export const dynamic = "force-dynamic";
+export const dynamic = 'force-dynamic';
 
 function fmtDay(date: Date): string {
-  return date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+  return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 }
 
 export async function GET() {
@@ -18,8 +18,8 @@ export async function GET() {
   }
   const executions = await listExecutions(userId, { limit: 200 });
   const total = executions.length;
-  const failed = executions.filter((execution) => execution.status === "failed").length;
-  const success = executions.filter((execution) => execution.status === "success").length;
+  const failed = executions.filter((execution) => execution.status === 'failed').length;
+  const success = executions.filter((execution) => execution.status === 'success').length;
 
   const dayBuckets = Array.from({ length: 7 }).map((_, index) => {
     const date = new Date();
@@ -38,22 +38,22 @@ export async function GET() {
     const key = execution.startedAt.slice(0, 10);
     const bucket = dayBuckets.find((item) => item.key === key);
     if (!bucket) continue;
-    if (execution.status === "running" || execution.status === "pending") bucket.running += 1;
-    if (execution.status === "success") bucket.completed += 1;
-    if (execution.status === "failed") bucket.failed += 1;
+    if (execution.status === 'running' || execution.status === 'pending') bucket.running += 1;
+    if (execution.status === 'success') bucket.completed += 1;
+    if (execution.status === 'failed') bucket.failed += 1;
   }
 
   const analytics = {
     pipelinesRun: total,
-    pipelinesRunSparkline: dayBuckets.map((bucket) => bucket.running + bucket.completed + bucket.failed),
+    pipelinesRunSparkline: dayBuckets.map(
+      (bucket) => bucket.running + bucket.completed + bucket.failed,
+    ),
     policyViolationRate: total > 0 ? Math.round((failed / total) * 1000) / 10 : 0,
-    policyViolationTrend: "down" as const,
+    policyViolationTrend: 'down' as const,
     avgApprovalTimeHours: 0,
-    approvalTimeTrend: "down" as const,
+    approvalTimeTrend: 'down' as const,
     agentSuccessRate: total > 0 ? Math.round((success / total) * 1000) / 10 : 0,
-    violationsByRule: [
-      { rule: "tool-allowlist-enforced", count: failed },
-    ],
+    violationsByRule: [{ rule: 'tool-allowlist-enforced', count: failed }],
     pipelineVolume: dayBuckets.map((bucket) => ({
       date: bucket.date,
       running: bucket.running,
@@ -62,20 +62,17 @@ export async function GET() {
     })),
     mostBlockedAgents: Object.entries(
       executions
-        .filter((execution) => execution.status === "failed")
+        .filter((execution) => execution.status === 'failed')
         .reduce<Record<string, number>>((acc, execution) => {
           const sourceRef = `${execution.repositoryName}/AGENTS.md`;
           acc[sourceRef] = (acc[sourceRef] ?? 0) + 1;
           return acc;
-        }, {})
+        }, {}),
     )
       .map(([sourceRef, count]) => ({ sourceRef, count }))
       .sort((a, b) => b.count - a.count)
       .slice(0, 5),
   };
 
-  return apiOk(
-    analytics,
-    { requestId }
-  );
+  return apiOk(analytics, { requestId });
 }

@@ -1,8 +1,12 @@
-import { NextRequest } from "next/server";
-import { apiOk, getRequestId } from "@/lib/core/api-response";
-import { getDashboardCounts, listExecutions, listRepositories } from "@/lib/data/dashboard-data-facade";
-import { buildImpactMetrics } from "@/lib/analytics/impact";
-import { requireSessionUserId } from "@/lib/auth/session";
+import { NextRequest } from 'next/server';
+import { apiOk, getRequestId } from '@/lib/core/api-response';
+import {
+  getDashboardCounts,
+  listExecutions,
+  listRepositories,
+} from '@/lib/data/dashboard-data-facade';
+import { buildImpactMetrics } from '@/lib/analytics/impact';
+import { requireSessionUserId } from '@/lib/auth/session';
 
 export async function GET(req: NextRequest) {
   const requestId = getRequestId(req);
@@ -21,7 +25,7 @@ export async function GET(req: NextRequest) {
     repositories,
     executions,
     counts.totalCommandsRun,
-    counts.totalCommandsFailed
+    counts.totalCommandsFailed,
   );
 
   return apiOk(
@@ -31,6 +35,6 @@ export async function GET(req: NextRequest) {
         generatedAt: new Date().toISOString(),
       },
     },
-    { requestId }
+    { requestId },
   );
 }

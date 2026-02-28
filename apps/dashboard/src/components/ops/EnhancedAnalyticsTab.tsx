@@ -1,22 +1,22 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { 
-  TrendingUp, 
-  TrendingDown, 
-  AlertTriangle, 
-  CheckCircle, 
-  Clock, 
+import { useState } from 'react';
+import {
+  TrendingUp,
+  TrendingDown,
+  AlertTriangle,
+  CheckCircle,
+  Clock,
   GitPullRequest,
   Activity,
   Target,
-  Zap
-} from "lucide-react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress";
-import { Button } from "@/components/ui/button";
-import type { OpsAnalytics } from "@/lib/ops/use-ops-data";
+  Zap,
+} from 'lucide-react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Progress } from '@/components/ui/progress';
+import { Button } from '@/components/ui/button';
+import type { OpsAnalytics } from '@/lib/ops/use-ops-data';
 
 interface EnhancedAnalyticsTabProps {
   analytics: OpsAnalytics;
@@ -25,7 +25,7 @@ interface EnhancedAnalyticsTabProps {
 interface InsightCard {
   title: string;
   value: string | number;
-  trend: "up" | "down" | "neutral";
+  trend: 'up' | 'down' | 'neutral';
   trendValue?: string;
   icon: React.ReactNode;
   description: string;
@@ -36,80 +36,90 @@ interface InsightCard {
 export function EnhancedAnalyticsTab({ analytics }: EnhancedAnalyticsTabProps) {
   const [selectedInsight, setSelectedInsight] = useState<string | null>(null);
 
-  const getTrendIcon = (trend: "up" | "down" | "neutral") => {
+  const getTrendIcon = (trend: 'up' | 'down' | 'neutral') => {
     switch (trend) {
-      case "up":
+      case 'up':
         return <TrendingUp className="h-4 w-4 text-green-500" />;
-      case "down":
+      case 'down':
         return <TrendingDown className="h-4 w-4 text-red-500" />;
       default:
         return <Activity className="h-4 w-4 text-gray-500" />;
     }
   };
 
-  const getTrendColor = (trend: "up" | "down" | "neutral") => {
+  const getTrendColor = (trend: 'up' | 'down' | 'neutral') => {
     switch (trend) {
-      case "up":
-        return "text-green-600";
-      case "down":
-        return "text-red-600";
+      case 'up':
+        return 'text-green-600';
+      case 'down':
+        return 'text-red-600';
       default:
-        return "text-gray-600";
+        return 'text-gray-600';
     }
   };
 
   const insights: InsightCard[] = [
     {
-      title: "Pipeline Success Rate",
+      title: 'Pipeline Success Rate',
       value: `${analytics.agentSuccessRate}%`,
-      trend: analytics.agentSuccessRate >= 90 ? "up" : analytics.agentSuccessRate >= 70 ? "neutral" : "down",
-      trendValue: analytics.agentSuccessRate >= 90 ? "+5%" : analytics.agentSuccessRate >= 70 ? "stable" : "-3%",
+      trend:
+        analytics.agentSuccessRate >= 90
+          ? 'up'
+          : analytics.agentSuccessRate >= 70
+            ? 'neutral'
+            : 'down',
+      trendValue:
+        analytics.agentSuccessRate >= 90
+          ? '+5%'
+          : analytics.agentSuccessRate >= 70
+            ? 'stable'
+            : '-3%',
       icon: <Target className="h-5 w-5" />,
-      description: "Overall success rate across all pipelines",
+      description: 'Overall success rate across all pipelines',
       actionable: analytics.agentSuccessRate < 90,
-      action: analytics.agentSuccessRate < 90 ? "Review failed pipelines" : undefined
+      action: analytics.agentSuccessRate < 90 ? 'Review failed pipelines' : undefined,
     },
     {
-      title: "Avg Approval Time",
+      title: 'Avg Approval Time',
       value: `${analytics.avgApprovalTimeHours}h`,
       trend: analytics.approvalTimeTrend,
-      trendValue: analytics.approvalTimeTrend === "down" ? "-2h" : "+1h",
+      trendValue: analytics.approvalTimeTrend === 'down' ? '-2h' : '+1h',
       icon: <Clock className="h-5 w-5" />,
-      description: "Average time for pipeline approvals",
+      description: 'Average time for pipeline approvals',
       actionable: analytics.avgApprovalTimeHours > 4,
-      action: analytics.avgApprovalTimeHours > 4 ? "Optimize approval process" : undefined
+      action: analytics.avgApprovalTimeHours > 4 ? 'Optimize approval process' : undefined,
     },
     {
-      title: "Policy Violations",
+      title: 'Policy Violations',
       value: `${analytics.policyViolationRate}%`,
-      trend: analytics.policyViolationTrend === "down" ? "up" : "down",
-      trendValue: analytics.policyViolationTrend === "down" ? "-2%" : "+1%",
+      trend: analytics.policyViolationTrend === 'down' ? 'up' : 'down',
+      trendValue: analytics.policyViolationTrend === 'down' ? '-2%' : '+1%',
       icon: <AlertTriangle className="h-5 w-5" />,
-      description: "Rate of policy violations in pipelines",
+      description: 'Rate of policy violations in pipelines',
       actionable: analytics.policyViolationRate > 10,
-      action: analytics.policyViolationRate > 10 ? "Review policy settings" : undefined
+      action: analytics.policyViolationRate > 10 ? 'Review policy settings' : undefined,
     },
     {
-      title: "Pipelines Run",
+      title: 'Pipelines Run',
       value: analytics.pipelinesRun,
-      trend: "up",
-      trendValue: "+12%",
+      trend: 'up',
+      trendValue: '+12%',
       icon: <Activity className="h-5 w-5" />,
-      description: "Total pipelines executed in the last 30 days"
-    }
+      description: 'Total pipelines executed in the last 30 days',
+    },
   ];
 
   const getSeverityColor = (count: number, max: number) => {
     const percentage = (count / max) * 100;
-    if (percentage >= 80) return "text-red-600 bg-red-100";
-    if (percentage >= 50) return "text-yellow-600 bg-yellow-100";
-    return "text-green-600 bg-green-100";
+    if (percentage >= 80) return 'text-red-600 bg-red-100';
+    if (percentage >= 50) return 'text-yellow-600 bg-yellow-100';
+    return 'text-green-600 bg-green-100';
   };
 
   const getScoreColor = (score: number) => {
-    if (score >= 90) return "text-green-600";
-    if (score >= 70) return "text-yellow-600";
-    return "text-red-600";
+    if (score >= 90) return 'text-green-600';
+    if (score >= 70) return 'text-yellow-600';
+    return 'text-red-600';
   };
 
   return (
@@ -122,11 +132,11 @@ export function EnhancedAnalyticsTab({ analytics }: EnhancedAnalyticsTabProps) {
       {/* Key Metrics */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {insights.map((insight, index) => (
-          <Card 
-            key={index} 
+          <Card
+            key={index}
             className={`cursor-pointer transition-all duration-200 hover:shadow-md ${
-              insight.actionable ? "border-l-4 border-l-orange-500" : ""
-            } ${selectedInsight === insight.title ? "ring-2 ring-primary" : ""}`}
+              insight.actionable ? 'border-l-4 border-l-orange-500' : ''
+            } ${selectedInsight === insight.title ? 'ring-2 ring-primary' : ''}`}
             onClick={() => setSelectedInsight(insight.title)}
           >
             <CardHeader className="pb-3">
@@ -167,9 +177,7 @@ export function EnhancedAnalyticsTab({ analytics }: EnhancedAnalyticsTabProps) {
               <AlertTriangle className="h-5 w-5" />
               Policy Violations by Rule
             </CardTitle>
-            <CardDescription>
-              Most common policy violations requiring attention
-            </CardDescription>
+            <CardDescription>Most common policy violations requiring attention</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
@@ -180,7 +188,7 @@ export function EnhancedAnalyticsTab({ analytics }: EnhancedAnalyticsTabProps) {
                 </div>
               ) : (
                 analytics.violationsByRule.map((violation, index) => {
-                  const maxCount = Math.max(...analytics.violationsByRule.map(v => v.count));
+                  const maxCount = Math.max(...analytics.violationsByRule.map((v) => v.count));
                   return (
                     <div key={index} className="space-y-2">
                       <div className="flex items-center justify-between">
@@ -189,10 +197,7 @@ export function EnhancedAnalyticsTab({ analytics }: EnhancedAnalyticsTabProps) {
                           {violation.count}
                         </Badge>
                       </div>
-                      <Progress 
-                        value={(violation.count / maxCount) * 100} 
-                        className="h-2"
-                      />
+                      <Progress value={(violation.count / maxCount) * 100} className="h-2" />
                     </div>
                   );
                 })
@@ -208,9 +213,7 @@ export function EnhancedAnalyticsTab({ analytics }: EnhancedAnalyticsTabProps) {
               <GitPullRequest className="h-5 w-5" />
               Most Blocked Agents
             </CardTitle>
-            <CardDescription>
-              Agents that frequently get blocked by policies
-            </CardDescription>
+            <CardDescription>Agents that frequently get blocked by policies</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
@@ -221,17 +224,14 @@ export function EnhancedAnalyticsTab({ analytics }: EnhancedAnalyticsTabProps) {
                 </div>
               ) : (
                 analytics.mostBlockedAgents.map((agent, index) => {
-                  const maxCount = Math.max(...analytics.mostBlockedAgents.map(a => a.count));
+                  const maxCount = Math.max(...analytics.mostBlockedAgents.map((a) => a.count));
                   return (
                     <div key={index} className="space-y-2">
                       <div className="flex items-center justify-between">
                         <span className="text-sm font-mono">{agent.sourceRef}</span>
                         <Badge variant="outline">{agent.count} blocks</Badge>
                       </div>
-                      <Progress 
-                        value={(agent.count / maxCount) * 100} 
-                        className="h-2"
-                      />
+                      <Progress value={(agent.count / maxCount) * 100} className="h-2" />
                     </div>
                   );
                 })
@@ -248,9 +248,7 @@ export function EnhancedAnalyticsTab({ analytics }: EnhancedAnalyticsTabProps) {
             <Activity className="h-5 w-5" />
             Pipeline Volume Trend
           </CardTitle>
-          <CardDescription>
-            Daily pipeline execution volume over the last 30 days
-          </CardDescription>
+          <CardDescription>Daily pipeline execution volume over the last 30 days</CardDescription>
         </CardHeader>
         <CardContent>
           {analytics.pipelineVolume.length === 0 ? (
@@ -279,14 +277,16 @@ export function EnhancedAnalyticsTab({ analytics }: EnhancedAnalyticsTabProps) {
                   <div className="text-xs text-muted-foreground">Failed</div>
                 </div>
               </div>
-              
+
               {/* Simple sparkline visualization */}
               <div className="h-20 flex items-end gap-1">
                 {analytics.pipelineVolume.slice(-14).map((day, index) => {
-                  const maxVolume = Math.max(...analytics.pipelineVolume.map(d => d.completed + d.running + d.failed));
+                  const maxVolume = Math.max(
+                    ...analytics.pipelineVolume.map((d) => d.completed + d.running + d.failed),
+                  );
                   const totalVolume = day.completed + day.running + day.failed;
                   const height = maxVolume > 0 ? (totalVolume / maxVolume) * 100 : 0;
-                  
+
                   return (
                     <div
                       key={index}
@@ -297,9 +297,7 @@ export function EnhancedAnalyticsTab({ analytics }: EnhancedAnalyticsTabProps) {
                   );
                 })}
               </div>
-              <div className="text-xs text-muted-foreground text-center">
-                Last 14 days
-              </div>
+              <div className="text-xs text-muted-foreground text-center">Last 14 days</div>
             </div>
           )}
         </CardContent>

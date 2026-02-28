@@ -1,39 +1,39 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import Link from "next/link";
-import { Mail, Send, ArrowLeft } from "lucide-react";
-import { Nav } from "@/components/landing/nav";
-import { Footer } from "@/components/ui/footer";
-import { Button } from "@/components/ui/button";
-import { toast } from "sonner";
+import { useState } from 'react';
+import Link from 'next/link';
+import { Mail, Send, ArrowLeft } from 'lucide-react';
+import { Nav } from '@/components/landing/nav';
+import { Footer } from '@/components/ui/footer';
+import { Button } from '@/components/ui/button';
+import { toast } from 'sonner';
 
 export default function ContactPage() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [message, setMessage] = useState("");
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [message, setMessage] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
     try {
-      const res = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, email, message }),
       });
       const data = (await res.json()) as { ok?: boolean; error?: string };
       if (res.ok && data.ok) {
         toast.success("Message sent! We'll get back to you soon.");
-        setName("");
-        setEmail("");
-        setMessage("");
+        setName('');
+        setEmail('');
+        setMessage('');
       } else {
-        toast.error(data.error ?? "Failed to send. Please try again.");
+        toast.error(data.error ?? 'Failed to send. Please try again.');
       }
     } catch {
-      toast.error("Failed to send. Please try again.");
+      toast.error('Failed to send. Please try again.');
     } finally {
       setSubmitting(false);
     }
@@ -107,13 +107,9 @@ export default function ContactPage() {
               className="w-full rounded-lg border border-input bg-background px-4 py-3 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 resize-none"
             />
           </div>
-          <Button
-            type="submit"
-            disabled={submitting}
-            className="w-full sm:w-auto"
-          >
+          <Button type="submit" disabled={submitting} className="w-full sm:w-auto">
             {submitting ? (
-              "Sending..."
+              'Sending...'
             ) : (
               <>
                 <Send className="h-4 w-4 mr-2" />
@@ -124,16 +120,13 @@ export default function ContactPage() {
         </form>
 
         <p className="mt-8 text-sm text-muted-foreground">
-          Or email directly at{" "}
-          <a
-            href="mailto:iedayan03@gmail.com"
-            className="text-primary hover:underline"
-          >
+          Or email directly at{' '}
+          <a href="mailto:iedayan03@gmail.com" className="text-primary hover:underline">
             iedayan03@gmail.com
           </a>
         </p>
         <p className="mt-4 text-sm text-muted-foreground">
-          Enjoying AgentMD?{" "}
+          Enjoying AgentMD?{' '}
           <Link href="/review" className="text-primary hover:underline">
             Leave a review
           </Link>

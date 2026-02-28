@@ -3,7 +3,7 @@
  * Require approval before executing certain commands.
  */
 
-export type ApprovalStatus = "pending" | "approved" | "rejected";
+export type ApprovalStatus = 'pending' | 'approved' | 'rejected';
 
 export interface ApprovalRequest {
   id: string;

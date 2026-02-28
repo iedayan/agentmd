@@ -1,21 +1,21 @@
-import type { NextAuthOptions } from "next-auth";
-import GitHubProvider from "next-auth/providers/github";
-import { hasDatabase } from "../data/db";
+import type { NextAuthOptions } from 'next-auth';
+import GitHubProvider from 'next-auth/providers/github';
+import { hasDatabase } from '../data/db';
 
 export const authOptions: NextAuthOptions = {
   providers: [
     GitHubProvider({
-      clientId: process.env.GITHUB_ID ?? "",
-      clientSecret: process.env.GITHUB_SECRET ?? "",
+      clientId: process.env.GITHUB_ID ?? '',
+      clientSecret: process.env.GITHUB_SECRET ?? '',
       authorization: {
-        params: { scope: "read:user user:email" },
+        params: { scope: 'read:user user:email' },
       },
     }),
   ],
   callbacks: {
     async signIn({ user }) {
       if (hasDatabase() && user?.id) {
-        const { ensureUser } = await import("../data/dashboard-data-db");
+        const { ensureUser } = await import('../data/dashboard-data-db');
         await ensureUser(user.id, {
           email: user.email ?? undefined,
           name: user.name ?? undefined,
@@ -26,7 +26,7 @@ export const authOptions: NextAuthOptions = {
     },
     async session({ session, token }) {
       if (session.user) {
-        session.user.id = token.sub ?? "";
+        session.user.id = token.sub ?? '';
       }
       return session;
     },
@@ -38,11 +38,11 @@ export const authOptions: NextAuthOptions = {
     },
   },
   pages: {
-    signIn: "/register",
-    error: "/register",
+    signIn: '/register',
+    error: '/register',
   },
   session: {
-    strategy: "jwt",
+    strategy: 'jwt',
     maxAge: 30 * 24 * 60 * 60, // 30 days
   },
   secret: process.env.NEXTAUTH_SECRET,

@@ -1,16 +1,16 @@
-import { requireSessionUserId } from "@/lib/auth/session";
+import { requireSessionUserId } from '@/lib/auth/session';
 import {
   listRepositories,
   getDashboardCounts,
   getUserSubscriptionPlan,
-} from "@/lib/data/dashboard-data-facade";
-import { getPlan, isAppSumoPlan, type PlanId } from "@/lib/billing/plans";
-import { apiError, apiOk, getRequestId } from "@/lib/core/api-response";
-import Stripe from "stripe";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth/auth";
+} from '@/lib/data/dashboard-data-facade';
+import { getPlan, isAppSumoPlan, type PlanId } from '@/lib/billing/plans';
+import { apiError, apiOk, getRequestId } from '@/lib/core/api-response';
+import Stripe from 'stripe';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/auth/auth';
 
-export const dynamic = "force-dynamic";
+export const dynamic = 'force-dynamic';
 
 export async function GET() {
   const requestId = getRequestId();
@@ -29,18 +29,15 @@ export async function GET() {
 
     const resolvedPlanId = await resolvePlanId(userId);
     const planId: PlanId =
-      resolvedPlanId === "pro" ||
-      resolvedPlanId === "enterprise" ||
+      resolvedPlanId === 'pro' ||
+      resolvedPlanId === 'enterprise' ||
       (resolvedPlanId && isAppSumoPlan(resolvedPlanId))
         ? resolvedPlanId
-        : "free";
+        : 'free';
     const plan = getPlan(planId);
-    const repoLimit =
-      typeof plan.repositories === "number" ? plan.repositories : Infinity;
+    const repoLimit = typeof plan.repositories === 'number' ? plan.repositories : Infinity;
     const minutesLimit =
-      typeof plan.executionMinutes === "number"
-        ? plan.executionMinutes
-        : Infinity;
+      typeof plan.executionMinutes === 'number' ? plan.executionMinutes : Infinity;
 
     return apiOk(
       {
@@ -51,10 +48,10 @@ export async function GET() {
         executionMinutesLimit: minutesLimit,
         logRetentionDays: plan.logRetentionDays,
       },
-      { requestId }
+      { requestId },
     );
   } catch {
-    return apiError("Failed to load usage", {
+    return apiError('Failed to load usage', {
       status: 500,
       requestId,
     });
@@ -63,42 +60,38 @@ export async function GET() {
 
 async function resolvePlanId(userId: string): Promise<PlanId | null> {
   const dbPlan = await getUserSubscriptionPlan(userId);
-  if (
-    dbPlan === "pro" ||
-    dbPlan === "enterprise" ||
-    (dbPlan && isAppSumoPlan(dbPlan as PlanId))
-  )
+  if (dbPlan === 'pro' || dbPlan === 'enterprise' || (dbPlan && isAppSumoPlan(dbPlan as PlanId)))
     return dbPlan as PlanId;
 
   const stripeSecretKey = process.env.STRIPE_SECRET_KEY?.trim();
-  if (!stripeSecretKey) return "free";
+  if (!stripeSecretKey) return 'free';
 
   const session = await getServerSession(authOptions);
   const email = session?.user?.email?.trim();
-  if (!email) return "free";
+  if (!email) return 'free';
 
   try {
     const stripe = new Stripe(stripeSecretKey);
     const customers = await stripe.customers.list({ email, limit: 1 });
     const customer = customers.data[0];
-    if (!customer) return "free";
+    if (!customer) return 'free';
 
     const subscriptions = await stripe.subscriptions.list({
       customer: customer.id,
-      status: "all",
+      status: 'all',
       limit: 10,
     });
 
-    const active = subscriptions.data.find((sub) =>
-      sub.status === "active" || sub.status === "trialing"
+    const active = subscriptions.data.find(
+      (sub) => sub.status === 'active' || sub.status === 'trialing',
     );
     const priceId = active?.items.data[0]?.price?.id;
-    if (!priceId) return "free";
+    if (!priceId) return 'free';
 
-    if (priceId === process.env.STRIPE_ENTERPRISE_PRICE_ID) return "enterprise";
-    if (priceId === process.env.STRIPE_PRO_PRICE_ID) return "pro";
-    return "free";
+    if (priceId === process.env.STRIPE_ENTERPRISE_PRICE_ID) return 'enterprise';
+    if (priceId === process.env.STRIPE_PRO_PRICE_ID) return 'pro';
+    return 'free';
   } catch {
-    return "free";
+    return 'free';
   }
 }

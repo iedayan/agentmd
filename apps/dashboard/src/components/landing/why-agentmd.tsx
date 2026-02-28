@@ -1,21 +1,21 @@
-import Link from "next/link";
-import { FileCode, Shield, Play } from "lucide-react";
+import Link from 'next/link';
+import { FileCode, Shield, Play } from 'lucide-react';
 
 const REASONS = [
   {
     icon: FileCode,
-    title: "One file, one spec",
-    desc: "AGENTS.md is the emerging standard backed by Linux Foundation, OpenAI, and 60K+ repos. We execute it—no lock-in.",
+    title: 'One file, one spec',
+    desc: 'AGENTS.md is the emerging standard backed by Linux Foundation, OpenAI, and 60K+ repos. We execute it—no lock-in.',
   },
   {
     icon: Shield,
-    title: "Governance built in",
-    desc: "Guardrails, permissions, and audit trails from day one. Catch breaking changes before production.",
+    title: 'Governance built in',
+    desc: 'Guardrails, permissions, and audit trails from day one. Catch breaking changes before production.',
   },
   {
     icon: Play,
-    title: "Runs in your CI",
-    desc: "GitHub Actions, push, PR, or cron. Same commands your agents use. Zero drift.",
+    title: 'Runs in your CI',
+    desc: 'GitHub Actions, push, PR, or cron. Same commands your agents use. Zero drift.',
   },
 ];
 
@@ -25,11 +25,10 @@ export function WhyAgentMD() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-3xl text-center mb-12 sm:mb-16">
           <span className="inline-block h-1 w-12 rounded-full bg-primary/60 mb-4" aria-hidden />
-          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-3">
-            Why AgentMD?
-          </h2>
+          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-3">Why AgentMD?</h2>
           <p className="text-muted-foreground text-base sm:text-lg">
-            The only platform that executes the AGENTS.md spec. Parse, validate, and run—with governance from the start.
+            The only platform that executes the AGENTS.md spec. Parse, validate, and run—with
+            governance from the start.
           </p>
         </div>
         <div className="grid gap-6 sm:gap-8 md:grid-cols-3 max-w-5xl mx-auto">
@@ -42,9 +41,7 @@ export function WhyAgentMD() {
                 <Icon className="h-7 w-7 text-primary" strokeWidth={1.75} />
               </div>
               <h3 className="font-bold text-lg mb-2">{title}</h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                {desc}
-              </p>
+              <p className="text-sm text-muted-foreground leading-relaxed">{desc}</p>
             </div>
           ))}
         </div>

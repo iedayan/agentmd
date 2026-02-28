@@ -3,22 +3,24 @@
  * Uses Postgres when DATABASE_URL is set, otherwise in-memory.
  * All functions are async and require userId for user-scoped data.
  */
-import { hasDatabase } from "./db";
-import * as mem from "./dashboard-data";
-import * as db from "./dashboard-data-db";
-import type { Execution, Repository, TriggerType } from "@/types";
-import type { ApiExecutionRecord, AuditLog } from "./dashboard-data";
+import { hasDatabase } from './db';
+import * as mem from './dashboard-data';
+import * as db from './dashboard-data-db';
+import type { Execution, Repository, TriggerType } from '@/types';
+import type { ApiExecutionRecord, AuditLog } from './dashboard-data';
 
 function shouldUseDb(): boolean {
-  if (process.env.NODE_ENV === "production" && !hasDatabase()) {
-    throw new Error("DATABASE_URL is required in production. Set AGENTMD_ALLOW_IN_MEMORY=true to override.");
+  if (process.env.NODE_ENV === 'production' && !hasDatabase()) {
+    throw new Error(
+      'DATABASE_URL is required in production. Set AGENTMD_ALLOW_IN_MEMORY=true to override.',
+    );
   }
   return hasDatabase();
 }
 
 export async function listRepositories(
   userId: string,
-  options?: { owner?: string; search?: string }
+  options?: { owner?: string; search?: string },
 ): Promise<Repository[]> {
   if (shouldUseDb()) {
     return db.listRepositoriesDb(userId, options);
@@ -34,7 +36,10 @@ export async function listRepositories(
   });
 }
 
-export async function getRepositoryById(id: string, userId: string): Promise<Repository | undefined> {
+export async function getRepositoryById(
+  id: string,
+  userId: string,
+): Promise<Repository | undefined> {
   if (shouldUseDb()) {
     return db.getRepositoryByIdDb(id, userId);
   }
@@ -53,7 +58,13 @@ export async function getRepositoryByFullName(fullName: string): Promise<Reposit
 
 export async function addRepository(
   userId: string,
-  input: { name: string; fullName: string; owner: string; healthScore?: number; agentsMdCount?: number }
+  input: {
+    name: string;
+    fullName: string;
+    owner: string;
+    healthScore?: number;
+    agentsMdCount?: number;
+  },
 ): Promise<Repository> {
   if (shouldUseDb()) {
     return db.addRepositoryDb(userId, input);
@@ -70,7 +81,7 @@ export async function hasRepositoryFullName(userId: string, fullName: string): P
 
 export async function listExecutions(
   userId: string,
-  options?: { repositoryId?: string; status?: Execution["status"]; limit?: number }
+  options?: { repositoryId?: string; status?: Execution['status']; limit?: number },
 ): Promise<Execution[]> {
   if (shouldUseDb()) {
     return db.listExecutionsDb(userId, options);
@@ -94,8 +105,8 @@ export async function cancelExecution(id: string, userId: string): Promise<Execu
 
 export async function listExecutionSteps(
   executionId: string,
-  userId: string
-): Promise<import("@/types").ExecutionStep[]> {
+  userId: string,
+): Promise<import('@/types').ExecutionStep[]> {
   if (shouldUseDb()) {
     return db.listExecutionStepsDb(executionId, userId);
   }
@@ -110,7 +121,7 @@ export async function createQueuedExecution(
     trigger: TriggerType;
     agentsMdUrl: string;
     idempotencyKey?: string;
-  }
+  },
 ): Promise<{
   apiExecution: ApiExecutionRecord;
   dashboardExecution: Execution;
@@ -122,9 +133,7 @@ export async function createQueuedExecution(
   return mem.createQueuedExecution(input);
 }
 
-export async function addAuditLog(
-  log: Omit<AuditLog, "id" | "timestamp">
-): Promise<AuditLog> {
+export async function addAuditLog(log: Omit<AuditLog, 'id' | 'timestamp'>): Promise<AuditLog> {
   if (shouldUseDb()) {
     return db.addAuditLogDb(log);
   }
@@ -147,12 +156,10 @@ export async function getDashboardCounts(userId: string): Promise<{
   };
 }
 
-
-
 export async function upsertGitHubInstallation(
   userId: string,
   installationId: string,
-  accountLogin?: string
+  accountLogin?: string,
 ): Promise<void> {
   if (shouldUseDb()) {
     await db.upsertGitHubInstallation(userId, installationId, accountLogin);
@@ -160,7 +167,7 @@ export async function upsertGitHubInstallation(
 }
 
 export async function getGitHubInstallation(
-  userId: string
+  userId: string,
 ): Promise<{ installationId: string } | null> {
   if (shouldUseDb()) {
     return db.getGitHubInstallation(userId);
@@ -184,7 +191,7 @@ export async function getUserSubscriptionPlan(userId: string): Promise<string | 
 
 export async function updateUserProfile(
   userId: string,
-  data: { name?: string; email?: string }
+  data: { name?: string; email?: string },
 ): Promise<void> {
   if (shouldUseDb()) {
     await db.updateUserProfile(userId, data);

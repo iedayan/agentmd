@@ -5,9 +5,7 @@
       "name": "Launch AgentMD Extension",
       "type": "extensionHost",
       "request": "launch",
-      "args": [
-        "--extensionDevelopmentPath=${workspaceFolder}/packages/agentmd-vscode"
-      ],
+      "args": ["--extensionDevelopmentPath=${workspaceFolder}/packages/agentmd-vscode"],
       "outFiles": ["${workspaceFolder}/packages/agentmd-vscode/dist/**/*.js"]
     }
   ]

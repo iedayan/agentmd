@@ -7,11 +7,13 @@ Agent skills for Cursor, Codex, Claude Code, and Gemini CLI.
 Execute, validate, and score AGENTS.md files via the AgentMD CLI.
 
 **Install (Cursor):**
+
 ```bash
 cp -r skills/agentmd ~/.cursor/skills/
 ```
 
 **Install (Codex):**
+
 ```bash
 cp -r skills/agentmd ~/.agents/skills/
 ```

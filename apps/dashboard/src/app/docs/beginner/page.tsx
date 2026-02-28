@@ -1,14 +1,12 @@
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { CodeBlock } from "@/components/docs/code-block";
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import { CodeBlock } from '@/components/docs/code-block';
 
 export default function BeginnerDocsPage() {
   return (
     <div>
       <h1>Beginner Path</h1>
-      <p className="lead">
-        New to AgentMD? Follow these 3 steps to get your first useful result.
-      </p>
+      <p className="lead">New to AgentMD? Follow these 3 steps to get your first useful result.</p>
 
       <h2>What AgentMD does (in plain English)</h2>
       <p>

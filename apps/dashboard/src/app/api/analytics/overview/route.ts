@@ -1,9 +1,13 @@
-import { NextRequest } from "next/server";
-import { apiOk, getRequestId } from "@/lib/core/api-response";
-import { getDashboardCounts, listExecutions, listRepositories } from "@/lib/data/dashboard-data-facade";
-import { getGovernanceOperationalStats } from "@/lib/analytics/governance-data";
-import { buildImpactMetrics } from "@/lib/analytics/impact";
-import { requireSessionUserId } from "@/lib/auth/session";
+import { NextRequest } from 'next/server';
+import { apiOk, getRequestId } from '@/lib/core/api-response';
+import {
+  getDashboardCounts,
+  listExecutions,
+  listRepositories,
+} from '@/lib/data/dashboard-data-facade';
+import { getGovernanceOperationalStats } from '@/lib/analytics/governance-data';
+import { buildImpactMetrics } from '@/lib/analytics/impact';
+import { requireSessionUserId } from '@/lib/auth/session';
 
 type TrendPoint = {
   date: string;
@@ -31,7 +35,7 @@ export async function GET(req: NextRequest) {
     repositories,
     executions,
     counts.totalCommandsRun,
-    counts.totalCommandsFailed
+    counts.totalCommandsFailed,
   );
 
   const today = new Date();
@@ -41,12 +45,12 @@ export async function GET(req: NextRequest) {
     day.setDate(today.getDate() - i);
     const dayKey = day.toISOString().slice(0, 10);
     const dayExecutions = executions.filter(
-      (execution) => execution.startedAt.slice(0, 10) === dayKey
+      (execution) => execution.startedAt.slice(0, 10) === dayKey,
     );
     trend.push({
       date: dayKey,
       executions: dayExecutions.length,
-      failedExecutions: dayExecutions.filter((item) => item.status === "failed").length,
+      failedExecutions: dayExecutions.filter((item) => item.status === 'failed').length,
       commandsRun: dayExecutions.reduce((sum, item) => sum + item.commandsRun, 0),
       commandsFailed: dayExecutions.reduce((sum, item) => sum + item.commandsFailed, 0),
     });
@@ -54,7 +58,7 @@ export async function GET(req: NextRequest) {
 
   const failurePreventionEstimate = Math.max(
     0,
-    Math.round((counts.totalCommandsRun - counts.totalCommandsFailed) * 0.08)
+    Math.round((counts.totalCommandsRun - counts.totalCommandsFailed) * 0.08),
   );
 
   const roiMultiple =
@@ -75,6 +79,6 @@ export async function GET(req: NextRequest) {
       },
       governance,
     },
-    { requestId }
+    { requestId },
   );
 }

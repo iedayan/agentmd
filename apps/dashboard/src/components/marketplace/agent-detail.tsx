@@ -1,18 +1,12 @@
-"use client";
+'use client';
 
-import { useCallback, useEffect, useState } from "react";
-import Link from "next/link";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Star, Shield, ArrowLeft, ChevronRight } from "lucide-react";
-import type { AgentListing } from "@agentmd-dev/core";
+import { useCallback, useEffect, useState } from 'react';
+import Link from 'next/link';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Star, Shield, ArrowLeft, ChevronRight } from 'lucide-react';
+import type { AgentListing } from '@agentmd-dev/core';
 
 export function AgentDetail({ slug }: { slug: string }) {
   const [agent, setAgent] = useState<AgentListing | null>(null);
@@ -25,7 +19,7 @@ export function AgentDetail({ slug }: { slug: string }) {
       setError(null);
       setNotFound(false);
       const res = await fetch(`/api/marketplace/agents/${slug}`, {
-        cache: "no-store",
+        cache: 'no-store',
       });
       if (res.status === 404) {
         setAgent(null);
@@ -38,16 +32,12 @@ export function AgentDetail({ slug }: { slug: string }) {
         error?: string;
       };
       if (!res.ok || data.ok === false || !data.agent) {
-        throw new Error(data.error ?? "Failed to load agent details.");
+        throw new Error(data.error ?? 'Failed to load agent details.');
       }
       setAgent(data.agent);
     } catch (loadError) {
       setAgent(null);
-      setError(
-        loadError instanceof Error
-          ? loadError.message
-          : "Failed to load agent details."
-      );
+      setError(loadError instanceof Error ? loadError.message : 'Failed to load agent details.');
     } finally {
       setLoading(false);
     }
@@ -92,7 +82,7 @@ export function AgentDetail({ slug }: { slug: string }) {
     return (
       <div className="container mx-auto px-4 py-8">
         <p className="text-lg font-semibold">Unable to load agent</p>
-        <p className="text-destructive mt-1 text-sm">{error ?? "Unknown error"}</p>
+        <p className="text-destructive mt-1 text-sm">{error ?? 'Unknown error'}</p>
         <div className="mt-4 flex items-center gap-2">
           <Button variant="outline" onClick={() => void loadAgent()}>
             Retry
@@ -111,11 +101,11 @@ export function AgentDetail({ slug }: { slug: string }) {
 
   const formatPrice = () => {
     const p = agent.pricing;
-    if (p.model === "free") return "Free";
+    if (p.model === 'free') return 'Free';
     if (p.subscriptionPrice) return `$${(p.subscriptionPrice / 100).toFixed(2)}/month`;
     if (p.oneTimePrice) return `$${(p.oneTimePrice / 100).toFixed(2)} one-time`;
     if (p.usagePrice) return `$${(p.usagePrice / 100).toFixed(2)} per execution`;
-    return "—";
+    return '—';
   };
 
   return (

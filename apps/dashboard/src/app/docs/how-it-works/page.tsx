@@ -1,13 +1,11 @@
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
 
 export default function HowItWorksPage() {
   return (
     <div>
       <h1>How AgentMD Works</h1>
-      <p className="lead">
-        A plain-language explanation of what AgentMD does and how it works.
-      </p>
+      <p className="lead">A plain-language explanation of what AgentMD does and how it works.</p>
 
       <h2>What AgentMD Does (Simple Version)</h2>
       <p>
@@ -24,9 +22,7 @@ export default function HowItWorksPage() {
         etc.), what commands to run (e.g. <code>pnpm test</code>, <code>pnpm build</code>), and any
         rules or limits you&apos;ve set (e.g. &quot;don&apos;t run dangerous commands&quot;).
       </p>
-      <p>
-        Think of it like reading a recipe and listing all the steps before you start cooking.
-      </p>
+      <p>Think of it like reading a recipe and listing all the steps before you start cooking.</p>
 
       <h3>2. Check It&apos;s OK (Validate)</h3>
       <p>
@@ -48,9 +44,9 @@ export default function HowItWorksPage() {
 
       <h2>Why It Matters</h2>
       <p>
-        Without AgentMD, AI tools might skip steps or do things differently each time. With
-        AgentMD, the same steps run every time, in the same order, and you get a clear record of
-        what ran and whether it passed.
+        Without AgentMD, AI tools might skip steps or do things differently each time. With AgentMD,
+        the same steps run every time, in the same order, and you get a clear record of what ran and
+        whether it passed.
       </p>
 
       <div className="mt-8 flex flex-wrap gap-3">

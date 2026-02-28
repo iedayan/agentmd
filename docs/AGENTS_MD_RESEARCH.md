@@ -6,14 +6,14 @@
 
 ## What the Research Shows
 
-| Finding | Impact | Source |
-|--------|--------|--------|
-| **28.64% faster runtime** | Median wall-clock execution time reduced | Lulla et al. (ICSE JAWs 2026) |
-| **16.58% lower token consumption** | Output tokens reduced | Lulla et al. |
-| **100% accuracy** | For Next.js 16 APIs vs 79% with skills | [Vercel research](https://vercel.com/blog/agents-md-outperforms-skills-in-our-agent-evals) |
-| **+5.19% accuracy** | With automated instruction optimization | Arize AI |
-| **-2–3% success rate** | With auto-generated context files | ETH Zurich study |
-| **+20% inference cost** | With unnecessary context | ETH Zurich |
+| Finding                            | Impact                                   | Source                                                                                     |
+| ---------------------------------- | ---------------------------------------- | ------------------------------------------------------------------------------------------ |
+| **28.64% faster runtime**          | Median wall-clock execution time reduced | Lulla et al. (ICSE JAWs 2026)                                                              |
+| **16.58% lower token consumption** | Output tokens reduced                    | Lulla et al.                                                                               |
+| **100% accuracy**                  | For Next.js 16 APIs vs 79% with skills   | [Vercel research](https://vercel.com/blog/agents-md-outperforms-skills-in-our-agent-evals) |
+| **+5.19% accuracy**                | With automated instruction optimization  | Arize AI                                                                                   |
+| **-2–3% success rate**             | With auto-generated context files        | ETH Zurich study                                                                           |
+| **+20% inference cost**            | With unnecessary context                 | ETH Zurich                                                                                 |
 
 ---
 
@@ -39,13 +39,13 @@ Vercel found that a **compressed 8KB docs index** in AGENTS.md achieved 100% acc
 3. **Anchoring effect**: Mentioning legacy patterns biases agents toward outdated approaches
 4. **"Lost in the Middle"**: Long context degrades performance regardless of relevance
 
-The ETH Zurich study found that when they **stripped all documentation** from repos, auto-generated files *suddenly helped* (+2.7%)—proving the problem is redundancy, not the format itself.
+The ETH Zurich study found that when they **stripped all documentation** from repos, auto-generated files _suddenly helped_ (+2.7%)—proving the problem is redundancy, not the format itself.
 
 ---
 
 ## What Belongs in AGENTS.md
 
-**Keep it minimal.** Every line should pass this test: *"Can the agent discover this by reading the code?"* If yes, delete it.
+**Keep it minimal.** Every line should pass this test: _"Can the agent discover this by reading the code?"_ If yes, delete it.
 
 ### ✅ Do Include
 

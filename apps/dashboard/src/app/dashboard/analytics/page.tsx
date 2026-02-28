@@ -1,8 +1,17 @@
-import dynamic from "next/dynamic";
+import dynamic from 'next/dynamic';
 
 const AnalyticsDashboard = dynamic(
-  () => import("@/components/dashboard/analytics-dashboard").then((m) => ({ default: m.AnalyticsDashboard })),
-  { loading: () => <div className="h-64 flex items-center justify-center"><div className="h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent" /></div> }
+  () =>
+    import('@/components/dashboard/analytics-dashboard').then((m) => ({
+      default: m.AnalyticsDashboard,
+    })),
+  {
+    loading: () => (
+      <div className="h-64 flex items-center justify-center">
+        <div className="h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+      </div>
+    ),
+  },
 );
 
 export default function AnalyticsPage() {

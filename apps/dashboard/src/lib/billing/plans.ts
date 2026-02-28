@@ -8,7 +8,7 @@
 
 export const PLANS = {
   free: {
-    name: "Free",
+    name: 'Free',
     price: 0,
     repositories: 3,
     executionMinutes: 100,
@@ -16,7 +16,7 @@ export const PLANS = {
     parallelExecution: false,
     teamSeats: 1,
     notifications: false,
-    support: "community",
+    support: 'community',
     selfHosted: false,
     sso: false,
     rbac: false,
@@ -28,7 +28,7 @@ export const PLANS = {
     dedicatedSupport: false,
   },
   pro: {
-    name: "Pro",
+    name: 'Pro',
     price: 49,
     repositories: Infinity,
     executionMinutes: 1000,
@@ -36,7 +36,7 @@ export const PLANS = {
     parallelExecution: true,
     teamSeats: 5,
     notifications: true,
-    support: "priority",
+    support: 'priority',
     selfHosted: false,
     sso: false,
     rbac: false,
@@ -48,7 +48,7 @@ export const PLANS = {
     dedicatedSupport: false,
   },
   enterprise: {
-    name: "Enterprise",
+    name: 'Enterprise',
     price: 249,
     repositories: Infinity,
     executionMinutes: Infinity,
@@ -56,7 +56,7 @@ export const PLANS = {
     parallelExecution: true,
     teamSeats: Infinity,
     notifications: true,
-    support: "dedicated",
+    support: 'dedicated',
     selfHosted: true,
     sso: true,
     rbac: true,
@@ -64,12 +64,12 @@ export const PLANS = {
     approvalWorkflows: true,
     policyAsCode: true,
     customDashboards: true,
-    sla: "99.9%",
+    sla: '99.9%',
     dedicatedSupport: true,
   },
   /** AppSumo Tier 1 — $69 lifetime. 5 repos, 500 exec min/month. */
   appsumo_tier1: {
-    name: "AppSumo Tier 1",
+    name: 'AppSumo Tier 1',
     price: 0,
     repositories: 5,
     executionMinutes: 500,
@@ -77,7 +77,7 @@ export const PLANS = {
     parallelExecution: true,
     teamSeats: 1,
     notifications: true,
-    support: "priority",
+    support: 'priority',
     selfHosted: false,
     sso: false,
     rbac: false,
@@ -90,7 +90,7 @@ export const PLANS = {
   },
   /** AppSumo Tier 2 — $149 lifetime. 15 repos, 2000 exec min/month. */
   appsumo_tier2: {
-    name: "AppSumo Tier 2",
+    name: 'AppSumo Tier 2',
     price: 0,
     repositories: 15,
     executionMinutes: 2000,
@@ -98,7 +98,7 @@ export const PLANS = {
     parallelExecution: true,
     teamSeats: 5,
     notifications: true,
-    support: "priority",
+    support: 'priority',
     selfHosted: false,
     sso: false,
     rbac: false,
@@ -111,7 +111,7 @@ export const PLANS = {
   },
   /** AppSumo Tier 3 — $299 lifetime. 30 repos, 5000 exec min/month. */
   appsumo_tier3: {
-    name: "AppSumo Tier 3",
+    name: 'AppSumo Tier 3',
     price: 0,
     repositories: 30,
     executionMinutes: 5000,
@@ -119,7 +119,7 @@ export const PLANS = {
     parallelExecution: true,
     teamSeats: 10,
     notifications: true,
-    support: "priority",
+    support: 'priority',
     selfHosted: false,
     sso: false,
     rbac: false,
@@ -158,9 +158,9 @@ export function getLogRetentionDays(planId: PlanId): number {
 
 /** AppSumo plan IDs (lifetime deals). */
 export const APPSUMO_PLAN_IDS = [
-  "appsumo_tier1",
-  "appsumo_tier2",
-  "appsumo_tier3",
+  'appsumo_tier1',
+  'appsumo_tier2',
+  'appsumo_tier3',
 ] as const satisfies readonly PlanId[];
 
 export type AppSumoPlanId = (typeof APPSUMO_PLAN_IDS)[number];
@@ -171,6 +171,6 @@ export function isAppSumoPlan(planId: PlanId): planId is AppSumoPlanId {
 
 /** Whether a plan has Pro-level features (Pro, Enterprise, or AppSumo). */
 export function hasProFeatures(planId: PlanId): boolean {
-  if (planId === "pro" || planId === "enterprise") return true;
+  if (planId === 'pro' || planId === 'enterprise') return true;
   return isAppSumoPlan(planId);
 }

@@ -9,19 +9,19 @@ Supports both flat and nested `agent:` structure:
 ```yaml
 ---
 agent:
-  name: string           # Agent identifier
-  purpose: string        # Human-readable purpose
-  model: string          # AI model (gpt-4o-mini, claude-3-sonnet)
-  triggers: string[]     # pull_request.opened, push, etc.
-  permissions:           # Permission boundaries
+  name: string # Agent identifier
+  purpose: string # Human-readable purpose
+  model: string # AI model (gpt-4o-mini, claude-3-sonnet)
+  triggers: string[] # pull_request.opened, push, etc.
+  permissions: # Permission boundaries
     files: { read, edit, delete }
     shell: { allow: [], deny: [], default }
     browser: { allow: [] }
     pull_requests: read|write|none
     issues: read|write|none
     contents: read|write|none
-  guardrails: string[]   # "Never modify code", "Never merge"
-  metadata: Record       # Custom key-value
+  guardrails: string[] # "Never modify code", "Never merge"
+  metadata: Record # Custom key-value
 ---
 ```
 
@@ -56,9 +56,9 @@ Extracted: Setup commands, Testing instructions, Code style, PR guidelines, etc.
 
 ```js
 export default {
-  include: ["**/agents-md/**/*.md", "**/*.agents.md"],
-  exclude: ["**/node_modules/**"],
-  defaultTarget: "nearest",
+  include: ['**/agents-md/**/*.md', '**/*.agents.md'],
+  exclude: ['**/node_modules/**'],
+  defaultTarget: 'nearest',
   annotateSources: true,
 };
 ```

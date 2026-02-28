@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import { useCallback, useEffect, useMemo, useState } from "react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { BackLink } from "@/components/ui/back-link";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { BackLink } from '@/components/ui/back-link';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import {
   CheckCircle,
   XCircle,
@@ -16,10 +16,10 @@ import {
   Copy,
   Download,
   Check,
-} from "lucide-react";
-import type { Execution, ExecutionStep } from "@/types";
-import { getPlan } from "@/lib/billing/plans";
-import { cn } from "@/lib/core/utils";
+} from 'lucide-react';
+import type { Execution, ExecutionStep } from '@/types';
+import { getPlan } from '@/lib/billing/plans';
+import { cn } from '@/lib/core/utils';
 
 type PreflightReasonDetail = { code?: string; message?: string };
 type PreflightPlanItem = {
@@ -40,44 +40,45 @@ type PreflightPlan = {
 };
 
 function asStringArray(value: unknown): string[] {
-  return Array.isArray(value)
-    ? (value.filter((v) => typeof v === "string") as string[])
-    : [];
+  return Array.isArray(value) ? (value.filter((v) => typeof v === 'string') as string[]) : [];
 }
 
 function getFixSuggestion(
   code: string,
-  command?: string
+  command?: string,
 ): { description: string; snippet: string; link?: string; linkLabel?: string } | null {
-  const cmd = command || "<command>";
+  const cmd = command || '<command>';
   switch (code) {
-    case "PERMISSION_DENIED":
+    case 'PERMISSION_DENIED':
       return {
-        description: "Add this command to the shell allowlist in your AGENTS.md frontmatter:",
+        description: 'Add this command to the shell allowlist in your AGENTS.md frontmatter:',
         snippet: `permissions:
   shell:
     allow:
       - "${cmd}"
     default: deny`,
       };
-    case "APPROVAL_REQUIRED":
+    case 'APPROVAL_REQUIRED':
       return {
-        description: "This command requires human approval. Approve it in the Approvals page, or add the pattern to allowlist:",
+        description:
+          'This command requires human approval. Approve it in the Approvals page, or add the pattern to allowlist:',
         snippet: `# In policy: requireApprovalForPatterns
 # Add to allowlist or approve at dashboard/approvals`,
-        link: "/dashboard/approvals",
-        linkLabel: "View approvals",
+        link: '/dashboard/approvals',
+        linkLabel: 'View approvals',
       };
-    case "REQUIRES_SHELL":
+    case 'REQUIRES_SHELL':
       return {
-        description: "This command requires shell features (pipes, redirection). Rerun with --use-shell or add to AGENTS.md:",
+        description:
+          'This command requires shell features (pipes, redirection). Rerun with --use-shell or add to AGENTS.md:',
         snippet: `# CLI: agentmd run . --use-shell
 
 # Or in AGENTS.md, document that shell is required for this section.`,
       };
-    case "UNSAFE":
+    case 'UNSAFE':
       return {
-        description: "This command matches dangerous patterns. Remove or replace it. Do not add to allowlist.",
+        description:
+          'This command matches dangerous patterns. Remove or replace it. Do not add to allowlist.',
         snippet: `# Remove or replace the command.
 # Common unsafe patterns: rm -rf /, sudo, curl | sh, eval`,
       };
@@ -89,9 +90,9 @@ function getFixSuggestion(
 function asReasonDetails(value: unknown): Array<{ code: string; message: string }> {
   if (!Array.isArray(value)) return [];
   return value
-    .filter((v) => v && typeof v === "object")
+    .filter((v) => v && typeof v === 'object')
     .map((v) => v as PreflightReasonDetail)
-    .filter((v) => typeof v.code === "string" && typeof v.message === "string")
+    .filter((v) => typeof v.code === 'string' && typeof v.message === 'string')
     .map((v) => ({ code: v.code as string, message: v.message as string }));
 }
 
@@ -110,17 +111,17 @@ function normalizePreflightPlan(value: unknown): {
     requiresApproval: boolean;
   }>;
 } | null {
-  if (!value || typeof value !== "object") return null;
+  if (!value || typeof value !== 'object') return null;
   const plan = value as PreflightPlan;
   const rawItems = Array.isArray(plan.items) ? (plan.items as PreflightPlanItem[]) : [];
 
   const items = rawItems.map((item) => {
     const runnable = Boolean(item?.runnable);
     return {
-      command: typeof item?.command === "string" ? item.command : "",
-      type: typeof item?.type === "string" ? item.type : "",
-      section: typeof item?.section === "string" ? item.section : "",
-      line: typeof item?.line === "number" ? item.line : undefined,
+      command: typeof item?.command === 'string' ? item.command : '',
+      type: typeof item?.type === 'string' ? item.type : '',
+      section: typeof item?.section === 'string' ? item.section : '',
+      line: typeof item?.line === 'number' ? item.line : undefined,
       runnable,
       reasons: asStringArray(item?.reasons),
       reasonDetails: asReasonDetails(item?.reasonDetails),
@@ -130,11 +131,11 @@ function normalizePreflightPlan(value: unknown): {
   });
 
   const runnableCount =
-    typeof plan.runnableCount === "number"
+    typeof plan.runnableCount === 'number'
       ? plan.runnableCount
       : items.filter((i) => i.runnable).length;
   const blockedCount =
-    typeof plan.blockedCount === "number"
+    typeof plan.blockedCount === 'number'
       ? plan.blockedCount
       : items.filter((i) => !i.runnable).length;
 
@@ -142,7 +143,7 @@ function normalizePreflightPlan(value: unknown): {
 }
 
 export function ExecutionDetail({ executionId }: { executionId: string }) {
-  const id = executionId || "1";
+  const id = executionId || '1';
   const router = useRouter();
   const [steps, setSteps] = useState<ExecutionStep[]>([]);
   const [execution, setExecution] = useState<Execution | null>(null);
@@ -152,16 +153,16 @@ export function ExecutionDetail({ executionId }: { executionId: string }) {
   const [error, setError] = useState<string | null>(null);
   const [copiedPreflight, setCopiedPreflight] = useState(false);
   const [rerunning, setRerunning] = useState(false);
-  const [blockedSearch, setBlockedSearch] = useState("");
+  const [blockedSearch, setBlockedSearch] = useState('');
   const [blockedCodeFilter, setBlockedCodeFilter] = useState<string | null>(null);
   const [copiedCommand, setCopiedCommand] = useState<string | null>(null);
-  const executionLimit = getPlan("free").executionMinutes;
+  const executionLimit = getPlan('free').executionMinutes;
 
   const loadExecution = useCallback(async () => {
     try {
       const [executionRes, metaRes] = await Promise.all([
-        fetch(`/api/executions/${id}`, { cache: "no-store" }),
-        fetch("/api/executions?limit=1", { cache: "no-store" }),
+        fetch(`/api/executions/${id}`, { cache: 'no-store' }),
+        fetch('/api/executions?limit=1', { cache: 'no-store' }),
       ]);
 
       if (executionRes.status === 404) {
@@ -178,7 +179,7 @@ export function ExecutionDetail({ executionId }: { executionId: string }) {
         error?: string;
       };
       if (!executionRes.ok || executionData.ok === false) {
-        throw new Error(executionData.error ?? "Failed to load execution details.");
+        throw new Error(executionData.error ?? 'Failed to load execution details.');
       }
 
       const metaData = (await metaRes.json()) as {
@@ -193,9 +194,7 @@ export function ExecutionDetail({ executionId }: { executionId: string }) {
       setError(null);
     } catch (loadError) {
       setError(
-        loadError instanceof Error
-          ? loadError.message
-          : "Failed to load execution details."
+        loadError instanceof Error ? loadError.message : 'Failed to load execution details.',
       );
     } finally {
       setLoading(false);
@@ -210,7 +209,7 @@ export function ExecutionDetail({ executionId }: { executionId: string }) {
 
   useEffect(() => {
     if (notFound) return;
-    if (execution?.status !== "pending" && execution?.status !== "running") return;
+    if (execution?.status !== 'pending' && execution?.status !== 'running') return;
     const intervalId = setInterval(() => {
       void loadExecution();
     }, 5000);
@@ -223,22 +222,20 @@ export function ExecutionDetail({ executionId }: { executionId: string }) {
   const cancelExecution = async () => {
     setCancelling(true);
     try {
-      const res = await fetch(`/api/executions/${id}/cancel`, { method: "POST" });
+      const res = await fetch(`/api/executions/${id}/cancel`, { method: 'POST' });
       const data = (await res.json()) as { ok?: boolean; error?: string };
       if (!res.ok || data.ok === false) {
-        throw new Error(data.error ?? "Failed to cancel");
+        throw new Error(data.error ?? 'Failed to cancel');
       }
       await loadExecution();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to cancel execution");
+      setError(err instanceof Error ? err.message : 'Failed to cancel execution');
     } finally {
       setCancelling(false);
     }
   };
 
-  const durationSeconds = execution?.durationMs
-    ? (execution.durationMs / 1000).toFixed(1)
-    : "0.0";
+  const durationSeconds = execution?.durationMs ? (execution.durationMs / 1000).toFixed(1) : '0.0';
 
   const preflight = useMemo(() => {
     if (execution?.blockedCommands && Array.isArray(execution.blockedCommands)) {
@@ -253,7 +250,7 @@ export function ExecutionDetail({ executionId }: { executionId: string }) {
         reasons: bc.messages,
         reasonDetails: bc.codes.map((code, i) => ({
           code,
-          message: bc.messages[i] ?? bc.messages[0] ?? "Blocked",
+          message: bc.messages[i] ?? bc.messages[0] ?? 'Blocked',
         })),
         requiresShell: bc.requiresShell,
         requiresApproval: bc.requiresApproval,
@@ -261,7 +258,12 @@ export function ExecutionDetail({ executionId }: { executionId: string }) {
       return { runnableCount, blockedCount, items };
     }
     return normalizePreflightPlan(execution?.preflightPlan);
-  }, [execution?.preflightPlan, execution?.blockedCommands, execution?.preflightRunnableCount, execution?.preflightBlockedCount]);
+  }, [
+    execution?.preflightPlan,
+    execution?.blockedCommands,
+    execution?.preflightRunnableCount,
+    execution?.preflightBlockedCount,
+  ]);
 
   const preflightJson = useMemo(() => {
     if (!execution?.preflightPlan) return null;
@@ -294,7 +296,7 @@ export function ExecutionDetail({ executionId }: { executionId: string }) {
         const codes =
           i.reasonDetails.length > 0
             ? Array.from(new Set(i.reasonDetails.map((d) => d.code)))
-            : ["UNKNOWN"];
+            : ['UNKNOWN'];
         return { ...i, codes };
       });
   }, [preflight]);
@@ -307,24 +309,30 @@ export function ExecutionDetail({ executionId }: { executionId: string }) {
       }
       if (!q) return true;
       const haystack = [item.command, item.type, item.section, ...item.reasons]
-        .join("\n")
+        .join('\n')
         .toLowerCase();
       return haystack.includes(q);
     });
   }, [blockedItems, blockedCodeFilter, blockedSearch]);
 
   const blockedByCode = useMemo(() => {
-    if (!preflight) return [] as Array<{ code: string; count: number; messages: string[]; sampleCommand?: string }>;
+    if (!preflight)
+      return [] as Array<{
+        code: string;
+        count: number;
+        messages: string[];
+        sampleCommand?: string;
+      }>;
 
     const map = new Map<string, { count: number; messages: Set<string>; sampleCommand?: string }>();
     for (const item of preflight.items.filter((i) => !i.runnable)) {
       const details = item.reasonDetails;
       if (details.length === 0) {
-        const entry = map.get("UNKNOWN") ?? { count: 0, messages: new Set<string>() };
+        const entry = map.get('UNKNOWN') ?? { count: 0, messages: new Set<string>() };
         entry.count += 1;
         for (const message of item.reasons) entry.messages.add(message);
         if (!entry.sampleCommand && item.command) entry.sampleCommand = item.command;
-        map.set("UNKNOWN", entry);
+        map.set('UNKNOWN', entry);
         continue;
       }
 
@@ -349,22 +357,23 @@ export function ExecutionDetail({ executionId }: { executionId: string }) {
   }, [preflight]);
 
   const completedSteps = useMemo(
-    () => steps.filter((step) => step.status === "success").length,
-    [steps]
+    () => steps.filter((step) => step.status === 'success').length,
+    [steps],
   );
 
   if (!loading && notFound) {
     return (
       <div className="space-y-6">
-        <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-sm text-muted-foreground">
+        <nav
+          aria-label="Breadcrumb"
+          className="flex items-center gap-2 text-sm text-muted-foreground"
+        >
           <BackLink href="/dashboard/executions">Executions</BackLink>
           <ChevronRight className="h-4 w-4 shrink-0" aria-hidden />
           <span className="font-medium text-foreground">Execution {id}</span>
         </nav>
         <h1 className="text-2xl font-bold">Execution not found</h1>
-        <p className="text-muted-foreground">
-          The requested execution id does not exist.
-        </p>
+        <p className="text-muted-foreground">The requested execution id does not exist.</p>
       </div>
     );
   }
@@ -378,9 +387,9 @@ export function ExecutionDetail({ executionId }: { executionId: string }) {
 
   const downloadPreflight = () => {
     if (!preflightJson) return;
-    const blob = new Blob([preflightJson], { type: "application/json;charset=utf-8;" });
+    const blob = new Blob([preflightJson], { type: 'application/json;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
+    const a = document.createElement('a');
     a.href = url;
     a.download = `execution-${id}-preflight.json`;
     a.click();
@@ -396,29 +405,25 @@ export function ExecutionDetail({ executionId }: { executionId: string }) {
 
   const executionMinutes = execution?.durationMs
     ? (execution.durationMs / 60000).toFixed(2)
-    : "0.00";
+    : '0.00';
 
   const exportLogs = () => {
     if (!steps.length) return;
-    const header = ["stepId", "command", "type", "status", "durationMs", "outputOrError"];
+    const header = ['stepId', 'command', 'type', 'status', 'durationMs', 'outputOrError'];
     const rows = steps.map((step) => [
       step.id,
       step.command,
       step.type,
       step.status,
-      String(step.durationMs ?? ""),
-      step.error ?? step.output ?? "",
+      String(step.durationMs ?? ''),
+      step.error ?? step.output ?? '',
     ]);
     const csv = [header, ...rows]
-      .map((row) =>
-        row
-          .map((value) => `"${String(value).replaceAll('"', '""')}"`)
-          .join(",")
-      )
-      .join("\n");
-    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+      .map((row) => row.map((value) => `"${String(value).replaceAll('"', '""')}"`).join(','))
+      .join('\n');
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
+    const a = document.createElement('a');
     a.href = url;
     a.download = `execution-${id}-logs.csv`;
     a.click();
@@ -427,7 +432,10 @@ export function ExecutionDetail({ executionId }: { executionId: string }) {
 
   return (
     <div className="space-y-8 max-w-5xl mx-auto">
-      <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-sm text-muted-foreground animate-fade-in">
+      <nav
+        aria-label="Breadcrumb"
+        className="flex items-center gap-2 text-sm text-muted-foreground animate-fade-in"
+      >
         <BackLink href="/dashboard/executions">Executions</BackLink>
         <ChevronRight className="h-4 w-4 shrink-0" aria-hidden />
         <span className="font-medium text-foreground">Execution {id}</span>
@@ -436,39 +444,46 @@ export function ExecutionDetail({ executionId }: { executionId: string }) {
         <div>
           <h1 className="text-2xl font-bold">Execution {id}</h1>
           <p className="text-muted-foreground">
-            {execution?.repositoryName ?? "Unknown repository"} ·{" "}
-            {execution?.trigger ?? "unknown"} · {durationSeconds}s
+            {execution?.repositoryName ?? 'Unknown repository'} · {execution?.trigger ?? 'unknown'}{' '}
+            · {durationSeconds}s
           </p>
           <div className="mt-3 flex flex-wrap gap-2">
             <Badge variant="secondary">Steps {steps.length}</Badge>
             <Badge variant="success">Completed {completedSteps}</Badge>
             {execution?.executionMode && (
-              <Badge variant="outline" title={execution.executionMode === "real" ? "Commands ran in worker (AGENTMD_REAL_EXECUTION=1)" : "Simulated execution (default)"}>
-                {execution.executionMode === "real" ? "Real execution" : "Mock execution"}
+              <Badge
+                variant="outline"
+                title={
+                  execution.executionMode === 'real'
+                    ? 'Commands ran in worker (AGENTMD_REAL_EXECUTION=1)'
+                    : 'Simulated execution (default)'
+                }
+              >
+                {execution.executionMode === 'real' ? 'Real execution' : 'Mock execution'}
               </Badge>
             )}
             <Badge
               variant={
-                execution?.status === "failed"
-                  ? "destructive"
-                  : execution?.status === "cancelled"
-                    ? "secondary"
-                    : "default"
+                execution?.status === 'failed'
+                  ? 'destructive'
+                  : execution?.status === 'cancelled'
+                    ? 'secondary'
+                    : 'default'
               }
             >
-              {execution?.status ?? "pending"}
+              {execution?.status ?? 'pending'}
             </Badge>
           </div>
         </div>
         <div className="flex gap-2">
-          {(execution?.status === "pending" || execution?.status === "running") && (
+          {(execution?.status === 'pending' || execution?.status === 'running') && (
             <Button
               variant="destructive"
               size="sm"
               onClick={() => void cancelExecution()}
               disabled={cancelling}
             >
-              {cancelling ? "Cancelling..." : "Cancel"}
+              {cancelling ? 'Cancelling...' : 'Cancel'}
             </Button>
           )}
 
@@ -480,14 +495,14 @@ export function ExecutionDetail({ executionId }: { executionId: string }) {
                 setRerunning(true);
                 setError(null);
                 try {
-                  const response = await fetch("/api/execute", {
-                    method: "POST",
+                  const response = await fetch('/api/execute', {
+                    method: 'POST',
                     headers: {
-                      "Content-Type": "application/json",
-                      "Idempotency-Key": crypto.randomUUID(),
+                      'Content-Type': 'application/json',
+                      'Idempotency-Key': crypto.randomUUID(),
                     },
                     body: JSON.stringify({
-                      trigger: "manual",
+                      trigger: 'manual',
                       repositoryId: execution.repositoryId,
                       agentsMdUrl: execution.agentsMdUrl,
                     }),
@@ -498,23 +513,23 @@ export function ExecutionDetail({ executionId }: { executionId: string }) {
                     dashboardExecution?: { id?: string };
                   };
                   if (!response.ok || data.ok === false) {
-                    throw new Error(data.error ?? "Failed to rerun execution");
+                    throw new Error(data.error ?? 'Failed to rerun execution');
                   }
                   const nextId = data.dashboardExecution?.id;
-                  if (typeof nextId === "string" && nextId.length > 0) {
+                  if (typeof nextId === 'string' && nextId.length > 0) {
                     router.push(`/dashboard/executions/${nextId}`);
                     return;
                   }
                   await loadExecution();
                 } catch (err) {
-                  setError(err instanceof Error ? err.message : "Failed to rerun execution");
+                  setError(err instanceof Error ? err.message : 'Failed to rerun execution');
                 } finally {
                   setRerunning(false);
                 }
               }}
               disabled={rerunning}
             >
-              {rerunning ? "Rerunning..." : "Rerun"}
+              {rerunning ? 'Rerunning...' : 'Rerun'}
             </Button>
           ) : null}
 
@@ -528,7 +543,12 @@ export function ExecutionDetail({ executionId }: { executionId: string }) {
         <Card className="border-destructive/30 bg-destructive/5 border-luminescent overflow-hidden">
           <CardContent className="py-4">
             <p className="text-sm text-destructive font-medium">{error}</p>
-            <Button size="sm" variant="outline" className="mt-3 btn-tactile" onClick={() => void loadExecution()}>
+            <Button
+              size="sm"
+              variant="outline"
+              className="mt-3 btn-tactile"
+              onClick={() => void loadExecution()}
+            >
               Retry
             </Button>
           </CardContent>
@@ -544,9 +564,7 @@ export function ExecutionDetail({ executionId }: { executionId: string }) {
                   <span className="h-2 w-2 rounded-full bg-primary shadow-[0_0_8px_hsl(var(--primary))]" />
                   Timeline
                 </CardTitle>
-                <p className="text-sm text-muted-foreground">
-                  Each step from AGENTS.md commands
-                </p>
+                <p className="text-sm text-muted-foreground">Each step from AGENTS.md commands</p>
               </div>
               {steps.length > 0 && (
                 <div className="flex items-center gap-1.5 overflow-x-auto py-1">
@@ -554,20 +572,23 @@ export function ExecutionDetail({ executionId }: { executionId: string }) {
                     <span key={step.id} className="flex items-center gap-1.5 shrink-0">
                       <span
                         className={cn(
-                          "rounded-lg px-2 py-1 text-xs font-mono",
-                          step.status === "success"
-                            ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
-                            : step.status === "failed" || step.status === "blocked"
-                              ? "bg-red-500/10 text-red-600 dark:text-red-400"
-                              : step.status === "running"
-                                ? "bg-primary/10 text-primary"
-                                : "bg-muted text-muted-foreground"
+                          'rounded-lg px-2 py-1 text-xs font-mono',
+                          step.status === 'success'
+                            ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400'
+                            : step.status === 'failed' || step.status === 'blocked'
+                              ? 'bg-red-500/10 text-red-600 dark:text-red-400'
+                              : step.status === 'running'
+                                ? 'bg-primary/10 text-primary'
+                                : 'bg-muted text-muted-foreground',
                         )}
                       >
-                        {step.type || "cmd"}
+                        {step.type || 'cmd'}
                       </span>
                       {i < steps.length - 1 && (
-                        <ChevronRight className="h-3.5 w-3.5 text-muted-foreground/50" aria-hidden />
+                        <ChevronRight
+                          className="h-3.5 w-3.5 text-muted-foreground/50"
+                          aria-hidden
+                        />
                       )}
                     </span>
                   ))}
@@ -594,23 +615,29 @@ export function ExecutionDetail({ executionId }: { executionId: string }) {
                 {steps.map((step, i) => (
                   <div
                     key={step.id}
-                    className={`relative flex items-start gap-4 rounded-2xl border p-5 transition-all duration-300 ${step.status === "running"
-                        ? "border-primary/40 bg-primary/5 shadow-glow animate-thought-pulse ring-1 ring-primary/20"
-                        : "border-border hover:border-primary/20 bg-card/30"
-                      }`}
+                    className={`relative flex items-start gap-4 rounded-2xl border p-5 transition-all duration-300 ${
+                      step.status === 'running'
+                        ? 'border-primary/40 bg-primary/5 shadow-glow animate-thought-pulse ring-1 ring-primary/20'
+                        : 'border-border hover:border-primary/20 bg-card/30'
+                    }`}
                   >
                     {i < steps.length - 1 ? (
                       <div className="absolute left-[35px] top-14 h-6 w-px bg-border/40" />
                     ) : null}
-                    <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border ${step.status === "running" ? "bg-primary/20 border-primary/40" : "bg-muted/50 border-border"
-                      }`}>
-                      {step.status === "success" ? (
+                    <div
+                      className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border ${
+                        step.status === 'running'
+                          ? 'bg-primary/20 border-primary/40'
+                          : 'bg-muted/50 border-border'
+                      }`}
+                    >
+                      {step.status === 'success' ? (
                         <CheckCircle className="h-5 w-5 text-emerald-500" />
-                      ) : step.status === "failed" ? (
+                      ) : step.status === 'failed' ? (
                         <XCircle className="h-5 w-5 text-red-500" />
-                      ) : step.status === "blocked" ? (
+                      ) : step.status === 'blocked' ? (
                         <AlertTriangle className="h-5 w-5 text-amber-500" />
-                      ) : step.status === "running" ? (
+                      ) : step.status === 'running' ? (
                         <div className="relative">
                           <ChevronRight className="h-5 w-5 text-primary animate-pulse" />
                           <span className="absolute -top-1 -right-1 flex h-2 w-2">
@@ -624,34 +651,38 @@ export function ExecutionDetail({ executionId }: { executionId: string }) {
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex flex-wrap items-center gap-3">
-                        <code className="text-sm font-mono font-medium text-foreground/90">{step.command}</code>
+                        <code className="text-sm font-mono font-medium text-foreground/90">
+                          {step.command}
+                        </code>
                         <div className="flex flex-wrap gap-2">
-                          <Badge variant="secondary" className="font-normal">{step.type}</Badge>
+                          <Badge variant="secondary" className="font-normal">
+                            {step.type}
+                          </Badge>
                           <Badge
                             variant={
-                              step.status === "success"
-                                ? "success"
-                                : step.status === "failed"
-                                  ? "destructive"
-                                  : step.status === "blocked"
-                                    ? "warning"
-                                    : step.status === "running"
-                                      ? "default"
-                                      : "secondary"
+                              step.status === 'success'
+                                ? 'success'
+                                : step.status === 'failed'
+                                  ? 'destructive'
+                                  : step.status === 'blocked'
+                                    ? 'warning'
+                                    : step.status === 'running'
+                                      ? 'default'
+                                      : 'secondary'
                             }
-                            className={step.status === "running" ? "animate-pulse" : ""}
+                            className={step.status === 'running' ? 'animate-pulse' : ''}
                           >
-                            {step.status === "running" ? "thinking..." : step.status}
+                            {step.status === 'running' ? 'thinking...' : step.status}
                           </Badge>
-                          {step.status === "blocked" && step.reasonDetails?.length ? (
+                          {step.status === 'blocked' && step.reasonDetails?.length ? (
                             <>
-                              {Array.from(
-                                new Set(step.reasonDetails.map((d) => d.code))
-                              ).map((code) => (
-                                <Badge key={code} variant="outline">
-                                  {code}
-                                </Badge>
-                              ))}
+                              {Array.from(new Set(step.reasonDetails.map((d) => d.code))).map(
+                                (code) => (
+                                  <Badge key={code} variant="outline">
+                                    {code}
+                                  </Badge>
+                                ),
+                              )}
                             </>
                           ) : null}
                         </div>
@@ -704,7 +735,7 @@ export function ExecutionDetail({ executionId }: { executionId: string }) {
                         variant="outline"
                         onClick={() => void copyPreflight()}
                         className="h-9"
-                        aria-label={copiedPreflight ? "Copied" : "Copy preflight JSON"}
+                        aria-label={copiedPreflight ? 'Copied' : 'Copy preflight JSON'}
                       >
                         {copiedPreflight ? (
                           <>
@@ -734,7 +765,7 @@ export function ExecutionDetail({ executionId }: { executionId: string }) {
               <CardContent className="space-y-4">
                 <div className="flex flex-wrap gap-2">
                   <Badge variant="success">Runnable {preflight.runnableCount}</Badge>
-                  <Badge variant={preflight.blockedCount > 0 ? "warning" : "secondary"}>
+                  <Badge variant={preflight.blockedCount > 0 ? 'warning' : 'secondary'}>
                     Blocked {preflight.blockedCount}
                   </Badge>
                 </div>
@@ -763,8 +794,12 @@ export function ExecutionDetail({ executionId }: { executionId: string }) {
                           ) : null}
                           {fix ? (
                             <div className="mt-4 rounded-xl border border-primary/20 bg-primary/5 p-3">
-                              <p className="text-xs font-medium text-foreground mb-2">Fix suggestion</p>
-                              <p className="text-xs text-muted-foreground mb-2">{fix.description}</p>
+                              <p className="text-xs font-medium text-foreground mb-2">
+                                Fix suggestion
+                              </p>
+                              <p className="text-xs text-muted-foreground mb-2">
+                                {fix.description}
+                              </p>
                               <div className="relative group">
                                 <pre className="text-xs font-mono bg-muted/50 rounded-lg p-3 overflow-x-auto">
                                   {fix.snippet}
@@ -794,7 +829,8 @@ export function ExecutionDetail({ executionId }: { executionId: string }) {
 
                     <div className="pt-2">
                       <p className="text-xs text-muted-foreground">
-                        Tip: use the table below to copy blocked commands and jump to relevant settings.
+                        Tip: use the table below to copy blocked commands and jump to relevant
+                        settings.
                       </p>
                     </div>
                   </div>
@@ -815,7 +851,7 @@ export function ExecutionDetail({ executionId }: { executionId: string }) {
                       <div className="flex flex-wrap gap-2">
                         <Button
                           size="sm"
-                          variant={blockedCodeFilter === null ? "default" : "outline"}
+                          variant={blockedCodeFilter === null ? 'default' : 'outline'}
                           onClick={() => setBlockedCodeFilter(null)}
                         >
                           All
@@ -824,7 +860,7 @@ export function ExecutionDetail({ executionId }: { executionId: string }) {
                           <Button
                             key={row.code}
                             size="sm"
-                            variant={blockedCodeFilter === row.code ? "default" : "outline"}
+                            variant={blockedCodeFilter === row.code ? 'default' : 'outline'}
                             onClick={() => setBlockedCodeFilter(row.code)}
                           >
                             {row.code}
@@ -846,11 +882,13 @@ export function ExecutionDetail({ executionId }: { executionId: string }) {
                           </div>
                         ) : (
                           filteredBlockedItems.map((item, idx) => {
-                            const primaryCode = item.codes[0] ?? "UNKNOWN";
+                            const primaryCode = item.codes[0] ?? 'UNKNOWN';
                             const primaryMessage =
-                              item.reasonDetails.find((d: { code: string; message: string }) => d.code === primaryCode)?.message ??
+                              item.reasonDetails.find(
+                                (d: { code: string; message: string }) => d.code === primaryCode,
+                              )?.message ??
                               item.reasons[0] ??
-                              "Blocked";
+                              'Blocked';
 
                             return (
                               <div
@@ -859,7 +897,7 @@ export function ExecutionDetail({ executionId }: { executionId: string }) {
                               >
                                 <div className="col-span-7 min-w-0">
                                   <code className="block text-xs font-mono text-foreground/90 break-words">
-                                    {item.command || "(unknown command)"}
+                                    {item.command || '(unknown command)'}
                                   </code>
                                   <div className="mt-1 flex flex-wrap gap-2">
                                     {item.type ? (
@@ -891,7 +929,7 @@ export function ExecutionDetail({ executionId }: { executionId: string }) {
                                   <p className="mt-1 text-[11px] text-muted-foreground leading-relaxed">
                                     {primaryMessage}
                                   </p>
-                                  {primaryCode === "PERMISSION_DENIED" ? (
+                                  {primaryCode === 'PERMISSION_DENIED' ? (
                                     <Link
                                       href="/dashboard/enterprise/policies"
                                       className="mt-2 inline-block text-[11px] text-primary hover:underline"
@@ -899,9 +937,10 @@ export function ExecutionDetail({ executionId }: { executionId: string }) {
                                       Review policies →
                                     </Link>
                                   ) : null}
-                                  {primaryCode === "REQUIRES_SHELL" ? (
+                                  {primaryCode === 'REQUIRES_SHELL' ? (
                                     <p className="mt-2 text-[11px] text-muted-foreground">
-                                      Hint: rerun with <code className="font-mono">--use-shell</code>.
+                                      Hint: rerun with{' '}
+                                      <code className="font-mono">--use-shell</code>.
                                     </p>
                                   ) : null}
                                 </div>
@@ -940,14 +979,14 @@ export function ExecutionDetail({ executionId }: { executionId: string }) {
           <Card className="bento-card border-luminescent">
             <CardHeader className="pb-2">
               <CardTitle className="text-lg">Cost & Compute</CardTitle>
-              <p className="text-sm text-muted-foreground">
-                Compute time this run
-              </p>
+              <p className="text-sm text-muted-foreground">Compute time this run</p>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="p-4 rounded-2xl bg-muted/30 border border-border/50">
                 <div className="flex items-center justify-between mb-1">
-                  <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Duration</span>
+                  <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                    Duration
+                  </span>
                   <span className="font-mono text-sm font-bold">{executionMinutes} min</span>
                 </div>
                 <div className="h-1.5 w-full bg-muted rounded-full overflow-hidden">
@@ -976,7 +1015,11 @@ export function ExecutionDetail({ executionId }: { executionId: string }) {
               <p className="text-xs text-muted-foreground leading-relaxed">
                 AgentMD identified 2 optimizations to reduce execution time by ~1.2s.
               </p>
-              <Button size="sm" variant="outline" className="w-full mt-4 text-xs h-8 border-primary/20 hover:bg-primary/10 transition-colors">
+              <Button
+                size="sm"
+                variant="outline"
+                className="w-full mt-4 text-xs h-8 border-primary/20 hover:bg-primary/10 transition-colors"
+              >
                 Apply Suggestions
               </Button>
             </CardContent>

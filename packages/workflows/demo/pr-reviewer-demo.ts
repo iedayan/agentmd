@@ -30,11 +30,12 @@ pnpm lint
       level: 1,
       title: 'Testing',
       heading: '# Testing',
-      content: '## Build commands\n\n```bash\npnpm build\n```\n\n## Test commands\n\n```bash\npnpm test\n```\n\n## Linting\n\n```bash\npnpm lint\n```',
+      content:
+        '## Build commands\n\n```bash\npnpm build\n```\n\n## Test commands\n\n```bash\npnpm test\n```\n\n## Linting\n\n```bash\npnpm lint\n```',
       children: [],
       lineStart: 1,
-      lineEnd: 14
-    }
+      lineEnd: 14,
+    },
   ],
   commands: [
     {
@@ -42,25 +43,25 @@ pnpm lint
       section: 'Testing',
       line: 4,
       type: 'build',
-      context: undefined
+      context: undefined,
     },
     {
       command: 'pnpm test',
       section: 'Testing',
       line: 8,
       type: 'test',
-      context: undefined
+      context: undefined,
     },
     {
       command: 'pnpm lint',
       section: 'Testing',
       line: 12,
       type: 'lint',
-      context: undefined
-    }
+      context: undefined,
+    },
   ],
   lineCount: 14,
-  filePath: 'AGENTS.md'
+  filePath: 'AGENTS.md',
 };
 
 // Create a demo workflow with mocked data
@@ -68,7 +69,7 @@ async function createDemoWorkflow() {
   const workflow = new PRReviewerWorkflow({
     owner: 'agentmd',
     repo: 'demo-repo',
-    prNumber: 42
+    prNumber: 42,
   });
 
   // Override the private methods with mocked implementations
@@ -79,7 +80,7 @@ async function createDemoWorkflow() {
       author: 'john-doe',
       baseBranch: 'main',
       headBranch: 'feature/auth',
-      changedFiles: ['src/auth/oauth.ts', 'src/auth/jwt.ts', 'src/middleware/auth.ts']
+      changedFiles: ['src/auth/oauth.ts', 'src/auth/jwt.ts', 'src/middleware/auth.ts'],
     };
   };
 
@@ -90,29 +91,29 @@ async function createDemoWorkflow() {
         type: 'added' as const,
         additions: 150,
         deletions: 0,
-        content: 'export class OAuthProvider { ... }'
+        content: 'export class OAuthProvider { ... }',
       },
       {
         path: 'src/auth/jwt.ts',
         type: 'added' as const,
         additions: 80,
         deletions: 0,
-        content: 'export class JWTService { ... }'
+        content: 'export class JWTService { ... }',
       },
       {
         path: 'src/middleware/auth.ts',
         type: 'modified' as const,
         additions: 25,
         deletions: 5,
-        content: 'export function authMiddleware() { ... }'
+        content: 'export function authMiddleware() { ... }',
       },
       {
         path: 'README.md',
         type: 'modified' as const,
         additions: 15,
         deletions: 0,
-        content: '# Authentication docs updated'
-      }
+        content: '# Authentication docs updated',
+      },
     ];
   };
 
@@ -125,19 +126,19 @@ async function createDemoWorkflow() {
 
 async function runDemo() {
   console.log('🚀 PR Reviewer Demo\n');
-  
+
   const workflow = await createDemoWorkflow();
 
   console.log('📊 Running PR review analysis...\n');
-  
+
   try {
     const result = await workflow.execute();
-    
+
     console.log('📋 Review Results:');
     console.log('==================');
     console.log(`Overall Score: ${result.overallScore}/100`);
     console.log(`Status: ${result.summary}\n`);
-    
+
     console.log('Detailed Results:');
     console.log('-----------------');
     result.results.forEach((review: any, index: number) => {
@@ -151,7 +152,6 @@ async function runDemo() {
       }
       console.log('');
     });
-    
   } catch (error) {
     console.error('❌ Demo failed:', error);
   }

@@ -9,26 +9,28 @@ AgentMD makes AGENTS.md executable. This skill guides correct usage of the CLI f
 
 ## Quick Reference
 
-| Command | Purpose |
-|---------|---------|
-| `agentmd init [path]` | Create AGENTS.md (auto-detects project type) |
-| `agentmd check [path]` | Validate AGENTS.md |
-| `agentmd check --contract` | Validate with output contract |
-| `agentmd score [path]` | Agent-readiness score (0–100) |
-| `agentmd run [path] [types]` | Execute commands (build, test, lint) |
-| `agentmd compose [path]` | Build AGENTS.md from fragments |
-| `agentmd doctor [path]` | Diagnose quality and next steps |
-| `agentmd export [path]` | Generate GitHub Actions YAML |
+| Command                      | Purpose                                      |
+| ---------------------------- | -------------------------------------------- |
+| `agentmd init [path]`        | Create AGENTS.md (auto-detects project type) |
+| `agentmd check [path]`       | Validate AGENTS.md                           |
+| `agentmd check --contract`   | Validate with output contract                |
+| `agentmd score [path]`       | Agent-readiness score (0–100)                |
+| `agentmd run [path] [types]` | Execute commands (build, test, lint)         |
+| `agentmd compose [path]`     | Build AGENTS.md from fragments               |
+| `agentmd doctor [path]`      | Diagnose quality and next steps              |
+| `agentmd export [path]`      | Generate GitHub Actions YAML                 |
 
 ## When to Use Each Command
 
 **Creating AGENTS.md**
+
 ```bash
 agentmd init                    # Auto-detect (Node, Python, Rust, Go)
 agentmd init --template python  # Force template
 ```
 
 **Validation**
+
 ```bash
 agentmd check .                 # Basic validation
 agentmd check . --contract      # Require output_contract in frontmatter
@@ -37,6 +39,7 @@ agentmd check . --json          # JSON output
 ```
 
 **Execution**
+
 ```bash
 agentmd run . --dry-run         # Preview without executing
 agentmd run . test             # Run only test commands
@@ -44,12 +47,14 @@ agentmd run . build test       # Run build then test
 ```
 
 **Scoring**
+
 ```bash
 agentmd score .                # 0–100 agent-readiness score
 agentmd score . --json         # JSON output
 ```
 
 **Composition**
+
 ```bash
 agentmd compose .               # Merge **/agents-md/**/*.md and **/*.agents.md
 ```
@@ -74,8 +79,8 @@ output_contract:
   schema:
     summary: string
     success: boolean
-  quality_gates: ["0 errors", "0 warnings"]
-  exit_criteria: ["success is true"]
+  quality_gates: ['0 errors', '0 warnings']
+  exit_criteria: ['success is true']
 ```
 
 Then: `agentmd check . --contract`
@@ -97,6 +102,7 @@ Redirect to `.github/workflows/agentmd.yml` or use the official AgentMD GitHub A
 ## Common Workflows
 
 **First-time setup**
+
 ```bash
 agentmd init
 agentmd check . --contract
@@ -104,12 +110,14 @@ agentmd score .
 ```
 
 **CI integration**
+
 ```bash
 agentmd check . --contract --output agent-output.json
 agentmd run . test
 ```
 
 **Self-improve from validation feedback**
+
 ```bash
 agentmd improve . --apply
 ```

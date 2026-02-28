@@ -1,4 +1,4 @@
-import { getPublicAppUrl } from "@/lib/core/public-url";
+import { getPublicAppUrl } from '@/lib/core/public-url';
 
 export interface OgImageParams {
   title: string;
@@ -14,9 +14,9 @@ export interface OgImageParams {
 export function buildOgUrl(params: OgImageParams): string {
   const baseUrl = getPublicAppUrl();
   const searchParams = new URLSearchParams();
-  searchParams.set("title", params.title);
-  if (params.description) searchParams.set("description", params.description);
-  if (params.score != null) searchParams.set("score", String(params.score));
-  if (params.site) searchParams.set("site", params.site);
+  searchParams.set('title', params.title);
+  if (params.description) searchParams.set('description', params.description);
+  if (params.score != null) searchParams.set('score', String(params.score));
+  if (params.site) searchParams.set('site', params.site);
   return `${baseUrl}/api/og?${searchParams.toString()}`;
 }

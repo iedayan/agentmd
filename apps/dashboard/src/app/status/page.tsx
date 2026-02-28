@@ -1,6 +1,6 @@
-import Link from "next/link";
-import { CheckCircle, AlertCircle } from "lucide-react";
-import { Logo } from "@/components/brand/logo";
+import Link from 'next/link';
+import { CheckCircle, AlertCircle } from 'lucide-react';
+import { Logo } from '@/components/brand/logo';
 
 export default function StatusPage() {
   return (

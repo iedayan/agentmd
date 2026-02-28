@@ -2,16 +2,16 @@
  * Execute API business logic.
  * Extracted from route handler for testability and clarity.
  */
-import type { TriggerType } from "@/types";
-import type { ApiExecutionRecord } from "@/lib/data/dashboard-data";
-import type { Execution } from "@/types";
+import type { TriggerType } from '@/types';
+import type { ApiExecutionRecord } from '@/lib/data/dashboard-data';
+import type { Execution } from '@/types';
 import {
   addAuditLog,
   createQueuedExecution,
   getRepositoryById,
-} from "@/lib/data/dashboard-data-facade";
-import { createJob } from "@/lib/core/job-queue";
-import { evaluateExecutionPreflight } from "@/lib/analytics/governance-data";
+} from '@/lib/data/dashboard-data-facade';
+import { createJob } from '@/lib/core/job-queue';
+import { evaluateExecutionPreflight } from '@/lib/analytics/governance-data';
 
 export interface ExecuteInput {
   userId: string;
@@ -47,7 +47,7 @@ export async function evaluatePreflight(input: {
     : undefined;
 
   if (input.repositoryId && !repository) {
-    return { allowed: false, reason: "Unknown repositoryId", code: "REPOSITORY_NOT_FOUND" };
+    return { allowed: false, reason: 'Unknown repositoryId', code: 'REPOSITORY_NOT_FOUND' };
   }
 
   const preflight = evaluateExecutionPreflight({
@@ -81,7 +81,7 @@ export async function queueExecution(input: ExecuteInput): Promise<ExecuteResult
       trigger: input.trigger,
       agentsMdUrl: resolvedAgentsMdUrl,
       idempotencyKey: input.idempotencyKey,
-    }
+    },
   );
 
   if (!idempotentReplay) {
@@ -97,8 +97,8 @@ export async function queueExecution(input: ExecuteInput): Promise<ExecuteResult
   if (!idempotentReplay) {
     await addAuditLog({
       userId: input.userId,
-      action: "execution.queued",
-      resourceType: "execution",
+      action: 'execution.queued',
+      resourceType: 'execution',
       resourceId: apiExecution.id,
       details: {
         repositoryId: dashboardExecution.repositoryId,

@@ -1,11 +1,8 @@
-import { getExecutionById, listExecutionSteps } from "@/lib/data/dashboard-data-facade";
-import { apiError, apiOk, getRequestId } from "@/lib/core/api-response";
-import { requireSessionUserId } from "@/lib/auth/session";
+import { getExecutionById, listExecutionSteps } from '@/lib/data/dashboard-data-facade';
+import { apiError, apiOk, getRequestId } from '@/lib/core/api-response';
+import { requireSessionUserId } from '@/lib/auth/session';
 
-export async function GET(
-  req: Request,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function GET(req: Request, { params }: { params: Promise<{ id: string }> }) {
   const requestId = getRequestId(req);
   let userId: string;
   try {
@@ -19,7 +16,7 @@ export async function GET(
     listExecutionSteps(id, userId),
   ]);
   if (!execution) {
-    return apiError("Execution not found", { status: 404, requestId });
+    return apiError('Execution not found', { status: 404, requestId });
   }
 
   return apiOk(
@@ -28,6 +25,6 @@ export async function GET(
       execution,
       steps,
     },
-    { requestId }
+    { requestId },
   );
 }

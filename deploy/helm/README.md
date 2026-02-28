@@ -27,18 +27,18 @@ dashboard:
     tag: latest
   resources:
     requests:
-      memory: "256Mi"
-      cpu: "100m"
+      memory: '256Mi'
+      cpu: '100m'
     limits:
-      memory: "512Mi"
-      cpu: "500m"
+      memory: '512Mi'
+      cpu: '500m'
 
 worker:
   replicaCount: 3
   resources:
     requests:
-      memory: "256Mi"
-      cpu: "100m"
+      memory: '256Mi'
+      cpu: '100m'
 
 postgresql:
   enabled: true
@@ -51,7 +51,7 @@ redis:
   enabled: true
 
 license:
-  key: ""  # AGENTMD_LICENSE_KEY for Enterprise activation
+  key: '' # AGENTMD_LICENSE_KEY for Enterprise activation
 ```
 
 ## Air-Gapped Install

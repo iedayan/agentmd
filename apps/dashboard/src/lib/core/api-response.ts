@@ -1,16 +1,16 @@
-import { randomUUID } from "crypto";
-import { NextResponse } from "next/server";
+import { randomUUID } from 'crypto';
+import { NextResponse } from 'next/server';
 
 export function getRequestId(request?: Request): string {
-  const inbound = request?.headers.get("x-request-id")?.trim();
+  const inbound = request?.headers.get('x-request-id')?.trim();
   if (inbound) return inbound.slice(0, 128);
   return randomUUID();
 }
 
 function defaultHeaders(requestId: string): Record<string, string> {
   return {
-    "Cache-Control": "no-store",
-    "X-Request-Id": requestId,
+    'Cache-Control': 'no-store',
+    'X-Request-Id': requestId,
   };
 }
 
@@ -20,7 +20,7 @@ export function apiOk<T extends Record<string, unknown>>(
     status?: number;
     requestId?: string;
     headers?: Record<string, string>;
-  }
+  },
 ) {
   const requestId = options?.requestId ?? randomUUID();
   return NextResponse.json(
@@ -35,7 +35,7 @@ export function apiOk<T extends Record<string, unknown>>(
         ...defaultHeaders(requestId),
         ...(options?.headers ?? {}),
       },
-    }
+    },
   );
 }
 
@@ -47,7 +47,7 @@ export function apiError(
     code?: string;
     details?: unknown;
     headers?: Record<string, string>;
-  }
+  },
 ) {
   const requestId = options?.requestId ?? randomUUID();
   return NextResponse.json(
@@ -64,6 +64,6 @@ export function apiError(
         ...defaultHeaders(requestId),
         ...(options?.headers ?? {}),
       },
-    }
+    },
   );
 }

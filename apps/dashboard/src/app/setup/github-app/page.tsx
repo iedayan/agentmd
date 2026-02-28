@@ -1,11 +1,11 @@
-import Link from "next/link";
-import { GithubAppSetupWizard } from "@/components/setup/github-app-setup-wizard";
-import { BackLink } from "@/components/ui/back-link";
-import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import Link from 'next/link';
+import { GithubAppSetupWizard } from '@/components/setup/github-app-setup-wizard';
+import { BackLink } from '@/components/ui/back-link';
+import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
 export const metadata = {
-  title: "GitHub App Setup | AgentMD",
-  description: "Guided setup for GitHub OAuth App and GitHub App. Get your URLs and env vars.",
+  title: 'GitHub App Setup | AgentMD',
+  description: 'Guided setup for GitHub OAuth App and GitHub App. Get your URLs and env vars.',
 };
 
 export default function GitHubAppSetupPage() {
@@ -30,10 +30,13 @@ export default function GitHubAppSetupPage() {
           <CardHeader>
             <CardTitle className="text-base">Manual setup</CardTitle>
             <CardDescription>
-              Prefer step-by-step instructions? See{" "}
-              <Link href="https://github.com/iedayan/agentmd/blob/main/deploy/provision/GITHUB.md" className="underline">
+              Prefer step-by-step instructions? See{' '}
+              <Link
+                href="https://github.com/iedayan/agentmd/blob/main/deploy/provision/GITHUB.md"
+                className="underline"
+              >
                 deploy/provision/GITHUB.md
-              </Link>{" "}
+              </Link>{' '}
               in the repo.
             </CardDescription>
           </CardHeader>

@@ -1,13 +1,9 @@
-import { describe, it, expect } from "vitest";
-import {
-  computeTrustScore,
-  isCertified,
-  SECURITY_CHECKLIST,
-} from "../marketplace/verification.js";
-import type { TrustScoreBreakdown } from "../marketplace/types.js";
+import { describe, it, expect } from 'vitest';
+import { computeTrustScore, isCertified, SECURITY_CHECKLIST } from '../marketplace/verification.js';
+import type { TrustScoreBreakdown } from '../marketplace/types.js';
 
-describe("computeTrustScore", () => {
-  it("computes weighted average of breakdown", () => {
+describe('computeTrustScore', () => {
+  it('computes weighted average of breakdown', () => {
     const breakdown: TrustScoreBreakdown = {
       testCoverage: 80,
       userReviews: 100,
@@ -19,7 +15,7 @@ describe("computeTrustScore", () => {
     expect(score).toBeLessThanOrEqual(95);
   });
 
-  it("returns 0 for all zeros", () => {
+  it('returns 0 for all zeros', () => {
     const breakdown: TrustScoreBreakdown = {
       testCoverage: 0,
       userReviews: 0,
@@ -29,7 +25,7 @@ describe("computeTrustScore", () => {
     expect(computeTrustScore(breakdown)).toBe(0);
   });
 
-  it("returns 100 for all 100", () => {
+  it('returns 100 for all 100', () => {
     const breakdown: TrustScoreBreakdown = {
       testCoverage: 100,
       userReviews: 100,
@@ -40,8 +36,8 @@ describe("computeTrustScore", () => {
   });
 });
 
-describe("isCertified", () => {
-  it("returns true when certified, score >= 70, security >= 80", () => {
+describe('isCertified', () => {
+  it('returns true when certified, score >= 70, security >= 80', () => {
     const verification = {
       certified: true,
       trustScore: 85,
@@ -51,12 +47,12 @@ describe("isCertified", () => {
         securityCompliance: 90,
         updateFrequency: 80,
       },
-      lastVerified: "2024-01-01",
+      lastVerified: '2024-01-01',
     };
     expect(isCertified(verification)).toBe(true);
   });
 
-  it("returns false when trustScore < 70", () => {
+  it('returns false when trustScore < 70', () => {
     const verification = {
       certified: true,
       trustScore: 65,
@@ -66,12 +62,12 @@ describe("isCertified", () => {
         securityCompliance: 90,
         updateFrequency: 60,
       },
-      lastVerified: "2024-01-01",
+      lastVerified: '2024-01-01',
     };
     expect(isCertified(verification)).toBe(false);
   });
 
-  it("returns false when securityCompliance < 80", () => {
+  it('returns false when securityCompliance < 80', () => {
     const verification = {
       certified: true,
       trustScore: 85,
@@ -81,12 +77,12 @@ describe("isCertified", () => {
         securityCompliance: 70,
         updateFrequency: 90,
       },
-      lastVerified: "2024-01-01",
+      lastVerified: '2024-01-01',
     };
     expect(isCertified(verification)).toBe(false);
   });
 
-  it("returns false when certified is false", () => {
+  it('returns false when certified is false', () => {
     const verification = {
       certified: false,
       trustScore: 90,
@@ -96,17 +92,17 @@ describe("isCertified", () => {
         securityCompliance: 90,
         updateFrequency: 90,
       },
-      lastVerified: "2024-01-01",
+      lastVerified: '2024-01-01',
     };
     expect(isCertified(verification)).toBe(false);
   });
 });
 
-describe("SECURITY_CHECKLIST", () => {
-  it("includes expected items", () => {
-    expect(SECURITY_CHECKLIST).toContain("no_dangerous_commands");
-    expect(SECURITY_CHECKLIST).toContain("permissions_declared");
-    expect(SECURITY_CHECKLIST).toContain("no_hardcoded_secrets");
-    expect(SECURITY_CHECKLIST).toContain("guardrails_present");
+describe('SECURITY_CHECKLIST', () => {
+  it('includes expected items', () => {
+    expect(SECURITY_CHECKLIST).toContain('no_dangerous_commands');
+    expect(SECURITY_CHECKLIST).toContain('permissions_declared');
+    expect(SECURITY_CHECKLIST).toContain('no_hardcoded_secrets');
+    expect(SECURITY_CHECKLIST).toContain('guardrails_present');
   });
 });

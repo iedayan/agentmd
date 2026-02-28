@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
-import type { Pipeline, PolicyRule, AuditEntry } from "@/lib/ops/mock-data";
+import { useState, useEffect } from 'react';
+import type { Pipeline, PolicyRule, AuditEntry } from '@/lib/ops/mock-data';
 
 export interface OpsAnalytics {
   pipelinesRun: number;
   pipelinesRunSparkline: number[];
   policyViolationRate: number;
-  policyViolationTrend: "down" | "up";
+  policyViolationTrend: 'down' | 'up';
   avgApprovalTimeHours: number;
-  approvalTimeTrend: "down" | "up";
+  approvalTimeTrend: 'down' | 'up';
   agentSuccessRate: number;
   violationsByRule: Array<{ rule: string; count: number }>;
   pipelineVolume: Array<{ date: string; running: number; completed: number; failed: number }>;
@@ -20,9 +20,9 @@ const EMPTY_ANALYTICS: OpsAnalytics = {
   pipelinesRun: 0,
   pipelinesRunSparkline: [],
   policyViolationRate: 0,
-  policyViolationTrend: "down",
+  policyViolationTrend: 'down',
   avgApprovalTimeHours: 0,
-  approvalTimeTrend: "down",
+  approvalTimeTrend: 'down',
   agentSuccessRate: 0,
   violationsByRule: [],
   pipelineVolume: [],
@@ -58,9 +58,9 @@ export function useOpsData(options?: UseOpsDataOptions): OpsData {
     async function fetchAll() {
       try {
         const [pipRes, polRes, audRes] = await Promise.all([
-          fetch("/api/ops/pipelines"),
-          fetch("/api/ops/policies"),
-          fetch("/api/ops/audit"),
+          fetch('/api/ops/pipelines'),
+          fetch('/api/ops/policies'),
+          fetch('/api/ops/audit'),
         ]);
 
         if (cancelled) return;
@@ -79,7 +79,7 @@ export function useOpsData(options?: UseOpsDataOptions): OpsData {
         }
       } catch (e) {
         if (!cancelled) {
-          setError(e instanceof Error ? e.message : "Failed to load Ops data");
+          setError(e instanceof Error ? e.message : 'Failed to load Ops data');
         }
       } finally {
         if (!cancelled) setLoading(false);
@@ -101,7 +101,7 @@ export function useOpsData(options?: UseOpsDataOptions): OpsData {
 
     async function fetchAnalytics() {
       try {
-        const response = await fetch("/api/ops/analytics");
+        const response = await fetch('/api/ops/analytics');
         if (!response.ok || cancelled) {
           return;
         }
@@ -112,7 +112,7 @@ export function useOpsData(options?: UseOpsDataOptions): OpsData {
         }
       } catch (e) {
         if (!cancelled) {
-          setError(e instanceof Error ? e.message : "Failed to load Ops analytics");
+          setError(e instanceof Error ? e.message : 'Failed to load Ops analytics');
         }
       }
     }

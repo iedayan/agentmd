@@ -3,7 +3,7 @@
  * "Certified AGENTS.md Compatible" badge
  */
 
-import type { TrustScoreBreakdown } from "./types.js";
+import type { TrustScoreBreakdown } from './types.js';
 
 export interface VerificationStatus {
   certified: boolean;
@@ -15,10 +15,10 @@ export interface VerificationStatus {
 
 /** Security review checklist */
 export const SECURITY_CHECKLIST = [
-  "no_dangerous_commands",
-  "permissions_declared",
-  "no_hardcoded_secrets",
-  "guardrails_present",
+  'no_dangerous_commands',
+  'permissions_declared',
+  'no_hardcoded_secrets',
+  'guardrails_present',
 ] as const;
 
 /** Performance benchmarks (execution time thresholds) */
@@ -32,10 +32,7 @@ export interface PerformanceBenchmark {
 export function computeTrustScore(breakdown: TrustScoreBreakdown): number {
   const { testCoverage, userReviews, securityCompliance, updateFrequency } = breakdown;
   return Math.round(
-    testCoverage * 0.25 +
-    userReviews * 0.35 +
-    securityCompliance * 0.25 +
-    updateFrequency * 0.15
+    testCoverage * 0.25 + userReviews * 0.35 + securityCompliance * 0.25 + updateFrequency * 0.15,
   );
 }
 

@@ -1,14 +1,10 @@
-import Link from "next/link";
-import { Logo } from "@/components/brand/logo";
-import { Button } from "@/components/ui/button";
-import { DocsSidebar } from "@/components/docs/docs-sidebar";
-import { DocsContent } from "@/components/docs/docs-content";
+import Link from 'next/link';
+import { Logo } from '@/components/brand/logo';
+import { Button } from '@/components/ui/button';
+import { DocsSidebar } from '@/components/docs/docs-sidebar';
+import { DocsContent } from '@/components/docs/docs-content';
 
-export default function DocsLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function DocsLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen bg-background">
       <header className="sticky top-0 z-40 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">

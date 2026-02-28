@@ -1,12 +1,12 @@
 /**
  * Create Stripe Billing Portal session for managing payment methods and invoices.
  */
-import { NextRequest } from "next/server";
-import Stripe from "stripe";
-import { apiError, apiOk, getRequestId } from "@/lib/core/api-response";
-import { requireSessionUserId } from "@/lib/auth/session";
-import { getPool } from "@/lib/data/db";
-import { getPublicAppUrl } from "@/lib/core/public-url";
+import { NextRequest } from 'next/server';
+import Stripe from 'stripe';
+import { apiError, apiOk, getRequestId } from '@/lib/core/api-response';
+import { requireSessionUserId } from '@/lib/auth/session';
+import { getPool } from '@/lib/data/db';
+import { getPublicAppUrl } from '@/lib/core/public-url';
 
 export async function POST(req: NextRequest) {
   const requestId = getRequestId(req);
@@ -19,21 +19,21 @@ export async function POST(req: NextRequest) {
 
   const stripeSecretKey = process.env.STRIPE_SECRET_KEY?.trim();
   if (!stripeSecretKey) {
-    return apiError("Billing is not configured.", {
+    return apiError('Billing is not configured.', {
       status: 503,
       requestId,
-      code: "BILLING_NOT_CONFIGURED",
+      code: 'BILLING_NOT_CONFIGURED',
     });
   }
 
   const pool = getPool();
   if (!pool) {
-    return apiError("Database not configured.", { status: 503, requestId });
+    return apiError('Database not configured.', { status: 503, requestId });
   }
 
   const subRes = await pool.query(
     `SELECT stripe_customer_id FROM user_subscriptions WHERE user_id = $1`,
-    [userId]
+    [userId],
   );
   let customerId = subRes.rows[0]?.stripe_customer_id as string | undefined;
 
@@ -42,15 +42,15 @@ export async function POST(req: NextRequest) {
   const returnUrl = `${appUrl}/dashboard/settings/billing`;
 
   if (!customerId) {
-    const { getServerSession } = await import("next-auth");
-    const { authOptions } = await import("@/lib/auth/auth");
+    const { getServerSession } = await import('next-auth');
+    const { authOptions } = await import('@/lib/auth/auth');
     const session = await getServerSession(authOptions);
     const email = session?.user?.email;
     if (!email) {
-      return apiError("Email required to create billing profile.", {
+      return apiError('Email required to create billing profile.', {
         status: 400,
         requestId,
-        code: "NO_EMAIL",
+        code: 'NO_EMAIL',
       });
     }
     const customer = await stripe.customers.create({
@@ -64,7 +64,7 @@ export async function POST(req: NextRequest) {
        ON CONFLICT (user_id) DO UPDATE SET
          stripe_customer_id = COALESCE(EXCLUDED.stripe_customer_id, user_subscriptions.stripe_customer_id),
          updated_at = NOW()`,
-      [userId, customerId]
+      [userId, customerId],
     );
   }
 

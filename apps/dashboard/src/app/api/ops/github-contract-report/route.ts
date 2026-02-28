@@ -1,9 +1,13 @@
-import { NextRequest } from "next/server";
-import { apiOk, getRequestId } from "@/lib/core/api-response";
-import { evaluateGitHubGate, getGovernanceOperationalStats, listGitHubGates } from "@/lib/analytics/governance-data";
-import { requireSessionUserId } from "@/lib/auth/session";
+import { NextRequest } from 'next/server';
+import { apiOk, getRequestId } from '@/lib/core/api-response';
+import {
+  evaluateGitHubGate,
+  getGovernanceOperationalStats,
+  listGitHubGates,
+} from '@/lib/analytics/governance-data';
+import { requireSessionUserId } from '@/lib/auth/session';
 
-const OUTPUT_CONTRACT_CHECK = "agentmd/output-contract";
+const OUTPUT_CONTRACT_CHECK = 'agentmd/output-contract';
 
 export async function GET(req: NextRequest) {
   const requestId = getRequestId(req);
@@ -18,7 +22,7 @@ export async function GET(req: NextRequest) {
 
   const nonSuccessOutputContract = gates
     .map((gate) => {
-      const status = gate.checks[OUTPUT_CONTRACT_CHECK] ?? "missing";
+      const status = gate.checks[OUTPUT_CONTRACT_CHECK] ?? 'missing';
       return {
         repositoryId: gate.repositoryId,
         repositoryName: gate.repositoryName,
@@ -27,7 +31,7 @@ export async function GET(req: NextRequest) {
         decision: evaluateGitHubGate(gate),
       };
     })
-    .filter((entry) => entry.status !== "success");
+    .filter((entry) => entry.status !== 'success');
 
   return apiOk(
     {
@@ -42,6 +46,6 @@ export async function GET(req: NextRequest) {
         failingOrPendingOutputContract: nonSuccessOutputContract.length,
       },
     },
-    { requestId }
+    { requestId },
   );
 }

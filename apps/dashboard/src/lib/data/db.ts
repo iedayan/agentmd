@@ -2,11 +2,11 @@
  * Postgres connection pool for AgentMD dashboard.
  * Uses Neon serverless driver when DATABASE_URL is set (optimized for Vercel).
  */
-import { Pool, neonConfig } from "@neondatabase/serverless";
-import ws from "ws";
+import { Pool, neonConfig } from '@neondatabase/serverless';
+import ws from 'ws';
 
 // Node.js < 22 needs explicit WebSocket for Neon Pool
-if (typeof neonConfig.webSocketConstructor === "undefined") {
+if (typeof neonConfig.webSocketConstructor === 'undefined') {
   neonConfig.webSocketConstructor = ws;
 }
 
@@ -33,5 +33,5 @@ export function hasDatabase(): boolean {
 }
 
 export function requiresDatabase(): boolean {
-  return process.env.NODE_ENV === "production" && process.env.AGENTMD_ALLOW_IN_MEMORY !== "true";
+  return process.env.NODE_ENV === 'production' && process.env.AGENTMD_ALLOW_IN_MEMORY !== 'true';
 }

@@ -10,14 +10,14 @@ Background worker that processes execution jobs from the queue. Polls `execution
 
 ## Environment Variables
 
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `DATABASE_URL` | Yes | Postgres connection string |
-| `AGENTMD_REAL_EXECUTION` | No | Set to `1` to run real commands from AGENTS.md. When enabled, fetches AGENTS.md from `agentsMdUrl`, parses commands, clones the repo, and executes. Falls back to mock when disabled or when URL is not a GitHub repo. |
-| `WORKER_ID` | No | Identifier for this worker (default: `worker-${pid}`) |
-| `WORKER_POLL_INTERVAL_MS` | No | Poll interval in ms (default: 1000) |
-| `WORKER_RETRY_BACKOFF_SECONDS` | No | Seconds to wait before retry on failure (default: 30) |
-| `JIRA_WEBHOOK_URL` | No | Webhook URL for Jira notifications on execution completion |
+| Variable                       | Required | Description                                                                                                                                                                                                            |
+| ------------------------------ | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `DATABASE_URL`                 | Yes      | Postgres connection string                                                                                                                                                                                             |
+| `AGENTMD_REAL_EXECUTION`       | No       | Set to `1` to run real commands from AGENTS.md. When enabled, fetches AGENTS.md from `agentsMdUrl`, parses commands, clones the repo, and executes. Falls back to mock when disabled or when URL is not a GitHub repo. |
+| `WORKER_ID`                    | No       | Identifier for this worker (default: `worker-${pid}`)                                                                                                                                                                  |
+| `WORKER_POLL_INTERVAL_MS`      | No       | Poll interval in ms (default: 1000)                                                                                                                                                                                    |
+| `WORKER_RETRY_BACKOFF_SECONDS` | No       | Seconds to wait before retry on failure (default: 30)                                                                                                                                                                  |
+| `JIRA_WEBHOOK_URL`             | No       | Webhook URL for Jira notifications on execution completion                                                                                                                                                             |
 
 ## Build & Run
 

@@ -1,17 +1,23 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { useEffect, useState } from 'react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 
-type Invoice = { id: string; date: string; amount: string; status: string; hostedInvoiceUrl?: string };
+type Invoice = {
+  id: string;
+  date: string;
+  amount: string;
+  status: string;
+  hostedInvoiceUrl?: string;
+};
 
 export function BillingInvoiceHistory() {
   const [invoices, setInvoices] = useState<Invoice[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/api/billing/invoices", { cache: "no-store" })
+    fetch('/api/billing/invoices', { cache: 'no-store' })
       .then((r) => r.json())
       .then((d: { ok?: boolean; invoices?: Invoice[] }) => {
         setInvoices(d.invoices ?? []);
@@ -23,9 +29,7 @@ export function BillingInvoiceHistory() {
     <Card>
       <CardHeader>
         <CardTitle>Invoice History</CardTitle>
-        <CardDescription>
-          Past invoices and receipts
-        </CardDescription>
+        <CardDescription>Past invoices and receipts</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         {loading ? (
@@ -37,10 +41,7 @@ export function BillingInvoiceHistory() {
         ) : (
           <div className="space-y-3">
             {invoices.map((inv) => (
-              <div
-                key={inv.id}
-                className="flex items-center justify-between rounded-lg border p-4"
-              >
+              <div key={inv.id} className="flex items-center justify-between rounded-lg border p-4">
                 <div>
                   <p className="font-medium">{inv.date}</p>
                   <p className="text-sm text-muted-foreground">{inv.status}</p>

@@ -4,8 +4,8 @@
  * Commands: init, doctor, check, discover, parse, compose, run, score, export
  */
 
-import { readFileSync, writeFileSync, existsSync } from "fs";
-import { resolve } from "path";
+import { readFileSync, writeFileSync, existsSync } from 'fs';
+import { resolve } from 'path';
 import {
   parseAgentsMd,
   validateAgentsMd,
@@ -19,21 +19,21 @@ import {
   parseFrontmatter,
   stringifyAgentsMd,
   type CommandType,
-} from "@agentmd-dev/core";
+} from '@agentmd-dev/core';
 
 const args = process.argv.slice(2);
 const command = args[0];
 
 function parseInitArgs(initArgs: string[]): { target: string; template?: string } {
-  let target = ".";
+  let target = '.';
   let template: string | undefined;
   let i = 0;
   while (i < initArgs.length) {
     const a = initArgs[i];
-    if (a === "--template" || a === "-t") {
+    if (a === '--template' || a === '-t') {
       template = initArgs[i + 1];
       i += 2;
-    } else if (!a.startsWith("-")) {
+    } else if (!a.startsWith('-')) {
       target = a;
       i++;
     } else {
@@ -43,16 +43,16 @@ function parseInitArgs(initArgs: string[]): { target: string; template?: string 
   return { target, template };
 }
 
-const initParsed = command === "init" ? parseInitArgs(args.slice(1)) : null;
-const target = initParsed?.target ?? (args[1] ?? ".");
+const initParsed = command === 'init' ? parseInitArgs(args.slice(1)) : null;
+const target = initParsed?.target ?? args[1] ?? '.';
 
 /** Parse path + --json from command args (e.g. validate, parse, score) */
 function parsePathAndJson(cmdArgs: string[]): { target: string; json: boolean } {
-  let target = ".";
+  let target = '.';
   let json = false;
   for (const a of cmdArgs) {
-    if (a === "--json" || a === "-j") json = true;
-    else if (!a.startsWith("-")) target = a;
+    if (a === '--json' || a === '-j') json = true;
+    else if (!a.startsWith('-')) target = a;
   }
   return { target, json };
 }
@@ -63,7 +63,7 @@ function parseCheckArgs(cmdArgs: string[]): {
   contract: boolean;
   output?: string;
 } {
-  let target = ".";
+  let target = '.';
   let json = false;
   let contract = false;
   let output: string | undefined;
@@ -71,22 +71,22 @@ function parseCheckArgs(cmdArgs: string[]): {
 
   while (i < cmdArgs.length) {
     const arg = cmdArgs[i];
-    if (arg === "--json" || arg === "-j") {
+    if (arg === '--json' || arg === '-j') {
       json = true;
       i++;
       continue;
     }
-    if (arg === "--contract") {
+    if (arg === '--contract') {
       contract = true;
       i++;
       continue;
     }
-    if (arg === "--output" || arg === "-o") {
+    if (arg === '--output' || arg === '-o') {
       output = cmdArgs[i + 1];
       i += 2;
       continue;
     }
-    if (!arg.startsWith("-")) {
+    if (!arg.startsWith('-')) {
       target = arg;
     }
     i++;
@@ -97,26 +97,26 @@ function parseCheckArgs(cmdArgs: string[]): {
 
 /** Parse improve args: path, --apply, --json */
 function parseImproveArgs(cmdArgs: string[]): { target: string; apply: boolean; json: boolean } {
-  let target = ".";
+  let target = '.';
   let apply = false;
   let json = false;
   for (const a of cmdArgs) {
-    if (a === "--apply" || a === "-a") apply = true;
-    else if (a === "--json" || a === "-j") json = true;
-    else if (!a.startsWith("-")) target = a;
+    if (a === '--apply' || a === '-a') apply = true;
+    else if (a === '--json' || a === '-j') json = true;
+    else if (!a.startsWith('-')) target = a;
   }
   return { target, apply, json };
 }
 
 /** Parse run args: path, types, --dry-run, --use-shell, --include-output, --json */
 function parseRunArgs(cmdArgs: string[]): { target: string; json: boolean; extra: string[] } {
-  let target = ".";
+  let target = '.';
   let json = false;
   const extra: string[] = [];
   let foundPath = false;
   for (const a of cmdArgs) {
-    if (a === "--json" || a === "-j") json = true;
-    else if (!a.startsWith("-") && !foundPath) {
+    if (a === '--json' || a === '-j') json = true;
+    else if (!a.startsWith('-') && !foundPath) {
       target = a;
       foundPath = true;
     } else {
@@ -128,42 +128,42 @@ function parseRunArgs(cmdArgs: string[]): { target: string; json: boolean; extra
 
 async function main() {
   switch (command) {
-    case "init":
+    case 'init':
       cmdInit(target, initParsed?.template);
       break;
-    case "validate":
+    case 'validate':
       await cmdCheck(parseCheckArgs(args.slice(1)));
       break;
-    case "check":
+    case 'check':
       await cmdCheck(parseCheckArgs(args.slice(1)));
       break;
-    case "discover":
+    case 'discover':
       cmdDiscover(target);
       break;
-    case "parse":
+    case 'parse':
       cmdParse(parsePathAndJson(args.slice(1)));
       break;
-    case "compose":
+    case 'compose':
       cmdCompose(target);
       break;
-    case "run":
+    case 'run':
       await cmdRun(parseRunArgs(args.slice(2)));
       break;
-    case "doctor":
+    case 'doctor':
       await cmdDoctor(target);
       break;
-    case "score":
+    case 'score':
       await cmdScore(parsePathAndJson(args.slice(1)));
       break;
-    case "improve":
+    case 'improve':
       await cmdImprove(parseImproveArgs(args.slice(1)));
       break;
-    case "export":
+    case 'export':
       await cmdExport(target);
       break;
-    case "help":
-    case "--help":
-    case "-h":
+    case 'help':
+    case '--help':
+    case '-h':
     case undefined:
       printHelp();
       break;
@@ -175,7 +175,16 @@ async function main() {
   }
 }
 
-type ProjectType = "node" | "python" | "rust" | "go" | "nextjs" | "django" | "rails" | "monorepo" | "generic";
+type ProjectType =
+  | 'node'
+  | 'python'
+  | 'rust'
+  | 'go'
+  | 'nextjs'
+  | 'django'
+  | 'rails'
+  | 'monorepo'
+  | 'generic';
 
 const TEMPLATES: Record<ProjectType, string> = {
   nextjs: `---
@@ -421,35 +430,42 @@ pnpm run lint
 };
 
 function detectProjectType(dir: string): ProjectType {
-  if (existsSync(resolve(dir, "Cargo.toml"))) return "rust";
-  if (existsSync(resolve(dir, "go.mod"))) return "go";
-  if (existsSync(resolve(dir, "Gemfile")) && existsSync(resolve(dir, "config", "application.rb"))) return "rails";
-  if (existsSync(resolve(dir, "manage.py"))) return "django";
-  if (existsSync(resolve(dir, "pyproject.toml")) || existsSync(resolve(dir, "requirements.txt"))) return "python";
-  if (existsSync(resolve(dir, "pnpm-workspace.yaml")) || existsSync(resolve(dir, "lerna.json"))) return "monorepo";
-  if (existsSync(resolve(dir, "package.json"))) {
+  if (existsSync(resolve(dir, 'Cargo.toml'))) return 'rust';
+  if (existsSync(resolve(dir, 'go.mod'))) return 'go';
+  if (existsSync(resolve(dir, 'Gemfile')) && existsSync(resolve(dir, 'config', 'application.rb')))
+    return 'rails';
+  if (existsSync(resolve(dir, 'manage.py'))) return 'django';
+  if (existsSync(resolve(dir, 'pyproject.toml')) || existsSync(resolve(dir, 'requirements.txt')))
+    return 'python';
+  if (existsSync(resolve(dir, 'pnpm-workspace.yaml')) || existsSync(resolve(dir, 'lerna.json')))
+    return 'monorepo';
+  if (existsSync(resolve(dir, 'package.json'))) {
     try {
-      const pkg = JSON.parse(readFileSync(resolve(dir, "package.json"), "utf-8")) as {
+      const pkg = JSON.parse(readFileSync(resolve(dir, 'package.json'), 'utf-8')) as {
         dependencies?: Record<string, string>;
         devDependencies?: Record<string, string>;
       };
-      if (pkg?.dependencies?.next || pkg?.devDependencies?.next) return "nextjs";
+      if (pkg?.dependencies?.next || pkg?.devDependencies?.next) return 'nextjs';
     } catch {
       /* ignore */
     }
-    return "node";
+    return 'node';
   }
-  return "generic";
+  return 'generic';
 }
 
 function buildNodeTemplate(dir: string): string {
   try {
-    const pkgPath = resolve(dir, "package.json");
+    const pkgPath = resolve(dir, 'package.json');
     if (!existsSync(pkgPath)) return TEMPLATES.node;
-    const pkg = JSON.parse(readFileSync(pkgPath, "utf-8")) as { scripts?: Record<string, string> };
+    const pkg = JSON.parse(readFileSync(pkgPath, 'utf-8')) as { scripts?: Record<string, string> };
     const scripts = pkg?.scripts ?? {};
-    const pm = existsSync(resolve(dir, "pnpm-lock.yaml")) ? "pnpm" : existsSync(resolve(dir, "yarn.lock")) ? "yarn" : "npm";
-    const run = pm === "pnpm" || pm === "yarn" ? "run" : "run";
+    const pm = existsSync(resolve(dir, 'pnpm-lock.yaml'))
+      ? 'pnpm'
+      : existsSync(resolve(dir, 'yarn.lock'))
+        ? 'yarn'
+        : 'npm';
+    const run = pm === 'pnpm' || pm === 'yarn' ? 'run' : 'run';
 
     const sections: string[] = [];
     sections.push(`## Install\n\n\`\`\`bash\n${pm} install\n\`\`\`\n`);
@@ -466,12 +482,14 @@ function buildNodeTemplate(dir: string): string {
       sections.push(`## Format\n\n\`\`\`bash\n${pm} ${run} format\n\`\`\`\n`);
     }
     if (sections.length === 0) return TEMPLATES.node;
-    return `---
+    return (
+      `---
 # Agent instructions for AI coding tools (Node.js)
 # Generated from package.json scripts
 ---
 
-${sections.join("")}`.trim() + "\n";
+${sections.join('')}`.trim() + '\n'
+    );
   } catch {
     return TEMPLATES.node;
   }
@@ -479,7 +497,7 @@ ${sections.join("")}`.trim() + "\n";
 
 function cmdInit(target: string, templateOverride?: string) {
   const path = resolve(target);
-  const filePath = path.endsWith("AGENTS.md") ? path : resolve(path, "AGENTS.md");
+  const filePath = path.endsWith('AGENTS.md') ? path : resolve(path, 'AGENTS.md');
 
   if (existsSync(filePath)) {
     console.log(`AGENTS.md already exists at ${filePath}`);
@@ -488,7 +506,7 @@ function cmdInit(target: string, templateOverride?: string) {
   }
 
   try {
-    const dir = path.endsWith("AGENTS.md") ? resolve(path, "..") : path;
+    const dir = path.endsWith('AGENTS.md') ? resolve(path, '..') : path;
     if (!existsSync(dir)) {
       console.error(`Directory not found: ${dir}`);
       process.exit(1);
@@ -500,11 +518,13 @@ function cmdInit(target: string, templateOverride?: string) {
       content = TEMPLATES[explicitTemplate];
       console.log(`Using template: ${explicitTemplate}`);
     } else if (explicitTemplate) {
-      console.error(`Unknown template: ${templateOverride}. Use: node, python, rust, go, nextjs, django, rails, monorepo, generic`);
+      console.error(
+        `Unknown template: ${templateOverride}. Use: node, python, rust, go, nextjs, django, rails, monorepo, generic`,
+      );
       process.exit(1);
     } else {
       const detected = detectProjectType(dir);
-      if (detected === "node") {
+      if (detected === 'node') {
         content = buildNodeTemplate(dir);
         console.log(`Detected Node.js project — using package.json scripts`);
       } else {
@@ -513,10 +533,10 @@ function cmdInit(target: string, templateOverride?: string) {
       }
     }
 
-    writeFileSync(filePath, content.trim() + "\n", "utf-8");
+    writeFileSync(filePath, content.trim() + '\n', 'utf-8');
     console.log(`Created AGENTS.md at ${filePath}`);
-    console.log("\nNext steps:");
-    console.log("  1. Edit AGENTS.md if needed");
+    console.log('\nNext steps:');
+    console.log('  1. Edit AGENTS.md if needed');
     console.log("  2. Run 'agentmd check --contract' to validate it");
     console.log("  3. Run 'agentmd score' for your agent-readiness score");
     console.log("  4. Run 'agentmd run . --dry-run' to preview execution");
@@ -526,9 +546,14 @@ function cmdInit(target: string, templateOverride?: string) {
   }
 }
 
-async function cmdCheck(opts: { target: string; json: boolean; contract: boolean; output?: string }) {
+async function cmdCheck(opts: {
+  target: string;
+  json: boolean;
+  contract: boolean;
+  output?: string;
+}) {
   const path = resolve(opts.target);
-  const filePath = path.endsWith("AGENTS.md") ? path : resolve(path, "AGENTS.md");
+  const filePath = path.endsWith('AGENTS.md') ? path : resolve(path, 'AGENTS.md');
 
   if (!existsSync(filePath)) {
     if (opts.json) {
@@ -540,47 +565,49 @@ async function cmdCheck(opts: { target: string; json: boolean; contract: boolean
     process.exit(1);
   }
 
-  const content = readFileSync(filePath, "utf-8");
+  const content = readFileSync(filePath, 'utf-8');
   const parsed = parseAgentsMd(content, filePath);
   const result = await validateAgentsMd(parsed, { requireOutputContract: opts.contract });
   const outputPath = opts.output ? resolve(opts.output) : undefined;
-  const hasOutputPath = typeof outputPath === "string";
+  const hasOutputPath = typeof outputPath === 'string';
   const outputValidation =
     outputPath && existsSync(outputPath)
-      ? validateOutputAgainstContract(parsed, readFileSync(outputPath, "utf-8"))
+      ? validateOutputAgainstContract(parsed, readFileSync(outputPath, 'utf-8'))
       : undefined;
   const combinedErrors = [...result.errors, ...(outputValidation?.errors ?? [])];
   const combinedWarnings = [...result.warnings, ...(outputValidation?.warnings ?? [])];
   const valid = combinedErrors.length === 0;
 
   if (opts.json) {
-    console.log(JSON.stringify({
-      ok: valid,
-      valid,
-      errors: combinedErrors,
-      warnings: combinedWarnings,
-      suggestions: result.suggestions,
-    }));
+    console.log(
+      JSON.stringify({
+        ok: valid,
+        valid,
+        errors: combinedErrors,
+        warnings: combinedWarnings,
+        suggestions: result.suggestions,
+      }),
+    );
     process.exit(valid ? 0 : 1);
   }
 
   if (combinedErrors.length > 0) {
-    console.error("Validation failed:\n");
+    console.error('Validation failed:\n');
     for (const e of combinedErrors) {
-      console.error(`  ✗ ${e.message}${e.line ? ` (line ${e.line})` : ""}`);
+      console.error(`  ✗ ${e.message}${e.line ? ` (line ${e.line})` : ''}`);
     }
     process.exit(1);
   }
 
   if (combinedWarnings.length > 0) {
-    console.log("Warnings:\n");
+    console.log('Warnings:\n');
     for (const w of combinedWarnings) {
-      console.log(`  ⚠ ${w.message}${w.line ? ` (line ${w.line})` : ""}`);
+      console.log(`  ⚠ ${w.message}${w.line ? ` (line ${w.line})` : ''}`);
     }
   }
 
   if (result.suggestions.length > 0) {
-    console.log("\nSuggestions:");
+    console.log('\nSuggestions:');
     for (const s of result.suggestions) {
       console.log(`  • ${s}`);
     }
@@ -593,9 +620,9 @@ async function cmdCheck(opts: { target: string; json: boolean; contract: boolean
   }
 
   if (result.valid && combinedWarnings.length === 0 && result.suggestions.length === 0) {
-    console.log("✓ AGENTS.md is valid.");
+    console.log('✓ AGENTS.md is valid.');
   } else if (result.valid) {
-    console.log("\n✓ AGENTS.md passed validation (with notes above).");
+    console.log('\n✓ AGENTS.md passed validation (with notes above).');
   }
 }
 
@@ -610,15 +637,15 @@ function cmdDiscover(target: string) {
 
   console.log(`Found ${results.length} AGENTS.md file(s):\n`);
   for (const r of results) {
-    const depth = r.depth === 0 ? "root" : `depth ${r.depth}`;
+    const depth = r.depth === 0 ? 'root' : `depth ${r.depth}`;
     const cmdCount = r.parsed?.commands.length ?? 0;
-    console.log(`  ${r.path} (${depth})${cmdCount > 0 ? ` — ${cmdCount} commands` : ""}`);
+    console.log(`  ${r.path} (${depth})${cmdCount > 0 ? ` — ${cmdCount} commands` : ''}`);
   }
 }
 
 function cmdParse(opts: { target: string; json: boolean }) {
   const path = resolve(opts.target);
-  const filePath = path.endsWith("AGENTS.md") ? path : resolve(path, "AGENTS.md");
+  const filePath = path.endsWith('AGENTS.md') ? path : resolve(path, 'AGENTS.md');
 
   if (!existsSync(filePath)) {
     if (opts.json) {
@@ -630,41 +657,45 @@ function cmdParse(opts: { target: string; json: boolean }) {
     process.exit(1);
   }
 
-  const content = readFileSync(filePath, "utf-8");
+  const content = readFileSync(filePath, 'utf-8');
   const parsed = parseAgentsMd(content, filePath);
 
   if (opts.json) {
-    console.log(JSON.stringify({
-      ok: true,
-      lineCount: parsed.lineCount,
-      sections: parsed.sections.map((s) => ({
-        title: s.title,
-        level: s.level,
-        lineStart: s.lineStart,
-        lineEnd: s.lineEnd,
-        children: s.children,
-      })),
-      commands: parsed.commands.map((c) => ({
-        command: c.command,
-        type: c.type,
-        section: c.section,
-        line: c.line,
-      })),
-    }));
+    console.log(
+      JSON.stringify({
+        ok: true,
+        lineCount: parsed.lineCount,
+        sections: parsed.sections.map((s) => ({
+          title: s.title,
+          level: s.level,
+          lineStart: s.lineStart,
+          lineEnd: s.lineEnd,
+          children: s.children,
+        })),
+        commands: parsed.commands.map((c) => ({
+          command: c.command,
+          type: c.type,
+          section: c.section,
+          line: c.line,
+        })),
+      }),
+    );
     return;
   }
 
-  console.log(`AGENTS.md: ${parsed.lineCount} lines, ${parsed.sections.length} sections, ${parsed.commands.length} commands`);
+  console.log(
+    `AGENTS.md: ${parsed.lineCount} lines, ${parsed.sections.length} sections, ${parsed.commands.length} commands`,
+  );
   if (parsed.commands.length === 0) {
     console.log("  → Add commands in backticks or code blocks. Run 'agentmd help' for examples.");
   }
-  console.log("");
+  console.log('');
 
-  console.log("Sections:");
-  const printSection = (s: { title: string; level: number; children: unknown[] }, indent = "") => {
-    console.log(`${indent}${"#".repeat(s.level)} ${s.title}`);
+  console.log('Sections:');
+  const printSection = (s: { title: string; level: number; children: unknown[] }, indent = '') => {
+    console.log(`${indent}${'#'.repeat(s.level)} ${s.title}`);
     for (const c of s.children as { title: string; level: number; children: unknown[] }[]) {
-      printSection(c, indent + "  ");
+      printSection(c, indent + '  ');
     }
   };
   for (const s of parsed.sections) {
@@ -672,7 +703,7 @@ function cmdParse(opts: { target: string; json: boolean }) {
   }
 
   if (parsed.commands.length > 0) {
-    console.log("\nExtracted commands:");
+    console.log('\nExtracted commands:');
     for (const c of parsed.commands) {
       console.log(`  [${c.type}] ${c.command} (${c.section}, line ${c.line})`);
     }
@@ -684,27 +715,27 @@ function cmdCompose(target: string) {
   const result = composeAgentsMd(root);
 
   if (result.generated.length === 0) {
-    console.log("No fragments found. Add files matching **/agents-md/**/*.md or **/*.agents.md");
+    console.log('No fragments found. Add files matching **/agents-md/**/*.md or **/*.agents.md');
     return;
   }
 
   console.log(`Composed ${result.generated.length} AGENTS.md file(s):\n`);
   for (const g of result.generated) {
-    console.log(`  ${g.path} (${g.content.split("\n").length} lines)`);
+    console.log(`  ${g.path} (${g.content.split('\n').length} lines)`);
   }
 }
 
 async function cmdRun(opts: { target: string; json: boolean; extra: string[] }) {
-  const includeOutput = opts.extra.includes("--include-output");
+  const includeOutput = opts.extra.includes('--include-output');
 
   // Validate types early so we fail with "Unknown command type" before file checks
   const typeArgs = opts.extra.filter(
-    (a) => a !== "--dry-run" && a !== "--use-shell" && a !== "--include-output"
+    (a) => a !== '--dry-run' && a !== '--use-shell' && a !== '--include-output',
   );
   const types = parseRequestedTypes(typeArgs);
 
   const path = resolve(opts.target);
-  const filePath = path.endsWith("AGENTS.md") ? path : resolve(path, "AGENTS.md");
+  const filePath = path.endsWith('AGENTS.md') ? path : resolve(path, 'AGENTS.md');
 
   if (!existsSync(filePath)) {
     if (opts.json) {
@@ -715,33 +746,33 @@ async function cmdRun(opts: { target: string; json: boolean; extra: string[] }) 
     process.exit(1);
   }
 
-  const content = readFileSync(filePath, "utf-8");
+  const content = readFileSync(filePath, 'utf-8');
   const parsed = parseAgentsMd(content, filePath);
-  const dryRun = opts.extra.includes("--dry-run");
-  const useShell = opts.extra.includes("--use-shell");
+  const dryRun = opts.extra.includes('--dry-run');
+  const useShell = opts.extra.includes('--use-shell');
 
   if (parsed.commands.length === 0) {
     if (opts.json) {
-      console.log(JSON.stringify({ ok: false, error: "No executable commands found in AGENTS.md" }));
+      console.log(
+        JSON.stringify({ ok: false, error: 'No executable commands found in AGENTS.md' }),
+      );
     } else {
-      console.log("No executable commands found in AGENTS.md");
-      console.log("Add commands in backticks (e.g. `pnpm test`) or code blocks.");
+      console.log('No executable commands found in AGENTS.md');
+      console.log('Add commands in backticks (e.g. `pnpm test`) or code blocks.');
     }
     process.exit(1);
   }
-  const toRun = types
-    ? parsed.commands.filter((c) => types.includes(c.type))
-    : parsed.commands;
+  const toRun = types ? parsed.commands.filter((c) => types.includes(c.type)) : parsed.commands;
 
   const plan = await planCommandExecutions(toRun, {
     useShell,
     permissions: parsed.frontmatter?.permissions as NonNullable<
       Parameters<typeof executeCommands>[1]
-    >["permissions"],
+    >['permissions'],
   });
   if (plan.blockedCount > 0) {
     console.log(
-      `Preflight: ${plan.runnableCount}/${plan.items.length} command(s) runnable, ${plan.blockedCount} blocked.`
+      `Preflight: ${plan.runnableCount}/${plan.items.length} command(s) runnable, ${plan.blockedCount} blocked.`,
     );
     for (const item of plan.items.filter((entry) => !entry.runnable)) {
       console.log(`  ✗ ${item.command}`);
@@ -749,7 +780,7 @@ async function cmdRun(opts: { target: string; json: boolean; extra: string[] }) 
         console.log(`      - ${reason}`);
       }
     }
-    console.log("");
+    console.log('');
   }
   const runnableCommands = plan.items
     .filter((item) => item.runnable)
@@ -761,7 +792,7 @@ async function cmdRun(opts: { target: string; json: boolean; extra: string[] }) 
       console.log(
         JSON.stringify({
           ok: false,
-          error: "No runnable commands after preflight",
+          error: 'No runnable commands after preflight',
           blockedCount: plan.blockedCount,
           plan,
           blocked: plan.items
@@ -776,12 +807,12 @@ async function cmdRun(opts: { target: string; json: boolean; extra: string[] }) 
               requiresShell: i.requiresShell,
               requiresApproval: i.requiresApproval,
             })),
-        })
+        }),
       );
     } else {
-      console.log("No runnable commands after preflight.");
+      console.log('No runnable commands after preflight.');
       if (!useShell && plan.items.some((item) => item.requiresShell)) {
-        console.log("Hint: rerun with --use-shell for commands that require shell operators.");
+        console.log('Hint: rerun with --use-shell for commands that require shell operators.');
       }
     }
     process.exit(1);
@@ -794,10 +825,10 @@ async function cmdRun(opts: { target: string; json: boolean; extra: string[] }) 
   const results = await executeCommands(runnableCommands, {
     dryRun,
     useShell: useShell || false,
-    cwd: path.endsWith("AGENTS.md") ? resolve(path, "..") : path,
+    cwd: path.endsWith('AGENTS.md') ? resolve(path, '..') : path,
     permissions: parsed.frontmatter?.permissions as NonNullable<
       Parameters<typeof executeCommands>[1]
-    >["permissions"],
+    >['permissions'],
   });
 
   let failed = 0;
@@ -839,8 +870,8 @@ async function cmdRun(opts: { target: string; json: boolean; extra: string[] }) 
           error: r.error,
         };
         if (includeOutput) {
-          base.stdout = truncate(r.stdout ?? "");
-          base.stderr = truncate(r.stderr ?? "");
+          base.stdout = truncate(r.stdout ?? '');
+          base.stderr = truncate(r.stderr ?? '');
         }
         return base;
       }),
@@ -848,26 +879,26 @@ async function cmdRun(opts: { target: string; json: boolean; extra: string[] }) 
     console.log(JSON.stringify(output));
   } else {
     for (const r of results) {
-      const icon = r.success ? "✓" : "✗";
-      const status = r.success ? "" : ` (${r.error ?? r.exitCode})`;
+      const icon = r.success ? '✓' : '✗';
+      const status = r.success ? '' : ` (${r.error ?? r.exitCode})`;
       console.log(`  ${icon} [${r.type}] ${r.command}${status}`);
       if (!r.success && r.stderr) {
-        console.log(`      ${r.stderr.slice(0, 100)}${r.stderr.length > 100 ? "..." : ""}`);
+        console.log(`      ${r.stderr.slice(0, 100)}${r.stderr.length > 100 ? '...' : ''}`);
       }
     }
 
     if (!useShell) {
       const hasShellBlocked = results.some((r) =>
-        (r.error ?? "").includes("requires shell features")
+        (r.error ?? '').includes('requires shell features'),
       );
       if (hasShellBlocked) {
-        console.log("\nHint: rerun with --use-shell for commands that require shell operators.");
+        console.log('\nHint: rerun with --use-shell for commands that require shell operators.');
       }
     }
 
     if (plan.blockedCount > 0) {
       console.error(
-        `Execution incomplete: ${plan.blockedCount} command(s) were blocked during preflight.`
+        `Execution incomplete: ${plan.blockedCount} command(s) were blocked during preflight.`,
       );
       failed += plan.blockedCount;
     }
@@ -878,54 +909,54 @@ async function cmdRun(opts: { target: string; json: boolean; extra: string[] }) 
 
 async function cmdDoctor(target: string) {
   const path = resolve(target);
-  const filePath = path.endsWith("AGENTS.md") ? path : resolve(path, "AGENTS.md");
+  const filePath = path.endsWith('AGENTS.md') ? path : resolve(path, 'AGENTS.md');
 
   if (!existsSync(filePath)) {
     console.error(`AGENTS.md not found at ${filePath}`);
-    console.log("Run: agentmd init");
+    console.log('Run: agentmd init');
     process.exit(1);
   }
 
-  const content = readFileSync(filePath, "utf-8");
+  const content = readFileSync(filePath, 'utf-8');
   const parsed = parseAgentsMd(content, filePath);
   const validation = await validateAgentsMd(parsed);
   const score = await computeAgentReadinessScore(parsed);
   const plan = await planCommandExecutions(parsed.commands, {
     permissions: parsed.frontmatter?.permissions as NonNullable<
       Parameters<typeof executeCommands>[1]
-    >["permissions"],
+    >['permissions'],
     useShell: false,
   });
 
   console.log(`Doctor report for ${filePath}`);
   console.log(
-    `Summary: ${parsed.sections.length} sections, ${parsed.commands.length} commands, score ${score}/100`
+    `Summary: ${parsed.sections.length} sections, ${parsed.commands.length} commands, score ${score}/100`,
   );
   console.log(
-    `Execution preflight: ${plan.runnableCount} runnable, ${plan.blockedCount} blocked (safe mode)`
+    `Execution preflight: ${plan.runnableCount} runnable, ${plan.blockedCount} blocked (safe mode)`,
   );
 
   if (validation.errors.length > 0) {
-    console.log("\nErrors:");
+    console.log('\nErrors:');
     for (const error of validation.errors.slice(0, 10)) {
-      console.log(`  ✗ ${error.message}${error.line ? ` (line ${error.line})` : ""}`);
+      console.log(`  ✗ ${error.message}${error.line ? ` (line ${error.line})` : ''}`);
     }
   }
   if (validation.warnings.length > 0) {
-    console.log("\nWarnings:");
+    console.log('\nWarnings:');
     for (const warning of validation.warnings.slice(0, 10)) {
-      console.log(`  ⚠ ${warning.message}${warning.line ? ` (line ${warning.line})` : ""}`);
+      console.log(`  ⚠ ${warning.message}${warning.line ? ` (line ${warning.line})` : ''}`);
     }
   }
   if (validation.suggestions.length > 0) {
-    console.log("\nSuggested improvements:");
+    console.log('\nSuggested improvements:');
     for (const suggestion of validation.suggestions.slice(0, 8)) {
       console.log(`  • ${suggestion}`);
     }
   }
   const blocked = plan.items.filter((item) => !item.runnable);
   if (blocked.length > 0) {
-    console.log("\nBlocked commands:");
+    console.log('\nBlocked commands:');
     for (const item of blocked.slice(0, 10)) {
       console.log(`  ✗ ${item.command}`);
       for (const reason of item.reasons.slice(0, 2)) {
@@ -934,20 +965,20 @@ async function cmdDoctor(target: string) {
     }
   }
 
-  console.log("\nNext steps:");
-  console.log("  1. Run `agentmd check --contract` to review full validation output.");
-  console.log("  2. Run `agentmd run . --dry-run` to preview execution.");
+  console.log('\nNext steps:');
+  console.log('  1. Run `agentmd check --contract` to review full validation output.');
+  console.log('  2. Run `agentmd run . --dry-run` to preview execution.');
   if (blocked.some((item) => item.requiresShell)) {
-    console.log("  3. If needed, rerun with `agentmd run . --use-shell` for shell operators.");
+    console.log('  3. If needed, rerun with `agentmd run . --use-shell` for shell operators.');
   } else {
-    console.log("  3. Run `agentmd run .` once preflight is clean.");
+    console.log('  3. Run `agentmd run .` once preflight is clean.');
   }
 }
 
 async function cmdImprove(opts: { target: string; apply: boolean; json: boolean }) {
   const path = resolve(opts.target);
-  const filePath = path.endsWith("AGENTS.md") ? path : resolve(path, "AGENTS.md");
-  const dir = path.endsWith("AGENTS.md") ? resolve(path, "..") : path;
+  const filePath = path.endsWith('AGENTS.md') ? path : resolve(path, 'AGENTS.md');
+  const dir = path.endsWith('AGENTS.md') ? resolve(path, '..') : path;
 
   if (!existsSync(filePath)) {
     if (opts.json) {
@@ -959,29 +990,28 @@ async function cmdImprove(opts: { target: string; apply: boolean; json: boolean 
     process.exit(1);
   }
 
-  const content = readFileSync(filePath, "utf-8");
+  const content = readFileSync(filePath, 'utf-8');
   const parsed = parseAgentsMd(content, filePath);
   await validateAgentsMd(parsed);
   const scoreBefore = await computeAgentReadinessScore(parsed);
 
   const { frontmatter, body, hasFrontmatter } = parseFrontmatter(content);
   const sectionTitles = parsed.sections.map((s) => s.title.toLowerCase());
-  const hasInstallSection = sectionTitles.some(
-    (t) => t.includes("install") || t.includes("setup")
-  );
+  const hasInstallSection = sectionTitles.some((t) => t.includes('install') || t.includes('setup'));
 
   const improvements: string[] = [];
   let newBody = body;
-  const newFrontmatter = hasFrontmatter && Object.keys(frontmatter).length > 0
-    ? { ...frontmatter } as Record<string, unknown>
-    : {} as Record<string, unknown>;
+  const newFrontmatter =
+    hasFrontmatter && Object.keys(frontmatter).length > 0
+      ? ({ ...frontmatter } as Record<string, unknown>)
+      : ({} as Record<string, unknown>);
 
   if (!hasInstallSection && parsed.sections.length > 0) {
-    const pm = existsSync(resolve(dir, "pnpm-lock.yaml"))
-      ? "pnpm"
-      : existsSync(resolve(dir, "yarn.lock"))
-        ? "yarn"
-        : "npm";
+    const pm = existsSync(resolve(dir, 'pnpm-lock.yaml'))
+      ? 'pnpm'
+      : existsSync(resolve(dir, 'yarn.lock'))
+        ? 'yarn'
+        : 'npm';
     const installBlock = `## Install\n\n\`${pm} install\`\n\n`;
     const firstHeading = newBody.search(/^##\s/m);
     if (firstHeading >= 0) {
@@ -989,37 +1019,34 @@ async function cmdImprove(opts: { target: string; apply: boolean; json: boolean 
     } else {
       newBody = installBlock + newBody;
     }
-    improvements.push("Added Install section");
+    improvements.push('Added Install section');
   }
 
   let pkgName: string | undefined;
   try {
-    const pkgPath = resolve(dir, "package.json");
+    const pkgPath = resolve(dir, 'package.json');
     if (existsSync(pkgPath)) {
-      const pkg = JSON.parse(readFileSync(pkgPath, "utf-8")) as { name?: string };
-      pkgName = typeof pkg?.name === "string" ? pkg.name : undefined;
+      const pkg = JSON.parse(readFileSync(pkgPath, 'utf-8')) as { name?: string };
+      pkgName = typeof pkg?.name === 'string' ? pkg.name : undefined;
     }
   } catch {
     /* ignore */
   }
 
-  const needsName = !frontmatter?.name || String(frontmatter.name).trim() === "";
+  const needsName = !frontmatter?.name || String(frontmatter.name).trim() === '';
   if (needsName && pkgName) {
     newFrontmatter.name = pkgName;
     improvements.push(`Added frontmatter name: ${pkgName}`);
   }
 
-  const needsPurpose =
-    !frontmatter?.purpose || String(frontmatter.purpose).trim() === "";
+  const needsPurpose = !frontmatter?.purpose || String(frontmatter.purpose).trim() === '';
   if (needsPurpose && (Object.keys(newFrontmatter).length > 0 || improvements.length > 0)) {
-    newFrontmatter.purpose = "Agent instructions for this project";
-    improvements.push("Added frontmatter purpose");
+    newFrontmatter.purpose = 'Agent instructions for this project';
+    improvements.push('Added frontmatter purpose');
   }
 
   const newContent =
-    Object.keys(newFrontmatter).length > 0
-      ? stringifyAgentsMd(newBody, newFrontmatter)
-      : newBody;
+    Object.keys(newFrontmatter).length > 0 ? stringifyAgentsMd(newBody, newFrontmatter) : newBody;
 
   const scoreAfter =
     improvements.length > 0
@@ -1034,10 +1061,10 @@ async function cmdImprove(opts: { target: string; apply: boolean; json: boolean 
         scoreAfter,
         improvements,
         applied: opts.apply && improvements.length > 0,
-      })
+      }),
     );
     if (opts.apply && improvements.length > 0) {
-      writeFileSync(filePath, newContent, "utf-8");
+      writeFileSync(filePath, newContent, 'utf-8');
     }
     return;
   }
@@ -1053,7 +1080,7 @@ async function cmdImprove(opts: { target: string; apply: boolean; json: boolean 
   }
 
   if (opts.apply) {
-    writeFileSync(filePath, newContent, "utf-8");
+    writeFileSync(filePath, newContent, 'utf-8');
     console.log(`\n✓ Applied ${improvements.length} improvement(s) to ${filePath}`);
   } else {
     console.log(`\nRun 'agentmd improve --apply' to apply these changes.`);
@@ -1061,15 +1088,15 @@ async function cmdImprove(opts: { target: string; apply: boolean; json: boolean 
 }
 
 const ALLOWED_COMMAND_TYPES: CommandType[] = [
-  "build",
-  "test",
-  "lint",
-  "format",
-  "install",
-  "setup",
-  "deploy",
-  "security",
-  "other",
+  'build',
+  'test',
+  'lint',
+  'format',
+  'install',
+  'setup',
+  'deploy',
+  'security',
+  'other',
 ];
 
 function parseRequestedTypes(typeArgs: string[]): CommandType[] | undefined {
@@ -1077,8 +1104,8 @@ function parseRequestedTypes(typeArgs: string[]): CommandType[] | undefined {
 
   const invalid = typeArgs.filter((arg) => !ALLOWED_COMMAND_TYPES.includes(arg as CommandType));
   if (invalid.length > 0) {
-    console.error(`Unknown command type(s): ${invalid.join(", ")}`);
-    console.error(`Allowed types: ${ALLOWED_COMMAND_TYPES.join(", ")}`);
+    console.error(`Unknown command type(s): ${invalid.join(', ')}`);
+    console.error(`Allowed types: ${ALLOWED_COMMAND_TYPES.join(', ')}`);
     process.exit(1);
   }
 
@@ -1087,7 +1114,7 @@ function parseRequestedTypes(typeArgs: string[]): CommandType[] | undefined {
 
 async function cmdScore(opts: { target: string; json: boolean }) {
   const path = resolve(opts.target);
-  const filePath = path.endsWith("AGENTS.md") ? path : resolve(path, "AGENTS.md");
+  const filePath = path.endsWith('AGENTS.md') ? path : resolve(path, 'AGENTS.md');
 
   if (!existsSync(filePath)) {
     if (opts.json) {
@@ -1099,7 +1126,7 @@ async function cmdScore(opts: { target: string; json: boolean }) {
     process.exit(1);
   }
 
-  const content = readFileSync(filePath, "utf-8");
+  const content = readFileSync(filePath, 'utf-8');
   const parsed = parseAgentsMd(content, filePath);
   const score = await computeAgentReadinessScore(parsed);
 
@@ -1109,14 +1136,14 @@ async function cmdScore(opts: { target: string; json: boolean }) {
   }
 
   console.log(`Agent-readiness score: ${score}/100`);
-  if (score < 50) console.log("  → Add sections, commands, and frontmatter to improve.");
-  else if (score < 80) console.log("  → Consider adding frontmatter and guardrails.");
-  else console.log("  → AGENTS.md is well-structured for agent use.");
+  if (score < 50) console.log('  → Add sections, commands, and frontmatter to improve.');
+  else if (score < 80) console.log('  → Consider adding frontmatter and guardrails.');
+  else console.log('  → AGENTS.md is well-structured for agent use.');
 }
 
 async function cmdExport(target: string) {
   const path = resolve(target);
-  const filePath = path.endsWith("AGENTS.md") ? path : resolve(path, "AGENTS.md");
+  const filePath = path.endsWith('AGENTS.md') ? path : resolve(path, 'AGENTS.md');
 
   if (!existsSync(filePath)) {
     console.error(`AGENTS.md not found at ${filePath}`);
@@ -1124,7 +1151,7 @@ async function cmdExport(target: string) {
     process.exit(1);
   }
 
-  const content = readFileSync(filePath, "utf-8");
+  const content = readFileSync(filePath, 'utf-8');
   const parsed = parseAgentsMd(content, filePath);
   const yaml = await exportToGitHubActions(parsed);
   console.log(yaml);

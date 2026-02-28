@@ -1,33 +1,31 @@
-import Link from "next/link";
-import { getSession } from "@/lib/auth/session";
-import { getPlan } from "@/lib/billing/plans";
-import { SettingsProfile } from "@/components/settings/settings-profile";
-import { SettingsApiKeys } from "@/components/settings/settings-api-keys";
-import { SettingsNotifications } from "@/components/settings/settings-notifications";
-import { SettingsDangerZone } from "@/components/settings/settings-danger-zone";
-import { SettingsUsage } from "@/components/settings/settings-usage";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import Link from 'next/link';
+import { getSession } from '@/lib/auth/session';
+import { getPlan } from '@/lib/billing/plans';
+import { SettingsProfile } from '@/components/settings/settings-profile';
+import { SettingsApiKeys } from '@/components/settings/settings-api-keys';
+import { SettingsNotifications } from '@/components/settings/settings-notifications';
+import { SettingsDangerZone } from '@/components/settings/settings-danger-zone';
+import { SettingsUsage } from '@/components/settings/settings-usage';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 
 export default async function SettingsPage() {
   const session = await getSession();
-  const freePlan = getPlan("free");
-  const proPlan = getPlan("pro");
+  const freePlan = getPlan('free');
+  const proPlan = getPlan('pro');
 
   return (
     <div className="p-8 max-w-2xl">
       <div className="mb-8">
         <h1 className="text-2xl font-bold">Settings</h1>
-        <p className="text-muted-foreground">
-          Manage your account and subscription
-        </p>
+        <p className="text-muted-foreground">Manage your account and subscription</p>
       </div>
 
       <div className="space-y-8">
         {/* Profile */}
         <SettingsProfile
-          name={session?.user?.name ?? ""}
-          email={session?.user?.email ?? ""}
+          name={session?.user?.name ?? ''}
+          email={session?.user?.email ?? ''}
           image={session?.user?.image ?? null}
         />
 

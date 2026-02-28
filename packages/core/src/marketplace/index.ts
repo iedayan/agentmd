@@ -6,5 +6,5 @@
  * Other marketplace exports may change before 1.0.
  */
 
-export * from "./types.js";
-export * from "./verification.js";
+export * from './types.js';
+export * from './verification.js';

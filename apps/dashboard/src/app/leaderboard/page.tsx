@@ -1,20 +1,20 @@
-import Link from "next/link";
-import { Logo } from "@/components/brand/logo";
+import Link from 'next/link';
+import { Logo } from '@/components/brand/logo';
 
 export const metadata = {
-  title: "Agent-ready leaderboard | AgentMD",
-  description: "Top agent-ready repositories",
+  title: 'Agent-ready leaderboard | AgentMD',
+  description: 'Top agent-ready repositories',
 };
 
 const FEATURED_REPOS = [
-  { owner: "iedayan", repo: "agentmd", score: 92, language: "TypeScript" },
-  { owner: "vercel", repo: "next.js", score: 88, language: "TypeScript" },
-  { owner: "facebook", repo: "react", score: 85, language: "JavaScript" },
-  { owner: "microsoft", repo: "TypeScript", score: 84, language: "TypeScript" },
-  { owner: "langchain-ai", repo: "langchain", score: 82, language: "Python" },
-  { owner: "openai", repo: "openai-python", score: 80, language: "Python" },
-  { owner: "anthropics", repo: "anthropic-sdk-typescript", score: 78, language: "TypeScript" },
-  { owner: "trpc", repo: "trpc", score: 76, language: "TypeScript" },
+  { owner: 'iedayan', repo: 'agentmd', score: 92, language: 'TypeScript' },
+  { owner: 'vercel', repo: 'next.js', score: 88, language: 'TypeScript' },
+  { owner: 'facebook', repo: 'react', score: 85, language: 'JavaScript' },
+  { owner: 'microsoft', repo: 'TypeScript', score: 84, language: 'TypeScript' },
+  { owner: 'langchain-ai', repo: 'langchain', score: 82, language: 'Python' },
+  { owner: 'openai', repo: 'openai-python', score: 80, language: 'Python' },
+  { owner: 'anthropics', repo: 'anthropic-sdk-typescript', score: 78, language: 'TypeScript' },
+  { owner: 'trpc', repo: 'trpc', score: 76, language: 'TypeScript' },
 ];
 
 export default function LeaderboardPage() {
@@ -39,9 +39,7 @@ export default function LeaderboardPage() {
 
       <main className="container mx-auto px-4 py-12 md:py-20">
         <div className="max-w-2xl mx-auto text-center mb-12">
-          <h1 className="text-3xl md:text-4xl font-bold tracking-tight">
-            Agent-ready leaderboard
-          </h1>
+          <h1 className="text-3xl md:text-4xl font-bold tracking-tight">Agent-ready leaderboard</h1>
           <p className="mt-4 text-muted-foreground">
             Top repositories by agent-readiness score. Is yours on the list?
           </p>
@@ -81,8 +79,8 @@ export default function LeaderboardPage() {
             ))}
           </div>
           <p className="mt-6 text-center text-sm text-muted-foreground">
-            Add AGENTS.md to your repo and run{" "}
-            <code className="px-1.5 py-0.5 rounded bg-muted font-mono text-xs">agentmd score</code>{" "}
+            Add AGENTS.md to your repo and run{' '}
+            <code className="px-1.5 py-0.5 rounded bg-muted font-mono text-xs">agentmd score</code>{' '}
             to see where you rank.
           </p>
         </div>

@@ -1,23 +1,30 @@
-import Link from "next/link";
-import { CodeBlock } from "@/components/docs/code-block";
+import Link from 'next/link';
+import { CodeBlock } from '@/components/docs/code-block';
 
 export default function ComposePage() {
   return (
     <div>
       <h1>Composition</h1>
       <p className="lead">
-        Build AGENTS.md from multiple fragment files. Useful for monorepos where each package contributes instructions.
+        Build AGENTS.md from multiple fragment files. Useful for monorepos where each package
+        contributes instructions.
       </p>
 
       <h2>Fragment Patterns</h2>
       <p>AgentMD discovers fragments matching:</p>
       <ul>
-        <li><code>**/agents-md/**/*.md</code> — Files in agents-md directories</li>
-        <li><code>**/*.agents.md</code> — Suffixed markdown files</li>
+        <li>
+          <code>**/agents-md/**/*.md</code> — Files in agents-md directories
+        </li>
+        <li>
+          <code>**/*.agents.md</code> — Suffixed markdown files
+        </li>
       </ul>
 
       <h2>Directives</h2>
-      <p>Use <code>{"<!-- agents-md: key=value -->"}</code> in fragments:</p>
+      <p>
+        Use <code>{'<!-- agents-md: key=value -->'}</code> in fragments:
+      </p>
       <table className="w-full text-sm">
         <thead>
           <tr>
@@ -27,19 +34,27 @@ export default function ComposePage() {
         </thead>
         <tbody>
           <tr>
-            <td><code>target=nearest</code></td>
+            <td>
+              <code>target=nearest</code>
+            </td>
             <td>Compose into AGENTS.md in the fragment&apos;s directory (default)</td>
           </tr>
           <tr>
-            <td><code>target=root</code></td>
+            <td>
+              <code>target=root</code>
+            </td>
             <td>Compose into root AGENTS.md</td>
           </tr>
           <tr>
-            <td><code>target=path</code></td>
+            <td>
+              <code>target=path</code>
+            </td>
             <td>Compose into a specific path</td>
           </tr>
           <tr>
-            <td><code>priority=N</code></td>
+            <td>
+              <code>priority=N</code>
+            </td>
             <td>Ordering (higher = earlier in output)</td>
           </tr>
         </tbody>

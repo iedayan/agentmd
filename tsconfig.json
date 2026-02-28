@@ -12,10 +12,6 @@
     { "path": "./packages/sdk" },
     { "path": "./apps/dashboard" }
   ],
-  "include": [
-    "packages/**/*.{ts,tsx}",
-    "apps/**/*.{ts,tsx}",
-    "**/*.{ts,tsx}"
-  ],
+  "include": ["packages/**/*.{ts,tsx}", "apps/**/*.{ts,tsx}", "**/*.{ts,tsx}"],
   "exclude": ["node_modules", "dist", ".next", "build", "pnpm-store"]
 }

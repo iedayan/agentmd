@@ -190,7 +190,7 @@ import { AgentMDClient } from '@agentmd/sdk';
 
 const client = new AgentMDClient({
   apiKey: 'your-api-key',
-  endpoint: 'https://api.agentmd.io'
+  endpoint: 'https://api.agentmd.io',
 });
 
 // Parse AGENTS.md
@@ -203,7 +203,7 @@ const result = await client.validate(parsed);
 const workflowResult = await client.executeWorkflow('pr-reviewer', {
   owner: 'my-org',
   repo: 'my-repo',
-  prNumber: 123
+  prNumber: 123,
 });
 ```
 
@@ -216,14 +216,17 @@ Create a reusable template.
 ```typescript
 import { createTemplate } from '@agentmd/sdk';
 
-const template = createTemplate('nextjs', `
+const template = createTemplate(
+  'nextjs',
+  `
 # Next.js Project
 ## Development
 ### Install dependencies
 \`\`\`bash
 npm install
 \`\`\`
-`);
+`,
+);
 ```
 
 ##### `registerWorkflow(name: string, executor: WorkflowExecutor): void`
@@ -278,7 +281,7 @@ await cursor.initialize();
 // Track usage
 await cursor.trackCursorEvent('completion_used', {
   language: 'typescript',
-  context: 'function_definition'
+  context: 'function_definition',
 });
 ```
 
@@ -298,9 +301,9 @@ const reviewer = new PRReviewerWorkflow({
       name: 'Custom Check',
       description: 'Custom validation logic',
       weight: 8,
-      check: async (context) => ({ passed: true, score: 90, feedback: 'Good' })
-    }
-  ]
+      check: async (context) => ({ passed: true, score: 90, feedback: 'Good' }),
+    },
+  ],
 });
 
 const result = await reviewer.execute();
@@ -317,7 +320,7 @@ const triage = new TestTriageWorkflow({
   owner: 'my-org',
   repo: 'my-repo',
   ref: 'main',
-  framework: 'jest'
+  framework: 'jest',
 });
 
 const result = await triage.execute();
@@ -339,7 +342,7 @@ initializeAnalytics('your-api-key');
 const analytics = getAnalytics();
 await analytics.track('agents_md_validated', {
   score_range: 'good',
-  error_count: 0
+  error_count: 0,
 });
 
 // Track CLI usage
@@ -379,7 +382,7 @@ try {
 ```typescript
 const result = await validateAgentsMd(parsed);
 if (result.errors.length > 0) {
-  result.errors.forEach(error => {
+  result.errors.forEach((error) => {
     console.error(`${error.code}: ${error.message} at line ${error.line}`);
   });
 }
@@ -435,15 +438,17 @@ import { parseAgentsMd, validateAgentsMd, computeAgentReadinessScore } from '@ag
 async function analyzeProject(content: string) {
   // Parse AGENTS.md
   const parsed = parseAgentsMd(content);
-  
+
   // Validate configuration
   const validation = await validateAgentsMd(parsed);
-  console.log(`Validation: ${validation.errors.length} errors, ${validation.warnings.length} warnings`);
-  
+  console.log(
+    `Validation: ${validation.errors.length} errors, ${validation.warnings.length} warnings`,
+  );
+
   // Calculate score
   const score = await computeAgentReadinessScore(parsed);
   console.log(`Agent-readiness score: ${score}/100`);
-  
+
   return { parsed, validation, score };
 }
 ```
@@ -455,24 +460,24 @@ import { AgentMDClient } from '@agentmd/sdk';
 
 class MyEditorIntegration {
   private client: AgentMDClient;
-  
+
   constructor() {
     this.client = new AgentMDClient({
-      apiKey: process.env.AGENTMD_API_KEY
+      apiKey: process.env.AGENTMD_API_KEY,
     });
   }
-  
+
   async validateFile(content: string) {
     const parsed = await this.client.parse(content);
     const result = await this.client.validate(parsed);
-    
+
     return {
-      diagnostics: result.errors.map(error => ({
+      diagnostics: result.errors.map((error) => ({
         line: error.line,
         message: error.message,
-        severity: 'error'
+        severity: 'error',
       })),
-      score: result.score
+      score: result.score,
     };
   }
 }
@@ -493,7 +498,7 @@ registerWorkflow('deploy-service', async (config: DeployConfig) => {
   if (!config.service) {
     throw new Error('Service name is required');
   }
-  
+
   // Check if deployment is safe
   if (config.environment === 'production') {
     // Add additional checks for production
@@ -502,15 +507,15 @@ registerWorkflow('deploy-service', async (config: DeployConfig) => {
       return { passed: false, reason: safetyCheck.reason };
     }
   }
-  
+
   // Execute deployment
   const result = await executeDeployment(config);
-  
+
   return {
     passed: result.success,
-    feedback: result.success 
+    feedback: result.success
       ? `Deployed ${config.service} to ${config.environment}`
-      : `Deployment failed: ${result.error}`
+      : `Deployment failed: ${result.error}`,
   };
 });
 ```

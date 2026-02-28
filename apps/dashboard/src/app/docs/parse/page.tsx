@@ -1,6 +1,6 @@
-import Link from "next/link";
-import { CodeBlock } from "@/components/docs/code-block";
-import { getPublicAppUrl } from "@/lib/core/public-url";
+import Link from 'next/link';
+import { CodeBlock } from '@/components/docs/code-block';
+import { getPublicAppUrl } from '@/lib/core/public-url';
 
 export default function ParsePage() {
   const baseUrl = getPublicAppUrl();
@@ -8,15 +8,25 @@ export default function ParsePage() {
     <div>
       <h1>Parse & Validate</h1>
       <p className="lead">
-        AgentMD parses AGENTS.md into structured sections and commands, then validates against the standard and best practices.
+        AgentMD parses AGENTS.md into structured sections and commands, then validates against the
+        standard and best practices.
       </p>
 
       <h2>What We Parse</h2>
       <ul>
-        <li><strong>YAML frontmatter</strong> — Agent config (name, permissions, guardrails)</li>
-        <li><strong>Markdown sections</strong> — Headings (# ## ###) with content</li>
-        <li><strong>Commands</strong> — Backtick-wrapped, code blocks, run/execute patterns</li>
-        <li><strong>Directives</strong> — <code>{"<!-- agents-md: key=value -->"}</code> for composition</li>
+        <li>
+          <strong>YAML frontmatter</strong> — Agent config (name, permissions, guardrails)
+        </li>
+        <li>
+          <strong>Markdown sections</strong> — Headings (# ## ###) with content
+        </li>
+        <li>
+          <strong>Commands</strong> — Backtick-wrapped, code blocks, run/execute patterns
+        </li>
+        <li>
+          <strong>Directives</strong> — <code>{'<!-- agents-md: key=value -->'}</code> for
+          composition
+        </li>
       </ul>
 
       <h2>Validation Rules</h2>
@@ -54,7 +64,8 @@ export default function ParsePage() {
 
       <h2>Agent-Readiness Score (0–100)</h2>
       <p>
-        The score is based on: content, sections, commands, frontmatter, recommended sections (testing, build, PR), and command safety.
+        The score is based on: content, sections, commands, frontmatter, recommended sections
+        (testing, build, PR), and command safety.
       </p>
       <CodeBlock>{`agentmd score
 # Agent-readiness score: 75/100`}</CodeBlock>

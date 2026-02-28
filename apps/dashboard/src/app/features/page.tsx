@@ -1,18 +1,18 @@
-import Link from "next/link";
-import { Check, X } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Nav } from "@/components/landing/nav";
+import Link from 'next/link';
+import { Check, X } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Nav } from '@/components/landing/nav';
 
 const COMPARISON = [
-  { feature: "Parse & validate AGENTS.md", agentmd: true, agentops: true },
-  { feature: "Execute commands from AGENTS.md", agentmd: true, agentops: false },
-  { feature: "Agent-readiness score", agentmd: true, agentops: false },
-  { feature: "Execution history & logs", agentmd: true, agentops: false },
-  { feature: "Session observability", agentmd: false, agentops: true },
-  { feature: "LLM call tracing", agentmd: false, agentops: true },
-  { feature: "Marketplace for agents", agentmd: true, agentops: false },
-  { feature: "Self-hosted option", agentmd: true, agentops: false },
-  { feature: "Human-in-the-loop workflows", agentmd: true, agentops: false },
+  { feature: 'Parse & validate AGENTS.md', agentmd: true, agentops: true },
+  { feature: 'Execute commands from AGENTS.md', agentmd: true, agentops: false },
+  { feature: 'Agent-readiness score', agentmd: true, agentops: false },
+  { feature: 'Execution history & logs', agentmd: true, agentops: false },
+  { feature: 'Session observability', agentmd: false, agentops: true },
+  { feature: 'LLM call tracing', agentmd: false, agentops: true },
+  { feature: 'Marketplace for agents', agentmd: true, agentops: false },
+  { feature: 'Self-hosted option', agentmd: true, agentops: false },
+  { feature: 'Human-in-the-loop workflows', agentmd: true, agentops: false },
 ];
 
 export default function FeaturesPage() {
@@ -64,14 +64,16 @@ export default function FeaturesPage() {
           <Link href="/docs/why-execute" className="text-primary hover:underline">
             Why execute vs. read-only?
           </Link>
-          {" · "}
+          {' · '}
           <Link href="/docs/why-agentmd" className="text-primary hover:underline">
             Why AgentMD vs. local execution
           </Link>
         </p>
         <div className="mt-8 text-center">
           <Link href="/dashboard">
-            <Button size="lg" className="btn-tactile">Try AgentMD Free</Button>
+            <Button size="lg" className="btn-tactile">
+              Try AgentMD Free
+            </Button>
           </Link>
         </div>
       </main>

@@ -21,15 +21,15 @@ Open any `AGENTS.md` file. Diagnostics appear in the Problems view. The status b
 
 ## Diagnostic Rules
 
-| Code   | Severity | Description              |
-|--------|----------|--------------------------|
-| AMD001 | Error    | Missing ## Build         |
-| AMD002 | Error    | Missing ## Test          |
-| AMD003 | Warning  | Missing ## Lint          |
-| AMD004 | Error    | Empty command block       |
-| AMD005 | Warning  | No frontmatter           |
-| AMD006 | Error    | Invalid YAML             |
-| AMD007 | Warning  | Absolute path in command  |
-| AMD009 | Warning  | Missing `name` in frontmatter |
+| Code   | Severity | Description                          |
+| ------ | -------- | ------------------------------------ |
+| AMD001 | Error    | Missing ## Build                     |
+| AMD002 | Error    | Missing ## Test                      |
+| AMD003 | Warning  | Missing ## Lint                      |
+| AMD004 | Error    | Empty command block                  |
+| AMD005 | Warning  | No frontmatter                       |
+| AMD006 | Error    | Invalid YAML                         |
+| AMD007 | Warning  | Absolute path in command             |
+| AMD009 | Warning  | Missing `name` in frontmatter        |
 | AMD010 | Warning  | Missing `description` in frontmatter |
-| AMD011 | Error    | Duplicate section        |
+| AMD011 | Error    | Duplicate section                    |

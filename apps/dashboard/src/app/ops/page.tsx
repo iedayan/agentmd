@@ -1,45 +1,43 @@
-"use client";
+'use client';
 
-import { useState, useRef, useEffect } from "react";
-import dynamic from "next/dynamic";
-import { OpsNav } from "@/components/ops/OpsNav";
-import { EnhancedPipelineSidebar } from "@/components/ops/EnhancedPipelineSidebar";
-import { EnhancedPipelineDiagram } from "@/components/ops/EnhancedPipelineDiagram";
-import { AgentsMdPreview } from "@/components/ops/AgentsMdPreview";
-import { PolicyValidation } from "@/components/ops/PolicyValidation";
-import { ApprovalGate } from "@/components/ops/ApprovalGate";
-import { ExecutionLog } from "@/components/ops/ExecutionLog";
-import { useOpsData } from "@/lib/ops/use-ops-data";
+import { useState, useRef, useEffect } from 'react';
+import dynamic from 'next/dynamic';
+import { OpsNav } from '@/components/ops/OpsNav';
+import { EnhancedPipelineSidebar } from '@/components/ops/EnhancedPipelineSidebar';
+import { EnhancedPipelineDiagram } from '@/components/ops/EnhancedPipelineDiagram';
+import { AgentsMdPreview } from '@/components/ops/AgentsMdPreview';
+import { PolicyValidation } from '@/components/ops/PolicyValidation';
+import { ApprovalGate } from '@/components/ops/ApprovalGate';
+import { ExecutionLog } from '@/components/ops/ExecutionLog';
+import { useOpsData } from '@/lib/ops/use-ops-data';
 
-const PRReviewerTab = dynamic(
-  () => import("@/components/ops/PRReviewerTab").then((mod) => mod.PRReviewerTab),
-  { loading: () => <div className="p-6 font-mono text-sm">Loading PR reviewer…</div> }
-);
+const PRReviewerTab = dynamic(() => import('@/components/ops/PRReviewerTab').then(mod => ({ default: mod.PRReviewerTab })), {
+  loading: () => <div className="p-6 font-mono text-sm">Loading PR reviewer…</div>,
+});
 
 const PoliciesTab = dynamic(
-  () => import("@/components/ops/PoliciesTab").then((mod) => mod.PoliciesTab),
-  { loading: () => <div className="p-6 font-mono text-sm">Loading policies…</div> }
+  () => import('@/components/ops/PoliciesTab').then((mod) => mod.PoliciesTab),
+  { loading: () => <div className="p-6 font-mono text-sm">Loading policies…</div> },
 );
 
-const AuditTab = dynamic(
-  () => import("@/components/ops/AuditTab").then((mod) => mod.AuditTab),
-  { loading: () => <div className="p-6 font-mono text-sm">Loading audit log…</div> }
-);
+const AuditTab = dynamic(() => import('@/components/ops/AuditTab').then((mod) => mod.AuditTab), {
+  loading: () => <div className="p-6 font-mono text-sm">Loading audit log…</div>,
+});
 
 const EnhancedAnalyticsTab = dynamic(
-  () => import("@/components/ops/EnhancedAnalyticsTab").then((mod) => mod.EnhancedAnalyticsTab),
-  { loading: () => <div className="p-6 font-mono text-sm">Loading analytics…</div> }
+  () => import('@/components/ops/EnhancedAnalyticsTab').then((mod) => mod.EnhancedAnalyticsTab),
+  { loading: () => <div className="p-6 font-mono text-sm">Loading analytics…</div> },
 );
 
 const OpsSettingsTab = dynamic(
-  () => import("@/components/ops/OpsSettingsTab").then((mod) => mod.OpsSettingsTab),
-  { loading: () => <div className="p-6 font-mono text-sm">Loading settings…</div> }
+  () => import('@/components/ops/OpsSettingsTab').then((mod) => mod.OpsSettingsTab),
+  { loading: () => <div className="p-6 font-mono text-sm">Loading settings…</div> },
 );
 
 export default function OpsPage() {
-  const [activeTab, setActiveTab] = useState("pipelines");
+  const [activeTab, setActiveTab] = useState('pipelines');
   const { pipelines, policies, audit, analytics, loading, error } = useOpsData({
-    loadAnalytics: activeTab === "analytics",
+    loadAnalytics: activeTab === 'analytics',
   });
   const [selectedPipelineId, setSelectedPipelineId] = useState<string | null>(null);
   const logRef = useRef<HTMLDivElement>(null);
@@ -51,11 +49,11 @@ export default function OpsPage() {
   }, [pipelines, selectedPipelineId]);
 
   const selectedPipeline = pipelines.find((p) => p.id === selectedPipelineId);
-  const isStreaming = selectedPipeline?.status === "running";
+  const isStreaming = selectedPipeline?.status === 'running';
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars -- onStageClick signature requires stageId
   const handleStageClick = (stageId: string) => {
-    logRef.current?.scrollIntoView({ behavior: "smooth" });
+    logRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
@@ -67,7 +65,7 @@ export default function OpsPage() {
         </div>
       )}
 
-      {activeTab === "pipelines" && (
+      {activeTab === 'pipelines' && (
         <div className="flex">
           <EnhancedPipelineSidebar
             pipelines={pipelines}
@@ -116,10 +114,7 @@ export default function OpsPage() {
                 )}
 
                 <div ref={logRef} className="bento-card border-luminescent bg-card">
-                  <ExecutionLog
-                    lines={selectedPipeline.logLines}
-                    isStreaming={isStreaming}
-                  />
+                  <ExecutionLog lines={selectedPipeline.logLines} isStreaming={isStreaming} />
                 </div>
               </div>
             ) : loading ? (
@@ -139,11 +134,11 @@ export default function OpsPage() {
         </div>
       )}
 
-      {activeTab === "pr-reviewer" && <PRReviewerTab />}
-      {activeTab === "policies" && <PoliciesTab policies={policies} />}
-      {activeTab === "audit" && <AuditTab entries={audit} />}
-      {activeTab === "analytics" && <EnhancedAnalyticsTab analytics={analytics} />}
-      {activeTab === "settings" && <OpsSettingsTab />}
+      {activeTab === 'pr-reviewer' && <PRReviewerTab />}
+      {activeTab === 'policies' && <PoliciesTab policies={policies} />}
+      {activeTab === 'audit' && <AuditTab entries={audit} />}
+      {activeTab === 'analytics' && <EnhancedAnalyticsTab analytics={analytics} />}
+      {activeTab === 'settings' && <OpsSettingsTab />}
     </div>
   );
 }

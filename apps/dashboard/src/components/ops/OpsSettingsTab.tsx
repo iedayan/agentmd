@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import Link from "next/link";
+import { useEffect, useState } from 'react';
+import Link from 'next/link';
 
 export function OpsSettingsTab() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
-  const [webhookUrl, setWebhookUrl] = useState("");
+  const [webhookUrl, setWebhookUrl] = useState('');
   const [pipelineFailures, setPipelineFailures] = useState(true);
   const [approvalRequests, setApprovalRequests] = useState(true);
   const [policyViolations, setPolicyViolations] = useState(false);
@@ -15,12 +15,8 @@ export function OpsSettingsTab() {
 
   useEffect(() => {
     Promise.all([
-      fetch("/api/account/notifications", { cache: "no-store" }).then((r) =>
-        r.json()
-      ),
-      fetch("/api/account/api-keys", { cache: "no-store" }).then((r) =>
-        r.json()
-      ),
+      fetch('/api/account/notifications', { cache: 'no-store' }).then((r) => r.json()),
+      fetch('/api/account/api-keys', { cache: 'no-store' }).then((r) => r.json()),
     ])
       .then(([notif, keys]) => {
         const n = notif as {
@@ -29,13 +25,12 @@ export function OpsSettingsTab() {
           slackAlerts?: boolean;
         };
         const k = keys as { keys?: Array<{ prefix: string }> };
-        if (typeof n.webhookUrl === "string") setWebhookUrl(n.webhookUrl);
-        if (typeof n.emailAlerts === "boolean") {
+        if (typeof n.webhookUrl === 'string') setWebhookUrl(n.webhookUrl);
+        if (typeof n.emailAlerts === 'boolean') {
           setPipelineFailures(n.emailAlerts);
           setApprovalRequests(n.emailAlerts);
         }
-        if (typeof n.slackAlerts === "boolean")
-          setPolicyViolations(n.slackAlerts);
+        if (typeof n.slackAlerts === 'boolean') setPolicyViolations(n.slackAlerts);
         const first = k.keys?.[0];
         if (first?.prefix) setApiKeyPrefix(first.prefix);
       })
@@ -46,9 +41,9 @@ export function OpsSettingsTab() {
     setSaving(true);
     setSaved(false);
     try {
-      const res = await fetch("/api/account/notifications", {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
+      const res = await fetch('/api/account/notifications', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           webhookUrl,
           emailAlerts: pipelineFailures || approvalRequests,
@@ -60,10 +55,10 @@ export function OpsSettingsTab() {
         setSaved(true);
         setTimeout(() => setSaved(false), 2000);
       } else {
-        alert(data.error ?? "Failed to save preferences.");
+        alert(data.error ?? 'Failed to save preferences.');
       }
     } catch {
-      alert("Failed to save preferences.");
+      alert('Failed to save preferences.');
     } finally {
       setSaving(false);
     }
@@ -73,9 +68,7 @@ export function OpsSettingsTab() {
     return (
       <div className="p-6">
         <div className="rounded-[var(--radius-md)] border border-border bg-card p-8">
-          <p className="font-mono text-sm text-muted-foreground animate-pulse">
-            Loading settings…
-          </p>
+          <p className="font-mono text-sm text-muted-foreground animate-pulse">Loading settings…</p>
         </div>
       </div>
     );
@@ -84,29 +77,22 @@ export function OpsSettingsTab() {
   return (
     <div className="p-6">
       <div className="rounded-[var(--radius-md)] border border-border bg-card p-8">
-        <h2 className="text-xl font-bold tracking-tight text-[var(--ops-primary)]">
-          Settings
-        </h2>
+        <h2 className="text-xl font-bold tracking-tight text-[var(--ops-primary)]">Settings</h2>
         <p className="mt-2 font-mono text-sm text-muted-foreground mb-8">
           Configure API keys, webhooks, and notifications.
         </p>
         <div className="space-y-6 max-w-xl">
           <div>
-            <label className="font-mono text-xs text-muted-foreground block mb-2">
-              API Key
-            </label>
+            <label className="font-mono text-xs text-muted-foreground block mb-2">API Key</label>
             <input
               type="password"
-              value={apiKeyPrefix ?? ""}
+              value={apiKeyPrefix ?? ''}
               readOnly
               placeholder="agentmd_••••••••••••••••"
               className="w-full rounded-[var(--radius-sm)] border border-input bg-muted px-3 py-2 font-mono text-sm text-foreground/80"
             />
             <p className="mt-1 font-mono text-xs text-muted-foreground/80">
-              <Link
-                href="/dashboard/settings"
-                className="text-primary hover:underline"
-              >
+              <Link href="/dashboard/settings" className="text-primary hover:underline">
                 Manage API keys in Dashboard → Settings
               </Link>
             </p>
@@ -166,7 +152,7 @@ export function OpsSettingsTab() {
             disabled={saving}
             className="mt-4 h-9 bg-primary px-4 font-mono text-sm font-medium text-primary-foreground rounded-[var(--radius-sm)] hover:bg-primary/90 transition-colors disabled:opacity-50"
           >
-            {saving ? "Saving…" : saved ? "Saved" : "Save"}
+            {saving ? 'Saving…' : saved ? 'Saved' : 'Save'}
           </button>
         </div>
       </div>

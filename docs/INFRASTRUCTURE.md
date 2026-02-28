@@ -42,15 +42,15 @@ Enterprise-grade architecture for the AgentMD platform.
 
 ### Component Summary
 
-| Component | Provider | Purpose |
-|-----------|----------|---------|
-| Frontend | Vercel | Next.js dashboard, global CDN, edge functions |
-| API | Railway / Render | Execution API, job workers, auto-scaling |
-| Database | Neon | PostgreSQL + connection pooling |
-| Queue | Upstash Redis | BullMQ job queue, rate limiting |
-| Storage | AWS S3 / R2 | Execution logs, artifacts |
-| Monitoring | Sentry | Error tracking, performance |
-| Metrics | Prometheus + Grafana | Custom metrics, dashboards |
+| Component  | Provider             | Purpose                                       |
+| ---------- | -------------------- | --------------------------------------------- |
+| Frontend   | Vercel               | Next.js dashboard, global CDN, edge functions |
+| API        | Railway / Render     | Execution API, job workers, auto-scaling      |
+| Database   | Neon                 | PostgreSQL + connection pooling               |
+| Queue      | Upstash Redis        | BullMQ job queue, rate limiting               |
+| Storage    | AWS S3 / R2          | Execution logs, artifacts                     |
+| Monitoring | Sentry               | Error tracking, performance                   |
+| Metrics    | Prometheus + Grafana | Custom metrics, dashboards                    |
 
 ---
 
@@ -83,13 +83,13 @@ Enterprise-grade architecture for the AgentMD platform.
 
 ## 3. Scaling Considerations
 
-| Concern | Solution |
-|---------|----------|
+| Concern           | Solution                                       |
+| ----------------- | ---------------------------------------------- |
 | Execution workers | Horizontal scaling (Railway/Render auto-scale) |
-| Analytics queries | Read replicas (Neon read-only endpoints) |
-| AGENTS.md caching | Redis cache for parsed files (TTL 5 min) |
-| Rate limiting | Per API key + per IP (Upstash Redis) |
-| Queue depth | Auto-scale workers based on queue depth |
+| Analytics queries | Read replicas (Neon read-only endpoints)       |
+| AGENTS.md caching | Redis cache for parsed files (TTL 5 min)       |
+| Rate limiting     | Per API key + per IP (Upstash Redis)           |
+| Queue depth       | Auto-scale workers based on queue depth        |
 
 ### Caching Strategy
 
@@ -101,13 +101,13 @@ Enterprise-grade architecture for the AgentMD platform.
 
 ## 4. Security Hardening
 
-| Control | Implementation |
-|---------|----------------|
-| Secrets | HashiCorp Vault (or provider secrets: Vercel, Railway) |
-| Dependencies | Dependabot + `npm audit` in CI |
-| Pentesting | Pre-launch penetration test |
-| DDoS | Cloudflare in front of all services |
-| Encryption | TLS in transit; AES-256 at rest (S3, DB) |
+| Control      | Implementation                                         |
+| ------------ | ------------------------------------------------------ |
+| Secrets      | HashiCorp Vault (or provider secrets: Vercel, Railway) |
+| Dependencies | Dependabot + `npm audit` in CI                         |
+| Pentesting   | Pre-launch penetration test                            |
+| DDoS         | Cloudflare in front of all services                    |
+| Encryption   | TLS in transit; AES-256 at rest (S3, DB)               |
 
 ### Secret Management
 

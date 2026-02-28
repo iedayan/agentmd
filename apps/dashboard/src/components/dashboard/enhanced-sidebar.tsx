@@ -1,28 +1,28 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { cn } from "@/lib/core/utils";
-import { 
-  LayoutDashboard, 
-  GitBranch, 
-  Settings, 
-  FileText, 
-  BarChart3, 
-  Shield, 
-  Users, 
+import { useState } from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { cn } from '@/lib/core/utils';
+import {
+  LayoutDashboard,
+  GitBranch,
+  Settings,
+  FileText,
+  BarChart3,
+  Shield,
+  Users,
   Zap,
   ChevronLeft,
   ChevronRight,
   Menu,
   Search,
-  HelpCircle
-} from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+  HelpCircle,
+} from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Badge } from '@/components/ui/badge';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 interface NavigationItem {
   title: string;
@@ -39,63 +39,63 @@ interface EnhancedSidebarProps {
 
 const navigationItems: NavigationItem[] = [
   {
-    title: "Dashboard",
-    href: "/dashboard",
+    title: 'Dashboard',
+    href: '/dashboard',
     icon: <LayoutDashboard className="h-4 w-4" />,
-    description: "Main dashboard overview"
+    description: 'Main dashboard overview',
   },
   {
-    title: "Repositories",
-    href: "/dashboard/repositories",
+    title: 'Repositories',
+    href: '/dashboard/repositories',
     icon: <GitBranch className="h-4 w-4" />,
-    badge: "12",
-    description: "Manage connected repositories"
+    badge: '12',
+    description: 'Manage connected repositories',
   },
   {
-    title: "Executions",
-    href: "/dashboard/executions",
+    title: 'Executions',
+    href: '/dashboard/executions',
     icon: <Zap className="h-4 w-4" />,
-    badge: "3",
-    description: "View pipeline executions"
+    badge: '3',
+    description: 'View pipeline executions',
   },
   {
-    title: "Analytics",
-    href: "/dashboard/analytics",
+    title: 'Analytics',
+    href: '/dashboard/analytics',
     icon: <BarChart3 className="h-4 w-4" />,
-    description: "Performance analytics"
+    description: 'Performance analytics',
   },
   {
-    title: "Policies",
-    href: "/dashboard/policies",
+    title: 'Policies',
+    href: '/dashboard/policies',
     icon: <Shield className="h-4 w-4" />,
-    description: "Governance policies"
+    description: 'Governance policies',
   },
   {
-    title: "Team",
-    href: "/dashboard/team",
+    title: 'Team',
+    href: '/dashboard/team',
     icon: <Users className="h-4 w-4" />,
-    description: "Team management"
+    description: 'Team management',
   },
   {
-    title: "Documentation",
-    href: "/docs",
+    title: 'Documentation',
+    href: '/docs',
     icon: <FileText className="h-4 w-4" />,
-    description: "View documentation"
+    description: 'View documentation',
   },
   {
-    title: "Settings",
-    href: "/dashboard/settings",
+    title: 'Settings',
+    href: '/dashboard/settings',
     icon: <Settings className="h-4 w-4" />,
-    description: "Account settings"
-  }
+    description: 'Account settings',
+  },
 ];
 
 export function EnhancedSidebar({ collapsed = false, onToggle }: EnhancedSidebarProps) {
   const pathname = usePathname();
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState('');
 
-  const filteredItems = navigationItems.filter(item =>
-    item.title.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredItems = navigationItems.filter((item) =>
+    item.title.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   const SidebarContent = () => (
@@ -114,12 +114,7 @@ export function EnhancedSidebar({ collapsed = false, onToggle }: EnhancedSidebar
             <Zap className="h-4 w-4" />
           </div>
         )}
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={onToggle}
-          className="h-8 w-8 p-0"
-        >
+        <Button variant="ghost" size="sm" onClick={onToggle} className="h-8 w-8 p-0">
           {collapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
         </Button>
       </div>
@@ -144,16 +139,16 @@ export function EnhancedSidebar({ collapsed = false, onToggle }: EnhancedSidebar
         <div className="space-y-1">
           {filteredItems.map((item) => {
             const isActive = pathname === item.href;
-            
+
             const NavItem = () => (
               <Link
                 href={item.href}
                 className={cn(
-                  "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
+                  'flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors',
                   isActive
-                    ? "bg-primary text-primary-foreground"
-                    : "text-muted-foreground hover:bg-muted hover:text-foreground",
-                  collapsed && "justify-center px-2"
+                    ? 'bg-primary text-primary-foreground'
+                    : 'text-muted-foreground hover:bg-muted hover:text-foreground',
+                  collapsed && 'justify-center px-2',
                 )}
               >
                 {item.icon}
@@ -206,9 +201,7 @@ export function EnhancedSidebar({ collapsed = false, onToggle }: EnhancedSidebar
             <div className="rounded-lg bg-muted p-3">
               <div className="text-xs font-medium text-muted-foreground">Plan</div>
               <div className="text-sm font-bold">Pro Plan</div>
-              <div className="text-xs text-muted-foreground mt-1">
-                12 of 15 repositories used
-              </div>
+              <div className="text-xs text-muted-foreground mt-1">12 of 15 repositories used</div>
             </div>
           </div>
         ) : (
@@ -232,8 +225,8 @@ export function EnhancedSidebar({ collapsed = false, onToggle }: EnhancedSidebar
   return (
     <div
       className={cn(
-        "fixed left-0 top-16 z-40 h-[calc(100vh-4rem)] border-r border-border/40 bg-background transition-all duration-300",
-        collapsed ? "w-16" : "w-64"
+        'fixed left-0 top-16 z-40 h-[calc(100vh-4rem)] border-r border-border/40 bg-background transition-all duration-300',
+        collapsed ? 'w-16' : 'w-64',
       )}
     >
       <SidebarContent />

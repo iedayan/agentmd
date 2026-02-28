@@ -72,12 +72,14 @@ vercel --prod
 Worker processes execution jobs. Required for `pending → running → success` flow.
 
 **Railway**:
+
 1. New project → Deploy from GitHub
 2. Root directory: repo root (or `deploy/worker`)
 3. Start command: `node deploy/worker/worker.mjs`
 4. Add env vars: `DATABASE_URL`, `WORKER_ID` (optional)
 
 **Render**:
+
 1. New → Background Worker
 2. Build: `pnpm install`
 3. Start: `node deploy/worker/worker.mjs`
@@ -103,6 +105,7 @@ NEXT_PUBLIC_APP_URL=https://your-domain.com pnpm run launch:mvp:check -- --targe
 ## 9. Legal Pages
 
 Ensure these are live and linked from footer:
+
 - [ ] /privacy — Privacy Policy
 - [ ] /terms — Terms of Service
 - [ ] /gdpr — GDPR Statement

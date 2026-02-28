@@ -4,15 +4,15 @@
  * Per the standard: agents read the nearest AGENTS.md (like .gitignore resolution).
  */
 
-import { readFileSync, existsSync, readdirSync, statSync } from "fs";
-import { join, resolve, relative, dirname } from "path";
-import type { DiscoveredAgentsMd } from "./types.js";
-import { parseAgentsMd } from "./parser.js";
+import { readFileSync, existsSync, readdirSync, statSync } from 'fs';
+import { join, resolve, relative, dirname } from 'path';
+import type { DiscoveredAgentsMd } from './types.js';
+import { parseAgentsMd } from './parser.js';
 
-const AGENTS_MD_FILENAME = "AGENTS.md";
+const AGENTS_MD_FILENAME = 'AGENTS.md';
 
 // Simple cache for parsed results to avoid re-parsing same files
-const parseCache = new Map<string, import("./types.js").ParsedAgentsMd>();
+const parseCache = new Map<string, import('./types.js').ParsedAgentsMd>();
 const MAX_CACHE_SIZE = 100;
 
 /**
@@ -21,22 +21,22 @@ const MAX_CACHE_SIZE = 100;
  */
 export function discoverAgentsMd(
   rootDir: string,
-  options?: { parse?: boolean; maxDepth?: number }
+  options?: { parse?: boolean; maxDepth?: number },
 ): DiscoveredAgentsMd[] {
   // Input validation
   if (typeof rootDir !== 'string') {
     throw new Error('Root directory must be a string');
   }
-  
+
   if (options) {
     if (typeof options !== 'object' || options === null) {
       throw new Error('Options must be an object');
     }
-    
+
     if (options.parse !== undefined && typeof options.parse !== 'boolean') {
       throw new Error('Options.parse must be a boolean');
     }
-    
+
     if (options.maxDepth !== undefined) {
       if (typeof options.maxDepth !== 'number' || options.maxDepth < 0) {
         throw new Error('Options.maxDepth must be a non-negative number');
@@ -69,9 +69,9 @@ export function discoverAgentsMd(
           if (cached) {
             item.parsed = cached;
           } else {
-            const content = readFileSync(agentsPath, "utf-8");
+            const content = readFileSync(agentsPath, 'utf-8');
             item.parsed = parseAgentsMd(content, agentsPath);
-            
+
             // Cache management - simple LRU
             if (parseCache.size >= MAX_CACHE_SIZE) {
               const firstKey = parseCache.keys().next().value;
@@ -91,7 +91,7 @@ export function discoverAgentsMd(
     try {
       const entries = readdirSync(dir, { withFileTypes: true });
       for (const entry of entries) {
-        if (entry.isDirectory() && !entry.name.startsWith(".") && entry.name !== "node_modules") {
+        if (entry.isDirectory() && !entry.name.startsWith('.') && entry.name !== 'node_modules') {
           walk(join(dir, entry.name), depth + 1);
         }
       }

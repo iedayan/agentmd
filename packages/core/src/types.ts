@@ -4,7 +4,7 @@
  * @see https://agents.md
  */
 
-import type { AgentsMdDirective } from "./schema.js";
+import type { AgentsMdDirective } from './schema.js';
 
 /** A section extracted from AGENTS.md (heading + content) */
 export interface AgentsMdSection {
@@ -40,15 +40,15 @@ export interface ExtractedCommand {
 
 /** Common command categories for execution orchestration */
 export type CommandType =
-  | "build"
-  | "test"
-  | "lint"
-  | "format"
-  | "install"
-  | "setup"
-  | "deploy"
-  | "security"
-  | "other";
+  | 'build'
+  | 'test'
+  | 'lint'
+  | 'format'
+  | 'install'
+  | 'setup'
+  | 'deploy'
+  | 'security'
+  | 'other';
 
 /** Result of parsing an AGENTS.md file */
 export interface ParsedAgentsMd {
@@ -63,7 +63,7 @@ export interface ParsedAgentsMd {
   /** File path (if known) */
   filePath?: string;
   /** YAML frontmatter (agent config) if present */
-  frontmatter?: import("./schema.js").AgentFrontmatter;
+  frontmatter?: import('./schema.js').AgentFrontmatter;
   /** Markdown directives (target, priority, etc.) */
   directives?: AgentsMdDirective[];
   /** Body content (without frontmatter) */
@@ -94,12 +94,12 @@ export interface ValidationError {
   code: string;
   message: string;
   line?: number;
-  severity: "error";
+  severity: 'error';
 }
 
 export interface ValidationWarning {
   code: string;
   message: string;
   line?: number;
-  severity: "warning";
+  severity: 'warning';
 }

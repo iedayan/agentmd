@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import type { PipelineStage } from "@/lib/ops/mock-data";
+import type { PipelineStage } from '@/lib/ops/mock-data';
 
 /* Design system: primary (emerald), destructive, muted, primary */
 const STAGE_COLORS = {
-  passed: "hsl(var(--primary))",
-  failed: "hsl(var(--destructive))",
-  pending: "hsl(var(--muted-foreground))",
-  running: "hsl(var(--primary))",
+  passed: 'hsl(var(--primary))',
+  failed: 'hsl(var(--destructive))',
+  pending: 'hsl(var(--muted-foreground))',
+  running: 'hsl(var(--primary))',
 };
 
 export function PipelineDiagram({
@@ -23,10 +23,7 @@ export function PipelineDiagram({
 
   return (
     <div className="overflow-x-auto py-4">
-      <svg
-        width={Math.max(totalWidth, 800)}
-        height={80}
-      >
+      <svg width={Math.max(totalWidth, 800)} height={80}>
         <defs>
           <marker
             id="arrowhead"
@@ -42,7 +39,7 @@ export function PipelineDiagram({
         {stages.map((stage, i) => {
           const x = 20 + i * (width + gap);
           const color = STAGE_COLORS[stage.status];
-          const isRunning = stage.status === "running";
+          const isRunning = stage.status === 'running';
           return (
             <g key={stage.id}>
               {i > 0 && (
@@ -57,10 +54,7 @@ export function PipelineDiagram({
                   className="ops-connector"
                 />
               )}
-              <g
-                onClick={() => onStageClick?.(stage.id)}
-                className="cursor-pointer"
-              >
+              <g onClick={() => onStageClick?.(stage.id)} className="cursor-pointer">
                 <rect
                   x={x}
                   y={8}
@@ -68,7 +62,7 @@ export function PipelineDiagram({
                   height={64}
                   fill="hsl(var(--card))"
                   stroke={color}
-                  strokeWidth={stage.status === "failed" ? 2 : 1}
+                  strokeWidth={stage.status === 'failed' ? 2 : 1}
                 />
                 <text
                   x={x + width / 2}
@@ -77,12 +71,12 @@ export function PipelineDiagram({
                   className="font-mono text-xs font-medium"
                   fill="hsl(var(--foreground))"
                 >
-                  {stage.status === "passed" && "✓ "}
-                  {stage.status === "failed" && "✕ "}
-                  {stage.status === "running" && (
-                    <tspan className={isRunning ? "ops-pulse-running" : ""}>▶ </tspan>
+                  {stage.status === 'passed' && '✓ '}
+                  {stage.status === 'failed' && '✕ '}
+                  {stage.status === 'running' && (
+                    <tspan className={isRunning ? 'ops-pulse-running' : ''}>▶ </tspan>
                   )}
-                  {stage.status === "pending" && "⏳ "}
+                  {stage.status === 'pending' && '⏳ '}
                   {stage.name}
                 </text>
                 <text
@@ -92,7 +86,7 @@ export function PipelineDiagram({
                   className="font-mono text-[10px]"
                   fill="hsl(var(--muted-foreground))"
                 >
-                  {stage.duration ?? "—"}
+                  {stage.duration ?? '—'}
                 </text>
               </g>
               {i < stages.length - 1 && (

@@ -1,9 +1,9 @@
-import { Nav } from "@/components/landing/nav";
+import { Nav } from '@/components/landing/nav';
 
 export const metadata = {
-  title: "Design System — AgentMD",
+  title: 'Design System — AgentMD',
   description:
-    "AgentMD design tokens and components — colors, typography, spacing, motion, buttons, badges, cards, terminal, pipeline.",
+    'AgentMD design tokens and components — colors, typography, spacing, motion, buttons, badges, cards, terminal, pipeline.',
 };
 
 export default function DesignSystemPage() {

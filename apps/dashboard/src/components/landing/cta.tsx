@@ -1,6 +1,6 @@
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import { ArrowRight } from 'lucide-react';
 
 export function CTA() {
   return (
@@ -12,11 +12,15 @@ export function CTA() {
               Ready to ship with AI?
             </h2>
             <p className="text-muted-foreground mb-6 sm:mb-8 text-sm sm:text-base">
-              Get your score, add AGENTS.md, connect the GitHub App. Free for 3 repos—no credit card.
+              Get your score, add AGENTS.md, connect the GitHub App. Free for 3 repos—no credit
+              card.
             </p>
             <div className="flex flex-wrap justify-center gap-3">
               <Link href="/register">
-                <Button size="lg" className="h-11 px-8 font-semibold shadow-lg shadow-primary/20 gap-2">
+                <Button
+                  size="lg"
+                  className="h-11 px-8 font-semibold shadow-lg shadow-primary/20 gap-2"
+                >
                   Create free account
                   <ArrowRight className="h-4 w-4" />
                 </Button>

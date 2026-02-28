@@ -3,6 +3,7 @@
 All notable changes to AgentMD are documented in this file.
 
 ## Unreleased
+
 - CI baseline established: GitHub Actions workflow, Node 20, PNPM caching.
 - Repo-wide lint/format foundation added (ESLint + Prettier).
 - Shared TypeScript base configuration with cross-package references implemented.

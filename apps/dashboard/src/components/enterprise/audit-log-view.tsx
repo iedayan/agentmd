@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useCallback, useEffect, useState } from "react";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { useCallback, useEffect, useState } from 'react';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import {
   FileText,
   Download,
@@ -13,12 +13,12 @@ import {
   ArrowRight,
   Clock,
   User,
-  ExternalLink
-} from "lucide-react";
-import { cn } from "@/lib/core/utils";
+  ExternalLink,
+} from 'lucide-react';
+import { cn } from '@/lib/core/utils';
 
-import { AuditLogEntry } from "@/types";
-import { governanceService } from "@/lib/services/governance-service";
+import { AuditLogEntry } from '@/types';
+import { governanceService } from '@/lib/services/governance-service';
 
 export function AuditLogView() {
   const [logs, setLogs] = useState<AuditLogEntry[]>([]);
@@ -31,16 +31,12 @@ export function AuditLogView() {
       setError(null);
       const res = await governanceService.getAuditLogs();
       if (!res.ok) {
-        throw new Error(res.error ?? "Failed to load audit logs.");
+        throw new Error(res.error ?? 'Failed to load audit logs.');
       }
       setLogs(res.logs ?? []);
     } catch (loadError) {
       setLogs([]);
-      setError(
-        loadError instanceof Error
-          ? loadError.message
-          : "Failed to load audit logs."
-      );
+      setError(loadError instanceof Error ? loadError.message : 'Failed to load audit logs.');
     } finally {
       setLoading(false);
     }
@@ -51,31 +47,27 @@ export function AuditLogView() {
   }, [loadLogs]);
 
   const actionLabel = (a: string) =>
-    a.replace(/[._]/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+    a.replace(/[._]/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
 
   const exportCsv = () => {
     if (!logs.length) return;
-    const header = ["timestamp", "userId", "action", "resourceType", "resourceId", "details"];
+    const header = ['timestamp', 'userId', 'action', 'resourceType', 'resourceId', 'details'];
     const rows = logs.map((log) => [
       log.timestamp,
       log.userId,
       log.action,
       log.resourceType,
       log.resourceId,
-      JSON.stringify(log.details ?? ""),
+      JSON.stringify(log.details ?? ''),
     ]);
     const csv = [header, ...rows]
-      .map((row) =>
-        row
-          .map((value) => `"${String(value).replaceAll('"', '""')}"`)
-          .join(",")
-      )
-      .join("\n");
-    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+      .map((row) => row.map((value) => `"${String(value).replaceAll('"', '""')}"`).join(','))
+      .join('\n');
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
+    const a = document.createElement('a');
     a.href = url;
-    a.download = "audit-activity.csv";
+    a.download = 'audit-activity.csv';
     a.click();
     URL.revokeObjectURL(url);
   };
@@ -86,26 +78,38 @@ export function AuditLogView() {
         <div className="glass-card p-6 bg-emerald-500/5 border-emerald-500/20">
           <div className="flex items-center gap-3 mb-2">
             <ShieldCheck className="h-4 w-4 text-emerald-500" />
-            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-emerald-500/80">Compliance Status</span>
+            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-emerald-500/80">
+              Compliance Status
+            </span>
           </div>
           <p className="text-2xl font-black text-foreground/90">SOC2 Ready</p>
-          <p className="text-[10px] text-muted-foreground/60 font-black mt-1 uppercase tracking-widest">REAL-TIME ATTESTATION</p>
+          <p className="text-[10px] text-muted-foreground/60 font-black mt-1 uppercase tracking-widest">
+            REAL-TIME ATTESTATION
+          </p>
         </div>
         <div className="glass-card p-6 bg-primary/5 border-primary/20">
           <div className="flex items-center gap-3 mb-2">
             <EyeOff className="h-4 w-4 text-primary" />
-            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-primary/80">Security Protocol</span>
+            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-primary/80">
+              Security Protocol
+            </span>
           </div>
           <p className="text-2xl font-black text-foreground/90">PII Masked</p>
-          <p className="text-[10px] text-muted-foreground/60 font-black mt-1 uppercase tracking-widest">AUTOMATIC REDACTION</p>
+          <p className="text-[10px] text-muted-foreground/60 font-black mt-1 uppercase tracking-widest">
+            AUTOMATIC REDACTION
+          </p>
         </div>
         <div className="glass-card p-6 bg-indigo-500/5 border-indigo-500/20">
           <div className="flex items-center gap-3 mb-2">
             <Activity className="h-4 w-4 text-indigo-500" />
-            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-indigo-500/80">Stream Integrity</span>
+            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-indigo-500/80">
+              Stream Integrity
+            </span>
           </div>
           <p className="text-2xl font-black text-foreground/90">Verified</p>
-          <p className="text-[10px] text-muted-foreground/60 font-black mt-1 uppercase tracking-widest">CRYPTOGRAPHIC CHAIN</p>
+          <p className="text-[10px] text-muted-foreground/60 font-black mt-1 uppercase tracking-widest">
+            CRYPTOGRAPHIC CHAIN
+          </p>
         </div>
       </div>
 
@@ -116,8 +120,12 @@ export function AuditLogView() {
               <FileText className="h-5 w-5" />
             </div>
             <div>
-              <h2 className="text-lg font-black text-foreground/90 tracking-tight">System Event Stream</h2>
-              <p className="text-[10px] text-muted-foreground font-black uppercase tracking-widest opacity-60">Complete audit trail for SOC2/HIPAA</p>
+              <h2 className="text-lg font-black text-foreground/90 tracking-tight">
+                System Event Stream
+              </h2>
+              <p className="text-[10px] text-muted-foreground font-black uppercase tracking-widest opacity-60">
+                Complete audit trail for SOC2/HIPAA
+              </p>
             </div>
           </div>
           <div className="flex items-center gap-3">
@@ -146,13 +154,21 @@ export function AuditLogView() {
           {loading ? (
             <div className="p-6 space-y-4">
               {[1, 2, 3, 4, 5].map((i) => (
-                <div key={i} className="h-14 animate-pulse rounded-2xl border border-border/20 bg-muted/20 shadow-inner" />
+                <div
+                  key={i}
+                  className="h-14 animate-pulse rounded-2xl border border-border/20 bg-muted/20 shadow-inner"
+                />
               ))}
             </div>
           ) : error ? (
             <div className="m-6 rounded-2xl border border-destructive/20 bg-destructive/5 p-6 text-center animate-fade-up">
               <p className="text-sm font-bold text-destructive">{error}</p>
-              <Button size="sm" variant="outline" className="mt-4 rounded-xl border-destructive/20 hover:bg-destructive/10" onClick={() => void loadLogs()}>
+              <Button
+                size="sm"
+                variant="outline"
+                className="mt-4 rounded-xl border-destructive/20 hover:bg-destructive/10"
+                onClick={() => void loadLogs()}
+              >
                 Reconnect Stream
               </Button>
             </div>
@@ -161,7 +177,9 @@ export function AuditLogView() {
               <div className="h-12 w-12 rounded-full bg-muted/40 flex items-center justify-center mx-auto mb-4">
                 <Clock className="h-6 w-6 opacity-40" />
               </div>
-              <p className="font-black uppercase tracking-widest text-[11px] opacity-40">Zero events detected in the current window.</p>
+              <p className="font-black uppercase tracking-widest text-[11px] opacity-40">
+                Zero events detected in the current window.
+              </p>
             </div>
           ) : (
             <div className="divide-y divide-border/10">
@@ -169,17 +187,23 @@ export function AuditLogView() {
                 <div
                   key={log.id}
                   className={cn(
-                    "flex flex-col md:flex-row items-center gap-4 px-6 py-5 text-sm hover:bg-primary/[0.01] transition-colors group animate-fade-up",
-                    idx === 0 && "animation-delay-0",
-                    idx === 1 && "animation-delay-75",
-                    idx === 2 && "animation-delay-100",
-                    idx > 2 && "animation-delay-150"
+                    'flex flex-col md:flex-row items-center gap-4 px-6 py-5 text-sm hover:bg-primary/[0.01] transition-colors group animate-fade-up',
+                    idx === 0 && 'animation-delay-0',
+                    idx === 1 && 'animation-delay-75',
+                    idx === 2 && 'animation-delay-100',
+                    idx > 2 && 'animation-delay-150',
                   )}
                 >
                   <div className="flex items-center gap-3 shrink-0 md:w-48">
                     <Clock className="h-3.5 w-3.5 text-muted-foreground/40 group-hover:text-primary transition-colors" />
                     <span className="text-[11px] font-black text-muted-foreground/60 uppercase tracking-tighter">
-                      {new Date(log.timestamp).toLocaleString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+                      {new Date(log.timestamp).toLocaleString([], {
+                        month: 'short',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        second: '2-digit',
+                      })}
                     </span>
                   </div>
 
@@ -187,21 +211,31 @@ export function AuditLogView() {
                     <div className="h-7 w-7 rounded-full bg-muted/50 flex items-center justify-center border border-border/40 shadow-sm shrink-0">
                       <User className="h-3.5 w-3.5 text-muted-foreground/60" />
                     </div>
-                    <span className="text-xs font-black text-foreground/80 tracking-tight truncate">{log.userId}</span>
+                    <span className="text-xs font-black text-foreground/80 tracking-tight truncate">
+                      {log.userId}
+                    </span>
                   </div>
 
                   <div className="flex-1 flex items-center gap-4">
-                    <Badge variant="outline" className="text-[9px] font-black tracking-widest px-2.5 py-0.5 uppercase border-primary/20 text-primary bg-primary/5 shrink-0">
+                    <Badge
+                      variant="outline"
+                      className="text-[9px] font-black tracking-widest px-2.5 py-0.5 uppercase border-primary/20 text-primary bg-primary/5 shrink-0"
+                    >
                       {actionLabel(log.action)}
                     </Badge>
                     <p className="text-[11px] font-medium text-muted-foreground group-hover:text-foreground/80 transition-colors truncate">
-                      {log.resourceType}: <span className="font-bold opacity-40">{log.resourceId}</span>
+                      {log.resourceType}:{' '}
+                      <span className="font-bold opacity-40">{log.resourceId}</span>
                     </p>
                   </div>
 
                   <div className="flex items-center gap-3 shrink-0">
-                    {typeof log.details !== "undefined" && (
-                      <Badge variant="secondary" className="bg-muted/30 text-[9px] font-black tracking-[0.1em] py-0.5 border border-border/20 text-muted-foreground/60 cursor-help" title={JSON.stringify(log.details)}>
+                    {typeof log.details !== 'undefined' && (
+                      <Badge
+                        variant="secondary"
+                        className="bg-muted/30 text-[9px] font-black tracking-[0.1em] py-0.5 border border-border/20 text-muted-foreground/60 cursor-help"
+                        title={JSON.stringify(log.details)}
+                      >
                         DATA MASKED
                       </Badge>
                     )}
@@ -217,11 +251,14 @@ export function AuditLogView() {
 
         <div className="p-4 border-t border-border/20 bg-muted/10 flex items-center justify-between">
           <p className="text-[9px] font-black text-muted-foreground/50 uppercase tracking-widest">
-            Streaming encrypted events from source <ArrowRight className="inline h-2 w-2 mx-1" /> AgentMD v0.1.0-secure
+            Streaming encrypted events from source <ArrowRight className="inline h-2 w-2 mx-1" />{' '}
+            AgentMD v0.1.0-secure
           </p>
           <div className="flex items-center gap-2">
             <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-glow-pulse" />
-            <span className="text-[9px] font-black text-emerald-500 uppercase tracking-widest">Live Feed Active</span>
+            <span className="text-[9px] font-black text-emerald-500 uppercase tracking-widest">
+              Live Feed Active
+            </span>
           </div>
         </div>
       </div>

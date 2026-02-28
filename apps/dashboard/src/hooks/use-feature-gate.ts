@@ -1,21 +1,21 @@
-"use client";
+'use client';
 
-import { useMemo } from "react";
+import { useMemo } from 'react';
 import {
   getPlan,
   canAddRepository,
   hasExecutionMinutes,
   canUseParallelExecution,
   type PlanId,
-} from "@/lib/billing/plans";
+} from '@/lib/billing/plans';
 
 /**
  * Feature gating hook based on subscription plan.
  * In production, planId and usage would come from auth/session.
  */
 export function useFeatureGate(
-  planId: PlanId = "free",
-  usage?: { repoCount: number; usedMinutes: number }
+  planId: PlanId = 'free',
+  usage?: { repoCount: number; usedMinutes: number },
 ) {
   return useMemo(() => {
     const plan = getPlan(planId);

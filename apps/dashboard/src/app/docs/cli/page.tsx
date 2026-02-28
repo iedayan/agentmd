@@ -1,5 +1,5 @@
-import Link from "next/link";
-import { CodeBlock } from "@/components/docs/code-block";
+import Link from 'next/link';
+import { CodeBlock } from '@/components/docs/code-block';
 
 export default function CLIPage() {
   return (
@@ -23,7 +23,10 @@ pnpm run agentmd -- validate`}</CodeBlock>
 agentmd validate ./packages/core`}</CodeBlock>
 
       <h3>discover [path]</h3>
-      <p>Find all AGENTS.md files in a directory (including nested). Use <code>--parse</code> to parse each.</p>
+      <p>
+        Find all AGENTS.md files in a directory (including nested). Use <code>--parse</code> to
+        parse each.
+      </p>
       <CodeBlock>{`agentmd discover .
 # Found 3 AGENTS.md file(s):
 #   AGENTS.md (root) — 5 commands
@@ -42,14 +45,20 @@ agentmd validate ./packages/core`}</CodeBlock>
 #   [test] pnpm test (Test, line 12)`}</CodeBlock>
 
       <h3>compose [path]</h3>
-      <p>Build AGENTS.md from fragments (<code>**/agents-md/**/*.md</code>, <code>**/*.agents.md</code>).</p>
+      <p>
+        Build AGENTS.md from fragments (<code>**/agents-md/**/*.md</code>,{' '}
+        <code>**/*.agents.md</code>).
+      </p>
       <CodeBlock>{`agentmd compose .
 # Composed 2 AGENTS.md file(s):
 #   AGENTS.md (85 lines)
 #   packages/web/AGENTS.md (32 lines)`}</CodeBlock>
 
       <h3>run [path] [types]</h3>
-      <p>Execute commands from AGENTS.md. Optional types: build, test, lint, format, install, setup, deploy.</p>
+      <p>
+        Execute commands from AGENTS.md. Optional types: build, test, lint, format, install, setup,
+        deploy.
+      </p>
       <CodeBlock>{`agentmd run .           # Run all commands
 agentmd run . test      # Run only test commands
 agentmd run . build lint`}</CodeBlock>
@@ -61,7 +70,10 @@ agentmd run . build lint`}</CodeBlock>
 # → AGENTS.md is well-structured for agent use.`}</CodeBlock>
 
       <h2>Path Defaults</h2>
-      <p>If no path is given, <code>.</code> (current directory) is used. AgentMD looks for <code>AGENTS.md</code> in that path or directory.</p>
+      <p>
+        If no path is given, <code>.</code> (current directory) is used. AgentMD looks for{' '}
+        <code>AGENTS.md</code> in that path or directory.
+      </p>
 
       <p className="mt-8">
         <Link href="/docs/execution" className="text-primary hover:underline">

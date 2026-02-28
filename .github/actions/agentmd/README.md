@@ -20,7 +20,7 @@ The action checks out the AgentMD repo, installs dependencies, builds core + CLI
   with:
     command: check
     path: .
-    contract: "true"
+    contract: 'true'
 ```
 
 ### Score (agent-readiness 0–100)
@@ -31,6 +31,7 @@ The action checks out the AgentMD repo, installs dependencies, builds core + CLI
     command: score
     path: .
 ```
+
 Outputs `score` for use in later steps. See `.github/workflows/agentmd-pr-score.yml.example` for posting the score to PRs.
 
 ### Run commands (dry-run by default)
@@ -40,8 +41,8 @@ Outputs `score` for use in later steps. See `.github/workflows/agentmd-pr-score.
   with:
     command: run
     path: .
-    dry-run: "true"   # preview only, no execution (default)
-    use-shell: "false"  # set true for commands with |, &&, etc.
+    dry-run: 'true' # preview only, no execution (default)
+    use-shell: 'false' # set true for commands with |, &&, etc.
 ```
 
 ### Execute for real
@@ -51,20 +52,20 @@ Outputs `score` for use in later steps. See `.github/workflows/agentmd-pr-score.
   with:
     command: run
     path: .
-    dry-run: "false"
+    dry-run: 'false'
 ```
 
 ## Inputs
 
-| Input | Description | Default |
-|-------|-------------|---------|
-| `command` | `check`, `validate`, `run`, or `score` | `check` |
-| `path` | Path to repo root (containing AGENTS.md) | `.` |
-| `contract` | For check/validate: require `output_contract` | `false` |
-| `output` | For check/validate: output file to validate | `""` |
-| `dry-run` | For run: preview only | `true` |
-| `use-shell` | For run: allow shell operators | `false` |
-| `fail-on-warning` | For check: exit 1 if there are warnings | `false` |
+| Input             | Description                                   | Default |
+| ----------------- | --------------------------------------------- | ------- |
+| `command`         | `check`, `validate`, `run`, or `score`        | `check` |
+| `path`            | Path to repo root (containing AGENTS.md)      | `.`     |
+| `contract`        | For check/validate: require `output_contract` | `false` |
+| `output`          | For check/validate: output file to validate   | `""`    |
+| `dry-run`         | For run: preview only                         | `true`  |
+| `use-shell`       | For run: allow shell operators                | `false` |
+| `fail-on-warning` | For check: exit 1 if there are warnings       | `false` |
 
 ## Example workflow
 
@@ -83,7 +84,7 @@ jobs:
         uses: iedayan/agentmd/.github/actions/agentmd@main
         with:
           command: check
-          contract: "true"
+          contract: 'true'
 ```
 
 ## See also

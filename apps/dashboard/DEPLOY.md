@@ -14,18 +14,18 @@
 
 Copy `apps/dashboard/.env.example` to `.env.local` and fill in:
 
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `NEXTAUTH_SECRET` | Yes | 32+ char secret (`openssl rand -base64 32`) |
-| `GITHUB_ID` | Yes | GitHub OAuth App Client ID |
-| `GITHUB_SECRET` | Yes | GitHub OAuth App Client Secret |
-| `NEXT_PUBLIC_APP_URL` | Yes | Public URL (e.g. `https://agentmd.example.com`) |
-| `NEXTAUTH_URL` | Prod | Same as `NEXT_PUBLIC_APP_URL` in production |
-| `DATABASE_URL` | Yes (Prod) | Postgres connection string (required in production) |
-| `AGENTMD_ALLOW_IN_MEMORY` | Optional | Set to `true` only for non-production/demo fallback without DB |
-| `GITHUB_APP_SLUG` | Optional | GitHub App slug for "Connect with GitHub" |
-| `GITHUB_WEBHOOK_SECRET` | Optional | For webhook signature verification |
-| `STRIPE_*` | Optional | For Pro/Enterprise billing |
+| Variable                  | Required   | Description                                                    |
+| ------------------------- | ---------- | -------------------------------------------------------------- |
+| `NEXTAUTH_SECRET`         | Yes        | 32+ char secret (`openssl rand -base64 32`)                    |
+| `GITHUB_ID`               | Yes        | GitHub OAuth App Client ID                                     |
+| `GITHUB_SECRET`           | Yes        | GitHub OAuth App Client Secret                                 |
+| `NEXT_PUBLIC_APP_URL`     | Yes        | Public URL (e.g. `https://agentmd.example.com`)                |
+| `NEXTAUTH_URL`            | Prod       | Same as `NEXT_PUBLIC_APP_URL` in production                    |
+| `DATABASE_URL`            | Yes (Prod) | Postgres connection string (required in production)            |
+| `AGENTMD_ALLOW_IN_MEMORY` | Optional   | Set to `true` only for non-production/demo fallback without DB |
+| `GITHUB_APP_SLUG`         | Optional   | GitHub App slug for "Connect with GitHub"                      |
+| `GITHUB_WEBHOOK_SECRET`   | Optional   | For webhook signature verification                             |
+| `STRIPE_*`                | Optional   | For Pro/Enterprise billing                                     |
 
 ## Database Setup
 
@@ -76,6 +76,7 @@ The dashboard queues executions via `POST /api/execute`. In the current implemen
 - **Database mode**: Executions are persisted and progress through a built-in lifecycle (`pending → running → success`) for baseline operability. For durable/background execution, wire a real worker.
 
 For production-grade agent execution, integrate with:
+
 - A job queue (e.g. BullMQ, Inngest) that processes queued executions
 - GitHub Actions or CI to run `agentmd run` on push/PR
 - Webhook handlers that update execution status when runs complete

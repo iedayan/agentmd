@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { useState, useCallback, useEffect } from "react";
-import { Check, Copy, ExternalLink } from "lucide-react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import { useState, useCallback, useEffect } from 'react';
+import { Check, Copy, ExternalLink } from 'lucide-react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 
 function CopyButton({ value, label }: { value: string; label?: string }) {
   const [copied, setCopied] = useState(false);
@@ -19,14 +19,22 @@ function CopyButton({ value, label }: { value: string; label?: string }) {
       size="sm"
       onClick={copy}
       className="shrink-0"
-      aria-label={label ?? "Copy"}
+      aria-label={label ?? 'Copy'}
     >
       {copied ? <Check className="h-4 w-4 text-green-500" /> : <Copy className="h-4 w-4" />}
     </Button>
   );
 }
 
-function ConfigRow({ label, value, description }: { label: string; value: string; description?: string }) {
+function ConfigRow({
+  label,
+  value,
+  description,
+}: {
+  label: string;
+  value: string;
+  description?: string;
+}) {
   return (
     <div className="flex items-start gap-2 py-2">
       <div className="flex-1 min-w-0">
@@ -42,24 +50,24 @@ function ConfigRow({ label, value, description }: { label: string; value: string
 }
 
 export function GithubAppSetupWizard() {
-  const [baseUrl, setBaseUrl] = useState("https://agentmd.online");
-  const [webhookSecret, setWebhookSecret] = useState("");
+  const [baseUrl, setBaseUrl] = useState('https://agentmd.online');
+  const [webhookSecret, setWebhookSecret] = useState('');
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
+    if (typeof window !== 'undefined') {
       setBaseUrl(window.location.origin);
     }
   }, []);
 
-  const normalized = baseUrl.replace(/\/$/, "");
-  const isHttps = normalized.startsWith("https://");
+  const normalized = baseUrl.replace(/\/$/, '');
+  const isHttps = normalized.startsWith('https://');
 
   const oauthCallback = `${normalized}/api/auth/callback/github`;
   const webhookUrl = `${normalized}/api/github/webhooks`;
   const callbackUrl = `${normalized}/api/github/callback`;
   const setupUrl = `${normalized}/dashboard`;
 
-  const generatedWebhookSecret = webhookSecret || "[run: openssl rand -hex 32]";
+  const generatedWebhookSecret = webhookSecret || '[run: openssl rand -hex 32]';
 
   const envSnippet = `# GitHub OAuth App (required for login)
 GITHUB_ID=your_client_id
@@ -69,15 +77,15 @@ GITHUB_SECRET=your_client_secret
 GITHUB_APP_ID=your_app_id
 GITHUB_APP_PRIVATE_KEY="-----BEGIN RSA PRIVATE KEY-----\\n...\\n-----END RSA PRIVATE KEY-----"
 GITHUB_APP_SLUG=your-app-slug
-GITHUB_WEBHOOK_SECRET=${webhookSecret || "your_webhook_secret"}
+GITHUB_WEBHOOK_SECRET=${webhookSecret || 'your_webhook_secret'}
 `;
 
   const generateSecret = () => {
     const bytes = new Uint8Array(32);
     crypto.getRandomValues(bytes);
     const hex = Array.from(bytes)
-      .map((b) => b.toString(16).padStart(2, "0"))
-      .join("");
+      .map((b) => b.toString(16).padStart(2, '0'))
+      .join('');
     setWebhookSecret(hex);
   };
 
@@ -87,7 +95,8 @@ GITHUB_WEBHOOK_SECRET=${webhookSecret || "your_webhook_secret"}
         <CardHeader>
           <CardTitle>1. Base URL</CardTitle>
           <CardDescription>
-            Your app URL (e.g. https://agentmd.online for production, http://localhost:3001 for local dev)
+            Your app URL (e.g. https://agentmd.online for production, http://localhost:3001 for
+            local dev)
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -110,7 +119,7 @@ GITHUB_WEBHOOK_SECRET=${webhookSecret || "your_webhook_secret"}
         <CardHeader>
           <CardTitle>2. GitHub OAuth App</CardTitle>
           <CardDescription>
-            Required for Sign in with GitHub. Create at{" "}
+            Required for Sign in with GitHub. Create at{' '}
             <a
               href="https://github.com/settings/developers"
               target="_blank"
@@ -134,7 +143,7 @@ GITHUB_WEBHOOK_SECRET=${webhookSecret || "your_webhook_secret"}
         <CardHeader>
           <CardTitle>3. GitHub App</CardTitle>
           <CardDescription>
-            Optional — for repo connection and webhooks. Create at{" "}
+            Optional — for repo connection and webhooks. Create at{' '}
             <a
               href="https://github.com/settings/apps/new"
               target="_blank"
@@ -163,7 +172,10 @@ GITHUB_WEBHOOK_SECRET=${webhookSecret || "your_webhook_secret"}
               <Button variant="outline" size="sm" onClick={generateSecret}>
                 Generate
               </Button>
-              <CopyButton value={webhookSecret || "openssl rand -hex 32"} label="Copy webhook secret" />
+              <CopyButton
+                value={webhookSecret || 'openssl rand -hex 32'}
+                label="Copy webhook secret"
+              />
             </div>
           </div>
         </CardContent>
@@ -191,9 +203,11 @@ GITHUB_WEBHOOK_SECRET=${webhookSecret || "your_webhook_secret"}
           <CardHeader>
             <CardTitle className="text-amber-600 dark:text-amber-400">Local development</CardTitle>
             <CardDescription>
-              For localhost, create a separate OAuth App with callback{" "}
-              <code className="bg-muted px-1 rounded">http://localhost:3001/api/auth/callback/github</code>.
-              GitHub requires HTTPS for production.
+              For localhost, create a separate OAuth App with callback{' '}
+              <code className="bg-muted px-1 rounded">
+                http://localhost:3001/api/auth/callback/github
+              </code>
+              . GitHub requires HTTPS for production.
             </CardDescription>
           </CardHeader>
         </Card>

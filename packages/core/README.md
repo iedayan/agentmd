@@ -30,7 +30,7 @@ import {
   extractCommands,
   executeCommand,
   computeAgentReadinessScore,
-} from "@agentmd-dev/core";
+} from '@agentmd-dev/core';
 
 const content = `
 ## Build
@@ -47,7 +47,7 @@ const score = computeAgentReadinessScore(parsed);
 if (validation.valid) {
   const cmd = parsed.commands[0];
   const result = await executeCommand(cmd, { sandbox: true });
-  console.log(result.success ? "OK" : result.stderr);
+  console.log(result.success ? 'OK' : result.stderr);
 }
 ```
 

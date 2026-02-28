@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import Image from "next/image";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { useState } from 'react';
+import Image from 'next/image';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 
 export function SettingsProfile({
   name,
@@ -26,19 +26,19 @@ export function SettingsProfile({
     setSaved(false);
     setError(null);
     try {
-      const res = await fetch("/api/account/profile", {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
+      const res = await fetch('/api/account/profile', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name: displayName, email: displayEmail }),
       });
       const data = (await res.json()) as { ok?: boolean; error?: string };
       if (!res.ok || data.ok === false) {
-        throw new Error(data.error ?? "Failed to save");
+        throw new Error(data.error ?? 'Failed to save');
       }
       setSaved(true);
       setTimeout(() => setSaved(false), 2000);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to save");
+      setError(err instanceof Error ? err.message : 'Failed to save');
       setTimeout(() => setError(null), 5000);
     } finally {
       setSaving(false);
@@ -49,18 +49,22 @@ export function SettingsProfile({
     <Card>
       <CardHeader>
         <CardTitle>Profile</CardTitle>
-        <CardDescription>
-          Your account information. Managed via GitHub OAuth.
-        </CardDescription>
+        <CardDescription>Your account information. Managed via GitHub OAuth.</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="flex items-center gap-4">
           <div className="h-16 w-16 rounded-full bg-muted flex items-center justify-center overflow-hidden relative">
             {image ? (
-              <Image src={image} alt="Profile avatar" width={64} height={64} className="h-full w-full object-cover" />
+              <Image
+                src={image}
+                alt="Profile avatar"
+                width={64}
+                height={64}
+                className="h-full w-full object-cover"
+              />
             ) : (
               <span className="text-xl font-semibold text-muted-foreground">
-                {displayName?.charAt(0)?.toUpperCase() ?? "?"}
+                {displayName?.charAt(0)?.toUpperCase() ?? '?'}
               </span>
             )}
           </div>
@@ -103,7 +107,7 @@ export function SettingsProfile({
           </p>
         </div>
         <Button onClick={handleSave} disabled={saving}>
-          {saving ? "Saving..." : saved ? "Saved" : "Save changes"}
+          {saving ? 'Saving...' : saved ? 'Saved' : 'Save changes'}
         </Button>
       </CardContent>
     </Card>

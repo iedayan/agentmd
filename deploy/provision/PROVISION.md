@@ -24,15 +24,15 @@ Then copy outputs to your env (see `pnpm run terraform:output`). Full details: [
 
 ## Manual provisioning
 
-| Service | Purpose | Soft Launch | Full Launch |
-|---------|---------|--------------|-------------|
-| Vercel | Dashboard hosting | Required | Required |
-| Postgres (Neon) | User data, executions | Required | Required |
-| Redis (Upstash) | Rate limiting, queue | Optional | Required |
-| S3/R2 | Execution logs | Optional | Required |
-| Worker | Background jobs | Optional | Required |
-| Sentry | Error tracking | Optional | Required |
-| Slack | Alerts | Optional | Required |
+| Service         | Purpose               | Soft Launch | Full Launch |
+| --------------- | --------------------- | ----------- | ----------- |
+| Vercel          | Dashboard hosting     | Required    | Required    |
+| Postgres (Neon) | User data, executions | Required    | Required    |
+| Redis (Upstash) | Rate limiting, queue  | Optional    | Required    |
+| S3/R2           | Execution logs        | Optional    | Required    |
+| Worker          | Background jobs       | Optional    | Required    |
+| Sentry          | Error tracking        | Optional    | Required    |
+| Slack           | Alerts                | Optional    | Required    |
 
 ---
 
@@ -142,29 +142,29 @@ See [GITHUB.md](./GITHUB.md) for detailed setup.
 
 Copy to Vercel (and worker if applicable):
 
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `NEXT_PUBLIC_APP_URL` | Yes | Public URL (e.g. `https://agentmd.online`) |
-| `NEXTAUTH_URL` | Yes | Same as `NEXT_PUBLIC_APP_URL` |
-| `NEXTAUTH_SECRET` | Yes | `openssl rand -base64 32` |
-| `GITHUB_ID` | Yes | GitHub OAuth Client ID |
-| `GITHUB_SECRET` | Yes | GitHub OAuth Client Secret |
-| `DATABASE_URL` | Yes | Postgres connection string |
-| `REDIS_URL` | Soft: No | Redis connection string |
-| `GITHUB_APP_SLUG` | Optional | GitHub App slug |
-| `GITHUB_APP_ID` | Optional | GitHub App ID |
-| `GITHUB_APP_PRIVATE_KEY` | Optional | GitHub App PEM key |
-| `GITHUB_WEBHOOK_SECRET` | Optional | Webhook signing secret |
-| `AGENTMD_REAL_EXECUTION` | Optional | Set to `1` for worker to run real commands (GitHub repos only) |
-| `STRIPE_SECRET_KEY` | Optional | Stripe secret key |
-| `STRIPE_PRO_PRICE_ID` | Optional | Stripe Pro price ID |
-| `STRIPE_ENTERPRISE_PRICE_ID` | Optional | Stripe Enterprise price ID |
-| `SENTRY_DSN` | Optional | Sentry DSN |
-| `SLACK_WEBHOOK_URL` | Optional | Slack webhook for alerts |
-| `S3_BUCKET` | Optional | S3/R2 bucket name |
-| `S3_REGION` | Optional | S3/R2 region |
-| `AWS_ACCESS_KEY_ID` | Optional | S3/R2 access key |
-| `AWS_SECRET_ACCESS_KEY` | Optional | S3/R2 secret key |
+| Variable                     | Required | Description                                                    |
+| ---------------------------- | -------- | -------------------------------------------------------------- |
+| `NEXT_PUBLIC_APP_URL`        | Yes      | Public URL (e.g. `https://agentmd.online`)                     |
+| `NEXTAUTH_URL`               | Yes      | Same as `NEXT_PUBLIC_APP_URL`                                  |
+| `NEXTAUTH_SECRET`            | Yes      | `openssl rand -base64 32`                                      |
+| `GITHUB_ID`                  | Yes      | GitHub OAuth Client ID                                         |
+| `GITHUB_SECRET`              | Yes      | GitHub OAuth Client Secret                                     |
+| `DATABASE_URL`               | Yes      | Postgres connection string                                     |
+| `REDIS_URL`                  | Soft: No | Redis connection string                                        |
+| `GITHUB_APP_SLUG`            | Optional | GitHub App slug                                                |
+| `GITHUB_APP_ID`              | Optional | GitHub App ID                                                  |
+| `GITHUB_APP_PRIVATE_KEY`     | Optional | GitHub App PEM key                                             |
+| `GITHUB_WEBHOOK_SECRET`      | Optional | Webhook signing secret                                         |
+| `AGENTMD_REAL_EXECUTION`     | Optional | Set to `1` for worker to run real commands (GitHub repos only) |
+| `STRIPE_SECRET_KEY`          | Optional | Stripe secret key                                              |
+| `STRIPE_PRO_PRICE_ID`        | Optional | Stripe Pro price ID                                            |
+| `STRIPE_ENTERPRISE_PRICE_ID` | Optional | Stripe Enterprise price ID                                     |
+| `SENTRY_DSN`                 | Optional | Sentry DSN                                                     |
+| `SLACK_WEBHOOK_URL`          | Optional | Slack webhook for alerts                                       |
+| `S3_BUCKET`                  | Optional | S3/R2 bucket name                                              |
+| `S3_REGION`                  | Optional | S3/R2 region                                                   |
+| `AWS_ACCESS_KEY_ID`          | Optional | S3/R2 access key                                               |
+| `AWS_SECRET_ACCESS_KEY`      | Optional | S3/R2 secret key                                               |
 
 ---
 

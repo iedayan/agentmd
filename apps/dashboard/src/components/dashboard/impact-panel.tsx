@@ -1,21 +1,18 @@
-"use client";
+'use client';
 
-import { useEffect, useMemo, useState, type ReactNode } from "react";
-import { Gauge, Rocket, ShieldCheck, Timer } from "lucide-react";
-import type { Repository } from "@/types";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { buildImpactMetrics, type ImpactMetrics } from "@/lib/analytics/impact";
+import { useEffect, useMemo, useState, type ReactNode } from 'react';
+import { Gauge, Rocket, ShieldCheck, Timer } from 'lucide-react';
+import type { Repository } from '@/types';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { buildImpactMetrics, type ImpactMetrics } from '@/lib/analytics/impact';
 
 export function ImpactPanel({ repositories }: { repositories: Repository[] }) {
   const [impact, setImpact] = useState<ImpactMetrics | null>(null);
   const [loading, setLoading] = useState(true);
   const [apiUnavailable, setApiUnavailable] = useState(false);
 
-  const fallback = useMemo(
-    () => buildImpactMetrics(repositories, [], 0, 0),
-    [repositories]
-  );
+  const fallback = useMemo(() => buildImpactMetrics(repositories, [], 0, 0), [repositories]);
   const repositorySignature = useMemo(
     () =>
       repositories
@@ -23,27 +20,27 @@ export function ImpactPanel({ repositories }: { repositories: Repository[] }) {
           [
             repo.id,
             repo.healthScore,
-            repo.lastValidated ?? "",
-            repo.latestExecutionId ?? "",
-            repo.latestExecutionStatus ?? "",
-          ].join(":")
+            repo.lastValidated ?? '',
+            repo.latestExecutionId ?? '',
+            repo.latestExecutionStatus ?? '',
+          ].join(':'),
         )
-        .join("|"),
-    [repositories]
+        .join('|'),
+    [repositories],
   );
 
   useEffect(() => {
     let cancelled = false;
     const loadImpact = async () => {
       try {
-        const res = await fetch("/api/impact", { cache: "no-store" });
+        const res = await fetch('/api/impact', { cache: 'no-store' });
         const data = (await res.json()) as {
           ok?: boolean;
           impact?: ImpactMetrics;
           error?: string;
         };
         if (!res.ok || data.ok === false || !data.impact) {
-          throw new Error(data.error ?? "Failed to load impact metrics.");
+          throw new Error(data.error ?? 'Failed to load impact metrics.');
         }
         if (!cancelled) {
           setImpact(data.impact);
@@ -76,7 +73,15 @@ export function ImpactPanel({ repositories }: { repositories: Repository[] }) {
             <CardTitle>Operational Impact</CardTitle>
             <CardDescription>Outcome metrics from execution and readiness signals.</CardDescription>
           </div>
-          <Badge variant={value.stabilityScore >= 85 ? "success" : value.stabilityScore >= 70 ? "warning" : "destructive"}>
+          <Badge
+            variant={
+              value.stabilityScore >= 85
+                ? 'success'
+                : value.stabilityScore >= 70
+                  ? 'warning'
+                  : 'destructive'
+            }
+          >
             Stability {value.stabilityScore}/100
           </Badge>
         </div>

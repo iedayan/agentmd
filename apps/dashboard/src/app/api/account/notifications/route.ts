@@ -1,10 +1,10 @@
 /**
  * Get and update notification preferences.
  */
-import { NextRequest } from "next/server";
-import { apiError, apiOk, getRequestId } from "@/lib/core/api-response";
-import { requireSessionUserId } from "@/lib/auth/session";
-import { getPool } from "@/lib/data/db";
+import { NextRequest } from 'next/server';
+import { apiError, apiOk, getRequestId } from '@/lib/core/api-response';
+import { requireSessionUserId } from '@/lib/auth/session';
+import { getPool } from '@/lib/data/db';
 
 export async function GET(req: NextRequest) {
   const requestId = getRequestId(req);
@@ -17,10 +17,7 @@ export async function GET(req: NextRequest) {
 
   const pool = getPool();
   if (!pool) {
-    return apiOk(
-      { webhookUrl: "", emailAlerts: true, slackAlerts: false },
-      { requestId }
-    );
+    return apiOk({ webhookUrl: '', emailAlerts: true, slackAlerts: false }, { requestId });
   }
 
   try {
@@ -28,22 +25,19 @@ export async function GET(req: NextRequest) {
       `SELECT webhook_url, email_alerts, slack_alerts
        FROM user_preferences
        WHERE user_id = $1`,
-      [userId]
+      [userId],
     );
     const row = res.rows[0];
     return apiOk(
       {
-        webhookUrl: row?.webhook_url ?? "",
+        webhookUrl: row?.webhook_url ?? '',
         emailAlerts: row?.email_alerts ?? true,
         slackAlerts: row?.slack_alerts ?? false,
       },
-      { requestId }
+      { requestId },
     );
   } catch {
-    return apiOk(
-      { webhookUrl: "", emailAlerts: true, slackAlerts: false },
-      { requestId }
-    );
+    return apiOk({ webhookUrl: '', emailAlerts: true, slackAlerts: false }, { requestId });
   }
 }
 
@@ -57,25 +51,22 @@ export async function PATCH(req: NextRequest) {
   }
 
   const raw = (await req.json()) as unknown;
-  if (!raw || typeof raw !== "object" || Array.isArray(raw)) {
-    return apiError("Invalid request body", {
+  if (!raw || typeof raw !== 'object' || Array.isArray(raw)) {
+    return apiError('Invalid request body', {
       status: 400,
       requestId,
-      code: "INVALID_PAYLOAD",
+      code: 'INVALID_PAYLOAD',
     });
   }
 
   const body = raw as Record<string, unknown>;
-  const webhookUrl =
-    typeof body.webhookUrl === "string" ? body.webhookUrl.trim() : undefined;
-  const emailAlerts =
-    typeof body.emailAlerts === "boolean" ? body.emailAlerts : undefined;
-  const slackAlerts =
-    typeof body.slackAlerts === "boolean" ? body.slackAlerts : undefined;
+  const webhookUrl = typeof body.webhookUrl === 'string' ? body.webhookUrl.trim() : undefined;
+  const emailAlerts = typeof body.emailAlerts === 'boolean' ? body.emailAlerts : undefined;
+  const slackAlerts = typeof body.slackAlerts === 'boolean' ? body.slackAlerts : undefined;
 
   const pool = getPool();
   if (!pool) {
-    return apiError("Database not configured.", { status: 503, requestId });
+    return apiError('Database not configured.', { status: 503, requestId });
   }
 
   try {
@@ -87,11 +78,11 @@ export async function PATCH(req: NextRequest) {
          email_alerts = EXCLUDED.email_alerts,
          slack_alerts = EXCLUDED.slack_alerts,
          updated_at = NOW()`,
-      [userId, webhookUrl ?? "", emailAlerts ?? true, slackAlerts ?? false]
+      [userId, webhookUrl ?? '', emailAlerts ?? true, slackAlerts ?? false],
     );
     return apiOk({ ok: true }, { requestId });
   } catch (err) {
-    console.error("Notifications update error:", err);
-    return apiError("Failed to save preferences", { status: 500, requestId });
+    console.error('Notifications update error:', err);
+    return apiError('Failed to save preferences', { status: 500, requestId });
   }
 }

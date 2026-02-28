@@ -127,8 +127,8 @@ export class TestTriageWorkflow {
       /sometimes.*fails/i,
     ];
 
-    const hasFlakyPattern = flakyPatterns.some(pattern => 
-      pattern.test(failure.error) || pattern.test(failure.stackTrace)
+    const hasFlakyPattern = flakyPatterns.some(
+      (pattern) => pattern.test(failure.error) || pattern.test(failure.stackTrace),
     );
 
     return hasFlakyPattern || failure.flaky || failure.recent;
@@ -147,8 +147,8 @@ export class TestTriageWorkflow {
       /resource.*limit/i,
     ];
 
-    return infraPatterns.some(pattern => 
-      pattern.test(failure.error) || pattern.test(failure.stackTrace)
+    return infraPatterns.some(
+      (pattern) => pattern.test(failure.error) || pattern.test(failure.stackTrace),
     );
   }
 
@@ -165,8 +165,8 @@ export class TestTriageWorkflow {
       /undefined.*environment/i,
     ];
 
-    return envPatterns.some(pattern => 
-      pattern.test(failure.error) || pattern.test(failure.stackTrace)
+    return envPatterns.some(
+      (pattern) => pattern.test(failure.error) || pattern.test(failure.stackTrace),
     );
   }
 
@@ -262,25 +262,20 @@ export class TestTriageWorkflow {
    */
   private findRelatedCodeFiles(failure: TestFailure): string[] {
     const relatedFiles: string[] = [failure.file];
-    
+
     // Add corresponding source file
     const sourceFile = failure.file
       .replace('/test/', '/src/')
       .replace('/__tests__/', '/')
       .replace('.test.ts', '.ts')
       .replace('.test.js', '.js');
-    
+
     relatedFiles.push(sourceFile);
 
     // Add common related files
-    relatedFiles.push(
-      'package.json',
-      'tsconfig.json',
-      'jest.config.js',
-      'vitest.config.ts'
-    );
+    relatedFiles.push('package.json', 'tsconfig.json', 'jest.config.js', 'vitest.config.ts');
 
-    return relatedFiles.filter(f => f !== failure.file);
+    return relatedFiles.filter((f) => f !== failure.file);
   }
 
   /**
@@ -308,26 +303,14 @@ export class TestTriageWorkflow {
    * Find infrastructure-related files.
    */
   private findInfrastructureFiles(): string[] {
-    return [
-      'docker-compose.yml',
-      'Dockerfile',
-      '.github/workflows/',
-      'ci.yml',
-      'database.yml',
-    ];
+    return ['docker-compose.yml', 'Dockerfile', '.github/workflows/', 'ci.yml', 'database.yml'];
   }
 
   /**
    * Find environment-related files.
    */
   private findEnvironmentFiles(): string[] {
-    return [
-      '.env.example',
-      '.env.test',
-      'config/',
-      'setup/',
-      'scripts/setup',
-    ];
+    return ['.env.example', '.env.test', 'config/', 'setup/', 'scripts/setup'];
   }
 
   /**
@@ -359,9 +342,9 @@ export class TestTriageWorkflow {
   private generateRecommendations(results: TriageResult[]): string[] {
     const recommendations: string[] = [];
 
-    const flakyCount = results.filter(r => r.category === 'flaky').length;
-    const infraCount = results.filter(r => r.category === 'infrastructure').length;
-    const criticalCount = results.filter(r => r.priority === 'critical').length;
+    const flakyCount = results.filter((r) => r.category === 'flaky').length;
+    const infraCount = results.filter((r) => r.category === 'infrastructure').length;
+    const criticalCount = results.filter((r) => r.priority === 'critical').length;
 
     if (flakyCount > 0) {
       recommendations.push(`Address ${flakyCount} flaky test(s) with proper synchronization`);
@@ -372,14 +355,16 @@ export class TestTriageWorkflow {
     }
 
     if (criticalCount > 0) {
-      recommendations.push(`Prioritize ${criticalCount} critical failure(s) for immediate resolution`);
+      recommendations.push(
+        `Prioritize ${criticalCount} critical failure(s) for immediate resolution`,
+      );
     }
 
     if (results.length > 10) {
       recommendations.push('Consider investigating root cause of high failure rate');
     }
 
-    const codeIssues = results.filter(r => r.category === 'code').length;
+    const codeIssues = results.filter((r) => r.category === 'code').length;
     if (codeIssues > results.length * 0.5) {
       recommendations.push('Review code quality and test coverage practices');
     }

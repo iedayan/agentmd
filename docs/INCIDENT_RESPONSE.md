@@ -10,12 +10,12 @@ Contact and escalation for security incidents and production outages.
 
 ## Severity Levels
 
-| Level | Description | Response Target |
-|-------|-------------|-----------------|
-| P0 | Full outage, data breach, or critical security vulnerability | 15 min |
-| P1 | Major feature broken, significant degradation | 1 hour |
-| P2 | Minor feature broken, workaround available | 4 hours |
-| P3 | Cosmetic or low-impact issue | Next business day |
+| Level | Description                                                  | Response Target   |
+| ----- | ------------------------------------------------------------ | ----------------- |
+| P0    | Full outage, data breach, or critical security vulnerability | 15 min            |
+| P1    | Major feature broken, significant degradation                | 1 hour            |
+| P2    | Minor feature broken, workaround available                   | 4 hours           |
+| P3    | Cosmetic or low-impact issue                                 | Next business day |
 
 ## Escalation Steps
 

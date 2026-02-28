@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useCallback, useEffect, useState } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { useCallback, useEffect, useState } from 'react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 
 type ApiKey = { id: string; name: string; prefix: string; lastUsed: string; createdAt?: string };
 
@@ -12,7 +12,7 @@ export function SettingsApiKeys() {
   const [newKey, setNewKey] = useState<{ key: string; name: string } | null>(null);
 
   const fetchKeys = useCallback(() => {
-    fetch("/api/account/api-keys", { cache: "no-store" })
+    fetch('/api/account/api-keys', { cache: 'no-store' })
       .then((r) => r.json())
       .then((d: { ok?: boolean; keys?: ApiKey[] }) => {
         setKeys(d.keys ?? []);
@@ -27,33 +27,39 @@ export function SettingsApiKeys() {
     setGenerating(true);
     setNewKey(null);
     try {
-      const res = await fetch("/api/account/api-keys", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: "API Key" }),
+      const res = await fetch('/api/account/api-keys', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: 'API Key' }),
       });
-      const data = (await res.json()) as { ok?: boolean; key?: string; name?: string; prefix?: string; error?: string };
+      const data = (await res.json()) as {
+        ok?: boolean;
+        key?: string;
+        name?: string;
+        prefix?: string;
+        error?: string;
+      };
       if (res.ok && data.key) {
-        setNewKey({ key: data.key, name: data.name ?? "API Key" });
+        setNewKey({ key: data.key, name: data.name ?? 'API Key' });
         fetchKeys();
       } else {
-        alert(data.error ?? "Failed to generate key.");
+        alert(data.error ?? 'Failed to generate key.');
       }
     } catch {
-      alert("Failed to generate key.");
+      alert('Failed to generate key.');
     } finally {
       setGenerating(false);
     }
   };
 
   const handleRevoke = async (id: string) => {
-    if (!confirm("Revoke this key? It will stop working immediately.")) return;
-    const res = await fetch(`/api/account/api-keys/${id}`, { method: "DELETE" });
+    if (!confirm('Revoke this key? It will stop working immediately.')) return;
+    const res = await fetch(`/api/account/api-keys/${id}`, { method: 'DELETE' });
     const data = (await res.json()) as { ok?: boolean; error?: string };
     if (res.ok && data.ok) {
       fetchKeys();
     } else {
-      alert(data.error ?? "Failed to revoke key.");
+      alert(data.error ?? 'Failed to revoke key.');
     }
   };
 
@@ -79,11 +85,7 @@ export function SettingsApiKeys() {
               <code className="flex-1 truncate rounded bg-muted px-2 py-1 text-sm">
                 {newKey.key}
               </code>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => handleCopy(newKey.key)}
-              >
+              <Button variant="outline" size="sm" onClick={() => handleCopy(newKey.key)}>
                 Copy
               </Button>
             </div>
@@ -91,25 +93,14 @@ export function SettingsApiKeys() {
         )}
         <div className="space-y-3">
           {keys.map((key) => (
-            <div
-              key={key.id}
-              className="flex items-center justify-between rounded-lg border p-4"
-            >
+            <div key={key.id} className="flex items-center justify-between rounded-lg border p-4">
               <div>
                 <p className="font-medium">{key.name}</p>
-                <p className="text-sm text-muted-foreground font-mono">
-                  {key.prefix}
-                </p>
-                <p className="text-xs text-muted-foreground mt-1">
-                  Last used {key.lastUsed}
-                </p>
+                <p className="text-sm text-muted-foreground font-mono">{key.prefix}</p>
+                <p className="text-xs text-muted-foreground mt-1">Last used {key.lastUsed}</p>
               </div>
               <div className="flex gap-2">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => handleRevoke(key.id)}
-                >
+                <Button variant="ghost" size="sm" onClick={() => handleRevoke(key.id)}>
                   Revoke
                 </Button>
               </div>
@@ -117,7 +108,7 @@ export function SettingsApiKeys() {
           ))}
         </div>
         <Button variant="outline" onClick={handleGenerate} disabled={generating}>
-          {generating ? "Generating..." : "Generate new key"}
+          {generating ? 'Generating...' : 'Generate new key'}
         </Button>
       </CardContent>
     </Card>

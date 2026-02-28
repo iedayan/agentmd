@@ -1,12 +1,13 @@
-import Link from "next/link";
-import { CodeBlock } from "@/components/docs/code-block";
+import Link from 'next/link';
+import { CodeBlock } from '@/components/docs/code-block';
 
 export default function FrontmatterPage() {
   return (
     <div>
       <h1>YAML Frontmatter</h1>
       <p className="lead">
-        AGENTS.md supports optional YAML frontmatter for agent configuration: permissions, guardrails, and metadata.
+        AGENTS.md supports optional YAML frontmatter for agent configuration: permissions,
+        guardrails, and metadata.
       </p>
 
       <h2>Schema</h2>
@@ -50,11 +51,16 @@ agent:
 
       <h2>Shell Permissions</h2>
       <p>
-        When <code>shell.allow</code> is set, only listed commands (or wildcard matches) can execute. When <code>shell.default: deny</code>, any command not in allow is blocked.
+        When <code>shell.allow</code> is set, only listed commands (or wildcard matches) can
+        execute. When <code>shell.default: deny</code>, any command not in allow is blocked.
       </p>
       <ul>
-        <li><code>allow: [&quot;pnpm *&quot;]</code> — Allow any pnpm command</li>
-        <li><code>deny: [&quot;rm -rf&quot;]</code> — Block even if otherwise allowed</li>
+        <li>
+          <code>allow: [&quot;pnpm *&quot;]</code> — Allow any pnpm command
+        </li>
+        <li>
+          <code>deny: [&quot;rm -rf&quot;]</code> — Block even if otherwise allowed
+        </li>
       </ul>
 
       <h2>Flat vs Nested</h2>

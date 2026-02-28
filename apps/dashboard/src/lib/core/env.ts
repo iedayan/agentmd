@@ -2,17 +2,17 @@
  * Environment variable validation.
  * Validates required vars when accessed; logs warnings for optional missing vars.
  */
-import { z } from "zod";
+import { z } from 'zod';
 
 const authEnvSchema = z.object({
-  NEXTAUTH_SECRET: z.string().min(1, "NEXTAUTH_SECRET is required for auth"),
-  NEXTAUTH_URL: z.string().url("NEXTAUTH_URL must be a valid URL"),
-  GITHUB_ID: z.string().min(1, "GITHUB_ID is required for GitHub OAuth"),
-  GITHUB_SECRET: z.string().min(1, "GITHUB_SECRET is required for GitHub OAuth"),
+  NEXTAUTH_SECRET: z.string().min(1, 'NEXTAUTH_SECRET is required for auth'),
+  NEXTAUTH_URL: z.string().url('NEXTAUTH_URL must be a valid URL'),
+  GITHUB_ID: z.string().min(1, 'GITHUB_ID is required for GitHub OAuth'),
+  GITHUB_SECRET: z.string().min(1, 'GITHUB_SECRET is required for GitHub OAuth'),
 });
 
 const dbEnvSchema = z.object({
-  DATABASE_URL: z.string().url("DATABASE_URL must be a valid connection string"),
+  DATABASE_URL: z.string().url('DATABASE_URL must be a valid connection string'),
 });
 
 /** Auth env - required for sign-in. Call from auth routes. */
@@ -24,7 +24,7 @@ export function getAuthEnv(): z.infer<typeof authEnvSchema> {
     GITHUB_SECRET: process.env.GITHUB_SECRET,
   });
   if (!result.success) {
-    const msg = result.error.errors.map((e) => e.message).join("; ");
+    const msg = result.error.errors.map((e) => e.message).join('; ');
     throw new Error(`Auth configuration invalid: ${msg}`);
   }
   return result.data;
@@ -35,7 +35,7 @@ export function getDbEnv(): z.infer<typeof dbEnvSchema> | null {
   if (!process.env.DATABASE_URL?.trim()) return null;
   const result = dbEnvSchema.safeParse({ DATABASE_URL: process.env.DATABASE_URL });
   if (!result.success) {
-    console.warn("[env] DATABASE_URL invalid:", result.error.message);
+    console.warn('[env] DATABASE_URL invalid:', result.error.message);
     return null;
   }
   return result.data;

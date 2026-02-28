@@ -1,17 +1,21 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { MarketplaceHeader } from "@/components/marketplace/marketplace-header";
-import { CheckCircle, XCircle, AlertCircle } from "lucide-react";
+import { useState } from 'react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { MarketplaceHeader } from '@/components/marketplace/marketplace-header';
+import { CheckCircle, XCircle, AlertCircle } from 'lucide-react';
 
 export default function SandboxPage() {
-  const [url, setUrl] = useState("");
+  const [url, setUrl] = useState('');
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<{
-    parsed: { sections: { title: string }[]; commands: { command: string; type: string }[]; lineCount: number };
+    parsed: {
+      sections: { title: string }[];
+      commands: { command: string; type: string }[];
+      lineCount: number;
+    };
     validation: { valid: boolean; errors: { message: string }[]; warnings: { message: string }[] };
     score: number;
   } | null>(null);
@@ -22,19 +26,19 @@ export default function SandboxPage() {
     setResult(null);
     setError(null);
     try {
-      const res = await fetch("/api/demo/sandbox", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+      const res = await fetch('/api/demo/sandbox', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ url: url.trim() }),
       });
       const data = await res.json();
       if (!res.ok) {
-        setError(data.error ?? "Failed to run test");
+        setError(data.error ?? 'Failed to run test');
         return;
       }
       setResult(data);
     } catch {
-      setError("Failed to run test");
+      setError('Failed to run test');
     } finally {
       setLoading(false);
     }
@@ -63,16 +67,10 @@ export default function SandboxPage() {
               value={url}
               onChange={(e) => setUrl(e.target.value)}
             />
-            <Button
-              className="w-full"
-              onClick={handleRun}
-              disabled={loading || !url.trim()}
-            >
-              {loading ? "Running..." : "Run Test"}
+            <Button className="w-full" onClick={handleRun} disabled={loading || !url.trim()}>
+              {loading ? 'Running...' : 'Run Test'}
             </Button>
-            {error && (
-              <p className="text-sm text-destructive">{error}</p>
-            )}
+            {error && <p className="text-sm text-destructive">{error}</p>}
             <p className="text-xs text-muted-foreground">
               Supports GitHub, GitLab, Bitbucket raw URLs.
             </p>
@@ -83,9 +81,7 @@ export default function SandboxPage() {
           <Card className="mt-6">
             <CardHeader>
               <CardTitle>Results</CardTitle>
-              <CardDescription>
-                Parse and validation output
-              </CardDescription>
+              <CardDescription>Parse and validation output</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex items-center gap-4">
@@ -100,7 +96,10 @@ export default function SandboxPage() {
                 )}
               </div>
               <div className="text-sm">
-                <p>{result.parsed.lineCount} lines · {result.parsed.sections.length} sections · {result.parsed.commands.length} commands</p>
+                <p>
+                  {result.parsed.lineCount} lines · {result.parsed.sections.length} sections ·{' '}
+                  {result.parsed.commands.length} commands
+                </p>
               </div>
               {result.validation.errors.length > 0 && (
                 <div>
@@ -129,10 +128,14 @@ export default function SandboxPage() {
                   <p className="font-medium mb-2">Commands</p>
                   <ul className="space-y-1 text-sm font-mono">
                     {result.parsed.commands.slice(0, 10).map((c, i) => (
-                      <li key={i}>[{c.type}] {c.command}</li>
+                      <li key={i}>
+                        [{c.type}] {c.command}
+                      </li>
                     ))}
                     {result.parsed.commands.length > 10 && (
-                      <li className="text-muted-foreground">... and {result.parsed.commands.length - 10} more</li>
+                      <li className="text-muted-foreground">
+                        ... and {result.parsed.commands.length - 10} more
+                      </li>
                     )}
                   </ul>
                 </div>

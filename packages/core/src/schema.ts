@@ -5,7 +5,7 @@
  */
 
 /** Permission level: allow, deny, or ask (human-in-the-loop) */
-export type PermissionLevel = "allow" | "deny" | "ask";
+export type PermissionLevel = 'allow' | 'deny' | 'ask';
 
 /** File operation permissions */
 export interface FilePermissions {
@@ -18,7 +18,7 @@ export interface FilePermissions {
 export interface ShellPermissions {
   allow?: string[];
   deny?: string[];
-  default?: "allow" | "deny";
+  default?: 'allow' | 'deny';
 }
 
 /** Browser/URL access permissions */
@@ -33,16 +33,16 @@ export interface AgentPermissions {
   shell?: ShellPermissions;
   browser?: BrowserPermissions;
   /** GitHub-style: pull_requests, issues, contents, etc. */
-  pull_requests?: "read" | "write" | "none";
-  issues?: "read" | "write" | "none";
-  contents?: "read" | "write" | "none";
+  pull_requests?: 'read' | 'write' | 'none';
+  issues?: 'read' | 'write' | 'none';
+  contents?: 'read' | 'write' | 'none';
 }
 
 /** Guardrail - natural language constraint */
 export type Guardrail = string;
 
 /** Risk level for commands — used for governance and audit */
-export type CommandRiskLevel = "safe" | "read-only" | "write" | "dangerous";
+export type CommandRiskLevel = 'safe' | 'read-only' | 'write' | 'dangerous';
 
 /** Per-command metadata (declared in frontmatter) */
 export interface CommandMetadata {
@@ -61,18 +61,18 @@ export type CommandSchema = Record<string, CommandMetadata>;
 
 /** Trigger event (GitHub-style) */
 export type TriggerEvent =
-  | "push"
-  | "pull_request"
-  | "pull_request.opened"
-  | "pull_request.synchronize"
-  | "issues"
-  | "issues.opened"
-  | "schedule"
-  | "workflow_dispatch"
+  | 'push'
+  | 'pull_request'
+  | 'pull_request.opened'
+  | 'pull_request.synchronize'
+  | 'issues'
+  | 'issues.opened'
+  | 'schedule'
+  | 'workflow_dispatch'
   | string;
 
 /** Supported output formats for contract validation */
-export type OutputContractFormat = "json" | "markdown" | "text";
+export type OutputContractFormat = 'json' | 'markdown' | 'text';
 
 /** Machine-checkable output contract for agent results */
 export interface OutputContract {
@@ -128,4 +128,4 @@ export interface AgentsMdDirective {
 }
 
 /** Directive parameter keys */
-export type DirectiveKey = "target" | "priority" | "heading" | "import" | "globs";
+export type DirectiveKey = 'target' | 'priority' | 'heading' | 'import' | 'globs';

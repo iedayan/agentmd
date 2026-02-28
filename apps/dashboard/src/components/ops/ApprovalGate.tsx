@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import type { ApprovalGate as ApprovalGateType } from "@/lib/ops/mock-data";
+import type { ApprovalGate as ApprovalGateType } from '@/lib/ops/mock-data';
 
 export function ApprovalGate({ gate }: { gate: ApprovalGateType }) {
   return (
@@ -10,11 +10,11 @@ export function ApprovalGate({ gate }: { gate: ApprovalGateType }) {
       </h3>
       <div className="mt-4 space-y-2 font-mono text-sm">
         <p>
-          <span className="text-muted-foreground">Approver:</span>{" "}
+          <span className="text-muted-foreground">Approver:</span>{' '}
           <span className="font-medium">{gate.approver}</span>
         </p>
         <p>
-          <span className="text-muted-foreground">Policy:</span>{" "}
+          <span className="text-muted-foreground">Policy:</span>{' '}
           <span className="font-medium">{gate.policyId}</span>
         </p>
         <p className="mt-2 text-foreground">{gate.summary}</p>

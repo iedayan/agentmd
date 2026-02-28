@@ -5,10 +5,10 @@
  * @see https://agents.md
  */
 
-import type { AgentsMdSection, ParsedAgentsMd } from "./types.js";
-import { extractCommands } from "./commands.js";
-import { parseFrontmatter } from "./frontmatter.js";
-import { parseDirectives } from "./directives.js";
+import type { AgentsMdSection, ParsedAgentsMd } from './types.js';
+import { extractCommands } from './commands.js';
+import { parseFrontmatter } from './frontmatter.js';
+import { parseDirectives } from './directives.js';
 
 const HEADING_REGEX = /^(#{1,6})\s+(.+)$/;
 
@@ -21,7 +21,7 @@ export function parseAgentsMd(content: string, filePath?: string): ParsedAgentsM
   if (typeof content !== 'string') {
     throw new Error('Content must be a string');
   }
-  
+
   if (content.length === 0) {
     return {
       raw: content,
@@ -31,14 +31,14 @@ export function parseAgentsMd(content: string, filePath?: string): ParsedAgentsM
       filePath,
     };
   }
-  
+
   if (filePath && typeof filePath !== 'string') {
     throw new Error('File path must be a string');
   }
 
   const { frontmatter, body, hasFrontmatter } = parseFrontmatter(content);
   const contentToParse = body ?? content;
-  const lines = contentToParse.split("\n");
+  const lines = contentToParse.split('\n');
   const sections = parseSections(lines);
   const commands = extractCommands(contentToParse, sections);
   const directives = parseDirectives(contentToParse);
@@ -47,7 +47,7 @@ export function parseAgentsMd(content: string, filePath?: string): ParsedAgentsM
     raw: content,
     sections,
     commands,
-    lineCount: content.split("\n").length,
+    lineCount: content.split('\n').length,
     filePath,
     body: contentToParse,
     directives: directives.length > 0 ? directives : undefined,
@@ -119,7 +119,7 @@ function parseSectionsTree(lines: string[]): AgentsMdSection[] {
         heading,
         content: childLines
           .filter((l) => !l.match(HEADING_REGEX))
-          .join("\n")
+          .join('\n')
           .trim(),
         children,
         lineStart,
@@ -138,7 +138,7 @@ function parseSectionsTree(lines: string[]): AgentsMdSection[] {
 function parseChildSections(
   lines: string[],
   parentLevel: number,
-  lineOffset = 0
+  lineOffset = 0,
 ): AgentsMdSection[] {
   const children: AgentsMdSection[] = [];
   let i = 0;
@@ -177,7 +177,7 @@ function parseChildSections(
         heading,
         content: childLines
           .filter((l) => !l.match(HEADING_REGEX))
-          .join("\n")
+          .join('\n')
           .trim(),
         children: subChildren,
         lineStart,
@@ -203,7 +203,7 @@ export function findSection(parsed: ParsedAgentsMd, title: string): AgentsMdSect
 
 function findSectionRecursive(
   sections: AgentsMdSection[],
-  search: string
+  search: string,
 ): AgentsMdSection | undefined {
   for (const s of sections) {
     if (s.title.toLowerCase().includes(search)) return s;

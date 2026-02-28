@@ -1,26 +1,33 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { useEffect, useState } from 'react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 
 export function SettingsNotifications() {
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [webhookUrl, setWebhookUrl] = useState("");
+  const [webhookUrl, setWebhookUrl] = useState('');
   const [emailAlerts, setEmailAlerts] = useState(true);
   const [slackAlerts, setSlackAlerts] = useState(false);
 
   useEffect(() => {
-    fetch("/api/account/notifications", { cache: "no-store" })
+    fetch('/api/account/notifications', { cache: 'no-store' })
       .then((r) => r.json())
-      .then((d: { ok?: boolean; webhookUrl?: string; emailAlerts?: boolean; slackAlerts?: boolean }) => {
-        if (typeof d.webhookUrl === "string") setWebhookUrl(d.webhookUrl);
-        if (typeof d.emailAlerts === "boolean") setEmailAlerts(d.emailAlerts);
-        if (typeof d.slackAlerts === "boolean") setSlackAlerts(d.slackAlerts);
-      })
+      .then(
+        (d: {
+          ok?: boolean;
+          webhookUrl?: string;
+          emailAlerts?: boolean;
+          slackAlerts?: boolean;
+        }) => {
+          if (typeof d.webhookUrl === 'string') setWebhookUrl(d.webhookUrl);
+          if (typeof d.emailAlerts === 'boolean') setEmailAlerts(d.emailAlerts);
+          if (typeof d.slackAlerts === 'boolean') setSlackAlerts(d.slackAlerts);
+        },
+      )
       .finally(() => setLoading(false));
   }, []);
 
@@ -28,9 +35,9 @@ export function SettingsNotifications() {
     setSaving(true);
     setSaved(false);
     try {
-      const res = await fetch("/api/account/notifications", {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
+      const res = await fetch('/api/account/notifications', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ webhookUrl, emailAlerts, slackAlerts }),
       });
       const data = (await res.json()) as { ok?: boolean; error?: string };
@@ -38,10 +45,10 @@ export function SettingsNotifications() {
         setSaved(true);
         setTimeout(() => setSaved(false), 2000);
       } else {
-        alert(data.error ?? "Failed to save preferences.");
+        alert(data.error ?? 'Failed to save preferences.');
       }
     } catch {
-      alert("Failed to save preferences.");
+      alert('Failed to save preferences.');
     } finally {
       setSaving(false);
     }
@@ -51,9 +58,7 @@ export function SettingsNotifications() {
     <Card>
       <CardHeader>
         <CardTitle>Notifications</CardTitle>
-        <CardDescription>
-          Configure how you receive execution alerts and updates.
-        </CardDescription>
+        <CardDescription>Configure how you receive execution alerts and updates.</CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
         <div>
@@ -93,7 +98,7 @@ export function SettingsNotifications() {
           </label>
         </div>
         <Button onClick={handleSave} disabled={saving || loading}>
-          {saving ? "Saving..." : saved ? "Saved" : "Save preferences"}
+          {saving ? 'Saving...' : saved ? 'Saved' : 'Save preferences'}
         </Button>
       </CardContent>
     </Card>

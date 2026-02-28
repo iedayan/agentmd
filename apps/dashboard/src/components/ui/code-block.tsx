@@ -1,5 +1,5 @@
-import * as React from "react";
-import { cn } from "@/lib/core/utils";
+import * as React from 'react';
+import { cn } from '@/lib/core/utils';
 
 export interface CodeBlockProps extends React.HTMLAttributes<HTMLPreElement> {
   /** Optional filename or language label shown in the header */
@@ -19,9 +19,9 @@ const CodeBlock = React.forwardRef<HTMLPreElement, CodeBlockProps>(
         <pre
           ref={ref}
           className={cn(
-            "overflow-x-auto p-4 font-mono text-sm leading-relaxed text-foreground/90",
-            "scrollbar-thin scrollbar-track-transparent scrollbar-thumb-border",
-            className
+            'overflow-x-auto p-4 font-mono text-sm leading-relaxed text-foreground/90',
+            'scrollbar-thin scrollbar-track-transparent scrollbar-thumb-border',
+            className,
           )}
           {...props}
         >
@@ -29,17 +29,17 @@ const CodeBlock = React.forwardRef<HTMLPreElement, CodeBlockProps>(
         </pre>
       </div>
     );
-  }
+  },
 );
-CodeBlock.displayName = "CodeBlock";
+CodeBlock.displayName = 'CodeBlock';
 
 /** Inline code, Primer-style */
 function Code({ className, ...props }: React.HTMLAttributes<HTMLElement>) {
   return (
     <code
       className={cn(
-        "rounded-md border border-border/50 bg-muted/80 px-1.5 py-0.5 font-mono text-[0.875em] text-foreground",
-        className
+        'rounded-md border border-border/50 bg-muted/80 px-1.5 py-0.5 font-mono text-[0.875em] text-foreground',
+        className,
       )}
       {...props}
     />

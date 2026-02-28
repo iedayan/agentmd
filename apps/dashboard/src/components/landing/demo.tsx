@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { useState, useEffect, useCallback } from "react";
-import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
-import { FileSearch, Play, Share2, Check, Copy } from "lucide-react";
+import { useState, useEffect, useCallback } from 'react';
+import { Button } from '@/components/ui/button';
+import { Skeleton } from '@/components/ui/skeleton';
+import { FileSearch, Play, Share2, Check, Copy } from 'lucide-react';
 
 const SAMPLE_AGENTS_MD = `---
 name: my-agent
@@ -31,7 +31,13 @@ pnpm run lint
 
 type DemoResult = {
   parsed: {
-    sections: { title: string; level: number; lineStart: number; lineEnd: number; commandCount: number }[];
+    sections: {
+      title: string;
+      level: number;
+      lineStart: number;
+      lineEnd: number;
+      commandCount: number;
+    }[];
     commands: { command: string; section: string; type: string; line: number }[];
     lineCount: number;
     hasFrontmatter: boolean;
@@ -68,7 +74,7 @@ pnpm test
 
 export function LandingDemo() {
   const [content, setContent] = useState(SAMPLE_AGENTS_MD);
-  const [sourceType, setSourceType] = useState<"agentsmd" | "readme">("agentsmd");
+  const [sourceType, setSourceType] = useState<'agentsmd' | 'readme'>('agentsmd');
   const [result, setResult] = useState<DemoResult | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -80,23 +86,23 @@ export function LandingDemo() {
     setError(null);
     setResult(null);
     try {
-      const res = await fetch("/api/demo/parse", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+      const res = await fetch('/api/demo/parse', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ content, sourceType }),
       });
       const data = (await res.json()) as {
         ok?: boolean;
-        parsed?: DemoResult["parsed"];
-        validation?: DemoResult["validation"];
+        parsed?: DemoResult['parsed'];
+        validation?: DemoResult['validation'];
         score?: number;
         error?: string;
       };
       if (!res.ok || data.ok === false) {
-        throw new Error(data.error || "Parse failed");
+        throw new Error(data.error || 'Parse failed');
       }
       if (!data.parsed || !data.validation) {
-        throw new Error("Invalid response");
+        throw new Error('Invalid response');
       }
       setResult({
         parsed: data.parsed,
@@ -104,7 +110,7 @@ export function LandingDemo() {
         score: data.score ?? 0,
       });
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Something went wrong");
+      setError(e instanceof Error ? e.message : 'Something went wrong');
     } finally {
       setLoading(false);
     }
@@ -112,20 +118,26 @@ export function LandingDemo() {
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
-      if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
         e.preventDefault();
         run();
       }
     };
-    window.addEventListener("keydown", handler);
-    return () => window.removeEventListener("keydown", handler);
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
   }, [run]);
 
   return (
-    <section id="try-it" className="py-16 sm:py-20 md:py-24 lg:py-32 border-b border-border/50 scroll-mt-20">
+    <section
+      id="try-it"
+      className="py-16 sm:py-20 md:py-24 lg:py-32 border-b border-border/50 scroll-mt-20"
+    >
       <div className="container mx-auto px-4 sm:px-6 flex flex-col items-center">
         <div className="mx-auto max-w-2xl text-center mb-10 sm:mb-16">
-          <span className="inline-block h-1 w-12 rounded-full bg-primary/60 mb-4 sm:mb-6" aria-hidden />
+          <span
+            className="inline-block h-1 w-12 rounded-full bg-primary/60 mb-4 sm:mb-6"
+            aria-hidden
+          />
           <h2 className="text-2xl sm:text-3xl font-bold tracking-tight md:text-4xl">
             Get your agent-readiness score
           </h2>
@@ -142,34 +154,42 @@ export function LandingDemo() {
                   <button
                     type="button"
                     onClick={() => {
-                      setSourceType("agentsmd");
+                      setSourceType('agentsmd');
                       if (content === SAMPLE_README) setContent(SAMPLE_AGENTS_MD);
                     }}
-                    className={`text-xs font-mono px-2 py-1 rounded ${sourceType === "agentsmd" ? "bg-muted text-foreground" : "text-muted-foreground hover:text-foreground"}`}
+                    className={`text-xs font-mono px-2 py-1 rounded ${sourceType === 'agentsmd' ? 'bg-muted text-foreground' : 'text-muted-foreground hover:text-foreground'}`}
                   >
                     AGENTS.md
                   </button>
                   <button
                     type="button"
                     onClick={() => {
-                      setSourceType("readme");
-                      if (content === SAMPLE_AGENTS_MD || content === SAMPLE_README) setContent(SAMPLE_README);
+                      setSourceType('readme');
+                      if (content === SAMPLE_AGENTS_MD || content === SAMPLE_README)
+                        setContent(SAMPLE_README);
                     }}
-                    className={`text-xs font-mono px-2 py-1 rounded ${sourceType === "readme" ? "bg-muted text-foreground" : "text-muted-foreground hover:text-foreground"}`}
+                    className={`text-xs font-mono px-2 py-1 rounded ${sourceType === 'readme' ? 'bg-muted text-foreground' : 'text-muted-foreground hover:text-foreground'}`}
                   >
                     README
                   </button>
                 </div>
                 <Button size="sm" onClick={run} disabled={loading} className="h-7 text-xs">
-                  {loading ? "Parsing…" : "Parse & validate"}
+                  {loading ? 'Parsing…' : 'Parse & validate'}
                 </Button>
-                <span className="text-[10px] text-muted-foreground/70 hidden sm:inline" title="Ctrl+Enter">⌘↵</span>
+                <span
+                  className="text-[10px] text-muted-foreground/70 hidden sm:inline"
+                  title="Ctrl+Enter"
+                >
+                  ⌘↵
+                </span>
               </div>
               <textarea
                 id="demo-agents-md"
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
-                placeholder={sourceType === "readme" ? "Paste your README…" : "Paste your AGENTS.md content…"}
+                placeholder={
+                  sourceType === 'readme' ? 'Paste your README…' : 'Paste your AGENTS.md content…'
+                }
                 className="w-full min-h-[200px] sm:min-h-[240px] md:min-h-[260px] p-3 sm:p-4 bg-transparent text-xs sm:text-sm font-mono text-foreground placeholder:text-muted-foreground/50 resize-y focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset"
                 spellCheck={false}
                 aria-describedby="demo-hint"
@@ -181,7 +201,9 @@ export function LandingDemo() {
             >
               <button
                 type="button"
-                onClick={() => setContent(sourceType === "agentsmd" ? SAMPLE_AGENTS_MD : SAMPLE_README)}
+                onClick={() =>
+                  setContent(sourceType === 'agentsmd' ? SAMPLE_AGENTS_MD : SAMPLE_README)
+                }
                 className="hover:text-foreground transition-colors"
               >
                 Reset to sample
@@ -250,7 +272,7 @@ export function LandingDemo() {
                           <span className="font-medium">{s.title}</span>
                           {s.commandCount > 0 && (
                             <span className="text-muted-foreground text-xs">
-                              ({s.commandCount} cmd{s.commandCount !== 1 ? "s" : ""})
+                              ({s.commandCount} cmd{s.commandCount !== 1 ? 's' : ''})
                             </span>
                           )}
                         </li>
@@ -268,7 +290,9 @@ export function LandingDemo() {
                             <span className="shrink-0 px-1.5 py-0.5 rounded bg-muted text-xs font-mono">
                               {c.type}
                             </span>
-                            <code className="text-foreground/90 break-all text-xs sm:text-sm">{c.command}</code>
+                            <code className="text-foreground/90 break-all text-xs sm:text-sm">
+                              {c.command}
+                            </code>
                           </li>
                         ))}
                       </ul>
@@ -375,7 +399,7 @@ function ShareButton({
   copied: boolean;
   onCopy: () => void;
 }) {
-  const baseUrl = typeof window !== "undefined" ? window.location.origin : "";
+  const baseUrl = typeof window !== 'undefined' ? window.location.origin : '';
   const shareUrl = `${baseUrl}/share?score=${score}`;
 
   const handleCopy = async () => {
@@ -389,12 +413,8 @@ function ShareButton({
       onClick={handleCopy}
       className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors"
     >
-      {copied ? (
-        <Check className="h-3.5 w-3.5 text-primary" />
-      ) : (
-        <Share2 className="h-3.5 w-3.5" />
-      )}
-      {copied ? "Link copied!" : "Share score"}
+      {copied ? <Check className="h-3.5 w-3.5 text-primary" /> : <Share2 className="h-3.5 w-3.5" />}
+      {copied ? 'Link copied!' : 'Share score'}
     </button>
   );
 }
@@ -408,7 +428,7 @@ function BadgeCopyButton({
   copied: boolean;
   onCopy: () => void;
 }) {
-  const baseUrl = typeof window !== "undefined" ? window.location.origin : "";
+  const baseUrl = typeof window !== 'undefined' ? window.location.origin : '';
   const badgeUrl = `${baseUrl}/api/badge/score?score=${score}`;
   const markdown = `[![AgentMD Score](${badgeUrl})](${baseUrl})`;
 
@@ -423,12 +443,8 @@ function BadgeCopyButton({
       onClick={handleCopy}
       className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors"
     >
-      {copied ? (
-        <Check className="h-3.5 w-3.5 text-primary" />
-      ) : (
-        <Copy className="h-3.5 w-3.5" />
-      )}
-      {copied ? "Badge copied!" : "Copy badge"}
+      {copied ? <Check className="h-3.5 w-3.5 text-primary" /> : <Copy className="h-3.5 w-3.5" />}
+      {copied ? 'Badge copied!' : 'Copy badge'}
     </button>
   );
 }

@@ -1,47 +1,47 @@
-import Link from "next/link";
-import type { Metadata } from "next";
-import { Shield, Lock, Activity, HelpCircle } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Logo } from "@/components/brand/logo";
-import { Nav } from "@/components/landing/nav";
-import { PricingCards } from "@/components/pricing/pricing-cards";
-import { FaqSchema } from "@/components/seo/faq-schema";
+import Link from 'next/link';
+import type { Metadata } from 'next';
+import { Shield, Lock, Activity, HelpCircle } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Logo } from '@/components/brand/logo';
+import { Nav } from '@/components/landing/nav';
+import { PricingCards } from '@/components/pricing/pricing-cards';
+import { FaqSchema } from '@/components/seo/faq-schema';
 
 const PRO_TRIAL_DAYS = 7;
 
 export const metadata: Metadata = {
-  title: "Pricing — AgentMD",
+  title: 'Pricing — AgentMD',
   description:
-    "Transparent pricing for AgentMD. Free tier, Pro trial, and Enterprise. No hidden fees. Cancel anytime.",
-  keywords: ["AgentMD pricing", "AGENTS.md", "agent execution", "CI/CD pricing"],
+    'Transparent pricing for AgentMD. Free tier, Pro trial, and Enterprise. No hidden fees. Cancel anytime.',
+  keywords: ['AgentMD pricing', 'AGENTS.md', 'agent execution', 'CI/CD pricing'],
 };
 
 const TRUST_ITEMS = [
-  { label: "SOC2 Type II", icon: Shield },
-  { label: "GDPR Compliant", icon: Lock },
-  { label: "99.9% Uptime SLA", icon: Activity },
+  { label: 'SOC2 Type II', icon: Shield },
+  { label: 'GDPR Compliant', icon: Lock },
+  { label: '99.9% Uptime SLA', icon: Activity },
 ];
 
 const FAQ = [
   {
-    q: "What counts as an execution minute?",
+    q: 'What counts as an execution minute?',
     a: "Any time an AGENTS.md workflow runs — build, test, deploy, or custom commands. Idle time and parsing don't count.",
   },
   {
-    q: "Can I switch plans later?",
-    a: "Yes. Upgrade or downgrade anytime. We prorate charges. Downgrades take effect at the next billing cycle.",
+    q: 'Can I switch plans later?',
+    a: 'Yes. Upgrade or downgrade anytime. We prorate charges. Downgrades take effect at the next billing cycle.',
   },
   {
-    q: "Is there a free trial for Pro?",
+    q: 'Is there a free trial for Pro?',
     a: `Yes. Start a ${PRO_TRIAL_DAYS}-day free trial of Pro. Cancel anytime before renewal.`,
   },
   {
-    q: "What payment methods do you accept?",
-    a: "Credit cards (Visa, Mastercard, Amex), and for Enterprise, we can invoice via ACH or wire.",
+    q: 'What payment methods do you accept?',
+    a: 'Credit cards (Visa, Mastercard, Amex), and for Enterprise, we can invoice via ACH or wire.',
   },
 ];
 
-const TAGLINE = "Make Your Repository Agent-Ready";
+const TAGLINE = 'Make Your Repository Agent-Ready';
 
 export default function PricingPage() {
   return (
@@ -54,13 +54,8 @@ export default function PricingPage() {
         <section className="border-b border-border/50 py-16 md:py-24">
           <div className="container mx-auto px-4">
             <div className="mx-auto max-w-2xl text-center">
-              <span
-                className="inline-block h-1 w-12 rounded-full bg-primary/60 mb-6"
-                aria-hidden
-              />
-              <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
-                Transparent Pricing
-              </h1>
+              <span className="inline-block h-1 w-12 rounded-full bg-primary/60 mb-6" aria-hidden />
+              <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">Transparent Pricing</h1>
               <p className="mt-4 text-lg text-muted-foreground">
                 No hidden fees. Cancel anytime. Start free, upgrade when you need more.
               </p>
@@ -69,10 +64,7 @@ export default function PricingPage() {
         </section>
 
         {/* Trust */}
-        <section
-          className="border-b border-border/50 py-8 bg-muted/20"
-          aria-label="Trust signals"
-        >
+        <section className="border-b border-border/50 py-8 bg-muted/20" aria-label="Trust signals">
           <div className="container mx-auto px-4">
             <div className="flex flex-wrap items-center justify-center gap-4">
               {TRUST_ITEMS.map(({ label, icon: Icon }) => (
@@ -93,8 +85,8 @@ export default function PricingPage() {
           <div className="container mx-auto px-4">
             <PricingCards />
             <p className="text-center text-sm text-muted-foreground mt-12 max-w-xl mx-auto">
-              All plans include SOC2 Type II, GDPR compliance, and GitHub Actions
-              integration. Enterprise: annual contracts with volume discounts.
+              All plans include SOC2 Type II, GDPR compliance, and GitHub Actions integration.
+              Enterprise: annual contracts with volume discounts.
             </p>
           </div>
         </section>
@@ -105,20 +97,13 @@ export default function PricingPage() {
             <div className="mx-auto max-w-2xl">
               <div className="flex items-center gap-2 mb-10">
                 <HelpCircle className="h-5 w-5 text-primary" aria-hidden />
-                <h2 className="text-2xl font-bold tracking-tight">
-                  Frequently asked questions
-                </h2>
+                <h2 className="text-2xl font-bold tracking-tight">Frequently asked questions</h2>
               </div>
               <dl className="space-y-6">
                 {FAQ.map(({ q, a }) => (
-                  <div
-                    key={q}
-                    className="rounded-lg border border-border/60 bg-card p-6"
-                  >
+                  <div key={q} className="rounded-lg border border-border/60 bg-card p-6">
                     <dt className="font-semibold text-foreground">{q}</dt>
-                    <dd className="mt-2 text-muted-foreground leading-relaxed">
-                      {a}
-                    </dd>
+                    <dd className="mt-2 text-muted-foreground leading-relaxed">{a}</dd>
                   </div>
                 ))}
               </dl>
@@ -134,8 +119,7 @@ export default function PricingPage() {
                 Not sure which plan?
               </h2>
               <p className="mt-3 text-muted-foreground">
-                Start free — no credit card. Upgrade when you need more repos
-                or execution time.
+                Start free — no credit card. Upgrade when you need more repos or execution time.
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-6">
                 <Link href="/register">
@@ -163,9 +147,7 @@ export default function PricingPage() {
                 <Logo size="sm" aria-hidden />
                 <span className="text-lg">AgentMD</span>
               </Link>
-              <p className="mt-3 text-sm text-muted-foreground max-w-xs">
-                {TAGLINE}
-              </p>
+              <p className="mt-3 text-sm text-muted-foreground max-w-xs">{TAGLINE}</p>
             </div>
             <nav
               className="flex gap-12 sm:gap-16 border-l-0 md:border-l md:border-border/60 md:pl-16"
@@ -177,11 +159,11 @@ export default function PricingPage() {
                 </h4>
                 <ul className="space-y-3 text-sm">
                   {[
-                    ["Features", "/features"],
-                    ["Pricing", "/pricing"],
-                    ["Ops", "/ops"],
-                    ["Marketplace", "/marketplace"],
-                    ["Docs", "/docs"],
+                    ['Features', '/features'],
+                    ['Pricing', '/pricing'],
+                    ['Ops', '/ops'],
+                    ['Marketplace', '/marketplace'],
+                    ['Docs', '/docs'],
                   ].map(([label, href]) => (
                     <li key={href}>
                       <Link
@@ -200,13 +182,13 @@ export default function PricingPage() {
                 </h4>
                 <ul className="space-y-3 text-sm">
                   {[
-                    ["Blog", "/blog"],
-                    ["Roadmap", "/roadmap"],
-                    ["Status", "/status"],
-                    ["Discord", "https://discord.gg/agentmd"],
+                    ['Blog', '/blog'],
+                    ['Roadmap', '/roadmap'],
+                    ['Status', '/status'],
+                    ['Discord', 'https://discord.gg/agentmd'],
                   ].map(([label, href]) => (
                     <li key={href}>
-                      {href.startsWith("http") ? (
+                      {href.startsWith('http') ? (
                         <a
                           href={href}
                           target="_blank"
@@ -233,10 +215,10 @@ export default function PricingPage() {
                 </h4>
                 <ul className="space-y-3 text-sm">
                   {[
-                    ["Privacy", "/privacy"],
-                    ["Terms", "/terms"],
-                    ["Cookies", "/cookies"],
-                    ["GDPR", "/gdpr"],
+                    ['Privacy', '/privacy'],
+                    ['Terms', '/terms'],
+                    ['Cookies', '/cookies'],
+                    ['GDPR', '/gdpr'],
                   ].map(([label, href]) => (
                     <li key={href}>
                       <Link

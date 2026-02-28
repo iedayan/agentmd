@@ -1,27 +1,27 @@
-import Link from "next/link";
-import { AlertTriangle, Shield, Zap } from "lucide-react";
+import Link from 'next/link';
+import { AlertTriangle, Shield, Zap } from 'lucide-react';
 
 const PROBLEMS = [
   {
     icon: AlertTriangle,
-    title: "Agent sprawl",
-    stat: "4 in 5",
-    statLabel: "IT leaders fear agents create more complexity than value",
-    href: "/docs/the-problem",
+    title: 'Agent sprawl',
+    stat: '4 in 5',
+    statLabel: 'IT leaders fear agents create more complexity than value',
+    href: '/docs/the-problem',
   },
   {
     icon: Shield,
-    title: "Governance gap",
-    stat: "6%",
-    statLabel: "have advanced AI security strategies",
-    href: "/docs/the-problem",
+    title: 'Governance gap',
+    stat: '6%',
+    statLabel: 'have advanced AI security strategies',
+    href: '/docs/the-problem',
   },
   {
     icon: Zap,
-    title: "Unreliable execution",
-    stat: "69%",
-    statLabel: "of agentic decisions still require human verification",
-    href: "/docs/the-problem",
+    title: 'Unreliable execution',
+    stat: '69%',
+    statLabel: 'of agentic decisions still require human verification',
+    href: '/docs/the-problem',
   },
 ];
 
@@ -31,12 +31,10 @@ export function TheProblem() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-10 sm:mb-12">
           <span className="inline-block h-1 w-12 rounded-full bg-primary/60 mb-4" aria-hidden />
-          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-3">
-            The problem
-          </h2>
+          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-3">The problem</h2>
           <p className="text-muted-foreground max-w-2xl mx-auto text-base sm:text-lg">
-            Enterprise AI adoption is blocked by sprawl, governance gaps, and
-            untrusted execution. The data backs it.
+            Enterprise AI adoption is blocked by sprawl, governance gaps, and untrusted execution.
+            The data backs it.
           </p>
         </div>
         <div className="grid gap-4 sm:gap-6 grid-cols-1 md:grid-cols-3 max-w-4xl mx-auto">
@@ -48,18 +46,17 @@ export function TheProblem() {
             >
               <div className="flex items-start gap-3">
                 <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-amber-500/15 to-amber-500/5 ring-1 ring-amber-500/20 group-hover:from-primary/20 group-hover:to-primary/5 group-hover:ring-primary/20 transition-colors">
-                  <Icon className="h-5 w-5 text-amber-600 dark:text-amber-400 group-hover:text-primary transition-colors" strokeWidth={2} />
+                  <Icon
+                    className="h-5 w-5 text-amber-600 dark:text-amber-400 group-hover:text-primary transition-colors"
+                    strokeWidth={2}
+                  />
                 </div>
                 <div className="min-w-0 flex-1">
                   <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground mb-1">
                     {title}
                   </p>
-                  <p className="text-2xl sm:text-3xl font-bold text-foreground">
-                    {stat}
-                  </p>
-                  <p className="text-sm text-muted-foreground mt-1">
-                    {statLabel}
-                  </p>
+                  <p className="text-2xl sm:text-3xl font-bold text-foreground">{stat}</p>
+                  <p className="text-sm text-muted-foreground mt-1">{statLabel}</p>
                 </div>
               </div>
             </Link>

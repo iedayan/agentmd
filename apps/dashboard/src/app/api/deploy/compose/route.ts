@@ -1,6 +1,6 @@
-import { NextResponse } from "next/server";
-import { readFileSync, existsSync } from "fs";
-import { join } from "path";
+import { NextResponse } from 'next/server';
+import { readFileSync, existsSync } from 'fs';
+import { join } from 'path';
 
 const COMPOSE_CONTENT = `# AgentMD Self-Hosted Stack
 # Bring-your-own-database: PostgreSQL + Redis
@@ -78,22 +78,20 @@ volumes:
 
 export async function GET() {
   try {
-    const composePath = join(process.cwd(), "..", "..", "deploy", "docker-compose.yml");
-    const content = existsSync(composePath)
-      ? readFileSync(composePath, "utf-8")
-      : COMPOSE_CONTENT;
+    const composePath = join(process.cwd(), '..', '..', 'deploy', 'docker-compose.yml');
+    const content = existsSync(composePath) ? readFileSync(composePath, 'utf-8') : COMPOSE_CONTENT;
 
     return new NextResponse(content, {
       headers: {
-        "Content-Type": "text/yaml",
-        "Content-Disposition": 'attachment; filename="docker-compose.yml"',
+        'Content-Type': 'text/yaml',
+        'Content-Disposition': 'attachment; filename="docker-compose.yml"',
       },
     });
   } catch {
     return new NextResponse(COMPOSE_CONTENT, {
       headers: {
-        "Content-Type": "text/yaml",
-        "Content-Disposition": 'attachment; filename="docker-compose.yml"',
+        'Content-Type': 'text/yaml',
+        'Content-Disposition': 'attachment; filename="docker-compose.yml"',
       },
     });
   }

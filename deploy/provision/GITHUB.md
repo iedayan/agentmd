@@ -17,6 +17,7 @@
 6. **Generate a new client secret** → set as `GITHUB_SECRET`.
 
 For local dev, create a second OAuth App with:
+
 - Homepage: `http://localhost:3001`
 - Callback: `http://localhost:3001/api/auth/callback/github`
 
@@ -58,6 +59,7 @@ For local dev, create a second OAuth App with:
 3. You should be redirected to GitHub and back to the dashboard.
 
 For GitHub App:
+
 1. Set `GITHUB_APP_SLUG` to your app slug.
 2. Visit `https://your-domain.com/api/github/install` (requires auth).
 3. You should be redirected to install the app on your repos.

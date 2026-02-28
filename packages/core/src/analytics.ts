@@ -18,12 +18,12 @@ export interface ProductMetrics {
   agentsMdCreated: number;
   validationRuns: number;
   cliInstalls: number;
-  
-  // Engagement metrics  
+
+  // Engagement metrics
   weeklyActiveTeams: number;
   averageSessionDuration: number;
   featureUsage: Record<string, number>;
-  
+
   // Quality metrics
   validationErrors: number;
   securityBlocks: number;
@@ -86,7 +86,7 @@ export class AnalyticsClient {
     filePath: string,
     score: number,
     errorCount: number,
-    warningCount: number
+    warningCount: number,
   ): Promise<void> {
     await this.track('agents_md_validated', {
       file_type: this.detectFileType(filePath),
@@ -114,7 +114,7 @@ export class AnalyticsClient {
    */
   async trackEditorUsage(
     editor: 'vscode' | 'cursor' | 'other',
-    action: 'validation' | 'completion' | 'hover'
+    action: 'validation' | 'completion' | 'hover',
   ): Promise<void> {
     await this.track('editor_usage', {
       editor,
@@ -138,7 +138,7 @@ export class AnalyticsClient {
   async trackSecurityEvent(
     eventType: 'command_blocked' | 'guardrail_triggered',
     commandType: string,
-    riskLevel: string
+    riskLevel: string,
   ): Promise<void> {
     await this.track('security_event', {
       event_type: eventType,
@@ -153,7 +153,7 @@ export class AnalyticsClient {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${this.apiKey}`,
+        Authorization: `Bearer ${this.apiKey}`,
         'User-Agent': `AgentMD/${this.getVersion()}`,
       },
       body: JSON.stringify(event),
@@ -164,23 +164,25 @@ export class AnalyticsClient {
     }
   }
 
-  private sanitizeProperties(properties?: Record<string, unknown>): Record<string, unknown> | undefined {
+  private sanitizeProperties(
+    properties?: Record<string, unknown>,
+  ): Record<string, unknown> | undefined {
     if (!properties) return undefined;
 
     const sanitized: Record<string, unknown> = {};
-    
+
     for (const [key, value] of Object.entries(properties)) {
       // Remove any potential PII
       if (this.isPiiField(key)) {
         continue;
       }
-      
+
       // Sanitize file paths
       if (typeof value === 'string' && this.isFilePath(value)) {
         sanitized[key] = this.sanitizePath(value);
         continue;
       }
-      
+
       // Only include primitive values
       if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
         sanitized[key] = value;
@@ -192,7 +194,7 @@ export class AnalyticsClient {
 
   private isPiiField(fieldName: string): boolean {
     const piiFields = ['email', 'name', 'username', 'token', 'key', 'secret', 'password'];
-    return piiFields.some(pii => fieldName.toLowerCase().includes(pii));
+    return piiFields.some((pii) => fieldName.toLowerCase().includes(pii));
   }
 
   private isFilePath(value: string): boolean {
@@ -226,9 +228,11 @@ export class AnalyticsClient {
   }
 
   private isDevelopmentEnvironment(): boolean {
-    return process.env.NODE_ENV === 'development' || 
-           process.env.AGENTMD_ENV === 'development' ||
-           !process.env.AGENTMD_ANALYTICS_ENABLED;
+    return (
+      process.env.NODE_ENV === 'development' ||
+      process.env.AGENTMD_ENV === 'development' ||
+      !process.env.AGENTMD_ANALYTICS_ENABLED
+    );
   }
 
   private getVersion(): string {

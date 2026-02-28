@@ -1,44 +1,44 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { Menu, X, ChevronRight } from "lucide-react";
-import { cn } from "@/lib/core/utils";
+import { useState } from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { Menu, X, ChevronRight } from 'lucide-react';
+import { cn } from '@/lib/core/utils';
 
 const DOC_GROUPS = [
   {
-    title: "Getting Started",
+    title: 'Getting Started',
     links: [
-      { href: "/docs", label: "Overview" },
-      { href: "/docs/how-it-works", label: "How It Works" },
-      { href: "/docs/beginner", label: "Beginner Path" },
-      { href: "/docs/quickstart", label: "Quickstart" },
-      { href: "/docs/agentic-ai", label: "What is Agentic AI?" },
-      { href: "/setup/github-app", label: "GitHub App Setup" },
-      { href: "/docs/why-execute", label: "Why Execute AGENTS.md?" },
-      { href: "/docs/why-agentmd", label: "Why AgentMD vs. Local" },
+      { href: '/docs', label: 'Overview' },
+      { href: '/docs/how-it-works', label: 'How It Works' },
+      { href: '/docs/beginner', label: 'Beginner Path' },
+      { href: '/docs/quickstart', label: 'Quickstart' },
+      { href: '/docs/agentic-ai', label: 'What is Agentic AI?' },
+      { href: '/setup/github-app', label: 'GitHub App Setup' },
+      { href: '/docs/why-execute', label: 'Why Execute AGENTS.md?' },
+      { href: '/docs/why-agentmd', label: 'Why AgentMD vs. Local' },
     ],
   },
   {
-    title: "Core",
+    title: 'Core',
     links: [
-      { href: "/docs/parse", label: "Parse &amp; Validate" },
-      { href: "/docs/cli", label: "CLI Reference" },
-      { href: "/docs/frontmatter", label: "YAML Frontmatter" },
-      { href: "/docs/compose", label: "Composition" },
-      { href: "/docs/execution", label: "Execution &amp; Safety" },
-      { href: "/docs/best-practices", label: "Agentic AI Best Practices" },
-      { href: "/docs/research-best-practices", label: "Research &amp; Best Practices" },
-      { href: "/docs/eu-ai-act", label: "EU AI Act Compliance" },
+      { href: '/docs/parse', label: 'Parse &amp; Validate' },
+      { href: '/docs/cli', label: 'CLI Reference' },
+      { href: '/docs/frontmatter', label: 'YAML Frontmatter' },
+      { href: '/docs/compose', label: 'Composition' },
+      { href: '/docs/execution', label: 'Execution &amp; Safety' },
+      { href: '/docs/best-practices', label: 'Agentic AI Best Practices' },
+      { href: '/docs/research-best-practices', label: 'Research &amp; Best Practices' },
+      { href: '/docs/eu-ai-act', label: 'EU AI Act Compliance' },
     ],
   },
   {
-    title: "Reference",
+    title: 'Reference',
     links: [
-      { href: "/marketplace/developers/docs", label: "API Reference" },
-      { href: "/docs/roi-methodology", label: "ROI Methodology" },
-      { href: "/design-system", label: "Design System" },
+      { href: '/marketplace/developers/docs', label: 'API Reference' },
+      { href: '/docs/roi-methodology', label: 'ROI Methodology' },
+      { href: '/design-system', label: 'Design System' },
     ],
   },
 ];
@@ -66,12 +66,7 @@ export function DocsSidebar() {
         />
       )}
 
-      <aside
-        className={cn(
-          "w-64 shrink-0 sticky top-24 self-start",
-          "hidden md:block"
-        )}
-      >
+      <aside className={cn('w-64 shrink-0 sticky top-24 self-start', 'hidden md:block')}>
         <nav className="space-y-8">
           {DOC_GROUPS.map((group) => (
             <div key={group.title}>
@@ -82,17 +77,17 @@ export function DocsSidebar() {
                 {group.links.map((link) => {
                   const isActive =
                     pathname === link.href ||
-                    (link.href !== "/docs" && pathname.startsWith(link.href));
+                    (link.href !== '/docs' && pathname.startsWith(link.href));
                   return (
                     <li key={link.href}>
                       <Link
                         href={link.href}
                         onClick={() => setOpen(false)}
                         className={cn(
-                          "flex items-center gap-2 py-2 px-3 rounded-[var(--radius-sm)] text-sm transition-colors duration-base",
+                          'flex items-center gap-2 py-2 px-3 rounded-[var(--radius-sm)] text-sm transition-colors duration-base',
                           isActive
-                            ? "bg-[hsl(var(--primary-dim))] text-primary font-medium border-l-2 border-primary pl-4"
-                            : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                            ? 'bg-[hsl(var(--primary-dim))] text-primary font-medium border-l-2 border-primary pl-4'
+                            : 'text-muted-foreground hover:text-foreground hover:bg-muted/50',
                         )}
                       >
                         <span dangerouslySetInnerHTML={{ __html: link.label }} />
@@ -130,18 +125,18 @@ export function DocsSidebar() {
                   {group.links.map((link) => {
                     const isActive =
                       pathname === link.href ||
-                      (link.href !== "/docs" && pathname.startsWith(link.href));
+                      (link.href !== '/docs' && pathname.startsWith(link.href));
                     return (
                       <li key={link.href}>
                         <Link
                           href={link.href}
                           onClick={() => setOpen(false)}
-                        className={cn(
-                          "flex items-center gap-2 py-2 px-3 rounded-[var(--radius-sm)] text-sm transition-colors duration-base",
-                          isActive
-                            ? "bg-[hsl(var(--primary-dim))] text-primary font-medium border-l-2 border-primary pl-4"
-                            : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
-                        )}
+                          className={cn(
+                            'flex items-center gap-2 py-2 px-3 rounded-[var(--radius-sm)] text-sm transition-colors duration-base',
+                            isActive
+                              ? 'bg-[hsl(var(--primary-dim))] text-primary font-medium border-l-2 border-primary pl-4'
+                              : 'text-muted-foreground hover:text-foreground hover:bg-muted/50',
+                          )}
                         >
                           <span dangerouslySetInnerHTML={{ __html: link.label }} />
                           {isActive && <ChevronRight className="h-4 w-4 ml-auto" />}
