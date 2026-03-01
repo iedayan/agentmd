@@ -1,8 +1,23 @@
 # AgentMD
 
-**CI/CD for AI Agents** — The platform that makes AGENTS.md files executable, not just readable.
+[![npm](https://img.shields.io/npm/v/@agentmd-dev/core.svg)](https://www.npmjs.com/package/@agentmd-dev/core) [![npm](https://img.shields.io/npm/dw/@agentmd-dev/core.svg)](https://www.npmjs.com/package/@agentmd-dev/core) [![GitHub stars](https://img.shields.io/github/stars/iedayan/agentmd.svg?style=social&label=Star)](https://github.com/iedayan/agentmd) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-AgentMD deeply integrates with the [AGENTS.md standard](https://agents.md) to orchestrate and execute setup commands, tests, and workflows defined in your repository. While observability tools watch what agents do, AgentMD actually **runs** what they're supposed to do—with **agentic AI governance** and **risk management** built in.
+**🚀 CI/CD for AI Agents** — Make AGENTS.md files executable in 10 minutes, not just readable.
+
+<!-- TODO: Add demo GIF here -->
+<!-- 
+![AgentMD Demo](./assets/demo.gif)
+*AgentMD in action: Parse, validate, and execute AGENTS.md files in seconds*
+-->
+
+[▶️ **Quick Start**](#quick-start) • [📖 **Docs**](https://agentsmd.io) • [💬 **Discussions**](https://github.com/iedayan/agentmd/discussions) • [🎯 **Live Demo**](https://demo.agentmd.io)
+
+```bash
+npm install -g @agentmd-dev/cli
+agentmd check . --score
+```
+
+AgentMD turns static AGENTS.md files into **living, breathing workflows** with governance and safety built-in. While observability tools watch what agents do, AgentMD actually **runs** what they're supposed to do.
 
 ## Market Position
 
@@ -31,6 +46,26 @@ AgentMD is the runtime environment for agent instructions:
 - **Validate** — Format checks, command safety, permission validation
 - **Execute** — Sandboxed runners with permission boundaries
 - **Score** — Agent-readiness score (0-100)
+
+## Quick Start
+
+**🎯 Get running in 60 seconds:**
+
+```bash
+# Install the CLI
+npm install -g @agentmd-dev/cli
+
+# Check any AGENTS.md file
+agentmd check . --score
+
+# Execute safely (dry run)
+agentmd run . --dry-run
+```
+
+**📦 VS Code Extension:**
+```
+ext install agentmd.agentmd-vscode
+```
 
 ## Installation
 
@@ -195,14 +230,34 @@ Discover, purchase, and execute agents through AGENTS.md:
 - **Pro ($49/mo)**: Unlimited repos, 1000 min, team features
 - **Enterprise ($249/mo)**: Self-hosted, SSO, RBAC, audit logs. See [docs/INFRASTRUCTURE.md](docs/INFRASTRUCTURE.md) for deployment options.
 
+## 🌟 Community & Support
+
+- **[💬 GitHub Discussions](https://github.com/iedayan/agentmd/discussions)** - Ask questions, share ideas
+- **[🐛 Issues](https://github.com/iedayan/agentmd/issues)** - Bug reports and feature requests  
+- **[📖 Documentation](https://agentsmd.io)** - Complete guides and API reference
+- **[🎯 Live Demo](https://demo.agentmd.io)** - Try AgentMD in your browser
+
+## 🏆 Used By
+
+[![AgentMD Users](https://img.shields.io/badge/Used%20By-Production%20Teams-blue)](https://github.com/iedayan/agentmd)
+
+*AgentMD is trusted by startups and enterprises to orchestrate AI agents in production.*
+
+---
+
+**⭐ Star this repo** if AgentMD helps you build better AI agents!
+
+[🔔 **Watch**](https://github.com/iedayan/agentmd/subscription) for updates • [🍴 **Fork**](https://github.com/iedayan/agentmd/fork) to contribute
+
 ## Open Source Readiness
 
 - **Installation & CLI reference**: [docs/INSTALL.md](docs/INSTALL.md)
 - **Core API contract**: [docs/CORE_PUBLIC_API.md](docs/CORE_PUBLIC_API.md)
 - **Infrastructure & deployment**: [docs/INFRASTRUCTURE.md](docs/INFRASTRUCTURE.md)
-- **Security policy**: [SECURITY.md](SECURITY.md)
-- **Contribution guide**: [CONTRIBUTING.md](CONTRIBUTING.md)
-- **Release history**: [CHANGELOG.md](CHANGELOG.md)
+- **Security policy**: [docs/SECURITY.md](docs/SECURITY.md)
+- **Contribution guide**: [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)
+- **Enhanced scoring**: [docs/ENHANCED_SCORING.md](docs/ENHANCED_SCORING.md)
+- **Release history**: [docs/CHANGELOG.md](docs/CHANGELOG.md)
 
 Notes:
 

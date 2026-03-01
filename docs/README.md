@@ -1,31 +1,47 @@
 # AgentMD Documentation
 
-Welcome to the AgentMD documentation hub. This directory contains comprehensive documentation for users, contributors, and developers.
+## 🚀 Quick Start
+- [**Installation Guide**](INSTALL.md) - Get up and running in minutes
+- [**Quick Start**](QUICKSTART.md) - 60-second setup tutorial
+- [**AGENTS.md Reference**](AGENTS.md_REFERENCE.md) - Complete syntax guide
 
-## 📚 Documentation Structure
+## 📚 Core Documentation
+- [**Architecture**](ARCHITECTURE.md) - System design and components
+- [**Core Engine Spec**](CORE_ENGINE_SPEC.md) - Parsing, validation, execution
+- [**Public API**](CORE_PUBLIC_API.md) - Programmatic interface
+- [**Templates**](AGENTS_MD_TEMPLATES.md) - Ready-to-use examples
 
-### 🚀 User Guides (`docs/guides/`)
+## 🏗️ Infrastructure & Deployment
+- [**Infrastructure Guide**](INFRASTRUCTURE.md) - Deployment architecture
+- [**MVP Deploy Runbook**](MVP_DEPLOY_RUNBOOK.md) - Step-by-step deployment
+- [**Execution Blueprint**](EXECUTION_BLUEPRINT_3_6M.md) - 3-6 month execution plan
 
-- **[Getting Started](./guides/GETTING_STARTED.md)** - Complete onboarding guide
-- **Template Usage** - Framework-specific templates and examples
-- **Workflow Configuration** - Setting up automated workflows
-- **Security Best Practices** - Safe agent configuration
+## �️ Enterprise & Security
+- [**Enhanced Scoring**](ENHANCED_SCORING.md) - Production-ready agent evaluation
+- [**Security Policy**](SECURITY.md) - Vulnerability reporting
+- [**Incident Response**](INCIDENT_RESPONSE.md) - Security procedures
 
-### 🔧 API Documentation (`docs/api/`)
+## 🤝 Community & Contributing
+- [**Contributing Guide**](CONTRIBUTING.md) - Development workflow
+- [**Platform Roadmap**](PLATFORM_ROADMAP_STRATEGY.md) - Strategic direction
+- [**Why AgentMD**](WHY_AGENTMD.md) - Vision and differentiation
 
-- **[API Reference](./api/README.md)** - Complete API documentation
-- **Core Functions** - Parsing, validation, and execution APIs
-- **Integration Guides** - VSCode, Cursor, and custom integrations
-- **Examples** - Code samples and usage patterns
+## 📊 Additional Resources
+- [**AGENTS.md Research**](AGENTS_MD_RESEARCH.md) - Background and standards
+- [**UX Analysis**](PLAYBOOKS_UX_ANALYSIS.md) - User experience insights
+- [**AppSumo Application**](APPSUMO_VENDOR_APPLICATION.md) - Partnership details
 
-### 📋 Strategy (`docs/strategy/`)
+## 🔧 API Reference
+- [**API Documentation**](api/) - REST API endpoints
+- [**Contracts**](contracts/) - Output contracts and schemas
+- [**Providers**](providers/) - Integration providers
 
-- **[Customer Strategy](./strategy/CUSTOMER_STRATEGY.md)** - Acquisition and monetization
-- **[Codebase Organization](./strategy/CODEBASE_ORGANIZATION.md)** - Architecture and structure
-- **Product Roadmap** - Development timeline and features
-- **Market Analysis** - Competitive landscape and positioning
+## 📈 Changelog
+- [**Release History**](CHANGELOG.md) - Version updates and changes
 
-### 🤝 Contributing (`docs/contributing/`)
+---
+
+**💡 Tip:** Start with [Quick Start](QUICKSTART.md) for the fastest path to value.
 
 - **[Contributing Guide](./contributing/CONTRIBUTING.md)** - How to contribute
 - **[Code of Conduct](./contributing/CODE_OF_CONDUCT.md)** - Community guidelines

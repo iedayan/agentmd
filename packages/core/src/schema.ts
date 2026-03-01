@@ -115,6 +115,20 @@ export interface AgentFrontmatter {
   output_contract?: OutputContract;
   /** Per-command metadata: risk_level, preconditions, audit_tags. Key = command or pattern (e.g. "pnpm run deploy") */
   commands?: CommandSchema;
+  
+  // Enhanced properties for production-ready agents
+  /** Environment variables and configuration */
+  environment?: Record<string, string>;
+  /** Command dependencies and execution order */
+  dependencies?: string[];
+  /** Resource limits (memory, CPU, etc.) */
+  resources?: Record<string, string>;
+  /** Execution constraints */
+  limits?: Record<string, string>;
+  /** Monitoring and observability configuration */
+  monitoring?: Record<string, string>;
+  /** Observability settings */
+  observability?: Record<string, string>;
 }
 
 /** Markdown directive: <!-- agents-md: key=value --> */

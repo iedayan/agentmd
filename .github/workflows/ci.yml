@@ -1,52 +1,50 @@
-name: CI
-
 on:
   push:
     branches: [ main, master ]
   pull_request:
 
 jobs:
-  build:
-    name: Build
+  ci-build:
+    name: "CI / Build"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 9
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'pnpm'
-      - uses: pnpm/action-setup@v3
-        with:
-          version: 9
-      - run: pnpm install
+      - run: pnpm install --frozen-lockfile
       - run: pnpm -w run build
 
-  lint:
-    name: Lint
+  ci-lint:
+    name: "CI / Lint"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 9
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'pnpm'
-      - uses: pnpm/action-setup@v3
-        with:
-          version: 9
-      - run: pnpm install
+      - run: pnpm install --frozen-lockfile
       - run: pnpm -w run lint
 
-  test:
-    name: Test
+  ci-test:
+    name: "CI / Test"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 9
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'pnpm'
-      - uses: pnpm/action-setup@v3
-        with:
-          version: 9
-      - run: pnpm install
+      - run: pnpm install --frozen-lockfile
       - run: pnpm -w run test

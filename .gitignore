@@ -13,3 +13,25 @@ package-lock.json
 *.tgz
 pnpm-store/
 .pnpm-store/
+
+# IDE files
+.vscode/settings.json
+.vscode/launch.json
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+.orchids/
+
+# Runtime
+.nyc_output/
+.cache/
+.parcel-cache/

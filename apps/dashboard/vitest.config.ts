@@ -10,6 +10,10 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
+      '@agentmd-dev/core': path.resolve(__dirname, '../../packages/core/src/index.ts'),
+      '@agentmd-dev/cli': path.resolve(__dirname, '../../packages/cli/src/cli.ts'),
+      '@agentmd-dev/sdk': path.resolve(__dirname, '../../packages/sdk/src/index.ts'),
+      '@agentmd-dev/workflows': path.resolve(__dirname, '../../packages/workflows/index.ts'),
     },
   },
 });

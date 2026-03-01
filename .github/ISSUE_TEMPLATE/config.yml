@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 💬 GitHub Discussions
+    url: https://github.com/iedayan/agentmd/discussions
+    about: Ask questions, share ideas, and get help from the community
+  - name: 📖 Documentation
+    url: https://agentsmd.io
+    about: Read the official documentation
+  - name: 🎯 Live Demo
+    url: https://demo.agentmd.io
+    about: Try AgentMD in your browser

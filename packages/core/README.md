@@ -1,5 +1,7 @@
 # @agentmd-dev/core
 
+[![npm](https://img.shields.io/npm/v/@agentmd-dev/core.svg)](https://www.npmjs.com/package/@agentmd-dev/core) [![npm](https://img.shields.io/npm/dw/@agentmd-dev/core.svg)](https://www.npmjs.com/package/@agentmd-dev/core)
+
 **State-of-the-art AGENTS.md runtime** — Parse, validate, discover, compose, and execute agent instructions.
 
 Implements the [AGENTS.md standard](https://agents.md) with production-grade safety, policy integration, and best-practice validation.

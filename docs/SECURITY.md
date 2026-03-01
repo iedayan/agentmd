@@ -2,61 +2,68 @@
 
 ## Supported Versions
 
-| Version | Supported |
-| ------- | --------- |
-| 0.1.x   | Yes       |
-| < 0.1.0 | No        |
-
-## Threat Model
-
-AgentMD is a command orchestration engine that parses and executes commands from `AGENTS.md`.
-Primary risks:
-
-- Untrusted command execution (`rm -rf`, `curl | sh`, reverse shell patterns)
-- Privilege escalation through shell operators and broad permissions
-- Supply-chain risk from untrusted `AGENTS.md` content
-- Integration abuse (webhooks, automation endpoints)
-
-Current security controls:
-
-- Dangerous pattern blocking in executor
-- Permission-aware allow/deny checks (`permissions.shell`)
-- Safe default execution mode (`useShell: false`)
-- Preflight planning (`planCommandExecutions`) before run
-- Optional sandboxed execution for isolated temp-dir runs
-- Request validation + rate limiting on dashboard APIs
-- Session-based auth (NextAuth + GitHub OAuth) for dashboard; all user-scoped APIs require authentication
-- User-scoped data access; repositories and executions filtered by session user ID
+| Version | Supported          |
+|---------|--------------------|
+| 0.1.x   | ✅ Current          |
+| < 0.1   | ❌ Not supported    |
 
 ## Reporting a Vulnerability
 
-Do not open public issues for vulnerabilities.
+We take security seriously. If you discover a security vulnerability, please report it responsibly.
 
-- Contact: `security@agentmd.online`
-- Include:
-  - Affected version(s)
-  - Reproduction steps
-  - Impact and exploitability
-  - Suggested remediation (optional)
+### How to Report
 
-Target response timeline:
+**Primary Method**: Send an email to `security@agentmd.io`
 
-- Acknowledgement: within 48 hours
-- Initial triage: within 5 business days
-- Status updates: at least weekly until resolved
+**Include in your report**:
+- Detailed description of the vulnerability
+- Steps to reproduce the issue
+- Potential impact assessment
+- Any proof-of-concept code (if applicable)
 
-## Disclosure Process
+### Response Timeline
 
-1. Reporter submits private report.
-2. Maintainers reproduce and assign severity.
-3. Patch is prepared and validated.
-4. Coordinated release is published with changelog note.
-5. Public disclosure follows fix availability.
+- **Initial response**: Within 24 hours
+- **Detailed assessment**: Within 3 business days
+- **Patch release**: Within 7 days (for critical issues)
 
-## Hardening Guidance for Users
+### Security Features
 
-- Treat third-party `AGENTS.md` as untrusted input.
-- Use safe mode first: `agentmd run . --dry-run`.
-- Only use `--use-shell` for explicitly reviewed commands.
-- Restrict permissions in frontmatter (`permissions.shell.allow`).
-- Run in CI with isolated workers and least privileges.
+AgentMD includes several security features:
+
+- **Command validation** - Blocks dangerous patterns
+- **Permission boundaries** - Enforces access controls
+- **Sandboxed execution** - Isolates command execution
+- **Input validation** - Validates all user inputs
+- **Dependency scanning** - Automated vulnerability scanning
+
+### Security Best Practices
+
+When using AgentMD:
+
+1. **Review commands** before execution
+2. **Use dry-run mode** for testing
+3. **Configure permissions** appropriately
+4. **Keep dependencies** updated
+5. **Monitor execution logs** regularly
+
+## Security Hall of Fame
+
+We recognize and reward security researchers who help us improve AgentMD's security.
+
+- 🏆 **[Your Name Here]** - Discovered and reported [vulnerability type]
+- 🏆 **[Your Name Here]** - Contributed security improvement
+
+## Public Disclosures
+
+Security vulnerabilities are disclosed here after they are patched:
+
+- **[Date]** - [CVE-XXXX-XXXX] - [Brief description]
+- **[Date]** - [CVE-XXXX-XXXX] - [Brief description]
+
+## Security Team
+
+- **Lead**: security@agentmd.io
+- **Engineering**: engineering@agentmd.io
+
+Thank you for helping keep AgentMD secure! 🛡️

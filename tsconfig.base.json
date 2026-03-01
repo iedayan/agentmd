@@ -12,11 +12,21 @@
     "jsx": "react-jsx",
     "baseUrl": ".",
     "paths": {
-      "@agentmd-dev/core": ["packages/core/src"],
-      "@agentmd-dev/cli": ["packages/cli/src"],
-      "@agentmd-dev/sdk": ["packages/sdk/src"],
-      "@agentmd-dev/workflows": ["packages/workflows/src"],
-      "@agentmd/vscode": ["packages/agentmd-vscode/src"]
+      "@agentmd-dev/core": [
+        "packages/core/src"
+      ],
+      "@agentmd-dev/cli": [
+        "packages/cli/src"
+      ],
+      "@agentmd-dev/sdk": [
+        "packages/sdk/src"
+      ],
+      "@agentmd-dev/workflows": [
+        "packages/workflows"
+      ],
+      "@agentmd/dashboard": [
+        "apps/dashboard/src"
+      ]
     }
   }
 }
