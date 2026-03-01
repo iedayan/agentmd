@@ -1,6 +1,7 @@
 {
   "name": "@agentmd-dev/sdk",
-  "version": "0.1.0",
+  "version": "0.1.1",
+  "description": "AgentMD SDK — programmatic API for integrations",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -9,6 +10,30 @@
       "import": "./dist/index.js",
       "types": "./dist/index.d.ts"
     }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iedayan/agentmd.git",
+    "directory": "packages/sdk"
+  },
+  "keywords": [
+    "agents.md",
+    "agents-md",
+    "ai-agents",
+    "sdk",
+    "integration"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "license": "MIT",
+  "homepage": "https://agentmd.online",
+  "bugs": {
+    "url": "https://github.com/iedayan/agentmd/issues"
+  },
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/iedayan/agentmd"
   },
   "publishConfig": {
     "access": "public"
