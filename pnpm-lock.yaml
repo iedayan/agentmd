@@ -300,8 +300,8 @@ importers:
   packages/sdk:
     dependencies:
       '@agentmd-dev/core':
-        specifier: workspace:*
-        version: link:../core
+        specifier: ^0.1.1
+        version: 0.1.1
     devDependencies:
       '@types/node':
         specifier: ^22.10.0
