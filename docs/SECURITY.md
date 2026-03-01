@@ -13,7 +13,7 @@ We take security seriously. If you discover a security vulnerability, please rep
 
 ### How to Report
 
-**Primary Method**: Send an email to `security@agentmd.io`
+**Primary Method**: Send an email to `security@agentmd.online`
 
 **Include in your report**:
 - Detailed description of the vulnerability
@@ -63,7 +63,7 @@ Security vulnerabilities are disclosed here after they are patched:
 
 ## Security Team
 
-- **Lead**: security@agentmd.io
-- **Engineering**: engineering@agentmd.io
+- **Lead**: security@agentmd.online
+- **Engineering**: engineering@agentmd.online
 
 Thank you for helping keep AgentMD secure! 🛡️
