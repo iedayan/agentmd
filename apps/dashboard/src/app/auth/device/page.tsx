@@ -5,7 +5,6 @@ import { useRouter, useSearchParams } from 'next/navigation';
 
 export default function DeviceAuthPage() {
     const searchParams = useSearchParams();
-    const router = useRouter();
     const urlCode = searchParams.get('code') ?? '';
 
     const [userCode, setUserCode] = useState(

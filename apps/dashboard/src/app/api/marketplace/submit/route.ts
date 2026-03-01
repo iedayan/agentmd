@@ -38,7 +38,7 @@ interface SubmitBody {
 }
 
 /** In-memory store for submitted agents (shared via module singleton). */
-export const submittedAgents: AgentListing[] = [];
+const submittedAgents: AgentListing[] = [];
 
 function validateBearer(req: NextRequest): boolean {
     const auth = req.headers.get('authorization') ?? '';
