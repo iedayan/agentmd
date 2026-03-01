@@ -1,5 +1,5 @@
 {
-  "name": "@agentmd/sdk",
+  "name": "@agentmd-dev/sdk",
   "version": "0.1.0",
   "type": "module",
   "main": "./dist/index.js",
@@ -10,6 +10,9 @@
       "types": "./dist/index.d.ts"
     }
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "tsup src/index.ts --format esm --dts",
     "dev": "tsup src/index.ts --format esm --dts --watch",
@@ -17,7 +20,7 @@
     "lint": "tsc --noEmit"
   },
   "dependencies": {
-    "@agentmd-dev/core": "workspace:*"
+    "@agentmd-dev/core": "^0.1.1"
   },
   "devDependencies": {
     "@types/node": "^22.10.0",
