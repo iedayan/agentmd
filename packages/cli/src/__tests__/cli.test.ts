@@ -252,4 +252,56 @@ output_contract:
       rmSync(tempDir, { recursive: true, force: true });
     }
   });
+
+  it('login fails gracefully when dashboard is unreachable', () => {
+    // Offline test: login should print helpful error, not crash with an unhandled exception.
+    const result = spawnSync(
+      process.execPath,
+      [cliPath, 'login'],
+      {
+        encoding: 'utf-8',
+        env: { ...process.env, AGENTMD_DASHBOARD_URL: 'http://127.0.0.1:1' }, // guaranteed unreachable
+        timeout: 15_000,
+      },
+    );
+    // Should exit with code 1 (graceful error), not crash
+    expect(result.status).toBe(1);
+    const output = result.stderr + result.stdout;
+    expect(output).toMatch(/Cannot reach dashboard|Failed to start login/i);
+  });
+
+  it('logout prints "Not logged in" when no credentials exist', () => {
+    const result = spawnSync(
+      process.execPath,
+      [cliPath, 'logout'],
+      {
+        encoding: 'utf-8',
+        // Use a temp HOME so we don't touch the real credentials
+        env: { ...process.env, HOME: mkdtempSync(join(tmpdir(), 'agentmd-home-')) },
+      },
+    );
+    expect(result.status).toBe(0);
+    expect(result.stdout).toContain('Not logged in');
+  });
+
+  it('whoami exits non-zero when not logged in', () => {
+    const result = spawnSync(
+      process.execPath,
+      [cliPath, 'whoami'],
+      {
+        encoding: 'utf-8',
+        env: { ...process.env, HOME: mkdtempSync(join(tmpdir(), 'agentmd-home-')) },
+      },
+    );
+    expect(result.status).toBe(1);
+    expect(result.stdout).toContain('Not logged in');
+  });
+
+  it('help includes login and logout commands', () => {
+    const result = runCli(['help']);
+    expect(result.status).toBe(0);
+    expect(result.stdout).toContain('login');
+    expect(result.stdout).toContain('logout');
+    expect(result.stdout).toContain('whoami');
+  });
 });

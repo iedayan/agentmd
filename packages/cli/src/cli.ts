@@ -1,11 +1,15 @@
 #!/usr/bin/env node
 /**
  * AgentMD CLI
- * Commands: init, doctor, check, discover, parse, compose, run, score, export
+ * Commands: init, doctor, check, discover, parse, compose, run, score, export, login, logout
  */
 
-import { readFileSync, writeFileSync, existsSync } from 'fs';
-import { resolve } from 'path';
+import { readFileSync, writeFileSync, existsSync, mkdirSync, chmodSync, unlinkSync } from 'fs';
+import { resolve, join } from 'path';
+import { homedir } from 'os';
+import { createHash, randomUUID } from 'crypto';
+import * as https from 'https';
+import * as http from 'http';
 import {
   parseAgentsMd,
   validateAgentsMd,
@@ -126,6 +130,79 @@ function parseRunArgs(cmdArgs: string[]): { target: string; json: boolean; extra
   return { target, json, extra };
 }
 
+// ─── Credentials helpers ────────────────────────────────────────────────────
+
+const CREDENTIALS_FILE = join(homedir(), '.config', 'agentmd', 'credentials.json');
+const DASHBOARD_URL = process.env.AGENTMD_DASHBOARD_URL ?? 'https://agentmd.online';
+
+interface Credentials {
+  token: string;
+  dashboardUrl: string;
+  createdAt: string;
+}
+
+function readCredentials(): Credentials | null {
+  try {
+    if (!existsSync(CREDENTIALS_FILE)) return null;
+    return JSON.parse(readFileSync(CREDENTIALS_FILE, 'utf-8')) as Credentials;
+  } catch {
+    return null;
+  }
+}
+
+function writeCredentials(creds: Credentials): void {
+  const dir = join(homedir(), '.config', 'agentmd');
+  if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
+  writeFileSync(CREDENTIALS_FILE, JSON.stringify(creds, null, 2), 'utf-8');
+  try { chmodSync(CREDENTIALS_FILE, 0o600); } catch { /* ignore on Windows */ }
+}
+
+function deleteCredentials(): boolean {
+  if (!existsSync(CREDENTIALS_FILE)) return false;
+  unlinkSync(CREDENTIALS_FILE);
+  return true;
+}
+
+/** Minimal fetch over Node's built-in http/https — no extra deps. */
+function nodeFetch(
+  url: string,
+  options: { method?: string; body?: string; headers?: Record<string, string>; timeoutMs?: number },
+): Promise<{ ok: boolean; status: number; body: string }> {
+  return new Promise((resolve, reject) => {
+    const parsed = new URL(url);
+    const lib = parsed.protocol === 'https:' ? https : http;
+    const req = lib.request(
+      {
+        hostname: parsed.hostname,
+        port: parsed.port || (parsed.protocol === 'https:' ? 443 : 80),
+        path: parsed.pathname + parsed.search,
+        method: options.method ?? 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+          ...options.headers,
+        },
+      },
+      (res) => {
+        let body = '';
+        res.on('data', (chunk: Buffer) => { body += chunk.toString(); });
+        res.on('end', () => {
+          resolve({ ok: (res.statusCode ?? 0) >= 200 && (res.statusCode ?? 0) < 300, status: res.statusCode ?? 0, body });
+        });
+      },
+    );
+    req.on('error', reject);
+    if (options.timeoutMs) req.setTimeout(options.timeoutMs, () => { req.destroy(new Error('Request timeout')); });
+    if (options.body) req.write(options.body);
+    req.end();
+  });
+}
+
+// Silence unused-import warnings (randomUUID used in future API token work)
+void randomUUID; void createHash;
+
+// ─── main ────────────────────────────────────────────────────────────────────
+
 async function main() {
   switch (command) {
     case 'init':
@@ -160,6 +237,15 @@ async function main() {
       break;
     case 'export':
       await cmdExport(target);
+      break;
+    case 'login':
+      await cmdLogin();
+      break;
+    case 'logout':
+      cmdLogout();
+      break;
+    case 'whoami':
+      cmdWhoami();
       break;
     case 'help':
     case '--help':
@@ -1157,6 +1243,113 @@ async function cmdExport(target: string) {
   console.log(yaml);
 }
 
+// ─── Auth commands ───────────────────────────────────────────────────────────
+
+async function cmdLogin(): Promise<void> {
+  const existing = readCredentials();
+  if (existing) {
+    console.log(`Already logged in to ${existing.dashboardUrl}`);
+    console.log(`Run 'agentmd logout' first to log in with a different account.`);
+    return;
+  }
+
+  // 1. Initiate device flow
+  let deviceCode: string;
+  let userCode: string;
+  let verificationUrl: string;
+  try {
+    const res = await nodeFetch(`${DASHBOARD_URL}/api/auth/device/initiate`, {
+      method: 'POST',
+      body: '{}',
+      timeoutMs: 10_000,
+    });
+    if (!res.ok) {
+      console.error(`Failed to start login flow (HTTP ${res.status}).`);
+      console.error('Make sure the dashboard is running or set AGENTMD_DASHBOARD_URL.');
+      process.exit(1);
+    }
+    const data = JSON.parse(res.body) as { deviceCode: string; userCode: string; verificationUrl: string };
+    deviceCode = data.deviceCode;
+    userCode = data.userCode;
+    verificationUrl = data.verificationUrl;
+  } catch (err) {
+    console.error(`Cannot reach dashboard: ${err instanceof Error ? err.message : err}`);
+    console.error('Set AGENTMD_DASHBOARD_URL if using a self-hosted instance.');
+    process.exit(1);
+  }
+
+  // 2. Prompt user
+  console.log(`\n  AgentMD Login`);
+  console.log(`  ─────────────────────────────────────────`);
+  console.log(`  Open this URL in your browser:`);
+  console.log(`  ${verificationUrl}`);
+  console.log(``);
+  console.log(`  Your device code: ${userCode}`);
+  console.log(`  ─────────────────────────────────────────`);
+  console.log(`  Waiting for approval… (Ctrl-C to cancel)\n`);
+
+  // 3. Poll until approved or timed out (60 s)
+  const deadline = Date.now() + 60_000;
+  const INTERVAL_MS = 3_000;
+  let token: string | null = null;
+
+  while (Date.now() < deadline) {
+    await new Promise<void>((r) => setTimeout(r, INTERVAL_MS));
+    try {
+      const res = await nodeFetch(
+        `${DASHBOARD_URL}/api/auth/device/poll?code=${encodeURIComponent(deviceCode)}`,
+        { timeoutMs: 8_000 },
+      );
+      if (res.ok) {
+        const data = JSON.parse(res.body) as { status: string; token?: string };
+        if (data.status === 'approved' && data.token) {
+          token = data.token;
+          break;
+        }
+        if (data.status === 'expired') {
+          console.error('Login code expired. Run agentmd login again.');
+          process.exit(1);
+        }
+      }
+    } catch {
+      // transient — keep polling
+    }
+    process.stdout.write('.');
+  }
+
+  if (!token) {
+    console.error('\nLogin timed out. Run agentmd login again.');
+    process.exit(1);
+  }
+
+  // 4. Save credentials
+  writeCredentials({ token, dashboardUrl: DASHBOARD_URL, createdAt: new Date().toISOString() });
+  console.log(`\n\n  ✓ Logged in to ${DASHBOARD_URL}`);
+  console.log(`  Credentials saved to ${CREDENTIALS_FILE}`);
+  console.log(`  Run 'agentmd whoami' to verify.\n`);
+}
+
+function cmdLogout(): void {
+  const removed = deleteCredentials();
+  if (removed) {
+    console.log('Logged out. Credentials removed.');
+  } else {
+    console.log('Not logged in.');
+  }
+}
+
+function cmdWhoami(): void {
+  const creds = readCredentials();
+  if (!creds) {
+    console.log('Not logged in. Run "agentmd login".');
+    process.exit(1);
+  }
+  console.log(`Logged in to ${creds.dashboardUrl}`);
+  console.log(`Token: ${creds.token.slice(0, 8)}…  (created ${new Date(creds.createdAt).toLocaleDateString()})`);
+}
+
+// ─── Help ────────────────────────────────────────────────────────────────────
+
 function printHelp() {
   console.log(`
 AgentMD — CI/CD for AI Agents. Makes AGENTS.md executable.
@@ -1164,26 +1357,30 @@ AgentMD — CI/CD for AI Agents. Makes AGENTS.md executable.
 Usage: agentmd <command> [path] [options]
 
 Commands:
-  init [path]       Create AGENTS.md (auto-detects project type, use --template to override)
-  doctor [path]     Diagnose AGENTS.md quality and runnable commands
-  check [path]      Validate AGENTS.md (flags: --contract, --output <file>, --json)
-  validate [path]   Alias for check
-  improve [path]    Self-improve AGENTS.md from validation feedback (use --apply to write)
-  discover [path]  Find all AGENTS.md in repo
-  parse [path]      Parse and show structure
-  compose [path]    Build AGENTS.md from fragments
-  run [path] [types]  Execute commands (flags: --dry-run, --use-shell, --include-output, --json)
-  score [path]      Agent-readiness score (0-100)
-  export [path]     Generate GitHub Actions workflow YAML
-  help              Show this help
+  init [path]            Create AGENTS.md (auto-detects project type, use --template to override)
+  doctor [path]          Diagnose AGENTS.md quality and runnable commands
+  check [path]           Validate AGENTS.md (flags: --contract, --output <file>, --json)
+  validate [path]        Alias for check
+  improve [path]         Self-improve AGENTS.md from validation feedback (use --apply to write)
+  discover [path]        Find all AGENTS.md in repo
+  parse [path]           Parse and show structure
+  compose [path]         Build AGENTS.md from fragments
+  run [path] [types]     Execute commands (flags: --dry-run, --use-shell, --include-output, --json)
+  score [path]           Agent-readiness score (0-100)
+  export [path]          Generate GitHub Actions workflow YAML
+  login                  Log in to AgentMD (links CLI to your account for Pro/Enterprise features)
+  logout                 Remove stored credentials
+  whoami                 Show current login status
+  help                   Show this help
 
 Quick start:
   agentmd init                    # Auto-detect project type
   agentmd init --template python  # Force Python template
-  agentmd doctor        # Diagnose and get next steps
-  agentmd check --contract   # Check contract coverage
-  agentmd score         # Get your score
-  agentmd run . --dry-run   # Preview execution
+  agentmd doctor                  # Diagnose and get next steps
+  agentmd check --contract        # Check contract coverage
+  agentmd score                   # Get your score
+  agentmd run . --dry-run         # Preview execution
+  agentmd login                   # Link CLI to your AgentMD account
 
 See https://agents.md for the AGENTS.md standard.
 `);
