@@ -15,7 +15,12 @@ module.exports = {
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
   ],
-  ignorePatterns: ["node_modules/", "dist/", ".next/", "build/"],
+  ignorePatterns: ["node_modules/", "dist/", ".next/", "build/", "*.json"],
+  settings: {
+    next: {
+      rootDir: "apps/dashboard/",
+    },
+  },
   overrides: [
     {
       files: ["*.ts", "*.tsx"],
