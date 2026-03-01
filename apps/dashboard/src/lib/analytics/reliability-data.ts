@@ -33,7 +33,7 @@ type PersistedReliabilityState = {
   };
 };
 
-const RELIABILITY_STATE_PATH = join(process.cwd(), 'apps/dashboard/.data/reliability-state.json');
+const RELIABILITY_STATE_PATH = join(process.cwd(), '.data/reliability-state.json');
 const MAX_DELIVERY_RECORDS = 1000;
 
 const deliveries = new Map<string, DeliveryRecord>();

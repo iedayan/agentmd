@@ -143,7 +143,7 @@ type PersistedGovernanceState = {
   };
 };
 
-const GOVERNANCE_STATE_PATH = join(process.cwd(), 'apps/dashboard/.data/governance-state.json');
+const GOVERNANCE_STATE_PATH = join(process.cwd(), '.data/governance-state.json');
 
 const githubGates = new Map<string, GitHubGate>([
   [
