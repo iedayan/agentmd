@@ -144,8 +144,8 @@
 
 ### Additional Resources
 
-- **Website**: [agentmd.io](https://agentmd.io)
-- **Blog**: [blog.agentmd.io](https://blog.agentmd.io)
+- **Website**: [agentmd.online](https://agentmd.online)
+- **Blog**: [blog.agentmd.online](https://blog.agentmd.online)
 - **Examples**: [github.com/iedayan/agentmd/examples](https://github.com/iedayan/agentmd/examples)
 
 ## 📊 Documentation Metrics
@@ -187,4 +187,4 @@ We welcome contributions to improve documentation:
 
 This documentation is designed to help you succeed with AgentMD. Whether you're a new user, contributor, or business partner, you'll find the information you need here.
 
-For the most up-to-date information, always check the [AgentMD website](https://agentmd.io) and [GitHub repository](https://github.com/iedayan/agentmd).
+For the most up-to-date information, always check the [AgentMD website](https://agentmd.online) and [GitHub repository](https://github.com/iedayan/agentmd).
