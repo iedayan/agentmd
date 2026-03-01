@@ -7,7 +7,6 @@
 import { readFileSync, writeFileSync, existsSync, mkdirSync, chmodSync, unlinkSync } from 'fs';
 import { resolve, join } from 'path';
 import { homedir } from 'os';
-import { } from 'crypto';
 import * as https from 'https';
 import * as http from 'http';
 import {
@@ -25,7 +24,10 @@ import {
   type CommandType,
 } from '@agentmd-dev/core';
 
-const args = process.argv.slice(2);
+let args = process.argv.slice(2);
+if (args[0] === '--') {
+  args = args.slice(1);
+}
 const command = args[0];
 
 function parseInitArgs(initArgs: string[]): { target: string; template?: string } {
@@ -223,7 +225,7 @@ async function main() {
       cmdCompose(target);
       break;
     case 'run':
-      await cmdRun(parseRunArgs(args.slice(2)));
+      await cmdRun(parseRunArgs(args.slice(1)));
       break;
     case 'doctor':
       await cmdDoctor(target);
@@ -550,7 +552,7 @@ function buildNodeTemplate(dir: string): string {
       : existsSync(resolve(dir, 'yarn.lock'))
         ? 'yarn'
         : 'npm';
-    const run = pm === 'pnpm' || pm === 'yarn' ? 'run' : 'run';
+    const run = 'run';
 
     const sections: string[] = [];
     sections.push(`## Install\n\n\`\`\`bash\n${pm} install\n\`\`\`\n`);
