@@ -6,47 +6,44 @@ on:
   pull_request:
 
 jobs:
-  build:
-    name: Build
+  Build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v3
-        with:
-          version: 9
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'pnpm'
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 9
       - run: pnpm install --frozen-lockfile
       - run: pnpm -w run build
 
-  lint:
-    name: Lint
+  Lint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v3
-        with:
-          version: 9
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'pnpm'
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 9
       - run: pnpm install --frozen-lockfile
       - run: pnpm -w run lint
 
-  test:
-    name: Test
+  Test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v3
-        with:
-          version: 9
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'pnpm'
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 9
       - run: pnpm install --frozen-lockfile
       - run: pnpm -w run test
