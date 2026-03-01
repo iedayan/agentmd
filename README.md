@@ -10,7 +10,7 @@
 *AgentMD in action: Parse, validate, and execute AGENTS.md files in seconds*
 -->
 
-[▶️ **Quick Start**](#quick-start) • [📖 **Docs**](https://agentsmd.io) • [💬 **Discussions**](https://github.com/iedayan/agentmd/discussions) • [🎯 **Live Demo**](https://demo.agentmd.io)
+[▶️ **Quick Start**](#quick-start) • [📖 **Docs**](https://agentmd.online) • [💬 **Discussions**](https://github.com/iedayan/agentmd/discussions) • [🎯 **Live Demo**](https://demo.agentmd.online)
 
 ```bash
 npm install -g @agentmd-dev/cli
@@ -234,8 +234,8 @@ Discover, purchase, and execute agents through AGENTS.md:
 
 - **[💬 GitHub Discussions](https://github.com/iedayan/agentmd/discussions)** - Ask questions, share ideas
 - **[🐛 Issues](https://github.com/iedayan/agentmd/issues)** - Bug reports and feature requests  
-- **[📖 Documentation](https://agentsmd.io)** - Complete guides and API reference
-- **[🎯 Live Demo](https://demo.agentmd.io)** - Try AgentMD in your browser
+- **[📖 Documentation](https://agentmd.online)** - Complete guides and API reference
+- **[🎯 Live Demo](https://demo.agentmd.online)** - Try AgentMD in your browser
 
 ## 🏆 Used By
 
