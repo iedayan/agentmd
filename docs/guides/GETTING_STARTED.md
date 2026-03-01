@@ -294,7 +294,7 @@ agentmd run --force "dangerous command"
 
 ### Getting Help
 
-- **Documentation**: [docs.agentmd.io](https://docs.agentmd.io)
+- **Documentation**: [docs.agentmd.online](https://docs.agentmd.online)
 - **Community**: [GitHub Discussions](https://github.com/iedayan/agentmd/discussions)
 - **Issues**: [GitHub Issues](https://github.com/iedayan/agentmd/issues)
 - **Discord**: [AgentMD Discord](https://discord.gg/agentmd)

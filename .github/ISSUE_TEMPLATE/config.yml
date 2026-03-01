@@ -4,8 +4,8 @@ contact_links:
     url: https://github.com/iedayan/agentmd/discussions
     about: Ask questions, share ideas, and get help from the community
   - name: 📖 Documentation
-    url: https://agentsmd.io
+    url: https://agentmd.online
     about: Read the official documentation
   - name: 🎯 Live Demo
-    url: https://demo.agentmd.io
+    url: https://demo.agentmd.online
     about: Try AgentMD in your browser
