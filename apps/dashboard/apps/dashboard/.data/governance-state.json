@@ -11,11 +11,11 @@
         ],
         "checks": {
           "agentmd/parse": "success",
-          "agentmd/policy-gate": "success",
+          "agentmd/policy-gate": "pending",
           "agentmd/output-contract": "failed",
           "agentmd/execution-ready": "success"
         },
-        "updatedAt": "2026-03-01T00:38:07.506Z"
+        "updatedAt": "2026-03-01T00:41:44.975Z"
       }
     ],
     [
@@ -84,13 +84,24 @@
   ],
   "approvalRequests": [
     {
-      "id": "apr-115",
+      "id": "apr-116",
       "repositoryId": "1",
       "repositoryName": "agentmd/agentmd",
       "requestedBy": "test-user-id",
       "reason": "Repository owner approval required for non-owner execution.",
       "status": "pending",
-      "createdAt": "2026-03-01T00:26:42.817Z"
+      "createdAt": "2026-03-01T00:41:44.812Z"
+    },
+    {
+      "id": "apr-115",
+      "repositoryId": "1",
+      "repositoryName": "agentmd/agentmd",
+      "requestedBy": "test-user-id",
+      "reason": "Repository owner approval required for non-owner execution.",
+      "status": "approved",
+      "createdAt": "2026-03-01T00:26:42.817Z",
+      "decidedAt": "2026-03-01T00:41:44.715Z",
+      "decidedBy": "slack.approver"
     },
     {
       "id": "apr-114",
@@ -248,6 +259,22 @@
     }
   ],
   "notifications": [
+    {
+      "id": "ntf-131",
+      "type": "approval.requested",
+      "title": "Approval required",
+      "message": "agentmd/agentmd: Repository owner approval required for non-owner execution.",
+      "createdAt": "2026-03-01T00:41:44.812Z",
+      "read": false
+    },
+    {
+      "id": "ntf-130",
+      "type": "approval.approved",
+      "title": "Approval approved",
+      "message": "agentmd/agentmd: Repository owner approval required for non-owner execution.",
+      "createdAt": "2026-03-01T00:41:44.715Z",
+      "read": false
+    },
     {
       "id": "ntf-129",
       "type": "approval.requested",
@@ -481,8 +508,8 @@
       "read": false
     }
   ],
-  "nextApprovalId": 115,
-  "nextNotificationId": 129,
+  "nextApprovalId": 116,
+  "nextNotificationId": 131,
   "teamMembers": [
     {
       "id": "tm-1",
@@ -522,14 +549,14 @@
   "governanceMetrics": {
     "blockedByStatusGate": 0,
     "blockedByPolicy": 0,
-    "approvalRequired": 41,
-    "webhookReceived": 25,
-    "webhookProcessed": 46,
-    "webhookSignatureFailures": 13,
-    "webhookErrors": 12,
+    "approvalRequired": 44,
+    "webhookReceived": 27,
+    "webhookProcessed": 50,
+    "webhookSignatureFailures": 14,
+    "webhookErrors": 13,
     "prCommentsPosted": 0,
-    "slackApprovalActions": 14,
-    "lastWebhookAt": "2026-03-01T00:38:07.412Z",
+    "slackApprovalActions": 15,
+    "lastWebhookAt": "2026-03-01T00:41:44.767Z",
     "lastWebhookEvent": "check_run",
     "contractValidationEvents": [
       {
@@ -814,6 +841,26 @@
       },
       {
         "at": "2026-03-01T00:38:07.856Z",
+        "contractType": "migration",
+        "status": "success"
+      },
+      {
+        "at": "2026-03-01T00:41:44.778Z",
+        "contractType": "bugfix",
+        "status": "failed"
+      },
+      {
+        "at": "2026-03-01T00:41:45.290Z",
+        "contractType": "bugfix",
+        "status": "success"
+      },
+      {
+        "at": "2026-03-01T00:41:45.291Z",
+        "contractType": "bugfix",
+        "status": "failed"
+      },
+      {
+        "at": "2026-03-01T00:41:45.291Z",
         "contractType": "migration",
         "status": "success"
       }

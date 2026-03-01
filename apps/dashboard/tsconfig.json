@@ -27,7 +27,7 @@
         "./apps/dashboard/src/*"
       ],
       "@agentmd-dev/core": [
-        "packages/core/src"
+        "packages/core/dist"
       ],
       "@agentmd-dev/cli": [
         "packages/cli/src"

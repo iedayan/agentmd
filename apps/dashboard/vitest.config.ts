@@ -10,7 +10,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
-      '@agentmd-dev/core': path.resolve(__dirname, '../../packages/core/src'),
+      '@agentmd-dev/core': path.resolve(__dirname, '../../packages/core/dist'),
       '@agentmd-dev/cli': path.resolve(__dirname, '../../packages/cli/src'),
       '@agentmd-dev/sdk': path.resolve(__dirname, '../../packages/sdk/src'),
       '@agentmd-dev/workflows': path.resolve(__dirname, '../../packages/workflows'),
