@@ -7,7 +7,7 @@
 import { readFileSync, writeFileSync, existsSync, mkdirSync, chmodSync, unlinkSync } from 'fs';
 import { resolve, join } from 'path';
 import { homedir } from 'os';
-import { createHash, randomUUID } from 'crypto';
+import { } from 'crypto';
 import * as https from 'https';
 import * as http from 'http';
 import {
@@ -198,8 +198,6 @@ function nodeFetch(
   });
 }
 
-// Silence unused-import warnings (randomUUID used in future API token work)
-void randomUUID; void createHash;
 
 // ─── main ────────────────────────────────────────────────────────────────────
 
