@@ -190,7 +190,7 @@ import { AgentMDClient } from '@agentmd/sdk';
 
 const client = new AgentMDClient({
   apiKey: 'your-api-key',
-  endpoint: 'https://api.agentmd.io',
+  endpoint: 'https://api.agentmd.online',
 });
 
 // Parse AGENTS.md
@@ -406,7 +406,7 @@ try {
 
 ```bash
 AGENTMD_API_KEY=your-api-key
-AGENTMD_ENDPOINT=https://api.agentmd.io
+AGENTMD_ENDPOINT=https://api.agentmd.online
 AGENTMD_ANALYTICS_ENABLED=true
 AGENTMD_LOG_LEVEL=info
 ```
@@ -522,8 +522,8 @@ registerWorkflow('deploy-service', async (config: DeployConfig) => {
 
 ## Support
 
-- **Documentation**: [docs.agentmd.io](https://docs.agentmd.io)
-- **API Reference**: [api.agentmd.io](https://api.agentmd.io)
+- **Documentation**: [docs.agentmd.online](https://docs.agentmd.online)
+- **API Reference**: [api.agentmd.online](https://api.agentmd.online)
 - **Examples**: [github.com/iedayan/agentmd/examples](https://github.com/iedayan/agentmd/examples)
 - **Issues**: [github.com/iedayan/agentmd/issues](https://github.com/iedayan/agentmd/issues)
 

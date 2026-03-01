@@ -39,7 +39,7 @@ export class AnalyticsClient {
   private userId?: string;
   private sessionId: string;
 
-  constructor(apiKey: string, endpoint = 'https://api.agentmd.io/v1/events') {
+  constructor(apiKey: string, endpoint = 'https://api.agentmd.online/v1/events') {
     this.apiKey = apiKey;
     this.endpoint = endpoint;
     this.sessionId = this.generateSessionId();
