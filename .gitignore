@@ -35,3 +35,12 @@ Thumbs.db
 .nyc_output/
 .cache/
 .parcel-cache/
+
+# AgentMD specifics
+*.agents.md
+*.vsix
+
+# VSCode extension build
+packages/agentmd-vscode/dist/
+packages/agentmd-vscode/out/
+packages/agentmd-vscode/*.vsix
