@@ -25,6 +25,9 @@ jobs:
   validate:
     name: Validate AGENTS.md
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: read
     outputs:
       check_valid: ${{ steps.validate.outputs.valid }}
       score: ${{ steps.validate.outputs.score }}
