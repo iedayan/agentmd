@@ -1,9 +1,33 @@
 {
-  "name": "@agentmd/vscode",
+  "name": "agentmd",
   "version": "0.1.0",
-  "description": "AgentMD VS Code Extension - ESLint for AGENTS.md",
+  "description": "The official AgentMD extension. Real-time validation, templates, and agent-readiness scoring for AGENTS.md files.",
   "displayName": "AgentMD",
   "publisher": "agentmd",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/iedayan/agentmd.git",
+    "directory": "packages/agentmd-vscode"
+  },
+  "author": {
+    "name": "AgentMD"
+  },
+  "license": "MIT",
+  "icon": "media/icon.png",
+  "keywords": [
+    "agentmd",
+    "ai",
+    "llm",
+    "agents.md",
+    "cursor",
+    "copilot",
+    "cline",
+    "linter"
+  ],
+  "bugs": {
+    "url": "https://github.com/iedayan/agentmd/issues"
+  },
+  "homepage": "https://agentmd.online",
   "engines": {
     "vscode": "^1.85.0"
   },
@@ -33,28 +57,6 @@
         "configuration": "./language-configuration.json"
       }
     ],
-    "configuration": {
-      "title": "AgentMD",
-      "properties": {
-        "agentmd.diagnostics.enabled": {
-          "type": "boolean",
-          "default": true,
-          "description": "Enable real-time diagnostics for AGENTS.md files"
-        },
-        "agentmd.diagnostics.debounceMs": {
-          "type": "number",
-          "default": 300,
-          "minimum": 100,
-          "maximum": 2000,
-          "description": "Debounce delay (ms) before running diagnostics"
-        },
-        "agentmd.score.showInStatusBar": {
-          "type": "boolean",
-          "default": true,
-          "description": "Show agent-readiness score in the status bar"
-        }
-      }
-    },
     "commands": [
       {
         "command": "agentmd.validate",
@@ -86,13 +88,48 @@
         "mac": "cmd+shift+s",
         "when": "editorTextFocus && editorLangId == markdown"
       }
-    ]
+    ],
+    "configuration": {
+      "title": "AgentMD",
+      "properties": {
+        "agentmd.diagnostics.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable real-time diagnostics for AGENTS.md files"
+        },
+        "agentmd.diagnostics.debounceMs": {
+          "type": "number",
+          "default": 300,
+          "description": "Debounce delay before validation (100-2000ms)"
+        },
+        "agentmd.score.showInStatusBar": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show agent-readiness score in status bar"
+        },
+        "agentmd.autoValidate": {
+          "type": "boolean",
+          "default": true,
+          "description": "Auto-validate AGENTS.md on save"
+        },
+        "agentmd.showStatusBar": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show AgentMD status in status bar"
+        },
+        "agentmd.enableRealTime": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable validation as you type"
+        }
+      }
+    }
   },
   "scripts": {
     "build": "tsup src/extension.ts src/server/index.ts --format cjs --no-dts --external vscode",
     "dev": "tsup src/extension.ts src/server/index.ts --format cjs --no-dts --external vscode --watch",
-    "package": "vsce package",
-    "lint": "tsc --noEmit"
+    "package": "vsce package --no-dependencies",
+    "test": "vitest run"
   },
   "dependencies": {
     "@agentmd-dev/core": "workspace:*",
@@ -102,9 +139,10 @@
     "vscode-languageserver-textdocument": "^1.0.12"
   },
   "devDependencies": {
-    "@types/node": "^22.10.0",
+    "@types/node": "^22.19.11",
     "@types/vscode": "^1.85.0",
     "tsup": "^8.3.5",
-    "typescript": "^5.7.2"
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.9"
   }
 }

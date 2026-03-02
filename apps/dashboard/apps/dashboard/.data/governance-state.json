@@ -15,7 +15,7 @@
           "agentmd/output-contract": "failed",
           "agentmd/execution-ready": "success"
         },
-        "updatedAt": "2026-03-02T18:02:55.692Z"
+        "updatedAt": "2026-03-02T20:07:59.244Z"
       }
     ],
     [
@@ -550,13 +550,13 @@
     "blockedByStatusGate": 0,
     "blockedByPolicy": 0,
     "approvalRequired": 46,
-    "webhookReceived": 33,
-    "webhookProcessed": 62,
-    "webhookSignatureFailures": 17,
-    "webhookErrors": 16,
+    "webhookReceived": 39,
+    "webhookProcessed": 74,
+    "webhookSignatureFailures": 20,
+    "webhookErrors": 19,
     "prCommentsPosted": 0,
     "slackApprovalActions": 15,
-    "lastWebhookAt": "2026-03-02T18:02:55.535Z",
+    "lastWebhookAt": "2026-03-02T20:07:59.180Z",
     "lastWebhookEvent": "check_run",
     "contractValidationEvents": [
       {
@@ -921,6 +921,51 @@
       },
       {
         "at": "2026-03-02T18:02:56.119Z",
+        "contractType": "migration",
+        "status": "success"
+      },
+      {
+        "at": "2026-03-02T18:57:50.454Z",
+        "contractType": "bugfix",
+        "status": "success"
+      },
+      {
+        "at": "2026-03-02T18:57:50.455Z",
+        "contractType": "bugfix",
+        "status": "failed"
+      },
+      {
+        "at": "2026-03-02T18:57:50.456Z",
+        "contractType": "migration",
+        "status": "success"
+      },
+      {
+        "at": "2026-03-02T19:10:54.037Z",
+        "contractType": "bugfix",
+        "status": "success"
+      },
+      {
+        "at": "2026-03-02T19:10:54.037Z",
+        "contractType": "bugfix",
+        "status": "failed"
+      },
+      {
+        "at": "2026-03-02T19:10:54.037Z",
+        "contractType": "migration",
+        "status": "success"
+      },
+      {
+        "at": "2026-03-02T20:07:59.578Z",
+        "contractType": "bugfix",
+        "status": "success"
+      },
+      {
+        "at": "2026-03-02T20:07:59.578Z",
+        "contractType": "bugfix",
+        "status": "failed"
+      },
+      {
+        "at": "2026-03-02T20:07:59.579Z",
         "contractType": "migration",
         "status": "success"
       }

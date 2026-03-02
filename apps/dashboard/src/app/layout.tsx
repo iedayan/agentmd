@@ -31,11 +31,11 @@ export const metadata: Metadata = {
   manifest: '/manifest.webmanifest',
   icons: {
     icon: [
-      { url: '/favicon.svg', type: 'image/svg+xml' },
-      { url: '/icon.svg', type: 'image/svg+xml', sizes: '512x512' },
+      { url: '/favicon-32x32.png', type: 'image/png', sizes: '32x32' },
+      { url: '/icon-512.png', type: 'image/png', sizes: '512x512' },
     ],
-    apple: [{ url: '/apple-icon.svg', type: 'image/svg+xml', sizes: '180x180' }],
-    shortcut: [{ url: '/favicon.svg', type: 'image/svg+xml' }],
+    apple: [{ url: '/apple-touch-icon.png', type: 'image/png', sizes: '180x180' }],
+    shortcut: [{ url: '/favicon-32x32.png', type: 'image/png' }],
   },
   openGraph: {
     title: 'AgentMD — Make Your Repository Agent-Ready',

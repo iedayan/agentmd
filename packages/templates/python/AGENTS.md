@@ -228,23 +228,23 @@ python -m memory_profiler script.py
 
 ### What agents can do:
 
-- ✅ Run tests and analyze results
-- ✅ Build and validate the application
-- ✅ Review code for PEP 8 compliance
-- ✅ Update dependencies (with approval)
-- ✅ Generate documentation
-- ✅ Create and update modules
-- ✅ Fix bugs and implement features
-- ✅ Optimize performance
+-  Run tests and analyze results
+-  Build and validate the application
+-  Review code for PEP 8 compliance
+-  Update dependencies (with approval)
+-  Generate documentation
+-  Create and update modules
+-  Fix bugs and implement features
+-  Optimize performance
 
 ### Security restrictions:
 
-- 🚫 Never access environment variables directly
-- 🚫 Never modify production database
-- 🚫 Never expose sensitive data
-- 🚫 Always use virtual environments
-- 🚫 Require approval for dependency updates
-- 🚫 Never commit secrets to version control
+-  Never access environment variables directly
+-  Never modify production database
+-  Never expose sensitive data
+-  Always use virtual environments
+-  Require approval for dependency updates
+-  Never commit secrets to version control
 
 ### File structure awareness:
 

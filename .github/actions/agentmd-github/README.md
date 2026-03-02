@@ -6,18 +6,18 @@ The AgentMD GitHub App provides seamless integration between AGENTS.md files and
 
 ## Features
 
-### 🔍 Pull Request Validation
+### Pull Request Validation
 - **Automatic Checks**: Validates AGENTS.md files on every PR
 - **Status Checks**: Shows validation results directly in GitHub UI
 - **Smart Comments**: Actionable suggestions for improvement
 - **Agent-readiness Scoring**: 0-100 score with detailed breakdown
 
-### 🚀 Workflow Generation
+### Workflow Generation
 - **Auto-generation**: Creates GitHub Actions from AGENTS.md commands
 - **Smart Detection**: Identifies test, build, and lint commands
 - **Custom Workflows**: Generates appropriate workflows based on project type
 
-### 📊 Real-time Feedback
+### Real-time Feedback
 - **PR Comments**: Detailed analysis with emoji indicators
 - **Quick Fixes**: Suggests specific improvements
 - **Score Tracking**: Monitor agent-readiness over time

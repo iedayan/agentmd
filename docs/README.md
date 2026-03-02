@@ -1,17 +1,17 @@
 # AgentMD Documentation
 
-## 🚀 Quick Start
+## Quick Start
 - [**Installation Guide**](INSTALL.md) - Get up and running in minutes
 - [**Quick Start**](QUICKSTART.md) - 60-second setup tutorial
 - [**AGENTS.md Reference**](AGENTS.md_REFERENCE.md) - Complete syntax guide
 
-## 📚 Core Documentation
+## Core Documentation
 - [**Architecture**](ARCHITECTURE.md) - System design and components
 - [**Core Engine Spec**](CORE_ENGINE_SPEC.md) - Parsing, validation, execution
 - [**Public API**](CORE_PUBLIC_API.md) - Programmatic interface
 - [**Templates**](AGENTS_MD_TEMPLATES.md) - Ready-to-use examples
 
-## 🏗️ Infrastructure & Deployment
+## Infrastructure & Deployment
 - [**Infrastructure Guide**](INFRASTRUCTURE.md) - Deployment architecture
 - [**MVP Deploy Runbook**](MVP_DEPLOY_RUNBOOK.md) - Step-by-step deployment
 - [**Execution Blueprint**](EXECUTION_BLUEPRINT_3_6M.md) - 3-6 month execution plan
@@ -21,41 +21,41 @@
 - [**Security Policy**](SECURITY.md) - Vulnerability reporting
 - [**Incident Response**](INCIDENT_RESPONSE.md) - Security procedures
 
-## 🤝 Community & Contributing
+## Community & Contributing
 - [**Contributing Guide**](CONTRIBUTING.md) - Development workflow
 - [**Platform Roadmap**](PLATFORM_ROADMAP_STRATEGY.md) - Strategic direction
 - [**Why AgentMD**](WHY_AGENTMD.md) - Vision and differentiation
 
-## 📊 Additional Resources
+## Additional Resources
 - [**AGENTS.md Research**](AGENTS_MD_RESEARCH.md) - Background and standards
 - [**UX Analysis**](PLAYBOOKS_UX_ANALYSIS.md) - User experience insights
 - [**AppSumo Application**](APPSUMO_VENDOR_APPLICATION.md) - Partnership details
 
-## 🔧 API Reference
+## API Reference
 - [**API Documentation**](api/) - REST API endpoints
 - [**Contracts**](contracts/) - Output contracts and schemas
 - [**Providers**](providers/) - Integration providers
 
-## 📈 Changelog
+## Changelog
 - [**Release History**](CHANGELOG.md) - Version updates and changes
 
 ---
 
-**💡 Tip:** Start with [Quick Start](QUICKSTART.md) for the fastest path to value.
+** Tip:** Start with [Quick Start](QUICKSTART.md) for the fastest path to value.
 
 - **[Contributing Guide](./contributing/CONTRIBUTING.md)** - How to contribute
 - **[Code of Conduct](./contributing/CODE_OF_CONDUCT.md)** - Community guidelines
 - **Development Setup** - Local development environment
 - **Release Process** - Version management and releases
 
-### 📖 Reference (`docs/`)
+### Reference (`docs/`)
 
 - **[Architecture](./ARCHITECTURE.md)** - System architecture overview
 - **[Security](./SECURITY.md)** - Security policies and procedures
 - **[Changelog](./CHANGELOG.md)** - Version history and changes
 - **[Roadmap](./ROADMAP_ORIGINAL.md)** - Original project roadmap
 
-## 🎯 Quick Navigation
+## Quick Navigation
 
 ### For New Users
 
@@ -81,7 +81,7 @@
 2. Understand threat models and guardrails
 3. Learn about compliance and auditing
 
-## 🔍 Finding Information
+## Finding Information
 
 ### By Topic
 
@@ -105,7 +105,7 @@
 - **Guidelines**: Contributing Guide, Code of Conduct
 - **Policies**: Security Policy
 
-## 📝 Documentation Standards
+## Documentation Standards
 
 ### Writing Style
 
@@ -128,7 +128,7 @@
 - Review and update quarterly
 - Maintain version compatibility notes
 
-## 🚀 Getting Help
+## Getting Help
 
 ### Documentation Issues
 
@@ -148,7 +148,7 @@
 - **Blog**: [blog.agentmd.online](https://blog.agentmd.online)
 - **Examples**: [github.com/iedayan/agentmd/examples](https://github.com/iedayan/agentmd/examples)
 
-## 📊 Documentation Metrics
+## Documentation Metrics
 
 We track documentation quality through:
 
@@ -157,7 +157,7 @@ We track documentation quality through:
 - Documentation coverage
 - User success metrics
 
-## 🔄 Contributing to Documentation
+## Contributing to Documentation
 
 We welcome contributions to improve documentation:
 

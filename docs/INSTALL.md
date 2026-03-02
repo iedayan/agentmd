@@ -6,9 +6,9 @@ Installation options and full CLI reference for AgentMD.
 
 | Method        | Status       | Notes                                       |
 | ------------- | ------------ | ------------------------------------------- |
-| From source   | ✅ Available | Clone, build, run via `pnpm run agentmd --` |
-| GitHub Action | ✅ Available | No install in CI; action builds and runs    |
-| npx / npm     | ✅ Published | `npx @agentmd-dev/cli init`                 |
+| From source   |  Available | Clone, build, run via `pnpm run agentmd --` |
+| GitHub Action |  Available | No install in CI; action builds and runs    |
+| npx / npm     |  Published | `npx @agentmd-dev/cli init`                 |
 
 ## Installation
 

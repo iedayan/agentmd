@@ -81,16 +81,16 @@ npm run build
 
 ### What agents can do:
 
-- ✅ Run tests and analyze results
-- ✅ Build and validate the application
-- ✅ Review code for best practices
-- ✅ Generate documentation
+-  Run tests and analyze results
+-  Build and validate the application
+-  Review code for best practices
+-  Generate documentation
 
 ### Security restrictions:
 
-- 🚫 Never access environment variables directly
-- 🚫 Never modify production database
-- 🚫 Always use dry-run mode for destructive operations
+-  Never access environment variables directly
+-  Never modify production database
+-  Always use dry-run mode for destructive operations
 
 ````
 

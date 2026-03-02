@@ -25,6 +25,9 @@ jobs:
   validate:
     name: Validate AGENTS.md
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: read
     outputs:
       check_valid: ${{ steps.validate.outputs.valid }}
       score: ${{ steps.validate.outputs.score }}
@@ -34,8 +37,6 @@ jobs:
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
-        with:
-          version: 9
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -47,13 +48,13 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Build
-        run: pnpm run build -w @agentmd-dev/core && pnpm run build -w @agentmd-dev/cli
+        run: pnpm --filter @agentmd-dev/core run build && pnpm --filter @agentmd-dev/cli run build
 
       - name: Validate and score
         id: validate
         run: |
-          pnpm run agentmd -- check . --contract --json > check_output.json 2>&1 || true
-          pnpm run agentmd -- score . --json > score_output.json 2>&1 || true
+          pnpm --silent run agentmd -- check . --contract --json > check_output.json || true
+          pnpm --silent run agentmd -- score . --json > score_output.json || true
           VALID=$(node -e "try{const d=JSON.parse(require('fs').readFileSync('check_output.json','utf8'));console.log(d.valid===true?'true':'false')}catch(e){console.log('false')}")
           SCORE=$(node -e "try{const d=JSON.parse(require('fs').readFileSync('score_output.json','utf8'));console.log(String(d.score??0))}catch(e){console.log('0')}")
           echo "valid=$VALID" >> $GITHUB_OUTPUT
@@ -136,8 +137,6 @@ jobs:
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
-        with:
-          version: 9
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -149,7 +148,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Build
-        run: pnpm run build -w @agentmd-dev/core && pnpm run build -w @agentmd-dev/cli
+        run: pnpm --filter @agentmd-dev/core run build && pnpm --filter @agentmd-dev/cli run build
 
       - name: Run AGENTS.md test commands
         run: pnpm run agentmd -- run . test

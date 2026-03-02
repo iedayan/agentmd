@@ -2,20 +2,20 @@
 
 ## Current Structure Analysis
 
-### ✅ Well-Organized Areas
+### Well-Organized Areas
 
 ```
 packages/
-├── core/           # ✅ Clean separation of concerns
-├── cli/            # ✅ Focused CLI interface
-├── sdk/            # ✅ Clear API surface
-└── agentmd-vscode/ # ✅ VSCode extension
+├── core/           #  Clean separation of concerns
+├── cli/            #  Focused CLI interface
+├── sdk/            #  Clear API surface
+└── agentmd-vscode/ #  VSCode extension
 
 apps/
-└── dashboard/      # ✅ Next.js app structure
+└── dashboard/      #  Next.js app structure
 ```
 
-### 🔄 Areas for Improvement
+### Areas for Improvement
 
 ## Proposed Organization Changes
 

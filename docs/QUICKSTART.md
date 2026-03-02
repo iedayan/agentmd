@@ -1,16 +1,16 @@
 # AgentMD Quick Start Guide
 
-## 🚀 Get Started in 5 Minutes
+## Get Started in 5 Minutes
 
 AgentMD makes your AGENTS.md files executable, turning documentation into automated workflows. Here's how to get started quickly.
 
-## 📋 Prerequisites
+## Prerequisites
 
 - Node.js >= 18
 - Git repository with AGENTS.md file
 - AgentMD CLI (or use the web dashboard)
 
-## 🛠️ Installation
+## Installation
 
 ### Option 1: Global CLI Installation
 
@@ -22,7 +22,7 @@ npm install -g @agentmd-dev/cli
 
 Visit [https://dashboard.agentmd.com](https://dashboard.agentmd.com) and connect your repository.
 
-## 📁 Create Your First AGENTS.md
+## Create Your First AGENTS.md
 
 Create a file named `AGENTS.md` in your repository root:
 
@@ -66,7 +66,7 @@ This agent runs on every push to main branch.
 
 ````
 
-## 🔧 Validate Your Configuration
+## Validate Your Configuration
 
 ### Using CLI
 ```bash
@@ -83,7 +83,7 @@ agentmd run --dry-run AGENTS.md
 2. Navigate to the dashboard
 3. The system will automatically validate your AGENTS.md
 
-## 🚀 Run Your First Agent
+## Run Your First Agent
 
 ### Using CLI
 
@@ -104,22 +104,22 @@ agentmd logs
 2. Click "Run Agent"
 3. Monitor execution in real-time
 
-## 📊 Monitor Results
+## Monitor Results
 
 ### Success Indicators
 
-- ✅ All commands completed successfully
-- ✅ Tests passed
-- ✅ Build completed
-- ✅ Deployment successful
+-  All commands completed successfully
+-  Tests passed
+-  Build completed
+-  Deployment successful
 
 ### Common Issues
 
-- ❌ **Command failed**: Check command syntax and dependencies
-- ❌ **Timeout**: Increase timeout in frontmatter
-- ❌ **Permission denied**: Check user permissions
+-  **Command failed**: Check command syntax and dependencies
+-  **Timeout**: Increase timeout in frontmatter
+-  **Permission denied**: Check user permissions
 
-## 🎯 Next Steps
+## Next Steps
 
 ### 1. **Add More Commands**
 
@@ -158,7 +158,7 @@ notification_channels: ['slack', 'email']
 ---
 ```
 
-## 🔧 Advanced Features
+## Advanced Features
 
 ### Parallel Execution
 
@@ -208,7 +208,7 @@ conditions:
 ---
 ```
 
-## 🛠️ Integration Examples
+## Integration Examples
 
 ### GitHub Actions
 
@@ -249,7 +249,7 @@ agentmd:
 3. Get real-time validation and syntax highlighting
 4. Use command palette to run agents
 
-## 📚 Common Templates
+## Common Templates
 
 ### Web Application
 
@@ -299,7 +299,7 @@ terraform apply tfplan
 
 ````
 
-## 🔍 Troubleshooting
+## Troubleshooting
 
 ### Common Issues
 
@@ -344,7 +344,7 @@ agentmd run --debug AGENTS.md
 agentmd run --verbose AGENTS.md
 ```
 
-## 📞 Getting Help
+## Getting Help
 
 ### Resources
 
@@ -371,15 +371,15 @@ agentmd --version
 - **Discord Community**: [https://discord.gg/agentmd](https://discord.gg/agentmd)
 - **Email**: support@agentmd.com
 
-## 🎉 Success!
+## Success!
 
 You've successfully set up your first AgentMD workflow! Here's what you accomplished:
 
-✅ Created an AGENTS.md file  
-✅ Validated the configuration  
-✅ Ran your first automated agent  
-✅ Monitored execution results  
-✅ Learned troubleshooting basics
+ Created an AGENTS.md file  
+ Validated the configuration  
+ Ran your first automated agent  
+ Monitored execution results  
+ Learned troubleshooting basics
 
 ### What's Next?
 
@@ -390,6 +390,6 @@ You've successfully set up your first AgentMD workflow! Here's what you accompli
 
 ---
 
-**Happy Automating! 🚀**
+**Happy Automating! **
 
 For more advanced usage and examples, check out our [complete documentation](https://docs.agentmd.com).

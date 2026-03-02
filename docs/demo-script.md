@@ -10,11 +10,11 @@
 
 ```bash
 # Step 1: Install AgentMD CLI
-echo "🚀 Installing AgentMD CLI..."
+echo " Installing AgentMD CLI..."
 npm install -g @agentmd-dev/cli
 
 # Step 2: Create sample AGENTS.md
-echo "📝 Creating sample AGENTS.md..."
+echo " Creating sample AGENTS.md..."
 cat > AGENTS.md << 'EOF'
 ---
 name: "My AI Agent"
@@ -36,15 +36,15 @@ purpose: "Demonstrate AgentMD capabilities"
 EOF
 
 # Step 3: Check and score AGENTS.md
-echo "🔍 Validating AGENTS.md..."
+echo " Validating AGENTS.md..."
 agentmd check . --score
 
 # Step 4: Show dry-run execution
-echo "⚡ Planning execution (dry run)..."
+echo " Planning execution (dry run)..."
 agentmd run . --dry-run
 
 # Step 5: Show help
-echo "📖 Available commands..."
+echo " Available commands..."
 agentmd --help
 ```
 

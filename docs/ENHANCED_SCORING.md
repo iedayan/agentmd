@@ -26,7 +26,7 @@ The AgentMD scoring algorithm has been significantly enhanced to evaluate produc
 - **Has Guardrails** (3 pts) - Permission boundaries defined
 - **All Commands Safe** (10 pts) - No dangerous patterns
 
-### 🆕 Enhanced Production Features (20 points)
+### Enhanced Production Features (20 points)
 - **Output Contract** (3 pts) - Structured output validation
 - **Environment Configuration** (2 pts) - Environment variables
 - **Error Handling Section** (3 pts) - Failure scenarios

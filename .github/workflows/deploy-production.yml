@@ -11,7 +11,7 @@ on:
       soft_launch:
         description: "Soft launch (skip Stripe, S3, Redis, etc.)"
         required: false
-        default: false
+        default: "false"
   release:
     types: [published]
 
@@ -29,8 +29,6 @@ jobs:
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
-        with:
-          version: 9
 
       - name: Setup Node.js
         uses: actions/setup-node@v4

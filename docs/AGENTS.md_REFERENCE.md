@@ -1,10 +1,10 @@
 # AGENTS.md Complete Reference Guide
 
-## 📖 Overview
+## Overview
 
 AGENTS.md is a markdown-based configuration file that defines AI agent workflows, commands, and execution policies. Think of it as "CI/CD for AI Agents" - making your agent operations executable, versionable, and observable.
 
-## 🏗️ File Structure
+## File Structure
 
 ### Basic Format
 
@@ -66,7 +66,7 @@ npm run security:scan
 
 ````
 
-## 🎯 Core Concepts
+## Core Concepts
 
 ### 1. **Commands**
 Commands are executable instructions that the agent will run. They can be shell commands, scripts, or any executable process.
@@ -175,7 +175,7 @@ Common issues and solutions.
 Additional context and information.
 ```
 
-## 🔧 Advanced Features
+## Advanced Features
 
 ### 1. **Conditional Execution**
 
@@ -254,7 +254,7 @@ npm run test -- --coverage=${COVERAGE_THRESHOLD}
 
 ````
 
-## 📋 Best Practices
+## Best Practices
 
 ### 1. **Organization**
 - Use clear, descriptive section headers
@@ -280,7 +280,7 @@ npm run test -- --coverage=${COVERAGE_THRESHOLD}
 - Use consistent formatting
 - Regular updates and reviews
 
-## 🚀 Examples
+## Examples
 
 ### 1. **Web Application CI/CD**
 ```yaml
@@ -503,7 +503,7 @@ infracost breakdown --path tfplan
 
 ````
 
-## 🔍 Validation and Testing
+## Validation and Testing
 
 ### 1. **Local Validation**
 ```bash
@@ -543,7 +543,7 @@ agentmd check --resources AGENTS.md
 agentmd audit --security AGENTS.md
 ```
 
-## 📊 Monitoring and Observability
+## Monitoring and Observability
 
 ### 1. **Execution Metrics**
 
@@ -566,7 +566,7 @@ agentmd audit --security AGENTS.md
 - Dependency mapping
 - Root cause analysis
 
-## 🔧 Tools and Integration
+## Tools and Integration
 
 ### 1. **CLI Tools**
 
@@ -605,7 +605,7 @@ validate_agents:
 - Historical execution data
 - Alert management
 
-## 🚨 Common Issues and Solutions
+## Common Issues and Solutions
 
 ### 1. **Syntax Errors**
 
@@ -632,7 +632,7 @@ validate_agents:
 **Issue**: Missing environment variables or dependencies
 **Solution**: Verify environment setup, check dependency versions
 
-## 📚 Additional Resources
+## Additional Resources
 
 - [AgentMD Documentation](https://docs.agentmd.com)
 - [CLI Reference](https://docs.agentmd.com/cli)
@@ -640,7 +640,7 @@ validate_agents:
 - [Community Forum](https://community.agentmd.com)
 - [GitHub Repository](https://github.com/agentmd/agentmd)
 
-## 🤝 Contributing
+## Contributing
 
 Contributions to AGENTS.md and AgentMD are welcome! Please see our [Contributing Guide](https://github.com/agentmd/agentmd/blob/main/CONTRIBUTING.md) for details.
 

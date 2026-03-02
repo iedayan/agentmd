@@ -20,7 +20,7 @@ const CORE_TO_AMD: Record<string, string> = {
 
 /** Check if content is an AGENTS.md file (by path or content) */
 export function isAgentsMd(uri: string): boolean {
-  return uri.endsWith('AGENTS.md') || uri.endsWith('.agents.md') || false;
+  return /(^|\/|\\)AGENTS\.md$/.test(uri) || uri.endsWith('.agents.md') || false;
 }
 
 /** Parse and validate, returning diagnostics with AMD codes */
