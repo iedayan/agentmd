@@ -15,7 +15,7 @@
           "agentmd/output-contract": "failed",
           "agentmd/execution-ready": "success"
         },
-        "updatedAt": "2026-03-01T00:53:09.511Z"
+        "updatedAt": "2026-03-02T16:43:26.211Z"
       }
     ],
     [
@@ -549,7 +549,7 @@
   "governanceMetrics": {
     "blockedByStatusGate": 0,
     "blockedByPolicy": 0,
-    "approvalRequired": 44,
+    "approvalRequired": 46,
     "webhookReceived": 31,
     "webhookProcessed": 58,
     "webhookSignatureFailures": 16,
@@ -891,6 +891,21 @@
       },
       {
         "at": "2026-03-01T00:53:09.821Z",
+        "contractType": "migration",
+        "status": "success"
+      },
+      {
+        "at": "2026-03-02T16:43:27.656Z",
+        "contractType": "bugfix",
+        "status": "success"
+      },
+      {
+        "at": "2026-03-02T16:43:27.657Z",
+        "contractType": "bugfix",
+        "status": "failed"
+      },
+      {
+        "at": "2026-03-02T16:43:27.657Z",
         "contractType": "migration",
         "status": "success"
       }

@@ -36,10 +36,7 @@ export function parseFrontmatter(content: string): {
  * Supports both flat structure and nested `agent:` wrapper.
  */
 function normalizeFrontmatter(data: Record<string, unknown>): AgentFrontmatter {
-  const raw = (data.agent && typeof data.agent === 'object' ? { ...data.agent } : data) as Record<
-    string,
-    unknown
-  >;
+  const raw = (data.agent && typeof data.agent === 'object' ? { ...data.agent } : data) as Record<string, unknown>;
 
   const result: AgentFrontmatter = {};
 

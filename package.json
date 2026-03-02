@@ -12,6 +12,7 @@
     "build": "pnpm -r run build",
     "build:core": "pnpm --filter @agentmd-dev/core run build",
     "build:cli": "pnpm --filter @agentmd-dev/cli run build",
+    "build:sdk": "pnpm --filter @agentmd-dev/sdk run build",
     "build:dashboard": "pnpm --filter @agentmd/dashboard run build",
     "build:vscode": "pnpm --filter @agentmd/vscode run build",
     "dev:dashboard": "pnpm --filter @agentmd/dashboard run dev",

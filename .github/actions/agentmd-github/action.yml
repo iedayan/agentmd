@@ -1,0 +1,30 @@
+name: AgentMD GitHub App
+description: GitHub App integration for AgentMD with PR checks, status checks, and workflow generation
+author: AgentMD
+branding:
+  icon: check-circle
+  color: blue
+inputs:
+  - name: github_app_id
+    description: 'GitHub App ID'
+    required: true
+  - name: github_app_private_key
+    description: 'GitHub App Private Key'
+    required: true
+    sensitive: true
+  - name: webhook_secret
+    description: 'Webhook Secret'
+    required: true
+    sensitive: true
+  - name: agentmd_api_key
+    description: 'AgentMD API Key for validation'
+    required: true
+    sensitive: true
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.github_app_id }}
+    - ${{ inputs.github_app_private_key }}
+    - ${{ inputs.webhook_secret }}
+    - ${{ inputs.agentmd_api_key }}
