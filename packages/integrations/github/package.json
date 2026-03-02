@@ -1,0 +1,29 @@
+{
+  "name": "@agentmd-dev/github-integration",
+  "version": "0.1.0",
+  "description": "GitHub App integration for AgentMD",
+  "type": "module",
+  "main": "./dist/github-app.js",
+  "types": "./dist/github-app.d.ts",
+  "scripts": {
+    "build": "tsup src/github-app.ts --format esm --dts",
+    "dev": "tsup src/github-app.ts --format esm --dts --watch",
+    "test": "vitest run",
+    "lint": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@agentmd-dev/core": "^0.1.1",
+    "probot": "^13.0.0",
+    "@octokit/webhooks": "^12.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "tsup": "^8.3.5",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.6"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "license": "MIT"
+}

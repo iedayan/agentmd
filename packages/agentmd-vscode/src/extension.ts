@@ -4,13 +4,15 @@
  */
 
 import * as path from 'path';
-import { workspace, ExtensionContext, window, commands, StatusBarAlignment } from 'vscode';
+import { workspace, ExtensionContext, window, commands, StatusBarAlignment, Position } from 'vscode';
 import {
   LanguageClient,
   LanguageClientOptions,
   ServerOptions,
   TransportKind,
+  type Diagnostic,
 } from 'vscode-languageclient/node';
+import type { DryRunResult } from './shared/types.js';
 
 let client: LanguageClient | undefined;
 let statusBarItem: ReturnType<typeof window.createStatusBarItem> | undefined;
@@ -51,70 +53,123 @@ export function activate(context: ExtensionContext): void {
         statusBarItem?.hide();
         return;
       }
+
+      statusBarItem.show();
+      statusBarItem.text = '$(sync~spin) Analyzing...';
+
       try {
-        const result = await client?.sendRequest<{ score: number } | null>('agentmd/getScore', {
-          uri: doc.uri.toString(),
-        });
-        if (result?.score != null) {
-          statusBarItem.text = `AgentMD: ${result.score}/100`;
-          statusBarItem.tooltip = 'Agent-readiness score. Click to show details.';
-          statusBarItem.command = 'agentmd.showScore';
-          statusBarItem.show();
-        } else {
-          statusBarItem.hide();
+        if (client) {
+          const diagnostics = await client.sendRequest<Diagnostic[]>('textDocument/diagnostic', {
+            textDocument: { uri: doc.uri.toString() },
+          });
+          
+          const errors = diagnostics.filter((d) => d.severity === 1);
+          const warnings = diagnostics.filter((d) => d.severity === 2);
+          
+          if (errors.length === 0 && warnings.length === 0) {
+            statusBarItem.text = '$(check) AgentMD: Valid';
+            statusBarItem.tooltip = 'AGENTS.md is valid and ready to execute';
+          } else {
+            statusBarItem.text = `$(warning) AgentMD: ${errors.length + warnings.length} issues`;
+            statusBarItem.tooltip = `${errors.length} errors, ${warnings.length} warnings`;
+          }
         }
-      } catch {
-        statusBarItem.hide();
+      } catch (error) {
+        statusBarItem.text = '$(error) AgentMD: Error';
+        statusBarItem.tooltip = 'Failed to analyze AGENTS.md';
       }
     };
 
-    let statusBarDebounce: ReturnType<typeof setTimeout> | undefined;
-    const debouncedUpdate = () => {
-      if (statusBarDebounce) clearTimeout(statusBarDebounce);
-      statusBarDebounce = setTimeout(updateStatusBar, 400);
-    };
-
+    // Update status bar on document change
     context.subscriptions.push(
-      window.onDidChangeActiveTextEditor(updateStatusBar),
-      workspace.onDidChangeTextDocument((e) => {
-        if (e.document === window.activeTextEditor?.document) debouncedUpdate();
-      }),
+      workspace.onDidChangeTextDocument(updateStatusBar),
+      window.onDidChangeActiveTextEditor(updateStatusBar)
     );
-    updateStatusBar();
 
+    // Register commands
     context.subscriptions.push(
       commands.registerCommand('agentmd.validate', async () => {
-        const doc = window.activeTextEditor?.document;
-        if (!doc || (!doc.uri.path.endsWith('AGENTS.md') && !doc.uri.path.endsWith('.agents.md'))) {
-          window.showInformationMessage('Open an AGENTS.md file to validate.');
-          return;
-        }
+        const editor = window.activeTextEditor;
+        if (!editor) return;
+
+        await client?.sendRequest('textDocument/diagnostic', {
+          textDocument: { uri: editor.document.uri.toString() },
+        });
+
+        window.showInformationMessage('AGENTS.md validation completed');
+      }),
+
+      commands.registerCommand('agentmd.score', async () => {
+        const editor = window.activeTextEditor;
+        if (!editor) return;
+
+        const score = await client?.sendRequest('agentmd/score', {
+          textDocument: { uri: editor.document.uri.toString() },
+        });
+
         window.showInformationMessage(
-          'AgentMD diagnostics run in real time. Check the Problems view.',
-        );
-      }),
-      commands.registerCommand('agentmd.showScore', async () => {
-        const doc = window.activeTextEditor?.document;
-        if (!doc || (!doc.uri.path.endsWith('AGENTS.md') && !doc.uri.path.endsWith('.agents.md'))) {
-          window.showInformationMessage('Open an AGENTS.md file to see the score.');
-          return;
-        }
-        try {
-          const result = await client?.sendRequest<{ score: number } | null>('agentmd/getScore', {
-            uri: doc.uri.toString(),
-          });
-          if (result?.score != null) {
-            window.showInformationMessage(`AgentMD Score: ${result.score}/100`);
-          } else {
-            window.showWarningMessage('Could not compute score.');
+          `Agent-readiness score: ${score}/100`,
+          'View Details'
+        ).then(selection => {
+          if (selection === 'View Details') {
+            commands.executeCommand('agentmd.showDetails');
           }
-        } catch (e) {
-          window.showErrorMessage(
-            `AgentMD: ${e instanceof Error ? e.message : 'Failed to get score'}`,
-          );
+        });
+      }),
+
+      commands.registerCommand('agentmd.showDetails', () => {
+        commands.executeCommand('workbench.action.focusSideBar');
+      }),
+
+      commands.registerCommand('agentmd.createTemplate', async () => {
+        const templates = ['node', 'python', 'rust', 'go', 'nextjs', 'react', 'vue', 'svelte', 'astro', 'fastapi', 'express', 'nestjs', 'remix', 'nuxt', 'django', 'rails', 'monorepo', 'generic'];
+        const selected = await window.showQuickPick(templates, {
+          placeHolder: 'Select a template for your AGENTS.md',
+        });
+
+        if (selected) {
+          const template = await client?.sendRequest<string>('agentmd/getTemplate', { template: selected });
+          if (template) {
+            const editor = window.activeTextEditor;
+            if (editor) {
+              await editor.edit(editBuilder => {
+                editBuilder.insert(new Position(0, 0), template);
+              });
+              window.showInformationMessage(`Created ${selected} template`);
+            }
+          }
         }
       }),
+
+      commands.registerCommand('agentmd.executeDryRun', async () => {
+        const editor = window.activeTextEditor;
+        if (!editor) return;
+
+        window.showInformationMessage('Running dry-run execution...', 'Cancel').then(selection => {
+          if (selection === 'Cancel') return;
+        });
+
+        try {
+          const result = await client?.sendRequest<DryRunResult>('agentmd/dryRun', {
+            textDocument: { uri: editor.document.uri.toString() },
+          });
+
+          window.showInformationMessage(
+            `Dry-run completed: ${result?.commands?.length || 0} commands would be executed`,
+            'View Output'
+          ).then(selection => {
+            if (selection === 'View Output') {
+              commands.executeCommand('workbench.action.focusPanel');
+            }
+          });
+        } catch (error) {
+          window.showErrorMessage(`Dry-run failed: ${error}`);
+        }
+      })
     );
+
+    // Initial update
+    updateStatusBar();
   });
 }
 

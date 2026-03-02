@@ -6,7 +6,7 @@ export interface OutputContractValidationResult {
   warnings: ValidationWarning[];
 }
 
-type JsonType = 'string' | 'number' | 'boolean' | 'object' | 'array' | 'null' | 'any';
+type JsonType = 'string' | 'number' | 'boolean' | 'object' | 'array' | 'null' | 'undefined';
 
 function detectJsonType(value: unknown): JsonType {
   if (value === null) return 'null';
@@ -21,7 +21,7 @@ function detectJsonType(value: unknown): JsonType {
     case 'object':
       return 'object';
     default:
-      return 'any';
+      return 'undefined';
   }
 }
 
