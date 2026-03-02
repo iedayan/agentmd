@@ -118,8 +118,13 @@ export function findNearestAgentsMd(filePath: string): DiscoveredAgentsMd | null
     if (!statSync(dir).isDirectory()) {
       dir = dirname(dir);
     }
-  } catch {
-    return null;
+  } catch (error) {
+    // Handle file system errors gracefully
+    if (error instanceof Error && (error as NodeJS.ErrnoException).code === 'ENOENT') {
+      return null;
+    }
+    // Re-throw unexpected errors
+    throw error;
   }
 
   let current = dir;

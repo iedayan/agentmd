@@ -30,12 +30,12 @@ AgentMD turns static AGENTS.md files into **living, breathing workflows** with g
 
 ## Strategic Priorities
 
-1. **Distribution**: GitHub App integration, out-of-the-box templates, and quickstart interactive demos.
-2. **Time-to-Value**: Guided onboarding enabling the first governed execution in under 10 minutes.
+1. **Distribution**: GitHub App integration, 17 framework templates, and quickstart interactive demos.
+2. **Time-to-Value**: Guided onboarding enabling first governed execution in under 10 minutes.
 3. **Proof of Value**: Hard outcome metrics and documented case studies demonstrating ROI.
 4. **Reliability**: Boringly dependable, deterministic, production-grade agent execution.
 5. **Governance**: Guardrails, permission boundaries, and policy enforcement for agentic AI risk management.
-6. **Deep Integrations**: Comprehensive, native hooks into Slack, Jira, and GitHub workflows.
+6. **Deep Integrations**: Comprehensive, native hooks into VS Code, GitHub workflows, and modern frameworks.
 
 ## Core Engine: Making AGENTS.md Executable
 
@@ -47,53 +47,6 @@ AgentMD is the runtime environment for agent instructions:
 - **Execute** — Sandboxed runners with permission boundaries
 - **Score** — Agent-readiness score (0-100)
 
-## Quick Start
-
-**🎯 Get running in 60 seconds:**
-
-```bash
-# Install the CLI
-npm install -g @agentmd-dev/cli
-
-# Check any AGENTS.md file
-agentmd check . --score
-
-# Execute safely (dry run)
-agentmd run . --dry-run
-```
-
-**📦 VS Code Extension:**
-```
-ext install agentmd.agentmd-vscode
-```
-
-## Installation
-
-**From source** (clone and build):
-
-```bash
-git clone https://github.com/iedayan/agentmd.git
-cd agentmd
-pnpm install
-pnpm run build:core
-pnpm run build:cli
-# Or: pnpm run build
-```
-
-**Quick try** (no global install):
-
-```bash
-pnpm run agentmd -- check . --contract
-pnpm run agentmd -- init .
-```
-
-**In CI** — Use the [GitHub Action](.github/actions/agentmd/README.md); no manual install.
-
-**Dashboard** — `pnpm run dev:dashboard` (Next.js on port 3001).
-
-**npm** — Core and CLI are published: `pnpm add @agentmd-dev/core`, `npx @agentmd-dev/cli init`. VS Code extension: use from source. See [docs/INSTALL.md](docs/INSTALL.md) for full options.
-
-## Quick Start
 
 ```bash
 # Validate AGENTS.md + required output contract
@@ -116,29 +69,50 @@ pnpm run agentmd -- improve . --apply
 
 If you are new to AgentMD, use this path:
 
-1. Create a starter file (auto-detects Node.js, Python, Rust, Go):
+1. Create a starter file (auto-detects Node.js, Python, Rust, Go, React, Vue, Svelte, Astro, FastAPI, Express, NestJS, Remix, Nuxt):
 
 ```bash
 pnpm run agentmd -- init .
 ```
 
-Or force a template: `pnpm run agentmd -- init . --template python`
+Or force a modern framework template:
+```bash
+pnpm run agentmd -- init . --template react
+pnpm run agentmd -- init . --template vue
+pnpm run agentmd -- init . --template svelte
+pnpm run agentmd -- init . --template astro
+pnpm run agentmd -- init . --template fastapi
+pnpm run agentmd -- init . --template nestjs
+```
 
-2. Diagnose and improve:
+2. Install VS Code Extension for real-time feedback:
+
+```bash
+ext install agentmd.agentmd-vscode
+# Features: Real-time validation, status bar scoring, keyboard shortcuts
+```
+
+3. Set up GitHub integration for team collaboration:
+
+- Install AgentMD GitHub App for automatic PR validation
+- Auto-generate GitHub Actions workflows from AGENTS.md commands
+- Get actionable suggestions directly in pull requests
+
+4. Diagnose and improve:
 
 ```bash
 pnpm run agentmd -- doctor .
 pnpm run agentmd -- improve . --apply
 ```
 
-3. Validate and score:
+5. Validate and score:
 
 ```bash
 pnpm run agentmd -- check . --contract
 pnpm run agentmd -- score .
 ```
 
-4. Preview safely, then run tests:
+6. Preview safely, then run tests:
 
 ```bash
 pnpm run agentmd -- run . --dry-run

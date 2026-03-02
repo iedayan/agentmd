@@ -255,8 +255,8 @@ async function main() {
       printHelp();
       break;
     default:
-      console.error(`Unknown command: ${command}`);
-      console.error(`Run 'agentmd help' for usage.`);
+      process.stderr.write(`Unknown command: ${command}\n`);
+      process.stderr.write(`Run 'agentmd help' for usage.\n`);
       printHelp();
       process.exit(1);
   }
@@ -271,7 +271,16 @@ type ProjectType =
   | 'django'
   | 'rails'
   | 'monorepo'
-  | 'generic';
+  | 'generic'
+  | 'react'
+  | 'vue'
+  | 'svelte'
+  | 'astro'
+  | 'fastapi'
+  | 'express'
+  | 'nestjs'
+  | 'remix'
+  | 'nuxt';
 
 const TEMPLATES: Record<ProjectType, string> = {
   nextjs: `---
@@ -492,26 +501,289 @@ pnpm run test
 pnpm run lint
 \`\`\`
 `,
-  generic: `---
-# Agent instructions for AI coding tools
+  react: `---
+agent:
+  name: react-agent
+  purpose: "Work on React projects"
+  guardrails:
+    - "Run tests before committing"
 ---
 
-## Build
+# React Project
 
+## Setup
 \`\`\`bash
-pnpm run build
+npm install
+\`\`\`
+
+## Start
+\`\`\`bash
+npm start
 \`\`\`
 
 ## Test
-
 \`\`\`bash
-pnpm run test
+npm test
 \`\`\`
 
-## Lint
-
+## Build
 \`\`\`bash
-pnpm run lint
+npm run build
+\`\`\`
+`,
+  vue: `---
+agent:
+  name: vue-agent
+  purpose: "Work on Vue.js projects"
+  guardrails:
+    - "Run tests before committing"
+---
+
+# Vue.js Project
+
+## Setup
+\`\`\`bash
+npm install
+\`\`\`
+
+## Dev
+\`\`\`bash
+npm run dev
+\`\`\`
+
+## Test
+\`\`\`bash
+npm run test
+\`\`\`
+
+## Build
+\`\`\`bash
+npm run build
+\`\`\`
+`,
+  svelte: `---
+agent:
+  name: svelte-agent
+  purpose: "Work on Svelte projects"
+  guardrails:
+    - "Run tests before committing"
+---
+
+# Svelte Project
+
+## Setup
+\`\`\`bash
+npm install
+\`\`\`
+
+## Dev
+\`\`\`bash
+npm run dev
+\`\`\`
+
+## Test
+\`\`\`bash
+npm run test
+\`\`\`
+
+## Build
+\`\`\`bash
+npm run build
+\`\`\`
+`,
+  astro: `---
+agent:
+  name: astro-agent
+  purpose: "Work on Astro projects"
+  guardrails:
+    - "Run tests before committing"
+---
+
+# Astro Project
+
+## Setup
+\`\`\`bash
+npm install
+\`\`\`
+
+## Dev
+\`\`\`bash
+npm run dev
+\`\`\`
+
+## Test
+\`\`\`bash
+npm run test
+\`\`\`
+
+## Build
+\`\`\`bash
+npm run build
+\`\`\`
+`,
+  fastapi: `---
+agent:
+  name: fastapi-agent
+  purpose: "Work on FastAPI projects"
+  guardrails:
+    - "Run tests before committing"
+---
+
+# FastAPI Project
+
+## Setup
+\`\`\`bash
+pip install -r requirements.txt
+\`\`\`
+
+## Run
+\`\`\`bash
+uvicorn main:app --reload
+\`\`\`
+
+## Test
+\`\`\`bash
+pytest
+\`\`\`
+`,
+  express: `---
+agent:
+  name: express-agent
+  purpose: "Work on Express.js projects"
+  guardrails:
+    - "Run tests before committing"
+---
+
+# Express.js Project
+
+## Setup
+\`\`\`bash
+npm install
+\`\`\`
+
+## Start
+\`\`\`bash
+npm start
+\`\`\`
+
+## Test
+\`\`\`bash
+npm test
+\`\`\`
+`,
+  nestjs: `---
+agent:
+  name: nestjs-agent
+  purpose: "Work on NestJS projects"
+  guardrails:
+    - "Run tests before committing"
+---
+
+# NestJS Project
+
+## Setup
+\`\`\`bash
+npm install
+\`\`\`
+
+## Development
+\`\`\`bash
+npm run start:dev
+\`\`\`
+
+## Test
+\`\`\`bash
+npm run test
+\`\`\`
+
+## Build
+\`\`\`bash
+npm run build
+\`\`\`
+`,
+  remix: `---
+agent:
+  name: remix-agent
+  purpose: "Work on Remix projects"
+  guardrails:
+    - "Run tests before committing"
+---
+
+# Remix Project
+
+## Setup
+\`\`\`bash
+npm install
+\`\`\`
+
+## Dev
+\`\`\`bash
+npm run dev
+\`\`\`
+
+## Test
+\`\`\`bash
+npm test
+\`\`\`
+
+## Build
+\`\`\`bash
+npm run build
+\`\`\`
+`,
+  nuxt: `---
+agent:
+  name: nuxt-agent
+  purpose: "Work on Nuxt.js projects"
+  guardrails:
+    - "Run tests before committing"
+---
+
+# Nuxt.js Project
+
+## Setup
+\`\`\`bash
+npm install
+\`\`\`
+
+## Dev
+\`\`\`bash
+npm run dev
+\`\`\`
+
+## Test
+\`\`\`bash
+npm test
+\`\`\`
+
+## Build
+\`\`\`bash
+npm run build
+\`\`\`
+`,
+  generic: `---
+agent:
+  name: generic-agent
+  purpose: "General purpose agent for any project"
+  guardrails:
+    - "Always validate before committing"
+---
+
+# Generic Project
+
+## Setup
+\`\`\`bash
+# Add setup commands here
+\`\`\`
+
+## Test
+\`\`\`bash
+# Add test commands here
+\`\`\`
+
+## Build
+\`\`\`bash
+# Add build commands here
 \`\`\`
 `,
 };
@@ -587,15 +859,23 @@ function cmdInit(target: string, templateOverride?: string) {
   const filePath = path.endsWith('AGENTS.md') ? path : resolve(path, 'AGENTS.md');
 
   if (existsSync(filePath)) {
-    console.log(`AGENTS.md already exists at ${filePath}`);
-    console.log("Run 'agentmd check --contract' to validate it.");
+    process.stdout.write(`AGENTS.md already exists at ${filePath}\n`);
+    process.stdout.write("Run 'agentmd check --contract' to validate it.\n");
+    
+    // Interactive prompt for next steps
+    process.stdout.write('\nWhat would you like to do?\n');
+    process.stdout.write('  1. Validate existing file\n');
+    process.stdout.write('  2. Check agent-readiness score\n');
+    process.stdout.write('  3. Preview execution (dry-run)\n');
+    process.stdout.write('  4. Exit\n');
+    
     return;
   }
 
   try {
     const dir = path.endsWith('AGENTS.md') ? resolve(path, '..') : path;
     if (!existsSync(dir)) {
-      console.error(`Directory not found: ${dir}`);
+      process.stderr.write(`Directory not found: ${dir}\n`);
       process.exit(1);
     }
 
@@ -603,32 +883,32 @@ function cmdInit(target: string, templateOverride?: string) {
     const explicitTemplate = templateOverride?.toLowerCase() as ProjectType | undefined;
     if (explicitTemplate && TEMPLATES[explicitTemplate]) {
       content = TEMPLATES[explicitTemplate];
-      console.log(`Using template: ${explicitTemplate}`);
+      process.stdout.write(`Using template: ${explicitTemplate}\n`);
     } else if (explicitTemplate) {
-      console.error(
-        `Unknown template: ${templateOverride}. Use: node, python, rust, go, nextjs, django, rails, monorepo, generic`,
+      process.stderr.write(
+        `Unknown template: ${templateOverride}. Use: node, python, rust, go, nextjs, django, rails, monorepo, react, vue, svelte, astro, fastapi, express, nestjs, remix, nuxt, generic`,
       );
       process.exit(1);
     } else {
       const detected = detectProjectType(dir);
       if (detected === 'node') {
         content = buildNodeTemplate(dir);
-        console.log(`Detected Node.js project — using package.json scripts`);
+        process.stdout.write(`Detected Node.js project — using package.json scripts\n`);
       } else {
         content = TEMPLATES[detected];
-        console.log(`Detected ${detected} project — using ${detected} template`);
+        process.stdout.write(`Detected ${detected} project — using ${detected} template\n`);
       }
     }
 
     writeFileSync(filePath, content.trim() + '\n', 'utf-8');
-    console.log(`Created AGENTS.md at ${filePath}`);
-    console.log('\nNext steps:');
-    console.log('  1. Edit AGENTS.md if needed');
-    console.log("  2. Run 'agentmd check --contract' to validate it");
-    console.log("  3. Run 'agentmd score' for your agent-readiness score");
-    console.log("  4. Run 'agentmd run . --dry-run' to preview execution");
+    process.stdout.write(`Created AGENTS.md at ${filePath}\n`);
+    process.stdout.write('\nNext steps:\n');
+    process.stdout.write('  1. Edit AGENTS.md if needed\n');
+    process.stdout.write('  2. Run \'agentmd check --contract\' to validate it\n');
+    process.stdout.write('  3. Run \'agentmd score\' for your agent-readiness score\n');
+    process.stdout.write('  4. Run \'agentmd run . --dry-run\' to preview execution\n');
   } catch (err) {
-    console.error(`Failed to create AGENTS.md: ${err instanceof Error ? err.message : err}`);
+    process.stderr.write(`Failed to create AGENTS.md: ${err instanceof Error ? err.message : err}\n`);
     process.exit(1);
   }
 }
@@ -679,10 +959,26 @@ async function cmdCheck(opts: {
   }
 
   if (combinedErrors.length > 0) {
-    console.error('Validation failed:\n');
+    process.stderr.write('❌ Validation failed:\n\n');
     for (const e of combinedErrors) {
-      console.error(`  ✗ ${e.message}${e.line ? ` (line ${e.line})` : ''}`);
+      process.stderr.write(`  ✗ ${e.message}${e.line ? ` (line ${e.line})` : ''}\n`);
     }
+    
+    process.stderr.write('\n💡 Quick fixes:\n');
+    if (combinedErrors.some(err => err.code.includes('MISSING_OUTPUT_CONTRACT'))) {
+      process.stderr.write('  • Add output_contract section to YAML frontmatter\n');
+      process.stderr.write('  • Example: output_contract: { format: "json", schema: { summary: "string" } }\n');
+    }
+    if (combinedErrors.some(err => err.code.includes('INVALID_YAML'))) {
+      process.stderr.write('  • Check YAML syntax in frontmatter (--- section)\n');
+      process.stderr.write('  • Use online YAML validator if needed\n');
+    }
+    if (combinedErrors.some(err => err.code.includes('DANGEROUS_COMMAND'))) {
+      process.stderr.write('  • Add risk_level and preconditions for dangerous commands\n');
+      process.stderr.write('  • Consider using --dry-run flag first\n');
+    }
+    
+    process.stderr.write('\n🔧 Run "agentmd improve . --apply" to auto-fix some issues\n');
     process.exit(1);
   }
 

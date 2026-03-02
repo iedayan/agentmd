@@ -1,4 +1,4 @@
-import type { ValidationError, ValidationWarning } from '@agentmd-dev/core';
+import type { ValidationError, ValidationWarning, ExecutionResult } from '@agentmd-dev/core';
 
 export interface AgentMdDiagnostic {
   code: string;
@@ -13,4 +13,8 @@ export interface ValidationPayload {
   errors: ValidationError[];
   warnings: ValidationWarning[];
   suggestions: string[];
+}
+
+export interface DryRunResult {
+  commands: ExecutionResult[];
 }
