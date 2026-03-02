@@ -63,6 +63,28 @@
       {
         "command": "agentmd.showScore",
         "title": "AgentMD: Show Score Breakdown"
+      },
+      {
+        "command": "agentmd.createTemplate",
+        "title": "AgentMD: Create from Template"
+      },
+      {
+        "command": "agentmd.executeDryRun",
+        "title": "AgentMD: Dry Run Execution"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "agentmd.validate",
+        "key": "ctrl+shift+v",
+        "mac": "cmd+shift+v",
+        "when": "editorTextFocus && editorLangId == markdown"
+      },
+      {
+        "command": "agentmd.showScore",
+        "key": "ctrl+shift+s",
+        "mac": "cmd+shift+s",
+        "when": "editorTextFocus && editorLangId == markdown"
       }
     ]
   },
