@@ -1,7 +1,11 @@
 {
   "name": "@agentmd-dev/sdk",
+<<<<<<< HEAD
   "version": "0.1.1",
   "description": "AgentMD SDK — programmatic API for integrations",
+=======
+  "version": "0.1.0",
+>>>>>>> e8fa74d7610a6bb6e0cd35f5eb5d60f283b3d9ff
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -11,6 +15,7 @@
       "types": "./dist/index.d.ts"
     }
   },
+<<<<<<< HEAD
   "repository": {
     "type": "git",
     "url": "git+https://github.com/iedayan/agentmd.git",
@@ -35,6 +40,8 @@
     "type": "github",
     "url": "https://github.com/iedayan/agentmd"
   },
+=======
+>>>>>>> e8fa74d7610a6bb6e0cd35f5eb5d60f283b3d9ff
   "publishConfig": {
     "access": "public"
   },
