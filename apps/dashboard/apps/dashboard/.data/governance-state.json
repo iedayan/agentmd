@@ -15,7 +15,7 @@
           "agentmd/output-contract": "failed",
           "agentmd/execution-ready": "success"
         },
-        "updatedAt": "2026-03-02T19:10:53.776Z"
+        "updatedAt": "2026-03-02T20:07:59.244Z"
       }
     ],
     [
@@ -550,13 +550,13 @@
     "blockedByStatusGate": 0,
     "blockedByPolicy": 0,
     "approvalRequired": 46,
-    "webhookReceived": 37,
-    "webhookProcessed": 70,
-    "webhookSignatureFailures": 19,
-    "webhookErrors": 18,
+    "webhookReceived": 39,
+    "webhookProcessed": 74,
+    "webhookSignatureFailures": 20,
+    "webhookErrors": 19,
     "prCommentsPosted": 0,
     "slackApprovalActions": 15,
-    "lastWebhookAt": "2026-03-02T19:10:53.644Z",
+    "lastWebhookAt": "2026-03-02T20:07:59.180Z",
     "lastWebhookEvent": "check_run",
     "contractValidationEvents": [
       {
@@ -951,6 +951,21 @@
       },
       {
         "at": "2026-03-02T19:10:54.037Z",
+        "contractType": "migration",
+        "status": "success"
+      },
+      {
+        "at": "2026-03-02T20:07:59.578Z",
+        "contractType": "bugfix",
+        "status": "success"
+      },
+      {
+        "at": "2026-03-02T20:07:59.578Z",
+        "contractType": "bugfix",
+        "status": "failed"
+      },
+      {
+        "at": "2026-03-02T20:07:59.579Z",
         "contractType": "migration",
         "status": "success"
       }
