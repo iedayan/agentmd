@@ -22,7 +22,7 @@
     "@agentmd-dev/core": "workspace:*"
   },
   "devDependencies": {
-    "@types/node": "^22.10.0",
+    "@types/node": "^25.3.3",
     "tsup": "^8.3.5",
     "typescript": "^5.7.2"
   }
