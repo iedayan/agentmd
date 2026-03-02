@@ -1,4 +1,20 @@
+---
+output_contract:
+  format: "markdown"
+  schema: "agnostic"
+  quality_gates:
+    - "build passes"
+    - "tests pass"
+    - "lint passes"
+  artifacts:
+    - "packages/**/dist/**"
+  exit_criteria:
+    - "All packages build successfully"
+    - "All tests pass"
+    - "Linting is clean"
+---
 # AGENTS.md
+
 
 This file provides guidance to WARP (warp.dev) when working with code in this repository.
 
