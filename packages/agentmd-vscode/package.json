@@ -128,7 +128,8 @@
   "scripts": {
     "build": "tsup src/extension.ts src/server/index.ts --format cjs --no-dts --external vscode",
     "dev": "tsup src/extension.ts src/server/index.ts --format cjs --no-dts --external vscode --watch",
-    "package": "vsce package --no-dependencies"
+    "package": "vsce package --no-dependencies",
+    "test": "vitest run"
   },
   "dependencies": {
     "@agentmd-dev/core": "workspace:*",
@@ -138,10 +139,10 @@
     "vscode-languageserver-textdocument": "^1.0.12"
   },
   "devDependencies": {
-    "@types/node": "^22.10.0",
+    "@types/node": "^22.19.11",
     "@types/vscode": "^1.85.0",
     "tsup": "^8.3.5",
     "typescript": "^5.7.2",
-    "vitest": "^2.1.6"
+    "vitest": "^2.1.9"
   }
 }
