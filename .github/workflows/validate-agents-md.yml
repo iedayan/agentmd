@@ -53,8 +53,8 @@ jobs:
       - name: Validate and score
         id: validate
         run: |
-          pnpm run agentmd -- check . --contract --json > check_output.json 2>&1 || true
-          pnpm run agentmd -- score . --json > score_output.json 2>&1 || true
+          pnpm --silent run agentmd -- check . --contract --json > check_output.json || true
+          pnpm --silent run agentmd -- score . --json > score_output.json || true
           VALID=$(node -e "try{const d=JSON.parse(require('fs').readFileSync('check_output.json','utf8'));console.log(d.valid===true?'true':'false')}catch(e){console.log('false')}")
           SCORE=$(node -e "try{const d=JSON.parse(require('fs').readFileSync('score_output.json','utf8'));console.log(String(d.score??0))}catch(e){console.log('0')}")
           echo "valid=$VALID" >> $GITHUB_OUTPUT
