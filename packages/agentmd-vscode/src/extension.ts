@@ -62,10 +62,10 @@ export function activate(context: ExtensionContext): void {
           const diagnostics = await client.sendRequest<Diagnostic[]>('textDocument/diagnostic', {
             textDocument: { uri: doc.uri.toString() },
           });
-          
+
           const errors = diagnostics.filter((d) => d.severity === 1);
           const warnings = diagnostics.filter((d) => d.severity === 2);
-          
+
           if (errors.length === 0 && warnings.length === 0) {
             statusBarItem.text = '$(check) AgentMD: Valid';
             statusBarItem.tooltip = 'AGENTS.md is valid and ready to execute';
@@ -103,12 +103,12 @@ export function activate(context: ExtensionContext): void {
         const editor = window.activeTextEditor;
         if (!editor) return;
 
-        const score = await client?.sendRequest('agentmd/score', {
-          textDocument: { uri: editor.document.uri.toString() },
+        const result = await client?.sendRequest<{ score: number }>('agentmd/getScore', {
+          uri: editor.document.uri.toString(),
         });
 
         window.showInformationMessage(
-          `Agent-readiness score: ${score}/100`,
+          `Agent-readiness score: ${result?.score ?? 0}/100`,
           'View Details'
         ).then(selection => {
           if (selection === 'View Details') {
@@ -151,7 +151,7 @@ export function activate(context: ExtensionContext): void {
 
         try {
           const result = await client?.sendRequest<DryRunResult>('agentmd/dryRun', {
-            textDocument: { uri: editor.document.uri.toString() },
+            uri: editor.document.uri.toString(),
           });
 
           window.showInformationMessage(

@@ -64,12 +64,31 @@ export default function DeviceAuthPage() {
                 {/* Logo */}
                 <div
                     style={{
-                        fontSize: '2rem',
-                        marginBottom: '0.5rem',
-                        filter: 'drop-shadow(0 0 16px rgba(139,92,246,0.6))',
+                        marginBottom: '1rem',
+                        display: 'flex',
+                        justifyContent: 'center'
                     }}
                 >
-                    🤖
+                    <svg width="64" height="64" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ filter: 'drop-shadow(0 0 16px rgba(139,92,246,0.6))' }}>
+                        <rect width="256" height="256" rx="64" fill="url(#bg-gradient)" />
+                        <path d="M128 40C79.3989 40 40 79.3989 40 128C40 176.601 79.3989 216 128 216C176.601 216 216 176.601 216 128C216 79.3989 176.601 40 128 40ZM128 60C165.555 60 196 90.4446 196 128C196 165.555 165.555 196 128 196C90.4446 196 60 165.555 60 128C60 90.4446 90.4446 60 128 60Z" fill="url(#ring-glow)" opacity="0.15" />
+                        <path d="M128 50C84.9218 50 50 84.9218 50 128C50 171.078 84.9218 206 128 206C171.078 206 206 171.078 206 128C206 84.9218 171.078 50 128 50ZM128 66C162.242 66 190 93.7584 190 128C190 162.242 162.242 190 128 190C93.7584 190 66 162.242 66 128C66 93.7584 93.7584 66 128 66Z" fill="url(#ring-glow)" opacity="0.3" />
+                        <path d="M96 94L136 122L96 150" stroke="#00F0FF" strokeWidth="18" strokeLinecap="round" strokeLinejoin="round" />
+                        <path d="M136 162H168" stroke="#00F0FF" strokeWidth="18" strokeLinecap="round" />
+                        <path d="M116 80H140V176H116V80Z" fill="#A855F7" opacity="0.15" />
+                        <path d="M80 116H176V140H80V116Z" fill="#A855F7" opacity="0.15" />
+                        <defs>
+                            <linearGradient id="bg-gradient" x1="0" y1="0" x2="256" y2="256" gradientUnits="userSpaceOnUse">
+                                <stop offset="0%" stopColor="#0F0F1A" />
+                                <stop offset="50%" stopColor="#1A1030" />
+                                <stop offset="100%" stopColor="#241B4D" />
+                            </linearGradient>
+                            <linearGradient id="ring-glow" x1="40" y1="40" x2="216" y2="216" gradientUnits="userSpaceOnUse">
+                                <stop offset="0%" stopColor="#7C3AED" />
+                                <stop offset="100%" stopColor="#00F0FF" />
+                            </linearGradient>
+                        </defs>
+                    </svg>
                 </div>
                 <h1 style={{ color: '#fff', fontSize: '1.4rem', fontWeight: 700, margin: '0 0 0.25rem' }}>
                     AgentMD CLI Login

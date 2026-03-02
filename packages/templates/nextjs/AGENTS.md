@@ -179,21 +179,21 @@ pnpm lighthouse
 
 ### What agents can do:
 
-- ✅ Run tests and analyze results
-- ✅ Build and validate the application
-- ✅ Review code for best practices
-- ✅ Update dependencies (with approval)
-- ✅ Generate documentation
-- ✅ Create and update components
-- ✅ Fix bugs and implement features
+-  Run tests and analyze results
+-  Build and validate the application
+-  Review code for best practices
+-  Update dependencies (with approval)
+-  Generate documentation
+-  Create and update components
+-  Fix bugs and implement features
 
 ### Security restrictions:
 
-- 🚫 Never access environment variables directly
-- 🚫 Never modify production database
-- 🚫 Never expose sensitive data
-- 🚫 Always use dry-run mode for destructive operations
-- 🚫 Require approval for dependency updates
+-  Never access environment variables directly
+-  Never modify production database
+-  Never expose sensitive data
+-  Always use dry-run mode for destructive operations
+-  Require approval for dependency updates
 
 ### File structure awareness:
 

@@ -4,8 +4,8 @@
 
 | Version | Supported          |
 |---------|--------------------|
-| 0.1.x   | ✅ Current          |
-| < 0.1   | ❌ Not supported    |
+| 0.1.x   |  Current          |
+| < 0.1   |  Not supported    |
 
 ## Reporting a Vulnerability
 
@@ -51,8 +51,8 @@ When using AgentMD:
 
 We recognize and reward security researchers who help us improve AgentMD's security.
 
-- 🏆 **[Your Name Here]** - Discovered and reported [vulnerability type]
-- 🏆 **[Your Name Here]** - Contributed security improvement
+-  **[Your Name Here]** - Discovered and reported [vulnerability type]
+-  **[Your Name Here]** - Contributed security improvement
 
 ## Public Disclosures
 
@@ -66,4 +66,4 @@ Security vulnerabilities are disclosed here after they are patched:
 - **Lead**: security@agentmd.online
 - **Engineering**: engineering@agentmd.online
 
-Thank you for helping keep AgentMD secure! 🛡️
+Thank you for helping keep AgentMD secure! 

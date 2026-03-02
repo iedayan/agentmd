@@ -13,6 +13,7 @@ import {
 import { TextDocument } from 'vscode-languageserver-textdocument';
 import { getDiagnostics, isAgentsMd } from './diagnostics.js';
 import { computeAgentReadinessScore, executeCommands } from '@agentmd-dev/core';
+import { TEMPLATES, type ProjectType } from '../templates';
 
 const connection = createConnection(ProposedFeatures.all);
 const documents = new TextDocuments(TextDocument);
@@ -85,9 +86,13 @@ connection.onRequest('agentmd/dryRun', async (params: { uri: string }) => {
   if (!doc || !isAgentsMd(params.uri)) return null;
   const { parsed } = await getDiagnostics(doc.getText(), params.uri);
   if (!parsed || !parsed.commands.length) return { commands: [] };
-  
+
   const results = await executeCommands(parsed.commands, { dryRun: true });
   return { commands: results };
+});
+
+connection.onRequest('agentmd/getTemplate', async (params: { template: ProjectType }) => {
+  return TEMPLATES[params.template] || null;
 });
 
 connection.onHover((params) => {

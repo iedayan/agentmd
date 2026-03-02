@@ -6,49 +6,49 @@ This document outlines the organized structure of the AgentMD root directory.
 
 ```
 agentmd/
-├── 📁 packages/                    # Core packages and integrations
-│   ├── 📁 core/                   # Core parsing and validation logic
-│   ├── 📁 cli/                    # Command-line interface
-│   ├── 📁 sdk/                    # Software development kit
-│   ├── 📁 integrations/           # IDE and editor integrations
-│   │   ├── 📁 vscode/            # VS Code extension
-│   │   └── 📁 cursor/            # Cursor integration
-│   ├── 📁 workflows/              # Pre-built agent workflows
-│   │   ├── 📁 pr-reviewer/       # PR review automation
-│   │   └── 📁 test-triage/        # Test failure analysis
-│   └── 📁 templates/              # AGENTS.md templates
-│       ├── 📁 nextjs/            # Next.js template
-│       └── 📁 python/            # Python template
-├── 📁 apps/                       # Applications
-│   └── 📁 dashboard/              # Next.js dashboard UI
-├── 📁 tools/                      # Development and operations tools
-│   ├── 📁 release/               # Release automation
-│   │   └── 📄 release.mjs        # Automated release script
-│   ├── 📁 perf/                  # Performance testing
-│   │   └── 📄 benchmark.mjs      # Performance benchmarking
-│   ├── 📁 security/              # Security scanning
-│   │   └── 📄 audit.mjs          # Security audit script
-│   └── 📁 analytics/             # Usage analytics
-│       └── 📄 usage.mjs          # Analytics processing
-├── 📁 docs/                       # Documentation
-│   ├── 📁 guides/                # User guides
-│   │   └── 📄 GETTING_STARTED.md # Getting started guide
-│   ├── 📁 api/                   # API documentation
-│   │   └── 📄 README.md          # API reference
-│   ├── 📄 ROADMAP.md             # Project roadmap
-│   ├── 📄 CUSTOMER_STRATEGY.md   # Customer acquisition
-│   └── 📄 CODEBASE_ORGANIZATION.md # Architecture guide
-├── 📁 deploy/                     # Deployment configuration
-├── 📁 .github/                    # GitHub workflows and templates
-├── 📁 .vscode/                    # VS Code settings
-├── 📄 package.json                # Root package configuration
-├── 📄 pnpm-workspace.yaml         # PNPM workspace configuration
-├── 📄 tsconfig.base.json          # Base TypeScript configuration
-├── 📄 AGENTS.md                   # AgentMD configuration for this repo
-├── 📄 README.md                   # Project README
-├── 📄 ARCHITECTURE.md             # Architecture overview
-├── 📄 LICENSE                     # MIT License
-└── 📄 ...                         # Other configuration files
+├──  packages/                    # Core packages and integrations
+│   ├──  core/                   # Core parsing and validation logic
+│   ├──  cli/                    # Command-line interface
+│   ├──  sdk/                    # Software development kit
+│   ├──  integrations/           # IDE and editor integrations
+│   │   ├──  vscode/            # VS Code extension
+│   │   └──  cursor/            # Cursor integration
+│   ├──  workflows/              # Pre-built agent workflows
+│   │   ├──  pr-reviewer/       # PR review automation
+│   │   └──  test-triage/        # Test failure analysis
+│   └──  templates/              # AGENTS.md templates
+│       ├──  nextjs/            # Next.js template
+│       └──  python/            # Python template
+├──  apps/                       # Applications
+│   └──  dashboard/              # Next.js dashboard UI
+├──  tools/                      # Development and operations tools
+│   ├──  release/               # Release automation
+│   │   └──  release.mjs        # Automated release script
+│   ├──  perf/                  # Performance testing
+│   │   └──  benchmark.mjs      # Performance benchmarking
+│   ├──  security/              # Security scanning
+│   │   └──  audit.mjs          # Security audit script
+│   └──  analytics/             # Usage analytics
+│       └──  usage.mjs          # Analytics processing
+├──  docs/                       # Documentation
+│   ├──  guides/                # User guides
+│   │   └──  GETTING_STARTED.md # Getting started guide
+│   ├──  api/                   # API documentation
+│   │   └──  README.md          # API reference
+│   ├──  ROADMAP.md             # Project roadmap
+│   ├──  CUSTOMER_STRATEGY.md   # Customer acquisition
+│   └──  CODEBASE_ORGANIZATION.md # Architecture guide
+├──  deploy/                     # Deployment configuration
+├──  .github/                    # GitHub workflows and templates
+├──  .vscode/                    # VS Code settings
+├──  package.json                # Root package configuration
+├──  pnpm-workspace.yaml         # PNPM workspace configuration
+├──  tsconfig.base.json          # Base TypeScript configuration
+├──  AGENTS.md                   # AgentMD configuration for this repo
+├──  README.md                   # Project README
+├──  ARCHITECTURE.md             # Architecture overview
+├──  LICENSE                     # MIT License
+└──  ...                         # Other configuration files
 ```
 
 ## Key Improvements

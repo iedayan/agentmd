@@ -23,19 +23,19 @@ AgentMD reframes from **spec + validator** into a **full platform**: the place w
 
 | Capability                        | Status | Notes                                                      |
 | --------------------------------- | ------ | ---------------------------------------------------------- |
-| AGENTS.md parsing & validation    | ✅     | `@agentmd/core`, validator.ts                              |
-| Agent-readiness score             | ✅     | 0–100 with actionable feedback                             |
-| CLI (check, run, score, init)     | ✅     | `@agentmd-dev/cli`                                         |
-| GitHub Action                     | ✅     | `.github/actions/agentmd`, validate-agents-md.yml          |
-| Templates (Node, Python, Rust)    | ✅     | docs/AGENTS_MD_TEMPLATES.md                                |
-| Dashboard (repos, runs)           | ✅     | apps/dashboard                                             |
-| Execute API + worker              | ✅     | Real execution for public repos (AGENTMD_REAL_EXECUTION=1) |
-| Badge API                         | ✅     | `/api/badge/score`                                         |
-| PR comments with improvements     | ❌     | Not yet — validation runs, no PR comment                   |
-| Safe command schema (risk levels) | ⚠️     | Partial — `isCommandSafe`, no formal schema                |
-| IDE integrations                  | ❌     | Not yet                                                    |
-| Hosted workflows (presets)        | ❌     | Not yet                                                    |
-| Observability / safety center     | ⚠️     | Basic execution history, no timeline/safety events         |
+| AGENTS.md parsing & validation    |      | `@agentmd/core`, validator.ts                              |
+| Agent-readiness score             |      | 0–100 with actionable feedback                             |
+| CLI (check, run, score, init)     |      | `@agentmd-dev/cli`                                         |
+| GitHub Action                     |      | `.github/actions/agentmd`, validate-agents-md.yml          |
+| Templates (Node, Python, Rust)    |      | docs/AGENTS_MD_TEMPLATES.md                                |
+| Dashboard (repos, runs)           |      | apps/dashboard                                             |
+| Execute API + worker              |      | Real execution for public repos (AGENTMD_REAL_EXECUTION=1) |
+| Badge API                         |      | `/api/badge/score`                                         |
+| PR comments with improvements     |      | Not yet — validation runs, no PR comment                   |
+| Safe command schema (risk levels) |      | Partial — `isCommandSafe`, no formal schema                |
+| IDE integrations                  |      | Not yet                                                    |
+| Hosted workflows (presets)        |      | Not yet                                                    |
+| Observability / safety center     |      | Basic execution history, no timeline/safety events         |
 
 ---
 

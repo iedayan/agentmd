@@ -2,7 +2,7 @@
 
 [![npm](https://img.shields.io/npm/v/@agentmd-dev/core.svg)](https://www.npmjs.com/package/@agentmd-dev/core) [![npm](https://img.shields.io/npm/dw/@agentmd-dev/core.svg)](https://www.npmjs.com/package/@agentmd-dev/core) [![GitHub stars](https://img.shields.io/github/stars/iedayan/agentmd.svg?style=social&label=Star)](https://github.com/iedayan/agentmd) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-**🚀 CI/CD for AI Agents** — Make AGENTS.md files executable in 10 minutes, not just readable.
+** CI/CD for AI Agents** — Make AGENTS.md files executable in 10 minutes, not just readable.
 
 <!-- TODO: Add demo GIF here -->
 <!-- 
@@ -10,7 +10,7 @@
 *AgentMD in action: Parse, validate, and execute AGENTS.md files in seconds*
 -->
 
-[▶️ **Quick Start**](#quick-start) • [📖 **Docs**](https://agentmd.online) • [💬 **Discussions**](https://github.com/iedayan/agentmd/discussions) • [🎯 **Live Demo**](https://demo.agentmd.online)
+[ **Quick Start**](#quick-start) • [ **Docs**](https://agentmd.online) • [ **Discussions**](https://github.com/iedayan/agentmd/discussions) • [ **Live Demo**](https://demo.agentmd.online)
 
 ```bash
 npm install -g @agentmd-dev/cli
@@ -204,14 +204,14 @@ Discover, purchase, and execute agents through AGENTS.md:
 - **Pro ($49/mo)**: Unlimited repos, 1000 min, team features
 - **Enterprise ($249/mo)**: Self-hosted, SSO, RBAC, audit logs. See [docs/INFRASTRUCTURE.md](docs/INFRASTRUCTURE.md) for deployment options.
 
-## 🌟 Community & Support
+## Community & Support
 
-- **[💬 GitHub Discussions](https://github.com/iedayan/agentmd/discussions)** - Ask questions, share ideas
-- **[🐛 Issues](https://github.com/iedayan/agentmd/issues)** - Bug reports and feature requests  
-- **[📖 Documentation](https://agentmd.online)** - Complete guides and API reference
-- **[🎯 Live Demo](https://demo.agentmd.online)** - Try AgentMD in your browser
+- **[ GitHub Discussions](https://github.com/iedayan/agentmd/discussions)** - Ask questions, share ideas
+- **[ Issues](https://github.com/iedayan/agentmd/issues)** - Bug reports and feature requests  
+- **[ Documentation](https://agentmd.online)** - Complete guides and API reference
+- **[ Live Demo](https://demo.agentmd.online)** - Try AgentMD in your browser
 
-## 🏆 Used By
+## Used By
 
 [![AgentMD Users](https://img.shields.io/badge/Used%20By-Production%20Teams-blue)](https://github.com/iedayan/agentmd)
 
@@ -219,9 +219,9 @@ Discover, purchase, and execute agents through AGENTS.md:
 
 ---
 
-**⭐ Star this repo** if AgentMD helps you build better AI agents!
+** Star this repo** if AgentMD helps you build better AI agents!
 
-[🔔 **Watch**](https://github.com/iedayan/agentmd/subscription) for updates • [🍴 **Fork**](https://github.com/iedayan/agentmd/fork) to contribute
+[ **Watch**](https://github.com/iedayan/agentmd/subscription) for updates • [ **Fork**](https://github.com/iedayan/agentmd/fork) to contribute
 
 ## Open Source Readiness
 

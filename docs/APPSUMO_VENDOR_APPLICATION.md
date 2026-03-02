@@ -82,11 +82,11 @@ AgentMD is a **CI/CD platform for AI agents** that makes the [AGENTS.md](https:/
 
 | Criterion                   | Status                                                     |
 | --------------------------- | ---------------------------------------------------------- |
-| **No critical bugs**        | ✅ Tested; 100+ tests passing                              |
-| **Clear documentation**     | ✅ Docs at agentmd.online/docs, quickstart, API reference  |
-| **Support capacity**        | ✅ Dedicated support during campaign; <24h response target |
-| **Scalable infrastructure** | ✅ Vercel + Neon; built for production                     |
-| **Refund handling**         | ✅ Plan for <15% refund rate; will iterate on feedback     |
+| **No critical bugs**        |  Tested; 100+ tests passing                              |
+| **Clear documentation**     |  Docs at agentmd.online/docs, quickstart, API reference  |
+| **Support capacity**        |  Dedicated support during campaign; <24h response target |
+| **Scalable infrastructure** |  Vercel + Neon; built for production                     |
+| **Refund handling**         |  Plan for <15% refund rate; will iterate on feedback     |
 
 ---
 

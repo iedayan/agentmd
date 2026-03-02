@@ -60,19 +60,19 @@ Follow [Conventional Commits](https://www.conventionalcommits.org/):
 
 ## Areas to Contribute
 
-### 🚀 High Priority
+### High Priority
 - **Templates** - Add more AGENTS.md templates for different stacks
 - **Integrations** - New IDE plugins (Neovim, JetBrains, etc.)
 - **Documentation** - Tutorials, guides, examples
 - **Testing** - More test coverage, edge cases
 
-### 🔧 Medium Priority
+### Medium Priority
 - **Performance** - Optimization for large repositories
 - **UI/UX** - Dashboard improvements
 - **CLI** - Additional commands and features
 - **Security** - Enhanced permission validation
 
-### 💡 Ideas
+### Ideas
 - **Marketplace** - Community-contributed workflows
 - **Analytics** - Usage metrics and insights
 - **Mobile** - Mobile app for monitoring

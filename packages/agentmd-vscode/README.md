@@ -1,95 +1,60 @@
-# AgentMD VS Code Extension
+<div align="center">
+  <img src="https://raw.githubusercontent.com/iedayan/agentmd/main/packages/agentmd-vscode/media/icon.png" width="128" alt="AgentMD Logo">
+  <h1>AgentMD for VS Code</h1>
+  <p>The standard execution layer for AI Coding Agents.</p>
+</div>
 
-ESLint for AGENTS.md — real-time linting, validation, scoring, and productivity features in the editor.
+***
 
-## Features
+**AgentMD** is the official language server and linter for `AGENTS.md` files. 
 
-### 🔍 Real-time Diagnostics
-- **Live Validation**: AMD001–AMD012 rules (missing Build/Test, empty command, bad frontmatter, etc.)
-- **Smart Error Detection**: Syntax errors, missing contracts, dangerous commands
-- **Warning System**: Best practices and improvement suggestions
-- **Visual Indicators**: Color-coded diagnostics in Problems view
+If you use AI coding agents (like Cursor, Cline, Copilot, or Aider), you've likely experienced them hallucinating build commands, struggling to run your tests, or failing to understand how your specific project is compiled. 
 
-### 📊 Agent-readiness Scoring
-- **Live Score Badge**: Real-time 0-100 score in status bar
-- **Detailed Breakdown**: Click status bar for scoring factors
-- **Progress Tracking**: Monitor improvements over time
+`AGENTS.md` solves this by providing a standardized, machine-readable ledger of your repository's exact workflows. This extension brings real-time validation, scoring, and scaffolding directly into your editor so you can ensure your project is perfectly "agent-ready."
 
-### ⚡ Productivity Features
-- **Template Library**: Insert 17 framework templates instantly
-- **Keyboard Shortcuts**: Quick access to common actions
-- **Command Palette Integration**: Full VS Code command support
-- **Dry-run Execution**: Preview commands without running
-- **Interactive Prompts**: Guided next steps when files exist
+## ⚡ Core Features
 
-### 🎯 Smart Assistance
-- **Auto-completion**: Context-aware suggestions
-- **Quick Fixes**: One-click error resolution
-- **Hover Documentation**: Section information and guidance
+### 1. Real-Time Diagnostics & Linting
+Stop guessing if your `AGENTS.md` is formatted correctly. AgentMD acts as an ESLint for your agent instructions:
+* **Live Validation:** Instantly flags missing required blocks (Build, Test), empty commands, and malformed frontmatter.
+* **Smart Error Detection:** Warns against dangerous commands and syntax inconsistencies.
+* **Visual Indicators:** All issues appear natively in the VS Code Problems view.
 
-## Installation
+### 2. Live Agent-Readiness Scoring
+How easy is it for an AI to seamlessly work in your repository?
+* **Live Score Badge:** View a real-time `0-100` readiness score directly in your VS Code Status Bar.
+* **Actionable Breakdowns:** Click the score to see exactly which commands or context blocks your repository is missing. Track improvements over time.
 
-1. **From VS Code Marketplace**: Search "AgentMD" and install
-2. **Build from source**: `pnpm run build:vscode`
-3. **Development**: Run Extension Development Host (F5) from repo root
-4. **Package**: `cd packages/agentmd-vscode && pnpm run package`
+### 3. One-Click Template Library
+Don't write `AGENTS.md` files from scratch. AgentMD ships with 17+ pre-built, agent-optimized framework templates. 
+* Open the Command Palette (`Cmd+Shift+P`) and type **`AgentMD: Create from Template`**.
+* Generate perfect scaffolds instantly for React, Next.js, Python, Rust, Go, FastAPI, NestJS, Monorepos, and more.
 
-## Usage
+### 4. Dry-Run Execution
+Want to see exactly what commands the AI is going to run based on your `AGENTS.md` file? Use the built-in `--dry-run` command execution preview directly from the editor to safely inspect workflows before they touch your machine.
 
-Open any `AGENTS.md` file. Diagnostics appear in Problems view. The status bar shows the agent-readiness score. Use command palette for full feature access.
+---
 
-### Commands
-- **`AgentMD: Validate AGENTS.md`**: Run full validation (`Ctrl+Shift+V`)
-- **`AgentMD: Show Score Breakdown`**: View detailed scoring (`Ctrl+Shift+S`)
-- **`AgentMD: Create from Template`**: Insert framework template
-- **`AgentMD: Dry Run Execution`**: Preview commands safely
+## 🛠 Usage
 
-### Templates Available
-- **Frontend**: React, Vue, Svelte, Astro, Next.js, Remix, Nuxt
-- **Backend**: FastAPI, Express, NestJS
-- **Languages**: Node.js, Python, Rust, Go
-- **Frameworks**: Django, Rails
-- **General**: Monorepo, Generic
+1. **Create or Open:** Generate or open an `AGENTS.md` file in the root of your workspace.
+2. **Instant Feedback:** Diagnostics will immediately appear in the Problems view, and your Readiness Score will populate the status bar.
+3. **Execute Commands:**
+   * **`AgentMD: Validate AGENTS.md`** `(Cmd+Shift+V)`
+   * **`AgentMD: Show Score Breakdown`** `(Cmd+Shift+S)`
+   * **`AgentMD: Create from Template`**
+   * **`AgentMD: Dry Run Execution`**
 
-## Configuration
+## ⚙️ Configuration
 
-```json
-{
-  "agentmd.diagnostics.enabled": true,
-  "agentmd.diagnostics.debounceMs": 300,
-  "agentmd.score.showInStatusBar": true,
-  "agentmd.autoValidate": true,
-  "agentmd.showStatusBar": true,
-  "agentmd.enableRealTime": true
-}
-```
+AgentMD provides flexible workspace settings:
+* `agentmd.diagnostics.enabled`: Toggle real-time diagnostics on/off.
+* `agentmd.diagnostics.debounceMs`: Adjust the validation delay (default: 300ms).
+* `agentmd.score.showInStatusBar`: Pin or unpin the real-time score badge.
+* `agentmd.autoValidate`: Validate automatically on file save.
 
-## Diagnostic Rules
+## 🤝 Support & Community
 
-| Code   | Severity | Description                          |
-| ------ | -------- | ------------------------------------ |
-| AMD001 | Error    | Missing ## Build                     |
-| AMD002 | Error    | Missing ## Test                      |
-| AMD003 | Warning  | Missing ## Lint                      |
-| AMD004 | Error    | Empty command block                  |
-| AMD005 | Warning  | No frontmatter                       |
-| AMD006 | Error    | Invalid YAML                         |
-| AMD007 | Warning  | Absolute path in command             |
-| AMD009 | Warning  | Missing `name` in frontmatter        |
-| AMD010 | Warning  | Missing `description` in frontmatter |
-| AMD011 | Error    | Duplicate section                    |
-| AMD012 | Error    | Dangerous command without safeguards   |
-
-## Workflow Integration
-
-### Development Workflow
-1. **Initialize**: `agentmd init . --template [framework]`
-2. **Edit**: Real-time validation and scoring in VS Code
-3. **Validate**: `Ctrl+Shift+V` for comprehensive check
-4. **Score**: `Ctrl+Shift+S` for agent-readiness breakdown
-5. **Preview**: Dry-run execution before commit
-
-### Team Collaboration
-- **Consistent Validation**: Same rules across entire team
-- **Template Sharing**: Standardized project setups
-- **Quality Metrics**: Track agent-readiness over time
+* Read the full framework documentation at **[AgentMD Docs](https://agentmd.online)**
+* Report an issue on **[GitHub](https://github.com/iedayan/agentmd/issues)**
+* Join the **[Discussions](https://github.com/iedayan/agentmd/discussions)**

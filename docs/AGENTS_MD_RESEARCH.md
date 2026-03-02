@@ -47,7 +47,7 @@ The ETH Zurich study found that when they **stripped all documentation** from re
 
 **Keep it minimal.** Every line should pass this test: _"Can the agent discover this by reading the code?"_ If yes, delete it.
 
-### ✅ Do Include
+### Do Include
 
 - Tooling specifics not inferable from code (`uv`, `pnpm`, custom test runners)
 - Version requirements that differ from latest
@@ -56,7 +56,7 @@ The ETH Zurich study found that when they **stripped all documentation** from re
 - MCP server configurations
 - Permission boundaries
 
-### ❌ Don't Include
+### Don't Include
 
 - Codebase overviews (agents can list directories)
 - Tech stack descriptions (inferable from package files)
