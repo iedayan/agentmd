@@ -15,17 +15,19 @@ vi.mock('@/lib/data/db', () => ({
 const mockConstructEvent = vi.fn();
 
 vi.mock('stripe', () => ({
-  default: vi.fn().mockImplementation(() => ({
-    webhooks: {
-      constructEvent: mockConstructEvent,
-    },
-    subscriptions: {
-      retrieve: vi.fn().mockResolvedValue({
-        status: 'trialing',
-        current_period_end: Math.floor(Date.now() / 1000) + 604800,
-      }),
-    },
-  })),
+  default: vi.fn().mockImplementation(function () {
+    return {
+      webhooks: {
+        constructEvent: mockConstructEvent,
+      },
+      subscriptions: {
+        retrieve: vi.fn().mockResolvedValue({
+          status: 'trialing',
+          current_period_end: Math.floor(Date.now() / 1000) + 604800,
+        }),
+      },
+    };
+  }),
 }));
 
 function createRequest(body: string, signature = 'whsec_test'): NextRequest {

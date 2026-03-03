@@ -25,7 +25,7 @@ function getCurrentVersion(packagePath) {
  */
 function bumpVersion(current, type = 'patch') {
   const [major, minor, patch] = current.split('.').map(Number);
-  
+
   switch (type) {
     case 'major':
       return `${major + 1}.0.0`;
@@ -58,9 +58,9 @@ function generateChangelogEntry(version, type, packages) {
     minor: '✨',
     patch: '🐛'
   };
-  
+
   let changelog = `## [${version}] - ${date}\n\n`;
-  
+
   if (packages.length > 1) {
     changelog += `### ${typeEmoji[type]} Updated Packages\n\n`;
     packages.forEach(pkg => {
@@ -70,7 +70,7 @@ function generateChangelogEntry(version, type, packages) {
     changelog += `### ${typeEmoji[type]} Changes\n\n`;
     changelog += `- Version bump to ${version}\n`;
   }
-  
+
   changelog += '\n';
   return changelog;
 }
@@ -82,7 +82,7 @@ function updateChangelog(version, type, packages) {
   const changelogPath = join(ROOT_DIR, 'CHANGELOG.md');
   const currentChangelog = readFileSync(changelogPath, 'utf-8');
   const newEntry = generateChangelogEntry(version, type, packages);
-  
+
   // Insert new entry after the first line
   const lines = currentChangelog.split('\n');
   lines.splice(1, 0, newEntry);
@@ -97,7 +97,7 @@ function runTests() {
   try {
     execSync('pnpm run test', { stdio: 'inherit' });
     console.log('✅ All tests passed');
-  } catch (error) {
+  } catch (_error) {
     console.error('❌ Tests failed');
     process.exit(1);
   }
@@ -111,7 +111,7 @@ function buildPackages() {
   try {
     execSync('pnpm run build', { stdio: 'inherit' });
     console.log('✅ All packages built');
-  } catch (error) {
+  } catch (_error) {
     console.error('❌ Build failed');
     process.exit(1);
   }
@@ -122,17 +122,17 @@ function buildPackages() {
  */
 function publishPackages(packages) {
   console.log('📦 Publishing packages...');
-  
+
   for (const pkg of packages) {
     const packagePath = join(PACKAGES_DIR, pkg);
     try {
       console.log(`Publishing @agentmd/${pkg}...`);
-      execSync('npm publish --access public', { 
-        cwd: packagePath, 
-        stdio: 'inherit' 
+      execSync('npm publish --access public', {
+        cwd: packagePath,
+        stdio: 'inherit'
       });
       console.log(`✅ Published @agentmd/${pkg}`);
-    } catch (error) {
+    } catch (_error) {
       console.error(`❌ Failed to publish @agentmd/${pkg}`);
       process.exit(1);
     }
@@ -150,7 +150,7 @@ function createGitTag(version) {
     execSync(`git tag v${version}`, { stdio: 'inherit' });
     execSync(`git push origin main --tags`, { stdio: 'inherit' });
     console.log(`✅ Git tag v${version} created and pushed`);
-  } catch (error) {
+  } catch (_error) {
     console.error('❌ Git operations failed');
     process.exit(1);
   }
@@ -163,7 +163,7 @@ async function release() {
   const args = process.argv.slice(2);
   const type = args[0] || 'patch';
   const dryRun = args.includes('--dry-run');
-  
+
   if (!['major', 'minor', 'patch'].includes(type)) {
     console.error('Usage: node release.mjs [major|minor|patch] [--dry-run]');
     process.exit(1);
@@ -174,7 +174,7 @@ async function release() {
   // Get all packages
   const packages = [
     'core',
-    'cli', 
+    'cli',
     'sdk',
     'integrations',
     'integrations-vscode',
@@ -195,7 +195,7 @@ async function release() {
   // Get current version
   const currentVersion = getCurrentVersion(join(PACKAGES_DIR, 'core'));
   const newVersion = bumpVersion(currentVersion, type);
-  
+
   console.log(`📈 Version bump: ${currentVersion} → ${newVersion}`);
 
   if (!dryRun) {

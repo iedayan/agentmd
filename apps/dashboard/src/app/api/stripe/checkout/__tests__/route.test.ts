@@ -17,13 +17,15 @@ vi.mock('@/lib/core/public-url', () => ({
 }));
 
 vi.mock('stripe', () => ({
-  default: vi.fn().mockImplementation(() => ({
-    checkout: {
-      sessions: {
-        create: mockCreate,
+  default: vi.fn().mockImplementation(function () {
+    return {
+      checkout: {
+        sessions: {
+          create: mockCreate,
+        },
       },
-    },
-  })),
+    };
+  }),
 }));
 
 function createRequest(body: unknown): NextRequest {

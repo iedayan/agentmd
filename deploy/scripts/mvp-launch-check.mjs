@@ -143,7 +143,7 @@ function runDbTableCheck() {
   ].join(" ");
 
   try {
-    const out = execSync(`psql \"${dbUrl}\" -Atc \"${sql}\"`, {
+    const out = execSync(`psql "${dbUrl}" -Atc "${sql}"`, {
       encoding: "utf-8",
       stdio: ["ignore", "pipe", "pipe"],
     });

@@ -13,7 +13,6 @@ import {
   LanguageClientOptions,
   ServerOptions,
   TransportKind,
-  type Diagnostic,
 } from 'vscode-languageclient/node';
 import type { DryRunResult } from './shared/types.js';
 
@@ -223,15 +222,15 @@ export function activate(context: ExtensionContext): void {
     context.subscriptions.push(
       commands.registerCommand('agentmd.executeDryRun', async () => {
         const editor = window.activeTextEditor;
-        if (!editor) return;
+        if (!editor || !outputChannel) return;
 
-        outputChannel!.clear();
-        outputChannel!.show(true);
-        outputChannel!.appendLine('AgentMD — Dry Run');
-        outputChannel!.appendLine('═'.repeat(50));
-        outputChannel!.appendLine(`File : ${editor.document.uri.fsPath}`);
-        outputChannel!.appendLine(`Time : ${new Date().toLocaleTimeString()}`);
-        outputChannel!.appendLine('');
+        outputChannel.clear();
+        outputChannel.show(true);
+        outputChannel.appendLine('AgentMD — Dry Run');
+        outputChannel.appendLine('═'.repeat(50));
+        outputChannel.appendLine(`File : ${editor.document.uri.fsPath}`);
+        outputChannel.appendLine(`Time : ${new Date().toLocaleTimeString()}`);
+        outputChannel.appendLine('');
 
         try {
           const result = await client?.sendRequest<DryRunResult>('agentmd/dryRun', {
@@ -239,24 +238,24 @@ export function activate(context: ExtensionContext): void {
           });
 
           if (!result?.commands?.length) {
-            outputChannel!.appendLine('[No executable commands found]');
-            outputChannel!.appendLine('');
-            outputChannel!.appendLine(
+            outputChannel.appendLine('[No executable commands found]');
+            outputChannel.appendLine('');
+            outputChannel.appendLine(
               'Tip: Add bash code blocks under ## Build, ## Test, or ## Lint to define commands.',
             );
             return;
           }
 
-          outputChannel!.appendLine(
+          outputChannel.appendLine(
             `Found ${result.commands.length} command(s) — previewing only, nothing was executed:\n`,
           );
           for (const cmd of result.commands) {
-            outputChannel!.appendLine(`  > ${cmd}`);
+            outputChannel.appendLine(`  > ${cmd}`);
           }
-          outputChannel!.appendLine('');
-          outputChannel!.appendLine('[Dry run complete — no commands were executed]');
+          outputChannel.appendLine('');
+          outputChannel.appendLine('[Dry run complete — no commands were executed]');
         } catch (error) {
-          outputChannel!.appendLine(`[Error] ${error}`);
+          outputChannel.appendLine(`[Error] ${error}`);
           window.showErrorMessage('AgentMD: Dry-run failed. See Output panel for details.');
         }
       }),

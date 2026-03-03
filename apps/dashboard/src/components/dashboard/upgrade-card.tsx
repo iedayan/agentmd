@@ -39,7 +39,7 @@ export function UpgradeCard() {
       const { url } = data;
       if (url) window.location.href = url;
       else setError('Checkout URL was not returned. Please try again.');
-    } catch (err) {
+    } catch (_err) {
       setError('Unable to start checkout. Please try again.');
     } finally {
       setLoadingPlan(null);

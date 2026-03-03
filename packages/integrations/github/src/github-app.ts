@@ -11,7 +11,7 @@ export default (app: Probot) => {
   app.on('pull_request.opened', async (context) => {
     const { owner, repo } = context.repo();
     const pull_number = context.payload.pull_request.number;
-    
+
     try {
       // Get the PR files
       const files = await context.octokit.pulls.listFiles({
@@ -21,7 +21,7 @@ export default (app: Probot) => {
       });
 
       // Look for AGENTS.md changes
-      const agentsMdFiles = files.data.filter(file => 
+      const agentsMdFiles = files.data.filter(file =>
         file.filename === 'AGENTS.md' || file.filename.endsWith('.agents.md')
       );
 
@@ -78,7 +78,7 @@ export default (app: Probot) => {
           });
         }
 
-      } catch (error) {
+      } catch (_error) {
         // Update check run with error
         await context.octokit.checks.update({
           owner,
@@ -90,19 +90,19 @@ export default (app: Probot) => {
           output: {
             title: 'AgentMD Validation Error',
             summary: 'Failed to validate AGENTS.md file',
-            text: error instanceof Error ? error.message : 'Unknown error',
+            text: _error instanceof Error ? _error.message : 'Unknown error',
           },
         });
       }
-    } catch (error) {
-      context.log.error({ error, message: 'Error processing PR' });
+    } catch (_error) {
+      context.log.error({ error: _error, message: 'Error processing PR' });
     }
   });
 
   // Handle push events for workflow generation
   app.on('push', async (context) => {
     const { owner, repo } = context.repo();
-    
+
     try {
       // Check if AGENTS.md exists
       const { data: file } = await context.octokit.repos.getContent({
@@ -128,7 +128,7 @@ export default (app: Probot) => {
           content: Buffer.from(workflow).toString('base64'),
           sha: (file as GitHubContentResponse).sha,
         });
-      } catch (error) {
+      } catch (_error) {
         // File might not exist, try creating it
         await context.octokit.repos.createOrUpdateFileContents({
           owner,
@@ -139,7 +139,7 @@ export default (app: Probot) => {
         });
       }
 
-    } catch (error) {
+    } catch (_error) {
       // AGENTS.md doesn't exist, skip
       context.log.debug('No AGENTS.md found, skipping workflow generation');
     }
@@ -151,12 +151,12 @@ interface GitHubContentResponse {
   sha: string;
 }
 
-function generateValidationReport(validation: { errors: Array<{message: string, line?: number}>, warnings: Array<{message: string, line?: number}>, suggestions: string[] }, score: number): string {
+function generateValidationReport(validation: { errors: Array<{ message: string, line?: number }>, warnings: Array<{ message: string, line?: number }>, suggestions: string[] }, score: number): string {
   let report = `## Agent-readiness Score: ${score}/100\n\n`;
 
   if (validation.errors.length > 0) {
     report += '### ❌ Errors\n\n';
-    validation.errors.forEach((error: {message: string, line?: number}) => {
+    validation.errors.forEach((error: { message: string, line?: number }) => {
       report += `- ${error.message}${error.line ? ` (line ${error.line})` : ''}\n`;
     });
     report += '\n';
@@ -164,7 +164,7 @@ function generateValidationReport(validation: { errors: Array<{message: string, 
 
   if (validation.warnings.length > 0) {
     report += '### ⚠️ Warnings\n\n';
-    validation.warnings.forEach((warning: {message: string, line?: number}) => {
+    validation.warnings.forEach((warning: { message: string, line?: number }) => {
       report += `- ${warning.message}${warning.line ? ` (line ${warning.line})` : ''}\n`;
     });
     report += '\n';
@@ -203,11 +203,11 @@ function generatePRComment(validation: { suggestions: string[] }, score: number)
   return comment;
 }
 
-function generateGitHubWorkflow(parsed: { commands?: Array<{type: string}> }): string {
+function generateGitHubWorkflow(parsed: { commands?: Array<{ type: string }> }): string {
   const commands = parsed.commands || [];
-  const hasTests = commands.some((cmd: {type: string}) => cmd.type === 'test');
-  const hasBuild = commands.some((cmd: {type: string}) => cmd.type === 'build');
-  const hasLint = commands.some((cmd: {type: string}) => cmd.type === 'lint');
+  const hasTests = commands.some((cmd: { type: string }) => cmd.type === 'test');
+  const hasBuild = commands.some((cmd: { type: string }) => cmd.type === 'build');
+  const hasLint = commands.some((cmd: { type: string }) => cmd.type === 'lint');
 
   let workflow = `name: AgentMD Workflow
 

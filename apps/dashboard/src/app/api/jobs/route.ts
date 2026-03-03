@@ -111,7 +111,7 @@ export async function POST(req: NextRequest) {
         headers: { 'X-RateLimit-Remaining': String(rate.remaining) },
       },
     );
-  } catch (err) {
+  } catch (_err) {
     return apiError('Invalid request payload', {
       status: 400,
       requestId,

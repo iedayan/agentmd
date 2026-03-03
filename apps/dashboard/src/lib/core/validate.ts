@@ -29,7 +29,7 @@ export function validateBody<T>(
   if (result.success) {
     return { ok: true, data: result.data };
   }
-  const first = result.error.errors[0];
+  const first = result.error?.issues?.[0];
   const message = first
     ? `${first.path.join('.') || 'body'}: ${first.message}`
     : 'Invalid request payload';
@@ -120,11 +120,13 @@ export const preflightBodySchema = z
   }));
 
 export const demoParseBodySchema = z.object({
-  content: z
-    .string({ required_error: 'Content is required' })
-    .min(1, 'Content is required')
-    .max(50_000, 'Content too long (max 50,000 characters)')
-    .refine((s) => s.trim().length > 0, 'Content is required'),
+  content: z.preprocess(
+    (v) => (typeof v === 'string' ? v : ''),
+    z.string()
+      .min(1, 'Content is required')
+      .max(50_000, 'Content too long (max 50,000 characters)')
+      .refine((s: string) => s.trim().length > 0, 'Content is required'),
+  ),
   sourceType: z.enum(['agentsmd', 'readme']).default('agentsmd'),
 });
 

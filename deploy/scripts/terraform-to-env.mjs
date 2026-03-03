@@ -16,7 +16,7 @@ try {
     process.stdin.on("end", () => resolve(data));
     process.stdin.on("error", reject);
   });
-} catch (e) {
+} catch (_e) {
   console.error("Read terraform output -json and pipe to this script.");
   process.exit(1);
 }
@@ -29,7 +29,7 @@ if (!json.trim()) {
 let out;
 try {
   out = JSON.parse(json);
-} catch (e) {
+} catch (_e) {
   console.error("Invalid JSON. Use: terraform output -json");
   process.exit(1);
 }
@@ -56,7 +56,7 @@ if (s3Region) {
 }
 
 const awsKey = get("aws_access_key_id");
-const awsSecret = get("aws_secret_access_key");
+const _awsSecret = get("aws_secret_access_key");
 if (awsKey) {
   lines.push(`# AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY - set from terraform output (sensitive)`);
   lines.push(`# terraform output aws_access_key_id`);

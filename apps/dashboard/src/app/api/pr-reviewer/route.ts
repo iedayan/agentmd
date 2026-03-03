@@ -3,7 +3,6 @@ import { PRReviewerWorkflow } from '@agentmd-dev/workflows';
 import type { ParsedAgentsMd } from '@agentmd-dev/core';
 
 // Mock GitHub API data - in production, this would call real GitHub API
-// eslint-disable-next-line @typescript-eslint/no-unused-vars -- params reserved for real API
 async function fetchGitHubPR(_owner: string, _repo: string, _prNumber: number) {
   // Simulate API delay
   await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -48,7 +47,6 @@ async function fetchGitHubPR(_owner: string, _repo: string, _prNumber: number) {
 }
 
 // Mock AGENTS.md content - in production, this would fetch from the repo
-// eslint-disable-next-line @typescript-eslint/no-unused-vars -- params reserved for real API
 async function fetchAgentsMd(_owner: string, _repo: string): Promise<ParsedAgentsMd | undefined> {
   // Simulate API delay
   await new Promise((resolve) => setTimeout(resolve, 500));
