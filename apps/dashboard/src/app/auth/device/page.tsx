@@ -1,9 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 
-export default function DeviceAuthPage() {
+function DeviceAuthContent() {
     const searchParams = useSearchParams();
     const urlCode = searchParams.get('code') ?? '';
 
@@ -186,5 +186,20 @@ export default function DeviceAuthPage() {
                 )}
             </div>
         </main>
+    );
+}
+
+export default function DeviceAuthPage() {
+    return (
+        <Suspense fallback={<div style={{
+            minHeight: '100vh',
+            background: 'linear-gradient(135deg, #0f0f1a 0%, #1a1030 50%, #0f1a2a 100%)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontFamily: "'Inter', system-ui, sans-serif",
+        }}>Loading authentication...</div>}>
+            <DeviceAuthContent />
+        </Suspense>
     );
 }

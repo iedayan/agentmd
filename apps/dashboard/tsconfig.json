@@ -22,24 +22,25 @@
         "name": "next"
       }
     ],
+    "baseUrl": ".",
     "paths": {
       "@/*": [
-        "./apps/dashboard/src/*"
+        "./src/*"
       ],
       "@agentmd-dev/core": [
-        "packages/core/dist"
+        "../../packages/core/dist"
       ],
       "@agentmd-dev/cli": [
-        "packages/cli/src"
+        "../../packages/cli/src"
       ],
       "@agentmd-dev/sdk": [
-        "packages/sdk/src"
+        "../../packages/sdk/src"
       ],
       "@agentmd-dev/workflows": [
-        "packages/workflows"
+        "../../packages/workflows"
       ],
       "@agentmd/dashboard": [
-        "apps/dashboard/src"
+        "./src"
       ]
     }
   },
