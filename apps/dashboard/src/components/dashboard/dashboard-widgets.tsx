@@ -15,6 +15,8 @@ import {
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { motion, AnimatePresence } from 'framer-motion';
+import { cn } from '@/lib/core/utils';
 
 
 interface DashboardStatsProps {
@@ -114,36 +116,56 @@ export function DashboardStats({ className }: DashboardStatsProps) {
   ];
 
   return (
-    <div className={`grid gap-4 md:grid-cols-2 lg:grid-cols-4 ${className}`}>
+    <div className={cn("grid gap-4 md:grid-cols-2 lg:grid-cols-4", className)}>
       {stats.map((stat, index) => (
-        <Card key={index} className="relative overflow-hidden">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <div className="flex items-center gap-2">
-              {stat.icon}
-              <CardTitle className="text-sm font-medium">{stat.title}</CardTitle>
-            </div>
-            {getTrendIcon(stat.trend)}
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              {stat.value}
-              {stat.unit && (
-                <span className="text-sm font-normal text-muted-foreground ml-1">{stat.unit}</span>
-              )}
-            </div>
-            <div className="flex items-center gap-1 text-xs text-muted-foreground">
-              <span className={getTrendColor(stat.trend)}>
-                {stat.trend === 'up' ? '+' : stat.trend === 'down' ? '' : ''}
-                {stat.change}
-                {stat.unit && stat.unit}
-              </span>
-              <span>from last hour</span>
-            </div>
-            <p className="text-xs text-muted-foreground mt-1">{stat.description}</p>
-          </CardContent>
-          {/* Animated background effect */}
-          <div className="absolute top-0 right-0 -mt-4 -mr-4 h-16 w-16 rounded-full bg-primary/5 animate-pulse" />
-        </Card>
+        <motion.div
+          key={index}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: index * 0.1, duration: 0.5, ease: 'easeOut' }}
+        >
+          <Card className="bento-card relative overflow-hidden group">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 relative z-10">
+              <div className="flex items-center gap-2">
+                <div className="flex h-8 w-8 items-center justify-center rounded-[var(--radius-sm)] bg-primary/10 text-primary border border-primary/20 shadow-glow-sm">
+                  {stat.icon}
+                </div>
+                <CardTitle className="text-sm font-medium">{stat.title}</CardTitle>
+              </div>
+            </CardHeader>
+            <CardContent className="relative z-10">
+              <div className="text-3xl font-black text-gradient mt-2 tracking-tight flex items-center">
+                <AnimatePresence mode="popLayout">
+                  <motion.span
+                    key={stat.value}
+                    initial={{ opacity: 0, y: 10, filter: 'blur(4px)' }}
+                    animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                    exit={{ opacity: 0, y: -10, filter: 'blur(4px)' }}
+                    transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                  >
+                    {stat.value}
+                  </motion.span>
+                </AnimatePresence>
+                {stat.unit && (
+                  <span className="text-sm font-medium text-muted-foreground ml-1 self-end mb-1">{stat.unit}</span>
+                )}
+              </div>
+              <div className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider mt-3">
+                <span className={cn('flex items-center gap-1 px-1.5 py-0.5 rounded-sm',
+                  stat.trend === 'up' ? 'bg-green-500/10 text-green-500' :
+                    stat.trend === 'down' ? 'bg-red-500/10 text-red-500' : 'bg-gray-500/10 text-gray-400')}
+                >
+                  {getTrendIcon(stat.trend)}
+                  {stat.trend === 'up' ? '+' : ''}{stat.change}{stat.unit}
+                </span>
+                <span className="text-muted-foreground/80">from last hour</span>
+              </div>
+            </CardContent>
+            {/* Animated hover gradient */}
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            <div className="absolute top-0 right-0 -mt-8 -mr-8 h-24 w-24 rounded-full bg-primary/10 blur-[20px] mix-blend-screen opacity-50 group-hover:opacity-100 transition-opacity duration-500" />
+          </Card>
+        </motion.div>
       ))}
     </div>
   );
@@ -224,33 +246,41 @@ export function ActivityFeed({ className }: ActivityFeedProps) {
 
   return (
     <Card className={className}>
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <Activity className="h-5 w-5" />
+      <CardHeader className="pb-3">
+        <CardTitle className="flex items-center gap-2 text-lg font-black tracking-tight">
+          <Activity className="h-5 w-5 text-primary" />
           Real-time Activity
         </CardTitle>
-        <CardDescription>Latest system events and updates</CardDescription>
+        <CardDescription className="text-xs font-medium">Latest system events and updates</CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="space-y-3 max-h-96 overflow-y-auto">
-          {activities.map((activity) => (
-            <div
-              key={activity.id}
-              className="flex items-start gap-3 p-3 rounded-lg border border-border/50 hover:bg-muted/50 transition-colors"
-            >
-              {getActivityIcon(activity.type)}
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center justify-between">
-                  <p className="text-sm font-medium truncate">{activity.title}</p>
-                  <span className="text-xs text-muted-foreground ml-2 whitespace-nowrap">
-                    {formatTimestamp(activity.timestamp)}
-                  </span>
+        <div className="space-y-3 max-h-96 overflow-y-auto pr-2 scrollbar-hide">
+          <AnimatePresence>
+            {activities.map((activity, index) => (
+              <motion.div
+                key={activity.id}
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                transition={{ duration: 0.3, delay: index * 0.05 }}
+                className="group flex items-start gap-3 p-3 rounded-xl border border-border/40 bg-card hover:bg-muted/30 hover:border-primary/30 transition-all duration-300"
+              >
+                <div className="mt-0.5 bg-background border rounded-md p-1.5 shadow-sm group-hover:shadow-glow-sm transition-shadow">
+                  {getActivityIcon(activity.type)}
                 </div>
-                <p className="text-xs text-muted-foreground mt-1">{activity.description}</p>
-                <p className="text-xs text-muted-foreground mt-1">by {activity.user}</p>
-              </div>
-            </div>
-          ))}
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center justify-between">
+                    <p className="text-sm font-semibold truncate group-hover:text-primary transition-colors">{activity.title}</p>
+                    <span className="text-[10px] uppercase font-bold tracking-wider text-muted-foreground ml-2 whitespace-nowrap">
+                      {formatTimestamp(activity.timestamp)}
+                    </span>
+                  </div>
+                  <p className="text-xs text-muted-foreground mt-1 leading-relaxed line-clamp-2">{activity.description}</p>
+                  <p className="text-[10px] font-medium text-muted-foreground/80 mt-1.5">Executed by <span className="font-bold text-foreground/80">{activity.user}</span></p>
+                </div>
+              </motion.div>
+            ))}
+          </AnimatePresence>
         </div>
       </CardContent>
     </Card>

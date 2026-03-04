@@ -139,7 +139,7 @@ export function OnboardingWizard() {
         exit={{ opacity: 0, scale: 0.95 }}
         className="mb-8"
       >
-        <Card className="relative overflow-hidden border-primary/30 bg-primary/[0.02] glass-card border-luminescent shadow-glow/5">
+        <Card className="relative overflow-hidden border-primary/40 bg-card/60 backdrop-blur-2xl glass-card border-luminescent shadow-glow/10">
           {isScanning && (
             <motion.div
               initial={{ opacity: 0 }}
@@ -174,14 +174,29 @@ export function OnboardingWizard() {
                 Welcome to AgentMD
               </CardTitle>
             </div>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={handleDismiss}
-              className="text-muted-foreground hover:text-foreground"
-            >
-              Skip
-            </Button>
+            <div className="flex items-center gap-4">
+              {/* Progress indicator pill */}
+              <div className="hidden sm:flex items-center gap-2 bg-background/50 backdrop-blur-md rounded-full px-4 py-1.5 border border-primary/20 shadow-glow-sm">
+                <span className="text-xs font-bold text-primary">{Math.round((completedSteps.length / STEPS.length) * 100)}%</span>
+                <div className="w-24 h-1.5 bg-muted rounded-full overflow-hidden">
+                  <motion.div
+                    className="h-full bg-primary"
+                    initial={{ width: 0 }}
+                    animate={{ width: `${(completedSteps.length / STEPS.length) * 100}%` }}
+                    transition={{ duration: 1, ease: 'easeOut' }}
+                  />
+                </div>
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleDismiss}
+                className="text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
+                title="Dismiss wizard"
+              >
+                Skip
+              </Button>
+            </div>
           </CardHeader>
 
           <CardContent>
@@ -205,12 +220,12 @@ export function OnboardingWizard() {
                     <div className="flex items-center gap-3 mb-3">
                       <div
                         className={cn(
-                          'h-8 w-8 rounded-full flex items-center justify-center text-xs font-black border',
+                          'h-8 w-8 rounded-full flex items-center justify-center text-xs font-black border transition-all duration-300',
                           done
-                            ? 'bg-primary text-primary-foreground border-primary'
+                            ? 'bg-primary text-primary-foreground border-primary shadow-[0_0_15px_rgba(20,184,120,0.5)]'
                             : current
-                              ? 'bg-primary/10 text-primary border-primary/30'
-                              : 'bg-muted text-muted-foreground border-muted-foreground/20',
+                              ? 'bg-primary/20 text-primary border-primary shadow-[0_0_10px_rgba(20,184,120,0.3)] animate-glow-pulse'
+                              : 'bg-muted/50 text-muted-foreground border-muted-foreground/20',
                         )}
                       >
                         {done ? <Check className="h-4 w-4" /> : i + 1}
@@ -236,13 +251,13 @@ export function OnboardingWizard() {
               <Link href={STEPS[currentStep >= 0 ? currentStep : 0]?.href ?? '/dashboard'}>
                 <Button
                   size="sm"
-                  className="btn-tactile rounded-xl px-8 font-black shadow-glow group"
+                  className="btn-tactile rounded-xl px-8 font-black shadow-[0_0_20px_rgba(20,184,120,0.4)] hover:shadow-[0_0_30px_rgba(20,184,120,0.6)] group transition-all duration-300"
                 >
-                  Next Step
+                  {currentStep === 0 ? "Start Setup" : "Next Step"}
                   <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </Link>
-              <p className="text-[10px] text-muted-foreground font-black uppercase tracking-[0.2em]">
+              <p className="text-[10px] text-muted-foreground font-black uppercase tracking-[0.2em] animate-pulse">
                 {completedSteps.length} of {STEPS.length} Steps Complete
               </p>
             </div>
