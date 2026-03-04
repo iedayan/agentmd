@@ -34,9 +34,9 @@ export async function POST(request: Request) {
     if (!validated.ok) return validated.response;
     const { content, sourceType } = validated.data;
 
-    let parseContent = content;
+    let parseContent = String(content);
     if (sourceType === 'readme') {
-      parseContent = convertToAgentsMd(content, 'generic') || content;
+      parseContent = convertToAgentsMd(String(content), 'generic') || String(content);
     }
 
     const parsed = parseAgentsMd(parseContent);

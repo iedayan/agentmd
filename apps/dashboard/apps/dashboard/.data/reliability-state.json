@@ -4,9 +4,9 @@
       "id": "delivery-1",
       "event": "check_run",
       "status": "processed",
-      "attempts": 38,
+      "attempts": 41,
       "firstSeenAt": "2026-02-26T01:40:39.377Z",
-      "lastSeenAt": "2026-03-02T20:58:53.167Z"
+      "lastSeenAt": "2026-03-03T23:48:27.634Z"
     },
     {
       "id": "no-delivery-b3ff0cee-35e2-455b-99b8-06ccb1f8c65d",
@@ -21,35 +21,35 @@
       "id": "delivery-invalid-signature",
       "event": "check_run",
       "status": "failed",
-      "attempts": 38,
+      "attempts": 41,
       "firstSeenAt": "2026-02-26T01:40:39.382Z",
-      "lastSeenAt": "2026-03-02T20:58:53.171Z",
+      "lastSeenAt": "2026-03-03T23:48:27.640Z",
       "error": "Invalid webhook signature"
     },
     {
       "id": "delivery-invalid-json",
       "event": "check_run",
       "status": "failed",
-      "attempts": 38,
+      "attempts": 41,
       "firstSeenAt": "2026-02-26T01:40:39.384Z",
-      "lastSeenAt": "2026-03-02T20:58:53.172Z",
+      "lastSeenAt": "2026-03-03T23:48:27.645Z",
       "error": "Invalid JSON payload"
     },
     {
       "id": "delivery-pr-event",
       "event": "pull_request",
       "status": "processed",
-      "attempts": 38,
+      "attempts": 41,
       "firstSeenAt": "2026-02-26T01:40:39.387Z",
-      "lastSeenAt": "2026-03-02T20:58:53.173Z"
+      "lastSeenAt": "2026-03-03T23:48:27.647Z"
     },
     {
       "id": "delivery-dup",
       "event": "check_run",
       "status": "processed",
-      "attempts": 76,
+      "attempts": 82,
       "firstSeenAt": "2026-02-26T01:40:39.390Z",
-      "lastSeenAt": "2026-03-02T20:58:53.174Z"
+      "lastSeenAt": "2026-03-03T23:48:27.650Z"
     },
     {
       "id": "vitest-delivery-1772070039534",
@@ -687,9 +687,84 @@
       "firstSeenAt": "2026-03-02T20:58:53.170Z",
       "lastSeenAt": "2026-03-02T20:58:53.170Z",
       "error": "Missing GitHub event headers"
+    },
+    {
+      "id": "no-delivery-595b1a42-19b3-4988-a884-51ef44826fe9",
+      "event": "unknown",
+      "status": "failed",
+      "attempts": 1,
+      "firstSeenAt": "2026-03-03T23:38:20.808Z",
+      "lastSeenAt": "2026-03-03T23:38:20.808Z",
+      "error": "Missing GitHub event headers"
+    },
+    {
+      "id": "vitest-delivery-1772581101128",
+      "event": "check_run",
+      "status": "processed",
+      "attempts": 2,
+      "firstSeenAt": "2026-03-03T23:38:21.128Z",
+      "lastSeenAt": "2026-03-03T23:38:21.131Z"
+    },
+    {
+      "id": "no-delivery-d8ec9cd5-e230-4d09-84a1-16c33aec720e",
+      "event": "unknown",
+      "status": "failed",
+      "attempts": 1,
+      "firstSeenAt": "2026-03-03T23:38:42.673Z",
+      "lastSeenAt": "2026-03-03T23:38:42.673Z",
+      "error": "Missing GitHub event headers"
+    },
+    {
+      "id": "vitest-delivery-1772581123890",
+      "event": "check_run",
+      "status": "processed",
+      "attempts": 2,
+      "firstSeenAt": "2026-03-03T23:38:43.890Z",
+      "lastSeenAt": "2026-03-03T23:38:43.893Z"
+    },
+    {
+      "id": "no-delivery-3a93e60c-bf75-4e94-b0da-9eb12fb20acd",
+      "event": "unknown",
+      "status": "failed",
+      "attempts": 1,
+      "firstSeenAt": "2026-03-03T23:48:27.638Z",
+      "lastSeenAt": "2026-03-03T23:48:27.638Z",
+      "error": "Missing GitHub event headers"
+    },
+    {
+      "id": "vitest-delivery-1772581708100",
+      "event": "check_run",
+      "status": "processed",
+      "attempts": 2,
+      "firstSeenAt": "2026-03-03T23:48:28.100Z",
+      "lastSeenAt": "2026-03-03T23:48:28.104Z"
     }
   ],
   "incidents": [
+    {
+      "id": "inc-144",
+      "source": "vitest",
+      "severity": "low",
+      "summary": "Synthetic incident 1772581708107",
+      "openedAt": "2026-03-03T23:48:28.107Z",
+      "resolvedAt": "2026-03-03T23:48:28.111Z"
+    },
+    {
+      "id": "inc-143",
+      "source": "vitest",
+      "severity": "low",
+      "summary": "Synthetic incident 1772581123894",
+      "openedAt": "2026-03-03T23:38:43.894Z",
+      "resolvedAt": "2026-03-03T23:38:43.895Z"
+    },
+    {
+      "id": "inc-142",
+      "source": "vitest",
+      "severity": "low",
+      "summary": "Synthetic incident 1772581101132",
+      "openedAt": "2026-03-03T23:38:21.132Z",
+      "resolvedAt": "2026-03-03T23:38:21.132Z"
+    },
     {
       "id": "inc-141",
       "source": "vitest",
@@ -1016,10 +1091,10 @@
       "openedAt": "2026-02-26T01:40:39.381Z"
     }
   ],
-  "nextIncidentId": 141,
+  "nextIncidentId": 144,
   "metrics": {
-    "totalDeliveries": 304,
-    "duplicateDeliveries": 261,
-    "retryAttempts": 261
+    "totalDeliveries": 328,
+    "duplicateDeliveries": 282,
+    "retryAttempts": 282
   }
 }
